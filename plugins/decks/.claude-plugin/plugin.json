@@ -1,0 +1,9 @@
+{
+  "name": "decks",
+  "description": "lit-pptx, moved unchanged from LitClaude: design direction, Markdown slide source, native charts, embedded fonts and a QA gate.",
+  "version": "0.1.0",
+  "author": { "name": "wjgoarxiv" },
+  "license": "MIT",
+  "keywords": ["claude-code", "skills", "pptx", "slides", "deck"],
+  "skills": "./skills"
+}

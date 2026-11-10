@@ -1,0 +1,12 @@
+{
+  "name": "wjgoarxiv-skills",
+  "metadata": { "description": "Content-production skills that moved out of the LitFamily products, one plugin per family." },
+  "owner": { "name": "wjgoarxiv" },
+  "plugins": [
+    {
+      "name": "decks",
+      "source": "./plugins/decks",
+      "description": "lit-pptx: finished PowerPoint decks from a request, notes or source files, with its own office runtime."
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "wjgoarxiv-skills",
+  "private": true,
+  "description": "Claude Code marketplace of content-production skills moved out of the LitFamily products.",
+  "license": "MIT",
+  "scripts": { "test": "node --test test/*.test.mjs" }
+}

@@ -63,7 +63,13 @@ folder smaller.
 
 - SKILL.md: the registration, invocation (`$lit-diagram-drawer`, the picker or an implicit diagram request) and package-claims
   bullet now describe a copied skill, not a plugin payload. The bundled fonts were already inside the
-  folder (`assets/fonts`), so its own `../` paths stay within it.
+  folder (`assets/fonts`).
+- `scripts/diagram-metrics.mjs` and `scripts/doctor.mjs` ran the visible-text detector from
+  `../lit-humanizer/scripts/detect.mjs`, a sibling skill that a one-folder copy does not bring, so the
+  verifiers threw and the doctor reported the detector missing. The detector is now bundled in `humanizer/`,
+  copied unchanged from LitCodex `b82ad1c` `plugins/litcodex/skills/lit-humanizer/`: `scripts/detect.mjs`,
+  `scripts/core.mjs`, `scripts/extract_office_text.py`, `rules.json` and `NOTICE`. Both scripts point
+  there, and the doctor line now reads `bundled visible-text detector`.
 
 ## lit-schematic
 
@@ -145,8 +151,11 @@ folder smaller.
 ## How this was checked
 
 - A static grep over all nine folders checks five things: `../` escapes, removed plugin commands and
-  hooks, other harness or product names, machine paths and cross-skill paths. It finds nothing. The
-  digest-pinned corpus is excluded only from the product-name check.
+  hooks, other harness or product names, machine paths and cross-skill paths. The digest-pinned corpus is
+  excluded only from the product-name check. That grep looked for literal `../` text and missed the
+  diagram detector path, which climbed from a variable holding the skill root. `npm test` now follows the
+  paths each script builds from its own location (`path.resolve`/`join`, `new URL`, relative imports,
+  `Path(__file__)`) in every edition, and runs the diagram detector and doctor from a folder copied alone.
 - The kept tests run green from a copy outside any repository. The office and motion runtimes install from
   the folders' own scripts. A deck compiled and passed `qa`, a document converted and passed `qa`, the
   schematic doctor passed on the bundled font, and the visualization preflight reported its source complete.

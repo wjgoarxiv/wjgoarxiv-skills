@@ -1,5 +1,5 @@
 {
-  "schema_id": "litopencode.frontend-style/v1",
+  "schema_id": "opencode.frontend-style/v1",
   "id": "computational-brutalism",
   "name": "Computational brutalism",
   "summary": "A retro-futurist instrument register with its structure on show: drafting-film grey over a plotting grid with major lines every five cells, monospaced text and mono headings at real size, square corners, heavy 3 px section rules and 2 px compartments with inverse header bars, coordinate-marked sections, uppercase measurement labels and one hazard-orange signal; in dark mode the same build reads as a phosphor CRT with an amber signal. Flat: no blur, no soft elevation.",

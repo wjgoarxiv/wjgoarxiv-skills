@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// lit-typographic-motion runtime: `litopencode motion-runtime install|status [--audio] [--word-timing]`.
-// Installs the pinned engine dependencies, fonts and (opt-in) the librosa venv into a product-owned
+// lit-typographic-motion runtime: `node <skill>/runtime.mjs install|status [--audio] [--word-timing] [--json]`.
+// Installs the pinned engine dependencies, fonts and (opt-in) the librosa venv into this skill's own
 // cache, once, outside any render session (MO-A-42, MO-A-54). Renders only read what this wrote.
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
@@ -15,10 +15,11 @@ const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const hashFile = (file) => sha256(readFileSync(file));
 export const pins = JSON.parse(readFileSync(path.join(skillRoot, "fonts", "pins.json"), "utf8"));
 export const wordTimingPins = JSON.parse(readFileSync(path.join(skillRoot, "word-timing-models.json"), "utf8"));
-const installCommand = "litopencode motion-runtime install";
+export const runtimeScript = path.join(skillRoot, "runtime.mjs");
+export const installCommand = `node "${runtimeScript}" install`;
 
 export function runtimePaths(env = process.env) {
-  const base = path.join(env.XDG_CACHE_HOME || path.join(env.HOME || os.homedir(), ".cache"), "litopencode", "motion-runtime");
+  const base = path.join(env.XDG_CACHE_HOME || path.join(env.HOME || os.homedir(), ".cache"), "opencode-skills", "lit-typographic-motion");
   const lockHash = hashFile(path.join(skillRoot, "package-lock.json")).slice(0, 16);
   const pinHash = sha256(JSON.stringify(pins.fetched) + JSON.stringify(pins.fallback)).slice(0, 16);
   const audioHash = hashFile(path.join(skillRoot, "requirements-audio.txt")).slice(0, 16);
@@ -76,18 +77,18 @@ export function inspectWarmState(env = process.env) {
     if (!existsSync(file)) missingFonts.push(relative);
     else if (hashFile(file) !== expected) mismatchedFonts.push(relative);
   }
-  let hangul = "lit-pptx";
+  let hangul = "bundled";
   for (const weight of ["Regular", "Bold"]) {
-    const entry = pins.litPptxPair[weight];
+    const entry = pins.pretendardPair[weight];
     const file = pairPath(entry);
     if (existsSync(file) && hashFile(file) === entry.sha256) continue;
-    if (existsSync(file)) { mismatchedFonts.push(`lit-pptx ${path.basename(entry.path)}`); continue; }
+    if (existsSync(file)) { mismatchedFonts.push(`bundled ${path.basename(entry.path)}`); continue; }
     hangul = "fallback";
   }
   if (hangul === "fallback") {
     for (const [name, pin] of Object.entries(pins.fallback)) {
       const file = path.join(paths.fonts, name);
-      if (!existsSync(file)) missingFonts.push(`${name} (the lit-pptx Hangul pair is absent)`);
+      if (!existsSync(file)) missingFonts.push(`${name} (the bundled Hangul pair is absent)`);
       else if (hashFile(file) !== pin.sha256) mismatchedFonts.push(name);
     }
   }
@@ -111,11 +112,11 @@ function takeLock(dir) {
   mkdirSync(path.dirname(dir), { recursive: true });
   try { mkdirSync(dir); return; } catch (error) { if (error.code !== "EEXIST") throw error; }
   if (Date.now() - statSync(dir).mtimeMs > 10 * 60 * 1000) { rmSync(dir, { recursive: true, force: true }); mkdirSync(dir); return; }
-  throw new Error(`another motion-runtime install holds ${dir}; wait for it to finish`);
+  throw new Error(`another runtime.mjs install holds ${dir}; wait for it to finish`);
 }
 
 async function fetchPinned(name, pin, env) {
-  const url = env.LITOPENCODE_MOTION_MIRROR ? `${env.LITOPENCODE_MOTION_MIRROR.replace(/\/$/u, "")}/${encodeURIComponent(name)}` : pin.url;
+  const url = env.LIT_MOTION_FONT_MIRROR ? `${env.LIT_MOTION_FONT_MIRROR.replace(/\/$/u, "")}/${encodeURIComponent(name)}` : pin.url;
   const response = await fetch(url, { signal: AbortSignal.timeout(60000) });
   if (!response.ok) throw new Error(`fetch ${name}: HTTP ${response.status}`);
   const bytes = Buffer.from(await response.arrayBuffer());
@@ -229,7 +230,7 @@ export async function install(flags = [], env = process.env, log = (line) => con
 async function main(argv) {
   const [command, ...flags] = argv;
   if (!command || command === "--help" || command === "help") {
-    console.log("lit-typographic-motion runtime\nUsage: litopencode motion-runtime install|status [--audio] [--word-timing] [--json]");
+    console.log("lit-typographic-motion runtime\nUsage: node runtime.mjs install|status [--audio] [--word-timing] [--json]");
     return 0;
   }
   if (command === "install") {
@@ -249,7 +250,7 @@ async function main(argv) {
     console.log(flags.includes("--json") ? JSON.stringify(report, null, 2) : formatProbe(report));
     return report.prewarm.ready ? 0 : report.prewarm.blocked.exit;
   }
-  console.error("Usage: litopencode motion-runtime install|status [--audio] [--word-timing] [--json]");
+  console.error("Usage: node runtime.mjs install|status [--audio] [--word-timing] [--json]");
   return 2;
 }
 

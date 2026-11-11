@@ -1,4 +1,4 @@
-// LitOpenCode stage kit, served at /lit/stage-kit.js. Motion primitives only: eases, a spring,
+// lit-typographic-motion stage kit, served at /lit/stage-kit.js. Motion primitives only: eases, a spring,
 // keyframes, timing helpers, a seeded random source, text splitting, SVG path drawing, a single-path
 // morph, mask and clip helpers, colour mixing, the shot and zone readers for the house style, and the
 // text registration the QA replay reads. It ships no scene, object or copy; the page draws whatever

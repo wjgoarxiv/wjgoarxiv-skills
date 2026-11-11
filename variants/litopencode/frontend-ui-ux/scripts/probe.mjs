@@ -122,7 +122,7 @@ try {
   else if (option("--url") && !localUrl(option("--url"))) { block("browser unavailable"); }
   else if (args.includes("--static-only")) { block("browser unavailable"); }
   else {
-    const capability = spawnSync(process.execPath, [resolve(here, "../../browser-drive/scripts/capability-probe.mjs")], { encoding: "utf8", timeout: 15_000 });
+    const capability = spawnSync(process.execPath, [resolve(here, "browser-driver-probe.mjs")], { encoding: "utf8", timeout: 15_000 });
     let status;
     try { status = JSON.parse(capability.stdout); } catch { status = null; }
     if (status?.status !== "available") block(status?.blocker?.includes("IDENTITY") ? "browser identity unverified" : "browser unavailable");

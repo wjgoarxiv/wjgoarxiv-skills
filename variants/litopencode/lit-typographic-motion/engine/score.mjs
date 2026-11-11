@@ -582,7 +582,7 @@ export function writeScore({ treatment, frameCount, fps, cuts = [], dir }) {
   }
   const { plan } = score;
   const summary = {
-    schema: "litopencode.motion-sound-cues/v1", mode: "score", file, sha256: createHash("sha256").update(wav).digest("hex"),
+    schema: "opencode.motion-sound-cues/v1", mode: "score", file, sha256: createHash("sha256").update(wav).digest("hex"),
     sampleRate: SR, sampleCount: score.sampleCount, durationSec: Number((score.sampleCount / SR).toFixed(6)), frameCount, fps,
     genre: plan.genre, key: `${plan.key} ${plan.mode}`, tempo: plan.bpm, progression: plan.progression.join("-"),
     sections: plan.sections.map(({ kind, t0, t1, beat }) => ({ kind, t0, t1, beat })), fx: plan.fx, stems,

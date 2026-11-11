@@ -2,11 +2,10 @@
 // evidence schemas, owned by this skill.
 //
 // Visual QA has to re-derive the contract identity it is about to hash, so this
-// reader is installed inside skills/visual-qa/scripts and imported only through
+// reader is installed inside this skill's scripts/ folder and imported only through
 // local relative paths. Nothing here reaches into a sibling skill directory: the
-// managed manifest pins this skill as an exact tree, and an import that escaped
-// that tree would let the integrity check pass while the evidence pipeline was
-// already broken.
+// skill installs as one folder, and an import that escaped that folder would let
+// an install look complete while the evidence pipeline was already broken.
 //
 // A JSON Schema document cannot express typed id prefixes, referential integrity
 // between routes, regions, components, interactions and states,

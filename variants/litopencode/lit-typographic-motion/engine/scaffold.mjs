@@ -203,7 +203,7 @@ function rungNote(treatment, out, env) {
   const found = findBlender({ env });
   return found
     ? `\nBLENDER: ${found.path} (${found.source}) is installed and the request asks for high-quality 3D. Take the Blender rung: set render3d "blender" in the treatment, write stage/scene.py, and keep this page for the type, labels and panels over the plate (references/depth.md, the Blender rung).`
-    : "\nBLENDER: not found (LITOPENCODE_BLENDER, /Applications/Blender.app, blender on PATH). The request asks for high-quality 3D, so build the world in three.js on the GPU rung and say in the reply that Blender is not installed.";
+    : "\nBLENDER: not found (LIT_MOTION_BLENDER, /Applications/Blender.app, blender on PATH). The request asks for high-quality 3D, so build the world in three.js on the GPU rung and say in the reply that Blender is not installed.";
 }
 
 // Writes `<out>/stage/index.html` from the treatment and returns the note to print; refuses to replace

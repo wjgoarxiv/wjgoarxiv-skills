@@ -6,17 +6,17 @@ description: Use a concise OpenCode-native evidence gate for rendered surfaces, 
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litopencode.skill_contract.v1
+contract_schema_version: opencode.skill_contract.v1
 skill_id: visual-qa
 runtime_class: runtime-skill
 static_documentation: true
-feature_ids: [visual-qa, doctor-install]
-entry_routes: ["chat.message visual-qa", "native skill visual-qa", "tool.execute.after advisory"]
+feature_ids: [visual-qa]
+entry_routes: ["native skill visual-qa"]
 ```
 
 # Visual QA
 
-This is static documentation for the native-installed LitOpenCode validator. Do not execute commands from this file automatically. It is not a browser executor, does not make a browser callable, and grants no capture authority.
+This is static documentation for an OpenCode skill validator. Do not execute commands from this file automatically. It is not a browser executor, does not make a browser callable, and grants no capture authority.
 
 ## #contract.inputs
 

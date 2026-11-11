@@ -1,5 +1,5 @@
 // Canonical byte form for every hash this skill computes, owned by this skill so
-// no evidence helper imports across a managed skill boundary.
+// no evidence helper imports across the skill folder boundary.
 function normalize(value, seen) {
   if (value === null || typeof value === "string" || typeof value === "boolean") return value;
   if (typeof value === "number") {

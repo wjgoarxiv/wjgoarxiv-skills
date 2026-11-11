@@ -149,7 +149,7 @@ user's go, set `preview` to false and render.
 `motion-house.json` sits beside the output folder:
 
 ```json
-{ "schema": "litopencode.motion-house/v1", "style": "<style id>", "createdAt": "<time>", "films": [{ "dir": "<folder>", "style": "<style id>", "path": "<stage or type>", "format": "<16:9 or 9:16>", "durationSec": 0, "at": "<time>" }] }
+{ "schema": "opencode.motion-house/v1", "style": "<style id>", "createdAt": "<time>", "films": [{ "dir": "<folder>", "style": "<style id>", "path": "<stage or type>", "format": "<16:9 or 9:16>", "durationSec": 0, "at": "<time>" }] }
 ```
 
 The renderer writes it when a full render passes with nothing withheld; the first film sets the house

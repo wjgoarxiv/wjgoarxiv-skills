@@ -7,19 +7,19 @@ reader_projection: shared_rule
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litopencode.skill_contract.v1
+contract_schema_version: opencode.skill_contract.v1
 skill_id: lit-pptx
 runtime_class: runtime-skill
 static_documentation: true
 feature_ids: [lit-pptx]
-entry_routes: ["native skill picker lit-pptx", "bare lit slide intent"]
+entry_routes: ["native skill picker lit-pptx"]
 ```
 
 # Lit PowerPoint
 
-This file is static documentation for LitOpenCode. Do not execute commands from this file automatically. OpenCode loads the skill only through the native skill tool.
+This file is static documentation for OpenCode. Do not execute commands from this file automatically. OpenCode loads the skill only through the native skill tool.
 
-This is LitOpenCode's native PowerPoint skill. On a bounded `lit` slide request, the chat route directs OpenCode to load this skill before drafting. Selection is guidance until the host's skill tool confirms it. Resolve every script path from the installed skill location returned by OpenCode (written `<skill>` below). Work in the user's project; keep the Markdown source beside the `.pptx`. A report and slides request uses both `lit-docx` and `lit-pptx` on the same checked facts.
+This is an OpenCode-native PowerPoint skill. OpenCode's skill tool loads it when a request asks for slides or a deck (a `lit` slide request included), before any drafting. Selection is guidance until the host's skill tool confirms it. Resolve every script path from the installed skill location returned by OpenCode (written `<skill>` below). Work in the user's project; keep the Markdown source beside the `.pptx`. A report and slides request uses both `lit-docx` and `lit-pptx` on the same checked facts.
 
 A deck here is never one fixed look. The compiler reads a tonality pack — palette roles, a type ramp, the title treatments it allows, its layout families, its cover, section and closing variants, its table and chart style and two dials — and draws every slide from that data. Thirteen packs ship in `templates/tonalities/`. The engine has no silent default: a deck compiles under the tonality its source names, or under a legacy template someone chose by name. Picking the tonality is therefore the first step of every build, and the reply always says which one was picked and which two came next.
 
@@ -43,7 +43,7 @@ Under `lit`, create a `.pptx` by default. Do not ask a theme, colour or font que
 
 ## #contract.procedure
 
-1. **Runtime.** Nothing to install by hand. The first `node <skill>/run.mjs compile …` installs the pinned Node lockfile into the LitOpenCode cache and prints one notice line; the first Python helper call does the same for its venv. `node <skill>/run.mjs doctor` reports readiness without installing. A failed first-use install (no network, no `npm`, no Python 3.10 to 3.14; the venv comes from the newest `python3.X` in that range, a newer `python3` such as 3.15 is passed over, and `LITOPENCODE_OFFICE_PYTHON` names one interpreter instead) is a capability failure: quote the error line and stop; never install anything globally or inside the skill.
+1. **Runtime.** Nothing to install by hand. The first `node <skill>/run.mjs compile …` installs the pinned Node lockfile into this skill's own cache (`XDG_CACHE_HOME/opencode-skills/lit-pptx`, or `~/.cache/opencode-skills/lit-pptx`) and prints one notice line; the first Python helper call does the same for its venv. `node <skill>/run.mjs doctor` reports readiness without installing. A failed first-use install (no network, no `npm`, no Python 3.10 to 3.14; the venv comes from the newest `python3.X` in that range, a newer `python3` such as 3.15 is passed over, and `LIT_PPTX_PYTHON=<interpreter>` names one interpreter instead) is a capability failure: quote the error line and stop; never install anything globally or inside the skill.
 
 2. **Choose the direction first, and write the direction card.** Before the first slide is written, decide the look and record it. Follow `references/direction-step.md`:
    - Settle four facts and write any inference down: deck type, reader, delivery (presented or read) and language.
@@ -139,7 +139,7 @@ For a deck that matters, iterate once before the final compile. The guidance in 
 
 ## #contract.runtime
 
-The skill ships `package-lock.json` and `requirements.lock` with pinned Node and Python dependencies. `run.mjs` installs on first use under the configured user cache directory (`XDG_CACHE_HOME/litopencode/office` or the normal user cache), never globally or in the OpenCode config. The Python side creates a product-owned venv for `python-pptx`, `defusedxml` and Pillow; the Node side installs `pptxgenjs` and `sharp`. The tonality packs, layout families and treatments are data under `templates/tonalities/`; the renderer is one engine (`scripts/lib/render-pack.js` on the grid of `scripts/lib/grid-resolver.js`) for all of them. The bundled faces are the unmodified official Pretendard 1.3.9 Regular and Bold under the SIL OFL (`pretendard-font/LICENSE.txt`), the A2Z weights, and the unmodified official JetBrains Mono 2.304 Regular and Bold under the SIL OFL (`fonts/jetbrains-mono/`), each with its licence and source note. A missing network or package manager is a capability failure: report it and leave existing user files intact. `soffice` (and `pdftoppm` for the page images) is optional for the render; this skill never installs either.
+The skill ships `package-lock.json` and `requirements.lock` with pinned Node and Python dependencies. `run.mjs` installs on first use under the configured user cache directory (`XDG_CACHE_HOME/opencode-skills/lit-pptx` or `~/.cache/opencode-skills/lit-pptx`), never globally or in the OpenCode config. The Python side creates a skill-owned venv for `python-pptx`, `defusedxml` and Pillow; the Node side installs `pptxgenjs` and `sharp`. The tonality packs, layout families and treatments are data under `templates/tonalities/`; the renderer is one engine (`scripts/lib/render-pack.js` on the grid of `scripts/lib/grid-resolver.js`) for all of them. The bundled faces are the unmodified official Pretendard 1.3.9 Regular and Bold under the SIL OFL (`pretendard-font/LICENSE.txt`), the A2Z weights, and the unmodified official JetBrains Mono 2.304 Regular and Bold under the SIL OFL (`fonts/jetbrains-mono/`), each with its licence and source note. A missing network or package manager is a capability failure: report it and leave existing user files intact. `soffice` (and `pdftoppm` for the page images) is optional for the render; this skill never installs either.
 
 ## #contract.outputs
 

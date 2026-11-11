@@ -1,5 +1,5 @@
 {
-  "schema": "litopencode.motion-style/v1",
+  "schema": "opencode.motion-style/v1",
   "id": "swiss-signal",
   "name": "Swiss signal",
   "summary": "Ink ground, bone type, one teal signal and one amber moment; type lands precisely and cuts hard.",

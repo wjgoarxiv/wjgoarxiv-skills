@@ -5,7 +5,7 @@
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 
-export const LOCK_SCHEMA = "litopencode.design-lock/v1";
+export const LOCK_SCHEMA = "opencode.design-lock/v1";
 export const LOCK_FILE = "design.lock.json";
 export const LOCK_LIMITS = Object.freeze({ findingsPerRule: 12, nodes: 3000, textChars: 4000 });
 

@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import { fontReferencePortable } from './renderer-safety.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const humanizer = path.resolve(root, '../lit-humanizer/scripts/detect.mjs');
+const humanizer = path.resolve(root, 'scripts/humanizer/detect.mjs');
 const decode = (s) => s.replaceAll('&amp;', '&').replaceAll('&lt;', '<').replaceAll('&gt;', '>').replaceAll('&quot;', '"').replaceAll('&apos;', "'").replaceAll('&#39;', "'");
 const attrs = (s) => Object.fromEntries([...s.matchAll(/([\w:-]+)\s*=\s*("([^"]*)"|' + "'([^']*)'" + ')/g)].map((m) => [m[1], decode(m[3] ?? m[4] ?? '')]));
 const strip = (s) => decode(s.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());

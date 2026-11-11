@@ -21,7 +21,8 @@ Every render, `--stills-only` or full, writes the same set:
 A full render adds `poster.png`. A treatment with `preview: true` is done at its board: a
 `--stills-only` render whose check passed, with a recorded round that opened the board, the contact
 sheet and every beat still; the reply gives the board and says the film renders on the user's go. Open these files with OpenCode's read tool; only images passed to the
-read tool count as viewed (LitOpenCode records each read of a film's stills). OCR or pixel statistics
+read tool count as viewed. The look rounds stamp each frame's SHA-256, and the reply names the stills that
+were opened; a host tool that keeps `.run/image-reads.jsonl` lets the done check confirm each read. OCR or pixel statistics
 may go in `aids` but never count as looking.
 
 ## The questions
@@ -101,7 +102,7 @@ size, placement, timing or seeded randomness) or deliver with the failure stated
 
 ## The reply
 
-- Keep the product's activation line where it is; below it, no second banner and no emoji.
+- No banner and no emoji.
 - Plain words, no internal names (no rule ids, no path or preset jargon).
 - One line on the defaults chosen.
 - A label on every invention (subject, name, facts, copy), on generated sound and on a Blender fallback.

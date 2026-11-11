@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "note": "The decoded gate row this recipe reached when it shipped; tools/qa-cover-recipes.mjs renders it again and fails when median d or the moving share move more than 15 %, seamLocal leaves the cover TARGET, the file passes 2 MiB or the render exits non-zero. Measured 2026-10-20 on headless Chrome's software rung with CPU raster and libwebp 1.6.0.",
+  "note": "The decoded gate row this recipe reached when it shipped; a fresh `render.mjs cover` of it should keep median d and the moving share within 15 %, seamLocal at the cover TARGET, the file under 2 MiB and exit 0. Measured 2026-10-20 on headless Chrome's software rung with CPU raster and libwebp 1.6.0.",
   "row": {
     "medianD": 0.002325,
     "movingFrac": 1.0,

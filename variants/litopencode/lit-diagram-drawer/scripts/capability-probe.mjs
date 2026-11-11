@@ -6,7 +6,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 let browserTools;
-try { browserTools = await import('../../browser-drive/scripts/capability-probe.mjs'); } catch { browserTools = undefined; }
+try { browserTools = await import('./lib/browser-driver-probe.mjs'); } catch { browserTools = undefined; }
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const minimum = [0, 38, 1];
@@ -55,7 +55,7 @@ export function runDiagramCommand(command, args, options = {}) {
 
 export function inspectDiagramCapabilities({ writeDirectory = process.cwd() } = {}) {
   const checks = [];
-  const driver = browserTools?.probeBrowserDriver?.() ?? { status: 'unavailable', version: null, command: null, detail: 'browser-drive capability probe is unavailable' };
+  const driver = browserTools?.probeBrowserDriver?.() ?? { status: 'unavailable', version: null, command: null, detail: 'bundled browser-driver probe is unavailable' };
   const driverParts = versionParts(driver.version);
   const driverReady = driver.status === 'available' && meetsMinimum(driverParts);
   const driverDetail = !driverReady && driver.status === 'available' && driverParts && !meetsMinimum(driverParts)
@@ -103,10 +103,10 @@ export function inspectDiagramCapabilities({ writeDirectory = process.cwd() } = 
     detail: licenseValid ? 'OFL file matches bundled provenance' : 'OFL file or provenance is missing, altered, or mismatched'
   });
 
-  const detector = path.resolve(root, '../lit-humanizer/scripts/detect.mjs');
-  const rules = path.resolve(root, '../lit-humanizer/rules.json');
+  const detector = path.resolve(root, 'scripts/humanizer/detect.mjs');
+  const rules = path.resolve(root, 'scripts/humanizer/rules.json');
   const detectorReady = isRegularFile(detector) && isRegularFile(rules);
-  checks.push({ id: 'lit-humanizer-detector', status: detectorReady ? 'pass' : 'fail', detail: detectorReady ? 'local detector and rule set are present' : 'local detector or rule set is missing' });
+  checks.push({ id: 'lit-humanizer-detector', status: detectorReady ? 'pass' : 'fail', detail: detectorReady ? 'bundled detector and rule set are present' : 'bundled detector or rule set (scripts/humanizer/) is missing' });
 
   const renderer = run('rsvg-convert', ['--version']);
   checks.push({

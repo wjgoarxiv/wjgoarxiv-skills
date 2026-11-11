@@ -4,7 +4,7 @@
 
 | Voice | Latin | Hangul | Source |
 | --- | --- | --- | --- |
-| display | Archivo, static instances at widths 75/100/125 x weights 400/700/900 | Pretendard Regular/Bold | Archivo instanced at development time from the pinned variable font (OFL); Hangul pair reused by path from `../lit-pptx` |
+| display | Archivo, static instances at widths 75/100/125 x weights 400/700/900 | Pretendard Regular/Bold | Archivo instanced at development time from the pinned variable font (OFL); Hangul pair bundled unmodified in `fonts/pretendard/` |
 | body | Archivo 400/700 | Pretendard Regular/Bold | as above |
 | machine | MesloLGS NF | Pretendard | Meslo fetched at pre-warm with its Apache-2.0 notice, the Apache text and the Vera/Arev notices |
 | pixel | VT323 | Galmuri9 (outline build) | VT323 bundled; Galmuri9 fetched at pre-warm with its OFL text, unmodified |
@@ -22,7 +22,7 @@ check title-safe, contrast, tracking and Hangul rules without reading pixels.
    reveal) piece *i* starts at the glyph position from the whole run's layout. Measuring the prefix
    substring instead drops the kerning pair between the two pieces.
 2. Hangul is never condensed, stretched or faux-bolded (MO-A-33). Weight steps only between the two
-   static files of the lit-pptx pair, 400 and 700. Width animation is Latin-only.
+   static files of the bundled Pretendard pair, 400 and 700. Width animation is Latin-only.
 3. No Latin-style tracking or width motion on a Hangul script run, even inside a mixed line
    (MO-FT-04). Script runs split at the script boundary; digits, spaces and punctuation join the
    adjacent run, falling back to the run on their left between two scripts (so "2026년" is one Hangul

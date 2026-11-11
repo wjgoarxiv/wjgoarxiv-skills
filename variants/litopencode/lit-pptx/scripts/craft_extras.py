@@ -1,4 +1,4 @@
-"""Measured OOXML craft checks for the LitOpenCode slide QA gate.
+"""Measured OOXML craft checks for the lit-pptx slide QA gate.
 
   OF-101  at most four accent hue families per slide (among solid shape fills); five fail
   OF-120  a hard offset shadow (no blur) only in a pack that allows one, and there every shadow is hard

@@ -26,7 +26,7 @@
     const archivoWeights = [400, 700, 900];
     const nearest = (list, value) => list.reduce((best, x) => (Math.abs(x - value) < Math.abs(best - value) ? x : best), list[0]);
 
-    // Voice + script -> font key. Hangul runs always resolve to the product's lit-pptx pair and
+    // Voice + script -> font key. Hangul runs always resolve to the bundled Pretendard pair and
     // never take width or tracking (MO-A-33, MO-FT-04).
     const resolveFont = (voice, script, weight, width) => {
       if (script === "hangul") {

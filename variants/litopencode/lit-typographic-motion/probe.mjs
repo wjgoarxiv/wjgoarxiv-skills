@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// The five MO-A-44 probes, reported on every doctor/status run: Chrome, ffmpeg (with the preview
+// The five MO-A-44 probes, reported on every runtime.mjs status run: Chrome, ffmpeg (with the preview
 // encoder rung), the WebGL2 renderer string from a real headless probe, the software-GL warning, and
 // pre-warm state naming what is missing and the command that fixes it. A sixth line names the cover
 // encoder (cover mode: img2webp decoded with dwebp, else gifski decoded with ffmpeg).
@@ -30,7 +30,7 @@ export function blenderProbe(env = process.env) {
   const found = findBlender({ env });
   return found
     ? { ok: true, path: found.path, source: found.source }
-    : { ok: false, detail: "optional; not found (LITOPENCODE_BLENDER, /Applications/Blender.app, blender on PATH); high-quality 3D films use the three.js GPU rung" };
+    : { ok: false, detail: "optional; not found (LIT_MOTION_BLENDER, /Applications/Blender.app, blender on PATH); high-quality 3D films use the three.js GPU rung" };
 }
 
 export async function probe(env = process.env) {

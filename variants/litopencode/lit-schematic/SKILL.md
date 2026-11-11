@@ -7,18 +7,18 @@ reader_projection: shared_rule
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litopencode.skill_contract.v1
+contract_schema_version: opencode.skill_contract.v1
 skill_id: lit-schematic
 runtime_class: runtime-skill
 static_documentation: true
 feature_ids: [lit-schematic]
-entry_routes: ["native skill picker lit-schematic", "bare lit P&ID, PFD, schematic, cutaway, 공정도, 계장도, 모식도 or 장치도 drawing intent"]
+entry_routes: ["native skill picker lit-schematic"]
 verdicts: [PASS, DEGRADED, FAIL, BLOCKED]
 ```
 
 # Lit Schematic
 
-This file is static documentation for LitOpenCode. Do not execute commands from this file automatically. OpenCode loads the skill only through the native `skill` tool. There is no dedicated slash command and no bare-id chat route: a `lit` message that asks to draw a P&ID, PFD, BFD, schematic, equipment layout, apparatus figure, isometric or cutaway (or the Korean 공정도, 계장도, 모식도, 장치도) tells the host to load this skill before drawing, and native skill selection reaches it the same way. A cutaway asked as an animation or video also lands here, not in the film skill. Quoted, fenced, question-shaped, review-shaped and chart-shaped mentions stay inert. The route text is a prompt instruction; it does not prove the model loaded the skill.
+This file is static documentation for OpenCode. Do not execute commands from this file automatically. OpenCode loads the skill only through the native `skill` tool; there is no dedicated slash command or chat route. Load it before drawing when a request (a `lit` request included) asks to draw a P&ID, PFD, BFD, schematic, equipment layout, apparatus figure, isometric or cutaway (or the Korean 공정도, 계장도, 모식도, 장치도). A cutaway asked as an animation or video also belongs here, not in the film skill. Quoted, fenced, question-shaped, review-shaped and chart-shaped mentions are not drawing requests.
 
 | Request | Route |
 | --- | --- |
@@ -68,7 +68,7 @@ Resolve every helper from the directory that contains this installed `SKILL.md` 
 8. **Exports.** `node "$SKILL_ROOT"/scripts/qa.mjs drawing.svg --png drawing.png --pdf drawing.pdf` checks the PNG declares 600 dpi at the drawing width and the PDF page equals the drawing size. Journal: SVG and PDF are vector; Latin text is Arial (TrueType, embedded as text); Hangul uses Pretendard, which Chrome embeds as Type 3 glyphs, so say so when a journal checker may reject Type 3. Read `references/journal-figures.md`. Interactive page: `build.mjs --html` through `renderInteractive` (`scripts/lib/interactive.mjs`). Motion loop: `node "$SKILL_ROOT"/scripts/motion.mjs scene.mjs --out <dir> --name <name>`. A P&ID set opens with the legend sheet from `createLegendSheet` (`scripts/lib/legend-sheet.mjs`).
 9. **Report.** The reply names the files, the mode, the sheet or column size, and every invented value. Verifier output stays internal unless asked.
 
-`node "$SKILL_ROOT"/scripts/doctor.mjs` reports Node, Chrome, the Pretendard font (read from the sibling `lit-diagram-drawer` skill), the motion encoders (ffmpeg, img2webp) and write access; it never installs anything. The kit is plain Node ESM with no packages; Chrome or Chromium is the only renderer.
+`node "$SKILL_ROOT"/scripts/doctor.mjs` reports Node, Chrome, the Pretendard font (bundled in `assets/fonts/`), the motion encoders (ffmpeg, img2webp) and write access; it never installs anything. The kit is plain Node ESM with no packages; Chrome or Chromium is the only renderer.
 
 ## Reference map
 
@@ -115,4 +115,4 @@ Lines drawn through symbols or along other lines; branches leaving a bend; label
 
 ## Reply to the reader
 
-This skill uses LitOpenCode's shared reader projection. Reader mode is the default. The drawing carries subject matter only: no method notes, generator credits or QA results inside it. Lead the reply with the delivered files and any material limitation or action needed (export blocked, Type 3 glyphs in a PDF, an invented set point). QA JSON, render receipts and evidence paths stay in the execution record unless the user asks for technical or audit detail. Never hide a real verification failure, missing capability or uncertain visual result.
+This skill uses a reader projection. Reader mode is the default. The drawing carries subject matter only: no method notes, generator credits or QA results inside it. Lead the reply with the delivered files and any material limitation or action needed (export blocked, Type 3 glyphs in a PDF, an invented set point). QA JSON, render receipts and evidence paths stay in the execution record unless the user asks for technical or audit detail. Never hide a real verification failure, missing capability or uncertain visual result.

@@ -1,6 +1,6 @@
-// Locates fonts for rendering. Pretendard ships with the sibling lit-diagram-drawer skill
-// (unmodified official file under the OFL); lit-schematic reads it from there instead of carrying
-// a second copy. Both skills install side by side under one skills directory.
+// Locates fonts for rendering. Pretendard ships inside this skill at assets/fonts/ (the unmodified
+// official file under the OFL, with OFL.txt and provenance.json), so the skill renders without any
+// other skill installed beside it.
 
 import { existsSync, readdirSync } from "node:fs";
 import { homedir } from "node:os";
@@ -10,8 +10,8 @@ import { fileURLToPath } from "node:url";
 export const SKILL_ROOT = resolve(fileURLToPath(new URL("../..", import.meta.url)));
 
 export function findPretendard() {
-  const sibling = join(SKILL_ROOT, "..", "lit-diagram-drawer", "assets", "fonts", "PretendardVariable.woff2");
-  if (existsSync(sibling)) return { file: sibling, source: "skill" };
+  const bundled = join(SKILL_ROOT, "assets", "fonts", "PretendardVariable.woff2");
+  if (existsSync(bundled)) return { file: bundled, source: "skill" };
   const dirs = [join(homedir(), "Library", "Fonts"), "/Library/Fonts", join(homedir(), ".local", "share", "fonts"), "/usr/share/fonts", "C:\\Windows\\Fonts"];
   for (const dir of dirs) {
     try {

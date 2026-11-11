@@ -24,10 +24,10 @@ export const BLENDER = Object.freeze({
   final: Object.freeze({ percent: 100, samples: 160 })
 });
 
-// Where Blender is: an explicit LITOPENCODE_BLENDER path (used only if it exists, never second-guessed),
+// Where Blender is: an explicit LIT_MOTION_BLENDER path (used only if it exists, never second-guessed),
 // then the macOS app, then `blender` on PATH. Returns { path, source } or null.
 export function findBlender({ env = process.env, exists = existsSync, platform = process.platform } = {}) {
-  if (env.LITOPENCODE_BLENDER) return exists(env.LITOPENCODE_BLENDER) ? { path: env.LITOPENCODE_BLENDER, source: "LITOPENCODE_BLENDER" } : null;
+  if (env.LIT_MOTION_BLENDER) return exists(env.LIT_MOTION_BLENDER) ? { path: env.LIT_MOTION_BLENDER, source: "LIT_MOTION_BLENDER" } : null;
   if (platform === "darwin" && exists(BLENDER.macApp)) return { path: BLENDER.macApp, source: "app" };
   for (const dir of String(env.PATH ?? "").split(path.delimiter).filter(Boolean)) {
     const file = path.join(dir, "blender");
@@ -56,7 +56,7 @@ export function blenderArgs({ treatment, scene, out, quality }) {
 }
 
 const FALLBACK = (out) => [
-  "FALLBACK: no Blender found (LITOPENCODE_BLENDER, /Applications/Blender.app, blender on PATH), so nothing was rendered.",
+  "FALLBACK: no Blender found (LIT_MOTION_BLENDER, /Applications/Blender.app, blender on PATH), so nothing was rendered.",
   `Set render3d to "three" in ${path.join(out, "treatment.json")} and build the world in three.js on the GPU rung (references/depth.md),`,
   "and say in the reply that the film used the GPU rung because Blender is not installed."
 ].join("\n");

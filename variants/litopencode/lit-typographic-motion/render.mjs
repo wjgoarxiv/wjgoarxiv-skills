@@ -17,7 +17,7 @@ import { selectPreset } from "./engine/text.mjs";
 import { ExcursionDetector, auditCells, auditSequence, linearLut } from "./engine/flash.mjs";
 import { areaResize, decodePng, encodePng } from "./engine/png.mjs";
 import { findChrome, launchLadder, loadPlaywright, which } from "./engine/browser.mjs";
-import { inspectAudio, inspectWarmState, pins, skillRoot } from "./runtime.mjs";
+import { inspectAudio, inspectWarmState, installCommand, pins, skillRoot } from "./runtime.mjs";
 import { runGate, timelineChecks } from "./gate.mjs";
 import { keepFirstTreatment, loadTreatment, normalize } from "./engine/treatment.mjs";
 import { stillsPlan, writeStillsSet } from "./engine/stills.mjs";
@@ -151,9 +151,9 @@ function fontAssets(plan, state) {
   files["silkscreen-400"] = path.join(skillRoot, "fonts", "Silkscreen-Regular.ttf");
   files["silkscreen-700"] = path.join(skillRoot, "fonts", "Silkscreen-Bold.ttf");
   files.meslo = path.join(state.fontDir, "MesloLGS-NF-Regular.ttf");
-  if (state.hangul === "lit-pptx") {
-    files["hangul-400"] = path.resolve(skillRoot, pins.litPptxPair.Regular.path);
-    files["hangul-700"] = path.resolve(skillRoot, pins.litPptxPair.Bold.path);
+  if (state.hangul === "bundled") {
+    files["hangul-400"] = path.resolve(skillRoot, pins.pretendardPair.Regular.path);
+    files["hangul-700"] = path.resolve(skillRoot, pins.pretendardPair.Bold.path);
   } else {
     files["hangul-400"] = path.join(state.fontDir, "Pretendard-Regular.otf");
     files["hangul-700"] = files["hangul-400"];
@@ -161,7 +161,7 @@ function fontAssets(plan, state) {
   if (plan.preset.id === "terminalcore") files.galmuri9 = path.join(state.fontDir, "Galmuri9.ttf");
   const fonts = {};
   for (const [key, file] of Object.entries(files)) {
-    if (!existsSync(file)) throw new Blocked("BLOCKED_FONT_FETCH", EXIT.BLOCKED_FONT_FETCH, `missing ${file}`, "litopencode motion-runtime install");
+    if (!existsSync(file)) throw new Blocked("BLOCKED_FONT_FETCH", EXIT.BLOCKED_FONT_FETCH, `missing ${file}`, installCommand);
     fonts[key] = { base64: readFileSync(file).toString("base64"), file: path.basename(file) };
   }
   const strokes = {};
@@ -633,7 +633,7 @@ async function run(argv) {
     if (treatment.path !== "type") throw Object.assign(new Error("BLOCKED_TREATMENT_INVALID (16): field path: this treatment takes the stage path; render it with `render.mjs stage --out <dir>`"), { exitCode: 16 });
     keepFirstTreatment(out, treatment);
   }
-  if (argv.includes("--word-timing")) throw new Blocked("BLOCKED_DEPS_NOT_PREWARMED", EXIT.BLOCKED_DEPS_NOT_PREWARMED, "Tier-3 word-timing models are absent (no licence-verified Korean alignment model is pinned)", "litopencode motion-runtime install --word-timing, run outside the session");
+  if (argv.includes("--word-timing")) throw new Blocked("BLOCKED_DEPS_NOT_PREWARMED", EXIT.BLOCKED_DEPS_NOT_PREWARMED, "Tier-3 word-timing models are absent (no licence-verified Korean alignment model is pinned)", `${installCommand} --word-timing, run outside the session`);
   const briefPath = path.resolve(option(argv, "brief", ""));
   const rawBrief = readBrief(option(argv, "brief"));
   const brief = treatment ? briefForTreatment(rawBrief, treatment) : rawBrief;

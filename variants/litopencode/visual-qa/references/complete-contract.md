@@ -1,10 +1,10 @@
 # Visual QA
 
-<!-- litopencode-contract:start -->
+<!-- skill-contract:start -->
 ## #contract.activation
 
 ```yaml
-contract_schema_version: "litopencode.skill_contract.v1"
+contract_schema_version: "opencode.skill_contract.v1"
 skill_id: "visual-qa"
 title: "Visual QA"
 runtime_class: "runtime-skill"
@@ -12,29 +12,25 @@ static_documentation: true
 auto_execute: false
 feature_ids:
   - "visual-qa"
-  - "doctor-install"
 entry_routes:
-  - "skills/visual-qa/SKILL.md"
-  - "skills/visual-qa/scripts/visual-qa.mjs"
-  - "skills/visual-qa/references/capture-playbook.md"
-  - "skills/visual-qa/schemas/evidence-manifest-v1alpha1.json"
-  - "skills/visual-qa/schemas/evidence-manifest-v1beta1.json"
-  - "skills/visual-qa/schemas/review-receipt-v1alpha1.json"
+  - "SKILL.md"
+  - "scripts/visual-qa.mjs"
+  - "references/capture-playbook.md"
+  - "schemas/evidence-manifest-v1alpha1.json"
+  - "schemas/evidence-manifest-v1beta1.json"
+  - "schemas/review-receipt-v1alpha1.json"
 opencode_surfaces:
-  - "LitOpenCode native-installed skill catalog"
-  - "LitOpenCode installer and doctor"
+  - "OpenCode skill tool (skills folder discovery)"
   - "OpenCode debug skill"
   - "OpenCode debug config"
   - "existing project Playwright/test/browser surface when callable"
   - "user-configured OpenCode browser backend when callable"
 verification:
-  - "node --test --test-name-pattern='visualqa\\.' test/runtime-skills.test.mjs test/docs.test.mjs test/packed-artifact.test.mjs"
-  - "node --test --test-name-pattern='integration\\.installed-nested-assets' test/cli-install-surface.test.mjs"
-  - "npm run check:managed-skill-manifest"
-  - "npm run check:pack-payload"
+  - "echo '{}' | node scripts/visual-qa.mjs capabilities"
+  - "opencode debug skill"
 ```
 
-This file is static documentation for the native-installed LitOpenCode `visual-qa` skill. Do not execute commands from this file automatically. Treat the body as guidance for an LLM operating inside OpenCode and the packaged scripts as offline read-only validators, not as a browser executor, an MCP server, or permission to install anything.
+This file is static documentation for the OpenCode `visual-qa` skill. Do not execute commands from this file automatically. Treat the body as guidance for an LLM operating inside OpenCode and the packaged scripts as offline read-only validators, not as a browser executor, an MCP server, or permission to install anything.
 
 **Select this skill** when a user asks for visual QA, screenshot review, browser-rendered interface inspection, responsive-state review, terminal-layout review, or capability reporting for an existing browser test surface. **Do not select it** to design an interface, to write implementation code, to scrape a site, or to obtain a login. Selection is explicit: the user asks for visual QA, or OpenCode selects the exact `visual-qa` id.
 
@@ -54,7 +50,7 @@ Every helper import resolves inside the `visual-qa` skill's own `scripts/` direc
 | `approval_state` | Whether the user approved calling an existing browser/test surface, starting a project command, capturing artifacts, or writing snapshots. Static guidance alone authorizes none of these. |
 | `evidence_budget` | Required viewports, UI states, screenshot or trace locations, focused tests, advisory checks, timeouts, and cleanup receipt. |
 
-**Prerequisites.** Node 18 or newer for the packaged validators, which import only Node standard-library modules. A frozen design-contract hash and a finite inventory must already exist; without them there is nothing to reconcile against and `blocked` applies. The complete nested tree must be hash-verified by `litopencode install` and `litopencode doctor` through `skills/managed-skill-manifest.json`. No browser, no dependency install, and no network access is assumed or acquired.
+**Prerequisites.** Node 18 or newer for the packaged validators, which import only Node standard-library modules. A frozen design-contract hash and a finite inventory must already exist; without them there is nothing to reconcile against and `blocked` applies. The complete folder must be installed, not `SKILL.md` alone; `diff -r` against the source copy verifies it (Install verification below). No browser, no dependency install, and no network access is assumed or acquired.
 
 Required schema fields in the activation block are `contract_schema_version`, `skill_id`, `runtime_class`, `entry_routes`, `opencode_surfaces`, and `verification`. A future edit that removes any field must update the documentation contract tests in the same change.
 
@@ -96,7 +92,7 @@ Required schema fields in the activation block are `contract_schema_version`, `s
 ## #contract.evidence
 
 - Prefer current-session tool inventory, existing project script resolution, targeted test output, screenshots, traces, process ownership facts, and packed-package evidence over memory or documentation claims.
-- Package presence proves shipment, not browser execution. Native installation is proven only by installer/doctor integrity over the complete managed tree. A user-configured backend proves intent, not current callability.
+- Package presence proves shipment, not browser execution. Installation is proven only by the complete folder matching its source copy (`diff -r`) and `opencode debug skill` listing it. A user-configured backend proves intent, not current callability.
 - Record target route, viewport, state, timestamp or run id, artifact path, and the executor identity for each visual receipt when the approved surface supports them.
 - Record negative evidence: missing executable, missing browser binary, denied tool, unavailable backend, ambiguous port owner, timeout, cancellation, or cleanup failure.
 - Treat DOM/a11y assertions and pixel comparisons as mechanical only when their actual test command ran and passed. Treat visual heuristics, aesthetic scores, and model judgments as advisory unless mechanically hardened.
@@ -104,7 +100,7 @@ Required schema fields in the activation block are `contract_schema_version`, `s
 - Material labels are direct-child names, but path containment is not inferred from them. The trusted caller must supply one already-open descriptor for every exact manifest path, with no omissions, extras, duplicate labels, or descriptor reuse across labels. The evaluator reads and rechecks each regular file through the same descriptor and then closes it. Root-path-only input is rejected because portable Node lacks descriptor-relative child open; this avoids claiming resistance to an ABA root swap that cannot be proved. Captured inventory must link to a declared capture.
 - A required evidence channel is satisfied only by a materially verified check with status `pass`. `not_applicable`, `blocked`, and `fail` never count as channel coverage.
 - Freshness is bounded on both sides. Evidence older than `maximum_age_seconds` is `BLOCKED_EVIDENCE_STALE`; evidence dated after its own assessment moment is `BLOCKED_EVIDENCE_FUTURE`, because a forward clock makes every age computation meaningless.
-- For this package slice, prove `visual-qa` is present in `litOpenCodeRuntimeSkills` and in the feature, native-install, and doctor surfaces while commands, hooks, tools, agents, generated OpenCode permission config, and MCP config gain no `visual-qa` authority.
+- For an install, prove `visual-qa` is listed by `opencode debug skill` while commands, hooks, tools, agents, OpenCode permission config, and MCP config gain no `visual-qa` authority.
 
 ## #contract.hard_stops
 
@@ -140,11 +136,11 @@ Required schema fields in the activation block are `contract_schema_version`, `s
 ## #contract.reference_notes
 
 The sections below expand the Visual QA operating model. The contract above remains normative. This document intentionally defines native evidence validation and capability reporting without adding a browser runtime or host authority.
-<!-- litopencode-contract:end -->
+<!-- skill-contract:end -->
 
 ## Purpose and Boundary
 
-Use this LitOpenCode skill to decide whether visual QA can be performed with surfaces that already exist and, when they can, to structure evidence-backed review. It is not a browser executor. It does not make screenshots, click controls, start servers, or inspect pages by itself. A capable OpenCode agent may use another already callable tool or an existing project test command after approval, but the capability belongs to that surface, not to this skill.
+Use this OpenCode skill to decide whether visual QA can be performed with surfaces that already exist and, when they can, to structure evidence-backed review. It is not a browser executor. It does not make screenshots, click controls, start servers, or inspect pages by itself. A capable OpenCode agent may use another already callable tool or an existing project test command after approval, but the capability belongs to that surface, not to this skill.
 
 The distinction prevents false confidence. A Markdown file can teach a workflow but cannot prove that a browser binary exists. A dependency can be declared but not installed. A test script can exist but reference missing assets. A backend can be present in a user's host configuration but unavailable to the current session. Capability-first reporting names these conditions before promising a run.
 
@@ -161,7 +157,7 @@ Named so nobody has to infer them.
 
 ## Shipped assets
 
-Everything below is installed with the skill and hash-pinned in `skills/managed-skill-manifest.json`.
+Everything below is installed with the skill folder.
 
 | Surface | What it answers |
 | --- | --- |
@@ -174,11 +170,11 @@ Everything below is installed with the skill and hash-pinned in `skills/managed-
 | `scripts/artifact.mjs`, `scripts/png.mjs`, `scripts/png-decode.mjs`, `scripts/tui.mjs` | Artifact, PNG, and terminal inspectors with bounded resource limits. |
 | `scripts/design-contract.mjs`, `scripts/canonical-json.mjs`, `scripts/strict-json.mjs`, `scripts/bounded-json.mjs`, `scripts/stdin-json.mjs` | This skill's own contract reader, canonical hashing, and bounded input readers. |
 
-## Native Install Contract
+## Install Contract
 
-This SKILL.md is native-installed by LitOpenCode and appears in the runtime skill catalog with its references, schemas, and offline validators. The managed manifest hashes every nested asset; installer staging and doctor compare the exact tree and bytes. Native enrollment means OpenCode can discover the complete evidence contract. It does not imply a callable browser and adds no command, tool, hook, agent, MCP route, authentication state, or write authority.
+This SKILL.md is installed by copying its whole folder into an OpenCode skills folder, where OpenCode discovers it with its references, schemas, and offline validators. `diff -r` against the source copy compares the exact tree and bytes. Discovery means OpenCode can discover the complete evidence contract. It does not imply a callable browser and adds no command, tool, hook, agent, MCP route, authentication state, or write authority.
 
-The tree is also the import boundary. Every helper this skill loads resolves inside its own `scripts/` directory, so a file that the manifest pins is a file the runtime actually imports. If a future release adds an actual browser executor, that is a separate runtime feature requiring its own threat model, permissions, dependency decision, install behavior, lifecycle, tests, package evidence, and user approval. Do not turn this validator-backed contract into that feature by implication.
+The tree is also the import boundary. Every helper this skill loads resolves inside its own `scripts/` directory, so the folder that is copied is exactly the set of files the runtime imports. If a future release adds an actual browser executor, that is a separate runtime feature requiring its own threat model, permissions, dependency decision, install behavior, lifecycle, tests, package evidence, and user approval. Do not turn this validator-backed contract into that feature by implication.
 
 ## Capability-First Classification
 
@@ -201,7 +197,7 @@ Existing does not automatically mean safe or callable. Verify that the command r
 
 A user may report that a browser backend is configured in OpenCode. Record that fact without reading or mutating global config unless the user separately authorizes such inspection. The decisive question is whether the current session exposes a callable tool with an understood permission and lifecycle boundary. If not, classify the backend as reported-only.
 
-Do not add MCP routes to make a reported backend visible. Do not edit `opencode.json`, `litopencode.json`, or plugin registration. Do not suggest that restarting or installing this skill alone creates browser capability. A host configuration problem is outside this browserless validation boundary.
+Do not add MCP routes to make a reported backend visible. Do not edit `opencode.json` or plugin registration. Do not suggest that restarting or installing this skill alone creates browser capability. A host configuration problem is outside this browserless validation boundary.
 
 ## Session and Process Ownership
 
@@ -291,7 +287,7 @@ Do not replace this receipt with speculative screenshots, source-only confidence
 
 Run before presenting any verdict. Each step has an observable result.
 
-1. `echo '{}' | node skills/visual-qa/scripts/visual-qa.mjs capabilities` lists every missing capability rather than defaulting to ready.
+1. `echo '{}' | node "$VQA_ROOT/scripts/visual-qa.mjs" capabilities` lists every missing capability rather than defaulting to ready.
 2. Feed the ownership gate a record missing its pid and confirm `BLOCKED_RENDERER_OWNERSHIP_UNVERIFIED` with the unproven element named; then feed a complete record and confirm `READY`.
 3. Validate the Evidence Manifest and every receipt required by its tier, then confirm a duplicate JSON key is refused rather than silently resolved to the last value.
 4. Move one capture timestamp past the assessment moment and confirm `BLOCKED_EVIDENCE_FUTURE`; move it far into the past and confirm `BLOCKED_EVIDENCE_STALE`.
@@ -325,49 +321,36 @@ A completed guidance or guided-run report should include:
 
 ## Install verification
 
-These are this repository's real commands. The output below was produced by running them; an isolated `HOME` and `XDG_CONFIG_HOME` pointed at a scratch profile root so no live OpenCode profile was touched.
+`$VQA_ROOT` is the installed folder (for a user install `~/.config/opencode/skills/visual-qa`, or
+`$XDG_CONFIG_HOME/opencode/skills/visual-qa`). The three validator lines below were run against this folder and printed
+exactly what is shown. Use an isolated `HOME` and `XDG_CONFIG_HOME` pointed at a scratch root to prove an install without
+touching a live OpenCode profile.
 
 ```text
-$ npm run check:managed-skill-manifest             # derives and verifies the current exact tree
-
-$ echo '{}' | node skills/visual-qa/scripts/visual-qa.mjs capabilities
+$ echo '{}' | node "$VQA_ROOT/scripts/visual-qa.mjs" capabilities
 {"codes":["BLOCKED_RENDERER_UNAVAILABLE","BLOCKED_AUTH_UNAVAILABLE","BLOCKED_TEST_ACCOUNT_UNSAFE","BLOCKED_INDEPENDENT_REVIEW_UNAVAILABLE"],"verdict":"BLOCKED"}
 
 $ echo '{"sessionId":"session/one","projectRoot":"/tmp/p","command":"npm run e2e"}' \
-    | node skills/visual-qa/scripts/visual-qa.mjs ownership
+    | node "$VQA_ROOT/scripts/visual-qa.mjs" ownership
 {"codes":["BLOCKED_RENDERER_OWNERSHIP_UNVERIFIED"],"unproven":["pid","sessionScoped"],"verdict":"BLOCKED"}
 
 $ echo '{"sessionId":"session/one","projectRoot":"/tmp/p","command":"npm run e2e","pid":4242,"port":4173,"sessionScoped":true}' \
-    | node skills/visual-qa/scripts/visual-qa.mjs ownership
+    | node "$VQA_ROOT/scripts/visual-qa.mjs" ownership
 {"codes":[],"unproven":[],"verdict":"READY"}
 
-$ litopencode install --root "$ISO_ROOT" --no-model-prompt --no-permission-prompt
-  Native skills      25 managed / 0 preserved
-  Plugin entries     0 -> 1
-  [ok] Verify install
+$ diff -r "<path to your wjgoarxiv-skills clone>/variants/litopencode/visual-qa" "$VQA_ROOT"
+expect: no output (the installed tree equals the source copy)
 
-$ litopencode doctor --root "$ISO_ROOT"          # install.nativeSkills
-"present": 25, "managed": 25, "missing": [], "invalid": [],
-"invalidAssets": [], "sourceInvalid": [], "ok": true
-
-$ opencode debug skill                            # OpenCode 1.18.4
-visual-qa -> $ISO_ROOT/skills/visual-qa/SKILL.md
+$ opencode debug skill
+expect: visual-qa -> $VQA_ROOT/SKILL.md
 
 $ opencode debug config
-plugin: ["file:///path/to/litopencode"]
-mcp: []
-command count: 18
-lit-plan permission: {"edit": "deny", "bash": "deny", "task": "deny"}
-
-# tree-independence probe: delete every sibling skill directory, keep this one
-$ find "$ISO_ROOT/skills" -mindepth 1 -maxdepth 1 -type d -not -name visual-qa -exec rm -rf {} +
-$ ls "$ISO_ROOT/skills"
-visual-qa
-$ echo '{}' | node "$ISO_ROOT/skills/visual-qa/scripts/visual-qa.mjs" capabilities
-{"codes":["BLOCKED_RENDERER_UNAVAILABLE","BLOCKED_AUTH_UNAVAILABLE","BLOCKED_TEST_ACCOUNT_UNSAFE","BLOCKED_INDEPENDENT_REVIEW_UNAVAILABLE"],"verdict":"BLOCKED"}
+expect: no new MCP server, command, agent or relaxed permission from this skill
 ```
 
-`mcp: []` and the unchanged `lit-plan` deny set are the point: the skill became discoverable to OpenCode without any new MCP route, tool, or relaxed permission. The last probe is the one that matters for integrity — the validators still resolve with every sibling skill directory deleted, so the manifest's exact-tree check and the runtime import graph cover the same files.
+The skill needs nothing beside its own folder: every helper it loads resolves inside its own `scripts/` directory, so
+the validators run the same with no other skill installed. Installing it adds a folder OpenCode discovers and nothing
+else; `opencode debug config` should look the same before and after the copy.
 
 ## Review Checklist
 
@@ -385,7 +368,7 @@ Before accepting a DoneClaim, ask:
 10. Were unrelated dirty-worktree changes preserved?
 11. Did every id-bearing contract inventory entry reconcile, and did every tier-required receipt review identical tuples with host provenance?
 12. Was a rejecting review reported as FAIL rather than dressed up as a missing capability?
-13. Did package and doctor evidence prove native shipment while commands, tools, hooks, agents, permissions, and MCP behavior stayed unchanged?
+13. Did install evidence (`diff -r`, `opencode debug skill`) prove the folder is present while commands, tools, hooks, agents, permissions, and MCP behavior stayed unchanged?
 
 ## Common Outcomes
 

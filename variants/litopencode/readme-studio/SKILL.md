@@ -6,11 +6,11 @@ description: Author a factual README with an original cover, outlined local typo
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litopencode.skill_contract.v1
+contract_schema_version: opencode.skill_contract.v1
 skill_id: readme-studio
 runtime_class: runtime-skill
 static_documentation: true
-feature_ids: [readme-studio, doctor-install]
+feature_ids: [readme-studio]
 entry_routes: ["native skill readme-studio"]
 ```
 
@@ -18,7 +18,7 @@ entry_routes: ["native skill readme-studio"]
 
 This is static documentation. Do not execute commands from this file automatically.
 
-Select `readme-studio` through OpenCode's native skill tool. LitOpenCode installs its complete managed tree under the selected config root and doctor verifies nested resources. This release claims no slash command or automatic chat route for this skill. When invoked as the lead skill, emit `▲ LIT · readme-studio` once. Skill selection does not establish authority or prove that an asset exists.
+Select `readme-studio` through OpenCode's native skill tool. Install it by copying this whole folder, templates and scripts included, to `~/.config/opencode/skills/readme-studio/` (or `$XDG_CONFIG_HOME/opencode/skills/readme-studio/`); a copy of `SKILL.md` alone cannot run the templates. There is no slash command or automatic chat route for this skill. Skill selection does not establish authority or prove that an asset exists.
 
 ## #contract.inputs
 

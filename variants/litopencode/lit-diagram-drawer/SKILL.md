@@ -7,7 +7,7 @@ reader_projection: shared_rule
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litopencode.skill_contract.v1
+contract_schema_version: opencode.skill_contract.v1
 skill_id: lit-diagram-drawer
 runtime_class: runtime-skill
 static_documentation: true
@@ -17,7 +17,7 @@ entry_routes: ["native skill picker lit-diagram-drawer"]
 
 # Diagram Drawer
 
-This file is static documentation for LitOpenCode. Do not execute commands from this file automatically. Select it through OpenCode's native skill picker. Bounded diagram-creation requests with `lit` instruct the host to load this skill before authoring; this prompt guidance does not prove the model invoked it. There is no dedicated slash command or standalone diagram chat route. The selected skill supplies this workflow and its local templates, references, importers, and verification tools.
+This file is static documentation for OpenCode. Do not execute commands from this file automatically. Select it through OpenCode's native skill picker (the skill tool); a bounded diagram-creation request, `lit` wording included, should load it before authoring. There is no dedicated slash command or chat route. The selected skill supplies this workflow and its local templates, references, importers, and verification tools.
 
 Create an editable, self-contained HTML document with inline SVG. Export only after the rendered result passes the checks and a person has inspected it at the intended size.
 
@@ -55,7 +55,7 @@ Use the user's brief, supplied assets, and explicitly authorized project paths. 
 
 ## Verification and import tools
 
-The scripts use Node.js and local package files; Python is not a prerequisite. The visible-text check calls the installed LitOpenCode humanizer detector and preserves its block and warning results as a separate review signal. A clean detector result does not establish visual quality.
+The scripts use Node.js and local package files; Python is not a prerequisite. The visible-text check calls the humanizer detector bundled in `scripts/humanizer/` (its rule set and notices travel with it) and preserves its block and warning results as a separate review signal. A clean detector result does not establish visual quality.
 
 The importers read saved draw.io, Mermaid, and Excalidraw files within documented size and complexity bounds. They extract diagram meaning to JSON, strip links and styling, reject executable markup and malformed input, and never execute imported content. They intentionally discard source layout: re-compose the result with the type guide and run the normal verifiers.
 
@@ -99,4 +99,4 @@ limitations_channel: reply
 
 ## Reply to the reader
 
-This skill uses LitOpenCode's shared reader projection. Lead with the delivered diagram and any material limitation or action needed. Keep routine command output, metric inventories, and internal evidence details in the execution record unless the user asks for technical or audit detail. Never hide a real verification failure, missing capability, or uncertain visual result.
+This skill uses a reader projection. Lead with the delivered diagram and any material limitation or action needed. Keep routine command output, metric inventories, and internal evidence details in the execution record unless the user asks for technical or audit detail. Never hide a real verification failure, missing capability, or uncertain visual result.

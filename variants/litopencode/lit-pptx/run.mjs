@@ -9,7 +9,7 @@ import { spawnSync } from "node:child_process";
 import { commandPlan, npmPlan, supportedPython } from "./command.mjs";
 
 const root = path.dirname(fileURLToPath(import.meta.url));
-const cache = path.join(process.env.XDG_CACHE_HOME || path.join(homedir(), ".cache"), "litopencode", "office");
+const cache = path.join(process.env.XDG_CACHE_HOME || path.join(homedir(), ".cache"), "opencode-skills", "lit-pptx");
 const hash = (file) => createHash("sha256").update(readFileSync(path.join(root, file))).digest("hex").slice(0, 16);
 const nodeRoot = path.join(cache, `node-${hash("package-lock.json")}`);
 const pythonRoot = path.join(cache, `python-pptx-${hash("requirements.lock")}`);
@@ -42,7 +42,7 @@ function prepareNode() {
   try {
     copyFileSync(path.join(root, "package.json"), path.join(temporary, "package.json"));
     copyFileSync(path.join(root, "package-lock.json"), path.join(temporary, "package-lock.json"));
-    process.stderr.write("Installing LitOpenCode office Node dependencies in its cache.\n");
+    process.stderr.write("Installing lit-pptx Node dependencies in its cache.\n");
     run("npm", ["ci", "--ignore-scripts", "--prefix", temporary]);
     renameSync(temporary, nodeRoot);
   } finally {
@@ -56,9 +56,9 @@ function preparePython() {
   mkdirSync(cache, { recursive: true });
   const temporary = mkdtempSync(path.join(cache, "python-install-"));
   try {
-    process.stderr.write("Installing LitOpenCode office Python dependencies in its cache.\n");
-    const python = supportedPython({ min: 10, max: 14, override: process.env.LITOPENCODE_OFFICE_PYTHON });
-    if (!python.ok) throw new Error(`${python.detail}. Install Python 3.10 to 3.14, or set LITOPENCODE_OFFICE_PYTHON to one.`);
+    process.stderr.write("Installing lit-pptx Python dependencies in its cache.\n");
+    const python = supportedPython({ min: 10, max: 14, override: process.env.LIT_PPTX_PYTHON });
+    if (!python.ok) throw new Error(`${python.detail}. Install Python 3.10 to 3.14, or set LIT_PPTX_PYTHON to one.`);
     run(python.command, ["-m", "venv", temporary]);
     run(venvPython(temporary), ["-m", "pip", "install", "--disable-pip-version-check", "--require-hashes", "-r", path.join(root, "requirements.lock")]);
     renameSync(temporary, pythonRoot);

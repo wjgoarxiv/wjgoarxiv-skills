@@ -226,7 +226,7 @@ def _output(path, source, args, layout):
                                         f"the two documents differ in {len(differ)} structural feature(s): {', '.join(differ) or 'none'} (at least 3)",
                                         "Set the tonalities apart in structure: title block, summary form, numbering, component set, running head, contents."))
     if args.layout:
-        with tempfile.TemporaryDirectory(prefix="litopencode-docx-pages-") as folder:
+        with tempfile.TemporaryDirectory(prefix="lit-docx-pages-") as folder:
             pdf, how = _render(path, folder)
             if pdf is None:
                 result["render"] = how

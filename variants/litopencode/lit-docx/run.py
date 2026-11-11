@@ -11,7 +11,7 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
-CACHE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "litopencode" / "office"
+CACHE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "opencode-skills" / "lit-docx"
 LOCK = ROOT / "requirements.lock"
 VENV = CACHE / ("python-docx-" + hashlib.sha256(LOCK.read_bytes()).hexdigest()[:16])
 COMMANDS = {
@@ -63,7 +63,7 @@ def supported_python(minimum=10, maximum=14, override=None, probe=probe_python):
             return command
         passed.append(f"{command}: {version} is {'newer' if minor > maximum else 'older'} than 3.{maximum if minor > maximum else minimum}")
     tried = "; " + ", ".join(passed) if passed else " on PATH"
-    raise SystemExit(f"no supported Python (3.{minimum} to 3.{maximum}){tried}. Install Python 3.{minimum} to 3.{maximum}, or set LITOPENCODE_OFFICE_PYTHON to one.")
+    raise SystemExit(f"no supported Python (3.{minimum} to 3.{maximum}){tried}. Install Python 3.{minimum} to 3.{maximum}, or set LIT_DOCX_PYTHON to one.")
 
 
 def ready():
@@ -76,8 +76,8 @@ def prepare():
     CACHE.mkdir(parents=True, exist_ok=True)
     temporary = Path(tempfile.mkdtemp(prefix="python-install-", dir=CACHE))
     try:
-        print("Installing LitOpenCode office Python dependencies in its cache.", file=sys.stderr)
-        subprocess.run([supported_python(override=os.environ.get("LITOPENCODE_OFFICE_PYTHON")), "-m", "venv", str(temporary)], check=True)
+        print("Installing lit-docx Python dependencies in its cache.", file=sys.stderr)
+        subprocess.run([supported_python(override=os.environ.get("LIT_DOCX_PYTHON")), "-m", "venv", str(temporary)], check=True)
         subprocess.run([str(venv_python(temporary)), "-m", "pip", "install", "--disable-pip-version-check", "--require-hashes", "-r", str(LOCK)], check=True)
         temporary.rename(VENV)
     finally:

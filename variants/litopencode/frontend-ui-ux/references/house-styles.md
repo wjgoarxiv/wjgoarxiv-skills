@@ -28,7 +28,7 @@ node scripts/design-lock.mjs moment --dir <project> --kind <kind> --note "<what 
 | `ui/tokens.css` | Generated custom properties (`--c-*`, `--fs-*`, `--fw-*`, `--sp-*`, `--radius-*`, `--shadow-*`, `--dur-*`) with dark mode and the `@font-face` rules |
 | `ui/components.css` | The shared `ui-*` component sheet; it reads only tokens |
 | `ui/ui.js` | Charts with a table fallback, sortable tables, keyboard tabs |
-| `ui/fonts/` | Pretendard (Latin and Hangul) and JetBrains Mono with their OFL texts, copied from the sibling skills `lit-diagram-drawer` and `lit-typographic-motion` after a sha256 check (`kit/fonts.json`); nothing is fetched. Pretendard is the unmodified official file, never subset |
+| `ui/fonts/` | Pretendard (Latin and Hangul) and JetBrains Mono with their OFL texts, copied from this skill's `kit/fonts/` after a sha256 check (`kit/fonts.json`); nothing is fetched. Pretendard is the unmodified official file, never subset |
 | `index.html` | Only with `--scaffold` and no existing page: the starter for the family |
 
 **Density.** Every lock records `density: rich` unless the request asks for a calm page. Rich is

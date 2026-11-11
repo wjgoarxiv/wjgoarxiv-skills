@@ -1,8 +1,8 @@
 {
-  "schema_id": "litopencode.frontend-style/v1",
+  "schema_id": "opencode.frontend-style/v1",
   "id": "field-notes",
   "name": "Field notes",
-  "summary": "The authored LitOpenCode house look: warm paper, deep ink, a terracotta accent with a deep-teal second accent, mist as the quiet tint, thin rules instead of shadows, notebook-dot paper, a large editorial title and small lowercase terminal labels. Read-once pages carry an original pixel-art motif; work surfaces keep the palette and type and drop the art to a small accent.",
+  "summary": "The authored house look: warm paper, deep ink, a terracotta accent with a deep-teal second accent, mist as the quiet tint, thin rules instead of shadows, notebook-dot paper, a large editorial title and small lowercase terminal labels. Read-once pages carry an original pixel-art motif; work surfaces keep the palette and type and drop the art to a small accent.",
   "use_when": [
     "default for read-once pages (landing family) when the brief gives no visual direction: landing, launch, portfolio, docs home, reports",
     "the brief asks for an editorial, warm-paper or pixel-art voice on any surface"

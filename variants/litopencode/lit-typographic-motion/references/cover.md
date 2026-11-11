@@ -276,8 +276,8 @@ ends); `TAU`, `clamp`, `fract`, `mix`. Every helper is periodic in `t` or pure.
 `img2webp`, lossy, loop forever, method 4, every frame shown `round(1000 / fps)` ms, frame 0 and the
 last `edgeFrames` frames at `edgeQ`, default keyframes. When img2webp or `dwebp` (the gate's decoder,
 from the same libwebp) is missing, `gifski` at quality 90 is the fallback, decoded with ffmpeg.
-Neither present is exit 21 `BLOCKED_NO_COVER_ENCODER`, checked before any capture; `litopencode
-doctor` shows which one this machine has on its `motion cover encoder` line.
+Neither present is exit 21 `BLOCKED_NO_COVER_ENCODER`, checked before any capture; `node <skill>/runtime.mjs
+status` shows which one this machine has on its `motion cover encoder` line.
 
 ## The gate, on the decoded file
 
@@ -337,9 +337,11 @@ Every cover render writes its stills from the DECODED file:
 - `stills/frame-00.png` … `frame-11.png`: the sheet's frames at full size, for a closer look;
 - `stills/stills.json`: the round, each file's SHA-256 and the gate verdict.
 
-Open them with OpenCode's read tool. LitOpenCode records each read of a cover's stills in
-`.run/image-reads.jsonl`, and the done check counts a frame as viewed only when the read tool opened
-that exact file. OCR and pixel statistics may go in `aids`; they never count as looking. The gate
+Open them with OpenCode's read tool. A standalone install has no hook that records reads, so the
+done check relies on the look rounds that `render.mjs look` stamps with each frame's SHA-256, and the
+reply names the stills that were opened; when a host tool keeps `.run/image-reads.jsonl` (one
+`{"file", "sha256"}` object per read), the done check also counts a frame as viewed only when the
+read tool opened that exact file. OCR and pixel statistics may go in `aids`; they never count as looking. The gate
 cannot see damage: the pilot's two worst defects (a colour-dodge glint that turned a letter into a
 red block, a wing glow that read as a dark disc) were found only by eye on the sheet.
 
@@ -402,14 +404,16 @@ status is `DONE_UNVIEWED` (3). A `generated:` line asks the reply to label that 
 
 Each recipe keeps the decoded gate row it reached in `recipes/<name>/expected.json` (median d, moving
 share, longest still, spike, seamLocal, bytes), with the settings and the treatment it was rendered
-from. In a LitOpenCode checkout, `node tools/qa-cover-recipes.mjs` renders every recipe through this
-renderer and fails when median d or the moving share move more than 15 % from the row, seamLocal
-leaves TARGET, the file passes 2 MiB or the render exits non-zero.
+from. The rows are a reference for a re-render: rendering a recipe again with `render.mjs cover` from
+those settings should keep median d and the moving share within 15 % of the row, keep seamLocal at
+TARGET, stay under 2 MiB and exit 0; a larger drift means the renderer or the machine changed. The
+recipes' brand words are the names of the projects they were first made for; replace them with
+yours.
 
 Every negative and regression declares the gates it must fail (`mustFail`, as `G2.floor` or
-`G1.target`). `--negatives` renders them all, and one counts as caught only when its render
+`G1.target`). Render each with `render.mjs cover`; one counts as caught only when its render
 completed and gated the decoded file, every declared gate failed, and no undeclared FLOOR gate among
-G1-G4 failed. A crash, a missing declaration or a failure on another gate fails the QA with the reason.
+G1-G4 failed. A crash, a missing declaration or a failure on another gate means the gate drifted.
 
 `recipes/negatives/` holds four slide-like pages that must keep failing their declared FLOOR gates on
 the decoded file: a title slam with line-by-line text and an end card (G2, G3), text cards that fade

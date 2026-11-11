@@ -1,7 +1,7 @@
 // Look rounds and the done check. Only `render.mjs look` appends to look.json, and it accepts only
 // frames from the latest stills set, stamped with the SHA-256 of the current manifest and of each
-// frame. The done check reads look.json, the gate report, the treatment and (under OpenCode) the
-// record of image reads the plugin's tool hook keeps, so "the command ran" never counts as done.
+// frame. The done check reads look.json, the gate report, the treatment and, when a host tool writes
+// one, the record of image reads in .run/image-reads.jsonl, so "the command ran" never counts as done.
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
@@ -160,6 +160,10 @@ export function requiredFrames(set) {
   return set.files.filter((file) => /(?:^|\/)poster\.png$|sheet\/contact\.png$|stills\/board\.png$|stills\/beat-\d+-mid\.png$|stills\/cut-\d+-strip\.png$/u.test(file));
 }
 
+// A standalone skill install has no hook that records reads, so the read check applies only when a
+// host tool keeps .run/image-reads.jsonl (one JSON object per read: {"file", "sha256"}).
+const hasReadLog = (out) => existsSync(path.join(out, ".run", "image-reads.jsonl"));
+
 function imageReads(out) {
   const file = path.join(out, ".run", "image-reads.jsonl");
   if (!existsSync(file)) return [];
@@ -203,7 +207,7 @@ export function coverDoneState(out) {
       if (skipped.length) reasons.push(`the last round did not view: ${skipped.join(", ")}`);
     }
     if (last.blocked === "no-vision-tool") unviewed = true;
-    if (last.host === "opencode" && !last.blocked) {
+    if (last.host === "opencode" && !last.blocked && hasReadLog(out)) {
       const reads = imageReads(out);
       const notRead = Object.entries(last.frames ?? {}).filter(([file, sha]) => !reads.some((read) => read.file === file && read.sha256 === sha)).map(([file]) => file);
       if (notRead.length) reasons.push(`not opened with the read tool: ${notRead.join(", ")}`);
@@ -235,7 +239,7 @@ function previewDone(out, { reasons, labels, result }) {
     const required = stills.files.filter((entry) => ["board", "sheet", "beat"].includes(entry.kind)).map((entry) => entry.file);
     const skipped = required.filter((file) => !Object.hasOwn(last.frames ?? {}, file));
     if (skipped.length && !last.blocked) reasons.push(`the round did not view: ${skipped.join(", ")}`);
-    if (last.host === "opencode" && !last.blocked) {
+    if (last.host === "opencode" && !last.blocked && hasReadLog(out)) {
       const reads = imageReads(out);
       const notRead = Object.entries(last.frames ?? {}).filter(([file, sha]) => !reads.some((read) => read.file === file && read.sha256 === sha)).map(([file]) => file);
       if (notRead.length) reasons.push(`not opened with the read tool: ${notRead.join(", ")}`);
@@ -300,7 +304,7 @@ export function doneState(dir) {
       if (missingFrames.length && !last.blocked) reasons.push(`the last round did not view: ${missingFrames.join(", ")}`);
     }
     if (last.blocked === "no-vision-tool" || first?.blocked === "no-vision-tool") unviewed = true;
-    if (last.host === "opencode" && !last.blocked) {
+    if (last.host === "opencode" && !last.blocked && hasReadLog(out)) {
       const reads = imageReads(out);
       const notRead = Object.entries(last.frames ?? {}).filter(([file, sha]) => !reads.some((read) => read.file === file && read.sha256 === sha)).map(([file]) => file);
       if (notRead.length) reasons.push(`not opened with the read tool: ${notRead.join(", ")}`);

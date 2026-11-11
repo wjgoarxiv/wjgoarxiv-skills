@@ -6,7 +6,7 @@ The full MIT notice for the adapted engine is in NOTICE, next to this file.
 Vendored library (bundled unmodified, served to stage and cover pages at /lit/three/ through an import map):
 - three.js r170 (npm three@0.170.0, MIT), Copyright 2010-2024 Three.js Authors, licence at engine/vendor/three/LICENSE
   source: https://registry.npmjs.org/three/-/three-0.170.0.tgz, tarball sha256 4a608a355dcaba72e0e5383cdc814303f5b6060b43c238cdf6932dceb699238d
-  files (sha256), copied unmodified from build/ and examples/jsm/ of that tarball and pinned by test/motion-three.test.mjs:
+  files (sha256), copied unmodified from build/ and examples/jsm/ of that tarball and pinned by the sha256 values below:
   engine/vendor/three/three.module.js                                ce1fa418de16a19495a9f72495580e3015d7745c296d3ce0485897f902ddedfb
   engine/vendor/three/addons/environments/RoomEnvironment.js         85869bdd22f7cf0b22e68dcefe6cb710480af0f5c901a76f7a7764fd07fc8014
   engine/vendor/three/addons/geometries/RoundedBoxGeometry.js        d20aeaf7077c459a8d952d215738d7b44fba028440bb862d84b622a34f0c80bb
@@ -21,17 +21,17 @@ Fonts bundled in this skill (paths relative to this file):
   files/jetbrains-mono-latin-wght-normal.woff2 of @fontsource-variable/jetbrains-mono 5.3.0; served to cover pages
   only): SIL OFL 1.1, no Reserved Font Name, licence at fonts/JetBrainsMono-OFL.txt
 
-Fonts reused by path from the sibling lit-pptx skill:
-- Pretendard Regular and Bold, ../lit-pptx/pretendard-font/public/static/Pretendard-{Regular,Bold}.otf: SIL OFL 1.1, licence at ../lit-pptx/pretendard-font/LICENSE.txt
+- Pretendard Regular and Bold 1.3.9, fonts/pretendard/Pretendard-{Regular,Bold}.otf (the unmodified official files,
+  Copyright (c) 2021 Kil Hyung-jin, Reserved Font Name Pretendard): SIL OFL 1.1, licence at fonts/pretendard/LICENSE.txt
 
-Fonts fetched at pre-warm (litopencode motion-runtime install) into the motion runtime cache,
-${XDG_CACHE_HOME:-~/.cache}/litopencode/motion-runtime/fonts-<pin hash>/, each verified against fonts/pins.json:
+Fonts fetched at pre-warm (node runtime.mjs install) into the motion runtime cache,
+${XDG_CACHE_HOME:-~/.cache}/opencode-skills/lit-typographic-motion/fonts-<pin hash>/, each verified against fonts/pins.json:
 - Galmuri9, Galmuri9.ttf (unmodified official file): SIL OFL 1.1, licence at Galmuri-OFL.md in that cache directory
 - MesloLGS NF Regular, MesloLGS-NF-Regular.ttf: Apache-2.0 plus the inherited Bitstream Vera and Arev notices, licence files MesloLGS-NF-License.txt, Apache-2.0.txt and Vera-Arev-LICENSE in that cache directory
-- Pretendard Regular (fallback only, fetched when the lit-pptx pair is absent), Pretendard-Regular.otf: SIL OFL 1.1, licence at Pretendard-LICENSE in that cache directory
+- Pretendard Regular (fallback only, fetched when the bundled pair is absent), Pretendard-Regular.otf: SIL OFL 1.1, licence at Pretendard-LICENSE in that cache directory
 
-Engine packages installed at pre-warm from package-lock.json into ${XDG_CACHE_HOME:-~/.cache}/litopencode/motion-runtime/node-<lock hash>/node_modules:
+Engine packages installed at pre-warm from package-lock.json into ${XDG_CACHE_HOME:-~/.cache}/opencode-skills/lit-typographic-motion/node-<lock hash>/node_modules:
 - playwright-core (Apache-2.0), opentype.js (MIT), ws (MIT); each keeps its own licence file inside its package directory.
 
-Optional audio tier, installed only by litopencode motion-runtime install --audio from requirements-audio.txt:
+Optional audio tier, installed only by node runtime.mjs install --audio from requirements-audio.txt:
 - librosa (ISC) and its hash-pinned dependencies, each under its own licence inside the venv.

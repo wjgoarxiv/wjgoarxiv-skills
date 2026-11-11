@@ -6,12 +6,12 @@ description: Build and inspect authorized interfaces, resolving material design 
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litopencode.skill_contract.v1
+contract_schema_version: opencode.skill_contract.v1
 skill_id: frontend-ui-ux
 runtime_class: runtime-skill
 static_documentation: true
-feature_ids: [frontend-ui-ux, doctor-install]
-entry_routes: ["chat.message design intent", "native skill frontend-ui-ux", "tool.execute.after advisory"]
+feature_ids: [frontend-ui-ux]
+entry_routes: ["native skill frontend-ui-ux"]
 ```
 
 # Frontend UI/UX
@@ -23,6 +23,8 @@ This file is static documentation. Do not execute commands from this file automa
 Inspect only the task surface and selected skill resources; do not scout harness logs or unrelated fixtures. Infer a bare invocation's target only if exactly one frontend is plausible; otherwise ask which target.
 
 Diagrams: use `lit-diagram-drawer`.
+
+The upstream design corpus (`references/design/`, `references/designpowers/vendor/`, `references/_canonical-corpus/`) is pinned byte for byte and checked by `scripts/verify-canonical-corpus.mjs`. Where it names another coding agent or that agent's tools, read it as OpenCode and use OpenCode's own: its `question` tool, its permissions, and the browser driver that `scripts/probe.mjs` finds.
 
 ## #contract.mode_matrix
 

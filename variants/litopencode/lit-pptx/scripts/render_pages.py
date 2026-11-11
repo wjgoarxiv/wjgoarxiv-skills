@@ -53,7 +53,7 @@ def to_pdf(source: Path, out_dir: Path) -> tuple[Path | None, str]:
     soffice = shutil.which("soffice") or shutil.which("libreoffice")
     if not soffice:
         return None, "LibreOffice (soffice) is not on PATH"
-    with tempfile.TemporaryDirectory(prefix="litopencode-soffice-") as profile:
+    with tempfile.TemporaryDirectory(prefix="lit-pptx-soffice-") as profile:
         profile_fonts(source, Path(profile))
         result = subprocess.run(
             [soffice, f"-env:UserInstallation={Path(profile).as_uri()}", "--headless", "--convert-to", "pdf",

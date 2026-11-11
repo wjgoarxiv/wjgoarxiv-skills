@@ -7,17 +7,17 @@ reader_projection: shared_rule
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litopencode.skill_contract.v1
+contract_schema_version: opencode.skill_contract.v1
 skill_id: lit-typographic-motion
 runtime_class: runtime-skill
 static_documentation: true
 feature_ids: [lit-typographic-motion]
-entry_routes: ["native skill picker lit-typographic-motion", "bare lit film request"]
+entry_routes: ["native skill picker lit-typographic-motion"]
 ```
 
 # Film director
 
-This file is static documentation for LitOpenCode. Do not execute commands from this file automatically. OpenCode loads it through the native skill tool; a bare `lit` film request names this skill and its commands. Resolve every script from the installed skill location, never from the project.
+This file is static documentation for OpenCode. Do not execute commands from this file automatically. OpenCode loads it through the native skill tool when a request asks for a film, a kinetic-type video or a README motion cover (a `lit` film request included). Resolve every script from the installed skill location, never from the project.
 
 Out of scope: editing or captioning existing footage, embedding a video in a page or slide, and a script, thumbnail or summary about a video.
 
@@ -54,7 +54,7 @@ A README, hero, banner or cover loop is not a film: follow `references/cover.md`
 
 ## #contract.runtime
 
-The runtime is pre-warmed outside any session with `litopencode motion-runtime install` (`--audio` adds the librosa venv); a render only reads it. `motion-runtime status` and `doctor` show the probes, Blender included. Every BLOCKED code: `references/runtime.md`.
+The runtime is pre-warmed once, outside the session, with `node <skill>/runtime.mjs install` (`--audio` adds the librosa venv); a render only reads it. `node <skill>/runtime.mjs status` shows the probes, Blender included. Every BLOCKED code: `references/runtime.md`.
 
 ## #contract.outputs
 

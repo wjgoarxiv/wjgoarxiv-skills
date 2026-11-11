@@ -2,25 +2,28 @@
 
 ## Pre-warm once, read-only afterwards
 
-`litopencode motion-runtime install` runs outside any sandboxed session. It installs, into
-`${XDG_CACHE_HOME:-~/.cache}/litopencode/motion-runtime/`:
+`node <skill>/runtime.mjs install` (where `<skill>` is this skill's installed folder) runs outside any
+sandboxed session; the user runs it once, in a normal terminal, after copying the skill. It installs, into
+`${XDG_CACHE_HOME:-~/.cache}/opencode-skills/lit-typographic-motion/`:
 
 - the engine's pinned JavaScript packages (`playwright-core`, `opentype.js`, `ws`) with
   `npm ci --omit=dev --ignore-scripts` from the lockfile inside this skill, plus a lockfile receipt;
 - the fetched fonts and their licence files, each checked against its pinned sha256 (`fonts/pins.json`):
   Galmuri9 with its OFL text, MesloLGS NF with the Apache-2.0 notice, the Apache-2.0 text and the
-  Vera/Arev notices; the official Pretendard Regular only if the lit-pptx Hangul pair is missing;
+  Vera/Arev notices; the official Pretendard Regular only if the bundled Hangul pair
+  (`fonts/pretendard/`) is missing or damaged;
 - with `--audio`, a Python venv holding the hash-pinned librosa set from `requirements-audio.txt`
   (`pip install --require-hashes --only-binary=:all:`). The venv is built from the newest `python3.13`,
   or `python3.12` on PATH, then `python3` or `python` if one of those is in that range; a
   newer `python3`, such as 3.15, has no wheel for the pins and is passed over. `MOTION_PYTHON` names
   one interpreter to use instead, and only that one.
 
-`litopencode install` attempts the same pre-warm and prints one receipt line; a failure never fails
-the install. A render never installs, fetches or repairs anything: it checks hashes and receipts and
-stops with a named state.
+Copying the skill installs nothing; until `runtime.mjs install` has run, a render stops with exit 14
+and names the command. A render never installs, fetches or repairs anything: it checks hashes and
+receipts and stops with a named state. `LIT_MOTION_FONT_MIRROR=<base URL>` fetches the pinned fonts
+from a mirror instead of their upstream URLs; every byte is still checked against its pin.
 
-`litopencode motion-runtime status` and `litopencode doctor` report five probes on every run:
+`node <skill>/runtime.mjs status` (`--json` for the report object) reports five probes on every run:
 Chrome (path and version), ffmpeg (version and the preview encoder rung: `libwebp_anim`, `img2webp`
 or GIF), the WebGL2 renderer string from a real headless probe, the software-GL or unknown-renderer
 warning, and the pre-warm state naming what is missing and the command that fixes it. A sixth line,
@@ -36,8 +39,8 @@ warning, and the pre-warm state naming what is missing and the command that fixe
 | 11 | BLOCKED_NO_WEBGL2 | Chrome ran but no rung produced a WebGL2 context (a 3D film tries the GPU rung first, then SwiftShader) | check GPU drivers; the SwiftShader rung is already tried |
 | 12 | BLOCKED_NO_FFMPEG_FOR_VIDEO | a film was requested without ffmpeg | install ffmpeg; `--stills-only`, `stills` and `sheet` still work |
 | 13 | GATE_FAIL_QA | pre-flight or the full gate failed, or the board round's layout check failed (`BOARD_CHECK_FAIL`, board still drawn); the report names the rules | fix and rerun the next round |
-| 14 | BLOCKED_DEPS_NOT_PREWARMED | the pinned packages are absent (or Tier-3 models are requested) | `litopencode motion-runtime install` outside the session |
-| 15 | BLOCKED_FONT_FETCH | a required font is missing or its bytes do not match the pin | `litopencode motion-runtime install`; a mismatch is never accepted |
+| 14 | BLOCKED_DEPS_NOT_PREWARMED | the pinned packages are absent (or Tier-3 models are requested) | `node <skill>/runtime.mjs install` outside the session |
+| 15 | BLOCKED_FONT_FETCH | a required font is missing or its bytes do not match the pin | `node <skill>/runtime.mjs install`; a mismatch is never accepted |
 | 16 | BLOCKED_TREATMENT_INVALID | `treatment.json` is missing or a field breaks its rule; the message names the field | fix that field (`treatment.md`) |
 | 17 | STAGE_CONTRACT_ERROR | the stage page broke its contract: no `LitStage.define`, a wrong size, a forbidden element or API, a flipbook or animated raster, a keyed clip that breaks its declaration or limits, a path outside `stage/`, or a copy line never found on screen | fix the page (`stage.md`) |
 | 18 | STAGE_NONDETERMINISTIC | a sample frame differs between the master and a fresh replay from 0; the message names the frame and the first region | remove the clock or random source the renderer does not drive |
@@ -101,7 +104,7 @@ that differs when sought out of order); `cover.md` has its table.
 - Tier 2: a supplied audio file is analysed once by the pre-warmed venv into a beat grid for this
   run only. An absent venv, a venv that no longer matches its pins, or a failed analysis falls back
   to Tier 1 with a warning; the venv is never repaired in the session.
-- Tier 3 (`--word-timing`, opt-in only): `motion-runtime install --word-timing` states the download
+- Tier 3 (`--word-timing`, opt-in only): `runtime.mjs install --word-timing` states the download
   size and every model pin before downloading and fails closed unless each model has a pinned id,
   revision and a verified licence that allows commercial use. This build pins no licence-verified
   Korean alignment model, so the install fails closed and a render with `--word-timing` exits 14.
@@ -109,9 +112,9 @@ that differs when sought out of order); `cover.md` has its table.
 
 ## Blender (optional)
 
-Blender is not part of the pre-warm and nothing needs it. `motion-runtime status` and `doctor` report
+Blender is not part of the pre-warm and nothing needs it. `runtime.mjs status` reports
 whether it is installed (`motion blender:` line, information only, never a failure). It is found, in
-this order, at `LITOPENCODE_BLENDER` (used only if that path exists; a missing path is a miss, not a
+this order, at `LIT_MOTION_BLENDER` (used only if that path exists; a missing path is a miss, not a
 reason to look elsewhere), at `/Applications/Blender.app/Contents/MacOS/Blender`, then as `blender` on
 `PATH`. Without it `render.mjs blender` renders nothing, prints a `FALLBACK:` text naming the three.js
 GPU rung and exits 0. A Blender film whose plate is missing or short stops the stage with exit 17

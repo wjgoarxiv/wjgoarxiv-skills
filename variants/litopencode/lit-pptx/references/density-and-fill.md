@@ -1,6 +1,6 @@
 # Density and fill
 
-LitOpenCode decks are dense by default. Every pack ships at density 10, the compact step, because
+lit-pptx decks are dense by default. Every pack ships at density 10, the compact step, because
 the user's standing verdict on earlier rounds was that slides held too little ("더 빽빽하게"). This
 file explains what the density dial changes, the readable floors nothing goes below, what the
 engine does when a slide comes out short, what the source has to contain so a slide fills with

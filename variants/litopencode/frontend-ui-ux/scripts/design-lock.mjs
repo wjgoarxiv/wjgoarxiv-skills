@@ -24,8 +24,8 @@ import { fileURLToPath } from "node:url";
 const SKILL_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const KIT = join(SKILL_ROOT, "kit");
 export const LOCK_FILE = "design.lock.json";
-export const LOCK_SCHEMA = "litopencode.design-lock/v1";
-export const STYLE_SCHEMA = "litopencode.frontend-style/v1";
+export const LOCK_SCHEMA = "opencode.design-lock/v1";
+export const STYLE_SCHEMA = "opencode.frontend-style/v1";
 export const FAMILIES = Object.freeze({
   landing: "read-once pages: landing, product, launch, portfolio, docs home",
   workspace: "screens people work in: dashboards, consoles, admin, tools, tables",
@@ -237,8 +237,8 @@ function kitFonts() {
   return manifest.fonts.map((font) => {
     const source = resolve(KIT, font.source);
     const licence = resolve(KIT, font.licence.source);
-    if (!existsSync(source) || sha256(source) !== font.sha256) throw new Error(`font ${font.file} is missing or does not match kit/fonts.json (it ships with a sibling skill: install lit-diagram-drawer and lit-typographic-motion beside this one)`);
-    if (!existsSync(licence) || sha256(licence) !== font.licence.sha256) throw new Error(`licence for ${font.family} is missing or does not match kit/fonts.json (it ships with a sibling skill: install lit-diagram-drawer and lit-typographic-motion beside this one)`);
+    if (!existsSync(source) || sha256(source) !== font.sha256) throw new Error(`font ${font.file} is missing or does not match kit/fonts.json (it ships in kit/fonts/; copy the whole skill folder again)`);
+    if (!existsSync(licence) || sha256(licence) !== font.licence.sha256) throw new Error(`licence for ${font.family} is missing or does not match kit/fonts.json (it ships in kit/fonts/; copy the whole skill folder again)`);
     return { ...font, sourcePath: source, licencePath: licence };
   });
 }

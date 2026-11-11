@@ -3,7 +3,7 @@
 A style bible is the one page you write before any scene exists. It fixes the palette, the three
 type voices, the motion vocabulary, the pass stack, the layout grid, what to avoid and what must be
 original. The engine reads the preset data in `engine/constants.mjs`; this page is the reasoning a
-scene author applies on top of it. Every preset below is expressed in this product's own words.
+scene author applies on top of it. Every preset below is expressed in this skill's own words.
 
 ## Template (fill one per film)
 
@@ -12,7 +12,7 @@ scene author applies on top of it. Every preset below is expressed in this produ
 | Idea | One sentence: the film's single visual metaphor for this brief | Stops a film becoming a slideshow of effects |
 | Preset | `swiss-signal`, `terminalcore` or `tidal`, and the reason (keyword hit or user choice) | The report states the pick and why (MO-B-00) |
 | Palette | The preset's named colours; which one is the signal, which the rare accent | One signal hue plus at most one accent cluster (MO-C-29) |
-| Voices | Display, machine and body voice, with the fonts each script resolves to | Hangul always uses the lit-pptx pair; Latin display may step width |
+| Voices | Display, machine and body voice, with the fonts each script resolves to | Hangul always uses the bundled Pretendard pair; Latin display may step width |
 | Motion | The named tokens used (slam, hold, snap-cut, drift, surge-punch, type-in) | No ad hoc curves; the engine only knows named tokens (MO-A-08) |
 | Passes | The pass order from the preset | GLSL coverage on every frame is a gate rule (MO-C-01) |
 | Grid | Columns, gutter, margin, baseline | Everything glyph-shaped stays inside title-safe (96 px / 54 px) |
@@ -41,7 +41,7 @@ about payment systems, design systems and workflows that want nothing terminal-l
 - Contrast facts: bone on ink is about 16:1. Teal on ink is about 3.8:1, so teal is a rule, a bar or
   large type (32 px and up, or 25 px bold) only, never body copy.
 - Voices: Archivo display (static width x weight instances; width steps are Latin-only), MesloLGS NF
-  for small machine annotations, the lit-pptx Pretendard pair for Hangul running text.
+  for small machine annotations, the bundled Pretendard pair for Hangul running text.
 - Motion: `slam` (180 ms on the proven deceleration curve) lands a title on a downbeat, `hold`
   keeps it still, `snap-cut` changes scene with no easing. Nothing bounces.
 - Passes: `swiss-grid` hairline rules, then a low-strength Bayer `dither` as a print texture, then

@@ -7,19 +7,19 @@ reader_projection: shared_rule
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litopencode.skill_contract.v1
+contract_schema_version: opencode.skill_contract.v1
 skill_id: lit-docx
 runtime_class: runtime-skill
 static_documentation: true
 feature_ids: [lit-docx]
-entry_routes: ["native skill picker lit-docx", "bare lit report intent"]
+entry_routes: ["native skill picker lit-docx"]
 ```
 
 # Lit Word Documents
 
-This file is static documentation for LitOpenCode. Do not execute commands from this file automatically. OpenCode loads the skill only through the native skill tool.
+This file is static documentation for OpenCode. Do not execute commands from this file automatically. OpenCode loads the skill only through the native skill tool.
 
-This is LitOpenCode's native document skill. Bare `lit` report wording directs the host to load it before drafting, and native skill selection confirms that handoff. Resolve paths from the installed skill location (written `<skill>` below). Deliver the editable `.docx` and keep the Markdown source beside it. If the user requests slides as well, load `lit-pptx`; check shared facts once and express them consistently in both outputs.
+This is an OpenCode-native document skill. OpenCode's skill tool loads it when a request asks for a report or a Word file (a `lit` report request included), before any drafting. Resolve paths from the installed skill location (written `<skill>` below). Deliver the editable `.docx` and keep the Markdown source beside it. If the user requests slides as well, load `lit-pptx`; check shared facts once and express them consistently in both outputs.
 
 A document here is set the way a careful print designer sets one: near-black ink for body and headings, a quiet type scale, A4 with 25 mm sides, booktabs tables without fills, generous leading measured on the rendered page, and at most one accent colour on at most two element kinds. Six tonalities share that page and differ in structure, not colour — what stands on page 1, how the summary is set, how sections are numbered, which components the document may use and what the running head carries. Choosing the tonality is the first step of every build, and the reply always names it with two alternatives.
 
@@ -43,7 +43,7 @@ A `lit` report request produces `.docx` by default. Do not ask a format, font, t
 
 ## #contract.procedure
 
-1. **Runtime.** The first `python3 <skill>/run.py …` call creates a pinned Python venv in `XDG_CACHE_HOME/litopencode/office` (or the normal user cache), prints one install notice, and runs the selected script. The venv is built from the newest Python 3.10 to 3.14 on PATH (`python3.14` down to `python3.10`, then `python3`); a newer `python3`, such as 3.15, is passed over because the pinned wheels stop at 3.14, and `LITOPENCODE_OFFICE_PYTHON` names one interpreter instead. `python3 <skill>/run.py doctor` reports readiness without network use. The venv is product owned; the tool never edits OpenCode config or installs modules globally. A failed first-use install is a capability failure: quote the error and stop.
+1. **Runtime.** The first `python3 <skill>/run.py …` call creates a pinned Python venv in `XDG_CACHE_HOME/opencode-skills/lit-docx` (or `~/.cache/opencode-skills/lit-docx`), prints one install notice, and runs the selected script. The venv is built from the newest Python 3.10 to 3.14 on PATH (`python3.14` down to `python3.10`, then `python3`); a newer `python3`, such as 3.15, is passed over because the pinned wheels stop at 3.14, and `LIT_DOCX_PYTHON=<interpreter>` names one interpreter instead. `python3 <skill>/run.py doctor` reports readiness without network use. The venv belongs to this skill; the tool never edits OpenCode config or installs modules globally. A failed first-use install is a capability failure: quote the error and stop.
 
 2. **Choose the direction first, and write the direction card.** A journal submission or a named publisher goes to that profile (`--publisher`, step 5) and skips the tonalities; a user's `--template` likewise. Every other document takes one of six tonalities, packs the converter reads as data from `templates/tonalities/<name>.yaml`. Read `references/direction-step.md`, then:
    - Settle the brief and write any inference down: document type, reader, delivery (printed, read on screen, sent ahead), language, expected length.
@@ -100,7 +100,7 @@ A `lit` report request produces `.docx` by default. Do not ask a format, font, t
 
 ## #contract.runtime
 
-The skill ships a hash-pinned `requirements.lock` for `python-docx`, Markdown, Beautiful Soup, PyMuPDF, PyYAML, and their transitive requirements. First use installs into the LitOpenCode cache; no global pip install occurs. `pandoc`, `xelatex`, and `soffice` remain optional host capabilities and are reported honestly. The six tonality packs live in `templates/tonalities/`; `scripts/docx_design.py` builds every tonality and the plain profile from that data, `scripts/convert_md_to_docx.py` keeps the publisher pipeline, and `scripts/craft_docx.py` with `scripts/docx_layout.py` is the gate (`run.py qa`). Document fonts are not embedded: the file declares Pretendard, so install Pretendard where the document is opened for the intended look. The authored publisher-docx source is MIT; `LICENSE-MIT.txt` records its license.
+The skill ships a hash-pinned `requirements.lock` for `python-docx`, Markdown, Beautiful Soup, PyMuPDF, PyYAML, and their transitive requirements. First use installs into this skill's own cache (above); no global pip install occurs. `pandoc`, `xelatex`, and `soffice` remain optional host capabilities and are reported honestly. The six tonality packs live in `templates/tonalities/`; `scripts/docx_design.py` builds every tonality and the plain profile from that data, `scripts/convert_md_to_docx.py` keeps the publisher pipeline, and `scripts/craft_docx.py` with `scripts/docx_layout.py` is the gate (`run.py qa`). Document fonts are not embedded: the file declares Pretendard, so install Pretendard where the document is opened for the intended look. The authored publisher-docx source is MIT; `LICENSE-MIT.txt` records its license.
 
 ## #contract.outputs
 

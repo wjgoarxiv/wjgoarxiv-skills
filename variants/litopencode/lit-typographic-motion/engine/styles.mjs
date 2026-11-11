@@ -9,7 +9,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { keywordMatches } from "./text.mjs";
 
-export const STYLE_SCHEMA = "litopencode.motion-style/v1";
+export const STYLE_SCHEMA = "opencode.motion-style/v1";
 export const STYLE_IDS = Object.freeze(["swiss-signal", "tidal", "terminalcore", "paper"]);
 export const DEFAULT_STYLE = "swiss-signal";
 export const TYPE_ROLES = Object.freeze(["display", "headline", "body", "label"]);

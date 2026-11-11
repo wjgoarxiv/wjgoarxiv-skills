@@ -1,6 +1,6 @@
 # Choosing a direction before the first slide
 
-A LitOpenCode deck is drawn from a tonality pack: palette roles, a type ramp, the title treatments
+A lit-pptx deck is drawn from a tonality pack: palette roles, a type ramp, the title treatments
 the pack allows, the layout families it lists, its cover, section and closing variants, and two
 dials. Thirteen packs ship in `templates/tonalities/`. The engine never guesses a look on its own, so
 the first decision of every build is which pack to compile under. This file is the procedure for

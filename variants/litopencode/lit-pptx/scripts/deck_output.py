@@ -1,4 +1,4 @@
-"""Deck-wide output checks for the LitOpenCode slide QA gate (OF-110..OF-119).
+"""Deck-wide output checks for the lit-pptx slide QA gate (OF-110..OF-119).
 
 craft_extras.py judges one slide at a time. These checks read the compiled deck as a whole:
 

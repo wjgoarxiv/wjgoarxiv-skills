@@ -49,7 +49,7 @@ loop time the renderer seeks in any order, with the loop kit instead of this one
   `document.timeline` and `Math.random` (seeded from the treatment's `seed`) all read film time.
 - The page is served from `http://lit.stage/` with no listening socket. Only files inside `stage/`,
   the kit and the fonts are served; `..` and symlinks that leave the directory are refused.
-- Fonts: `/lit/fonts.css` declares the product's faces with `font-display: block`: `Archivo` (widths
+- Fonts: `/lit/fonts.css` declares this skill's faces with `font-display: block`: `Archivo` (widths
   75 %, 100 %, 125 %; weights 400, 700, 900), `Pretendard` (400, 700; Hangul), `VT323`,
   `Silkscreen` (400, 700), `MesloLGS NF` and `Galmuri9`. Use only these; the QA checks the platform
   font behind every copy line.

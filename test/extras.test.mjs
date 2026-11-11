@@ -43,9 +43,17 @@ test('every receipt matches the copied bytes, and every copied file has a receip
   }
 });
 
+const OFFICE_LIB = ['office-runtime.mjs', 'office_runtime_bootstrap.py', 'office_data.py', 'ooxml_integrity.py',
+  'render_pages.py', 'mark.mjs', 'output_mark.py', 'office-runtime-lock/package.json', 'office-runtime-lock/requirements.lock'];
+
 test('the decks plugin carries the runtime files lit-pptx reaches as ../../lib', () => {
-  for (const f of ['office-runtime.mjs', 'office_runtime_bootstrap.py', 'office_data.py', 'ooxml_integrity.py',
-    'render_pages.py', 'mark.mjs', 'output_mark.py', 'office-runtime-lock/package.json', 'office-runtime-lock/requirements.lock']) {
-    assert.ok(statSync(join(root, 'plugins/decks/lib', f)).isFile(), f);
+  for (const f of OFFICE_LIB) assert.ok(statSync(join(root, 'plugins/decks/lib', f)).isFile(), f);
+});
+
+test('the documents plugin carries lit-docx and the runtime files its scripts reach as ../../../lib', () => {
+  assert.ok(market.plugins.some((p) => p.name === 'documents' && p.source === './plugins/documents'));
+  for (const f of OFFICE_LIB) assert.ok(statSync(join(root, 'plugins/documents/lib', f)).isFile(), f);
+  for (const f of ['SKILL.md', 'NOTICE', 'scripts/convert_md_to_docx.py', 'scripts/qa_docx.py', 'templates/docx/korean-generic.docx']) {
+    assert.ok(statSync(join(root, 'plugins/documents/skills/lit-docx', f)).isFile(), f);
   }
 });

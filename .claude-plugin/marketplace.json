@@ -7,6 +7,11 @@
       "name": "decks",
       "source": "./plugins/decks",
       "description": "lit-pptx: finished PowerPoint decks from a request, notes or source files, with its own office runtime."
+    },
+    {
+      "name": "documents",
+      "source": "./plugins/documents",
+      "description": "lit-docx: finished Word documents (.docx) from a request, notes or source files, plus DOCX/PDF to Markdown and in-place edits, with its own office runtime."
     }
   ]
 }

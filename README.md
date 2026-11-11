@@ -11,8 +11,9 @@ This is a local pilot. It has no remote yet; the GitHub install form arrives whe
 | Plugin | Skills | What it makes | Moved from |
 | --- | --- | --- | --- |
 | `decks` | `lit-pptx` | A finished PowerPoint deck (.pptx): a design direction for the audience and content, Markdown slide source, native editable charts, embedded Pretendard fonts, a QA gate and rendered-page review | LitClaude `fc0fe5d` (1.0.48) |
+| `documents` | `lit-docx` | A finished Word document (.docx): report, brief, manual, proposal, memo or journal manuscript in a tonality chosen for the content or a named publisher profile, DOCX/PDF to Markdown, in-place edits of an existing .docx, PDF render, and a QA gate with rendered pages | LitClaude `8c736ce` (1.0.49 plus the decks move) |
 
-Families still to move, one per product release: `documents` (lit-docx), `video-covers` (lit-typographic-motion,
+Families still to move, one per product release: `video-covers` (lit-typographic-motion,
 readme-studio), `design` (frontend-ui-ux, visual-qa) and `figures` (lit-diagram-drawer, lit-schematic,
 lit-scientific-visualization, scientific-visualization).
 
@@ -23,13 +24,14 @@ From a local clone (today):
 ```bash
 claude plugin marketplace add <path to your wjgoarxiv-skills clone>
 claude plugin install decks@wjgoarxiv-skills
+claude plugin install documents@wjgoarxiv-skills
 ```
 
 Inside a session the same thing is `/plugin marketplace add <path>` and then `/plugin install decks@wjgoarxiv-skills`.
 After publication the marketplace line becomes `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`.
 
-The skill then answers as `decks:lit-pptx`. LitClaude's own `lit` routing for decks keeps working: the stub it
-loads points at this skill when it is installed.
+The skills then answer as `decks:lit-pptx` and `documents:lit-docx`. LitClaude's own `lit` routing for decks and
+documents keeps working: the stub it loads points at the moved skill when it is installed.
 
 ## Layout
 
@@ -45,9 +47,11 @@ test/                               node --test checks for manifests and receipt
 
 `decks` carries 16 files of LitClaude's office runtime under `lib/`: the first-use installer
 (`office-runtime.mjs` and its lockfiles), the Python bootstrap, the data, integrity, render and mark helpers, and
-the modules they import. LitClaude keeps its own copy for lit-docx. The pinned runtime installs on first use into
-`${XDG_CACHE_HOME:-~/.cache}/litclaude/office-runtime`, the same cache LitClaude uses, so a machine with both does
-not install it twice.
+the modules they import. `documents` carries the same 16 files for lit-docx; LitClaude no longer ships the office
+runtime itself. The pinned runtime installs on first use into
+`${XDG_CACHE_HOME:-~/.cache}/litclaude/office-runtime`, the cache older LitClaude releases used, so a machine with
+`decks`, `documents` and an older LitClaude installs it once. The two copies differ only in `office-runtime.mjs`: in
+`documents` its status reads `ready` once the Python half lit-docx uses is installed.
 
 ## Rules for this repository
 
@@ -61,4 +65,5 @@ not install it twice.
 npm test
 claude plugin validate .
 claude plugin validate plugins/decks
+claude plugin validate plugins/documents
 ```

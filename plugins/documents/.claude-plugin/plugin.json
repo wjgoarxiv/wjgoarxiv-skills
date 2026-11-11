@@ -1,0 +1,9 @@
+{
+  "name": "documents",
+  "description": "lit-docx, moved unchanged from LitClaude: Word reports, briefs, manuals, proposals, memos and manuscripts with a chosen tonality, publisher profiles, DOCX/PDF to Markdown, in-place edits and a QA gate.",
+  "version": "0.1.0",
+  "author": { "name": "wjgoarxiv" },
+  "license": "MIT",
+  "keywords": ["claude-code", "skills", "docx", "word", "report", "document"],
+  "skills": "./skills"
+}

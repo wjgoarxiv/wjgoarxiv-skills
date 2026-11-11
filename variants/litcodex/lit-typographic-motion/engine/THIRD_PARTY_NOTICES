@@ -1,4 +1,4 @@
-lit-typographic-motion (LitCodex): third-party notices
+lit-typographic-motion (Codex edition): third-party notices
 
 Engine
 - Portions of this engine are adapted from mexicat/pdoom-video
@@ -32,12 +32,12 @@ Fonts bundled in this skill (paths relative to the skill directory)
   fonts/stroke/*.svg; licence fonts/stroke/OFL.txt (SIL Open Font License 1.1) and
   fonts/stroke/CREDITS (per-font creator, converter and base font).
 
-Fonts reused from LitCodex's lit-pptx skill (unmodified official files)
-- Pretendard Regular and Bold: ../lit-pptx/pretendard-font/public/static/Pretendard-*.otf;
-  licence ../lit-pptx/pretendard-font/LICENSE.txt (SIL Open Font License 1.1).
+Pretendard, bundled in this skill (unmodified official files)
+- Pretendard Regular and Bold: fonts/pretendard/public/static/Pretendard-*.otf;
+  licence fonts/pretendard/LICENSE.txt (SIL Open Font License 1.1).
 
-Fonts fetched by `litcodex motion-runtime install` into the motion-runtime cache
-(${XDG_CACHE_HOME:-~/.cache}/litcodex/motion-runtime/<id>/, paths relative to that directory)
+Fonts fetched by `node scripts/runtime.mjs install` into this skill's runtime cache
+(${XDG_CACHE_HOME:-~/.cache}/lit-typographic-motion/runtime/<id>/, paths relative to that directory)
 - Galmuri9: fonts/Galmuri9.ttf; licence fonts/licenses/Galmuri-ofl.md (SIL Open Font License 1.1,
   Lee Minseo).
 - MesloLGS NF Regular: fonts/MesloLGS NF Regular.ttf; licences fonts/licenses/MesloLGS-NF-License.txt

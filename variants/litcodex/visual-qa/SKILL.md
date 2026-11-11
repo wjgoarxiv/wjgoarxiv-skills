@@ -7,12 +7,12 @@ description: "Validate material visual evidence. Use for visual QA or an exact b
 
 ```yaml
 contract_schema_version: 1
-artifact_kind: litcodex_skill_entrypoint
+artifact_kind: codex_skill_entrypoint
 skill_name: "visual-qa"
 host: Codex CLI
 reader_projection: shared_rule
-registration_surface: "plugins/litcodex/skills/visual-qa/SKILL.md"
-selection_surface: "$litcodex:visual-qa in the Codex skill picker"
+registration_surface: "${CODEX_HOME:-$HOME/.codex}/skills/visual-qa/SKILL.md"
+selection_surface: "$visual-qa in the Codex skill picker"
 automatic_route: false
 ```
 
@@ -48,15 +48,15 @@ Return tier, hashes, renderer identity, inventory, findings, review/cleanup stat
 Use `schemas/design-contract.v1beta2.json` for new contracts. Use evidence-eligible `schemas/evidence-manifest.v1beta1.json`, compatibility-only `schemas/evidence-manifest.v1alpha1.json`, and `litfamily.review-receipt/v1alpha1` with the installed validators. Beta binds a caller-authorized evidence root to bounded regular PNG files. Load `references/capture-playbook.md` and `references/complete-contract.md` for details.
 
 ```bash
-LITCODEX_VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/marketplaces/litcodex/plugins/litcodex/skills/visual-qa"
-node "$LITCODEX_VISUAL_QA_ROOT/scripts/validate-design-contract.mjs" --input design-contract.json
-node "$LITCODEX_VISUAL_QA_ROOT/scripts/validate-review-receipt.mjs" < receipt.json
-node "$LITCODEX_VISUAL_QA_ROOT/scripts/validate-evidence.mjs" \
+VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/skills/visual-qa"
+node "$VISUAL_QA_ROOT/scripts/validate-design-contract.mjs" --input design-contract.json
+node "$VISUAL_QA_ROOT/scripts/validate-review-receipt.mjs" < receipt.json
+node "$VISUAL_QA_ROOT/scripts/validate-evidence.mjs" \
   --input evidence-bundle.json \
   --tier smoke --now 2026-07-25T06:00:00.000Z \
   --evidence-root evidence-root
-node "$LITCODEX_VISUAL_QA_ROOT/scripts/cli.mjs" image-diff reference.png actual.png
-node "$LITCODEX_VISUAL_QA_ROOT/scripts/cli.mjs" tui-check capture.txt --cols 80
+node "$VISUAL_QA_ROOT/scripts/cli.mjs" image-diff reference.png actual.png
+node "$VISUAL_QA_ROOT/scripts/cli.mjs" tui-check capture.txt --cols 80
 ```
 
 ## #contract.hard_stops

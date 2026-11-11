@@ -7,13 +7,13 @@ description: "Design frontend interfaces from a compact direction; resolve mater
 
 ```yaml
 contract_schema_version: 1
-artifact_kind: litcodex_skill_entrypoint
+artifact_kind: codex_skill_entrypoint
 skill_name: frontend-ui-ux
 host: Codex CLI
 reader_projection: shared_rule
-selection_surface: "$litcodex:frontend-ui-ux in the Codex skill picker"
+selection_surface: "$frontend-ui-ux in the Codex skill picker"
 automatic_route: false
-registration_surface: plugins/litcodex/skills/frontend-ui-ux/SKILL.md
+registration_surface: ${CODEX_HOME:-$HOME/.codex}/skills/frontend-ui-ux/SKILL.md
 ```
 
 On activation, emit exactly one first-line probe: `🔥 **LIT IGNITED · frontend-ui-ux** 🔥`.
@@ -43,7 +43,7 @@ For a new page or screen the user has the right to choose the look. Before `desi
 
 Then a new page or screen starts from a design lock: run `scripts/design-lock.mjs init` and follow `references/house-styles.md` (five house styles, the `kit/`, one signature moment). Density is rich unless the user asks for minimal or calm. The probe adds DS-001..008 beside `design.lock.json` and prints a LOOK rubric; judge the screenshots by eye.
 
-Mode words apply only after picker selection or a bounded lit-loop delegation. `scripts/route-mode.mjs` checks English/Korean UI objects and excludes video, slides, prose, and server work; text alone never activates this skill. Use build by default, polish for value-only edits, audit only after same-surface session work, and harden for stress cues.
+Mode words apply only after picker selection or a bounded lit workflow delegation. `scripts/route-mode.mjs` checks English/Korean UI objects and excludes video, slides, prose, and server work; text alone never activates this skill. Use build by default, polish for value-only edits, audit only after same-surface session work, and harden for stress cues.
 
 ## #contract.outputs
 

@@ -1,6 +1,6 @@
 """Tier 2 beat grid for lit-typographic-motion (MO-A-17..19).
 
-Runs inside the librosa venv that `litcodex motion-runtime install --audio` created. Reads this
+Runs inside the librosa venv that this skill's `scripts/runtime.mjs install --audio` created. Reads this
 run's own audio file once, before any frame, and writes a small JSON grid (beat seconds, onsets,
 coarse RMS envelope). The grid is a run artifact: never cached or reused for another brief.
 

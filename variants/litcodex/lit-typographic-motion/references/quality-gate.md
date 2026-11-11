@@ -58,7 +58,7 @@ If no image tool is reachable at all, record `{ "blocked": "no-vision-tool" }` f
 | 10 | Chrome missing or would not launch headless | Name the state; stills cannot render either |
 | 11 | No WebGL context (type path; stage path only when the page asks for WebGL) | Name the renderer or launch message |
 | 12 | ffmpeg or ffprobe missing | The stills set is still written; install ffmpeg for the film |
-| 14 | Runtime not pre-warmed, or `--word-timing` models absent | `litcodex motion-runtime install` outside the sandbox |
+| 14 | Runtime not pre-warmed, or `--word-timing` models absent | `node "$SKILL_DIR/scripts/runtime.mjs" install` outside the sandbox |
 | 15 | A font fails its sha256 pin | Same command; a mismatched font is never re-fetched during a render |
 | 16 | `treatment.json` invalid; the field is named | Fix that field |
 | 17 | Stage contract: a forbidden element or API, a flipbook, a wrong frame size, or a copy line never on screen (quoted) | Fix the page |

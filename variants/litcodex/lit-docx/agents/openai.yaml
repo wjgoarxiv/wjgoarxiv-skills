@@ -9,6 +9,6 @@ interface:
     - "보고서"
     - "기획서"
     - "워드"
-  default_prompt: "Use $litcodex:lit-docx to deliver editable Markdown and a checked Word document."
+  default_prompt: "Use $lit-docx to deliver editable Markdown and a checked Word document."
 policy:
   allow_implicit_invocation: true

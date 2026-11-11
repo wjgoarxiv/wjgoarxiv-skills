@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { expect } from "vitest";
 
-import { uiuxDesignContract } from "../../../../../tools/uiux-design-contract.mjs";
+import { uiuxDesignContract } from "./uiux-design-contract.mjs";
 import { crc32 } from "../scripts/png-crc.mjs";
 import { encodeRgbaPng, solidRgba } from "./png-synth.mjs";
 import { canonicalJson, sha256 } from "../scripts/strict-input.mjs";
@@ -17,10 +17,6 @@ export const skillCorpus = [
 	skill,
 	readFileSync(new URL("../references/complete-contract.md", import.meta.url), "utf8"),
 ].join("\n");
-export const reviewer = readFileSync(
-	new URL("../../../components/lit-loop/agents/litcodex-litwork-reviewer.toml", import.meta.url),
-	"utf8",
-);
 const FIXED_NOW = "2026-07-24T06:00:00.000Z";
 const HASH_A = "a".repeat(64);
 const HASH_B = "b".repeat(64);

@@ -166,7 +166,7 @@ def inspect_source(source_root: Path) -> tuple[list[str], list[str], list[str], 
 
 def build_report() -> PreflightReport:
     skill_root = Path(__file__).resolve().parent.parent
-    source_root = skill_root.parent.parent / "vendor" / "scientific-visualization"
+    source_root = skill_root / "vendor" / "scientific-visualization"
     core = {name: module_available(name) for name in CORE_MODULES}
     optional = {name: module_available(name) for name in OPTIONAL_MODULES}
     missing_source, unexpected_source, hash_mismatches, source_manifest = inspect_source(source_root)

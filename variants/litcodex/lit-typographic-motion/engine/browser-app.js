@@ -1,4 +1,4 @@
-/* LitCodex motion engine, browser half. Node computes every display list from time t; this page
+/* lit-typographic-motion engine, browser half. Node computes every display list from time t; this page
  * rasterizes glyph outlines and furniture on CPU canvases, runs the look-library GLSL passes and
  * the linear-HDR post chain on WebGL2 half-float targets, and reads the finished 8-bit RGBA frame
  * back through a pixel-pack buffer and a fence. Nothing here reads a clock or an unseeded random

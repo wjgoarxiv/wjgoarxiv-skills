@@ -1,4 +1,4 @@
-# Tier 2 audio analysis (MO-A-18/54): installed only by `litcodex motion-runtime install --audio`
+# Tier 2 audio analysis (MO-A-18/54): installed only by `node scripts/runtime.mjs install --audio`
 # with pip --require-hashes --only-binary=:all:. librosa is ISC; no aubio, essentia or madmom (MO-A-50).
 # Regenerate: printf "librosa==0.11.0\n" > req.in && uv pip compile req.in --universal --generate-hashes --python-version 3.10
 audioop-lts==0.2.2 ; python_full_version >= '3.13' \

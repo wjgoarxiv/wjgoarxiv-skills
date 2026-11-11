@@ -202,7 +202,7 @@ The gate checks the flash audit on the master and the looping preview (the audit
 | 11 | The page asked for WebGL and got none | Draw without WebGL or report the state |
 | 12 | No ffmpeg: the stills set was written | Install ffmpeg outside the session |
 | 13 | A gate rule failed | Fix the named cause and render the next round |
-| 14 / 15 | Runtime or fonts not pre-warmed / pin mismatch | `litcodex motion-runtime install` outside the sandbox |
+| 14 / 15 | Runtime or fonts not pre-warmed / pin mismatch | `node "$SKILL_DIR/scripts/runtime.mjs" install` outside the sandbox |
 | 16 | Treatment invalid (field named) | Fix that field |
 | 17 | Stage contract (element, API, asset, clip, size, define) | Remove or redraw the named thing |
 | 18 | Nondeterministic frame (frame and region named) | Replace the leaking source with `t` or `LitStage.rand` |

@@ -18,7 +18,6 @@ import {
 	pngWithDeclaredDimensions,
 	REQUIRED_CHANNEL_IDS,
 	requireAsset,
-	reviewer,
 	skill,
 } from "./test/visual-qa-fixtures.js";
 import "./test/browser-contract.js";
@@ -284,7 +283,7 @@ describe("visual-qa failing-first evidence contract", () => {
 		expect(report.hasAnsi).toBe(true);
 	});
 
-	it("visualqa.review-independence aligns the skill and existing reviewer charter", () => {
+	it("visualqa.review-independence states the independent-review rules", () => {
 		expectSkillText("litfamily.review-receipt/v1alpha1");
 		expectSkillPattern(/separate fresh contexts/i, "separate fresh contexts");
 		expectSkillPattern(/same canonical pre-receipt manifest/i, "same immutable inputs");
@@ -295,10 +294,5 @@ describe("visual-qa failing-first evidence contract", () => {
 		expectSkillPattern(/at most two fresh-review rounds/i, "two-round review bound");
 		expectSkillText("BLOCKED_INDEPENDENT_REVIEW_UNAVAILABLE");
 
-		expect(/visual-review charter/i.test(reviewer), "reviewer must expose a visual-review charter").toBe(true);
-		expect(reviewer.includes("PASS"), "reviewer must support PASS").toBe(true);
-		expect(reviewer.includes("REVISE"), "reviewer must support REVISE").toBe(true);
-		expect(reviewer.includes("FAIL"), "reviewer must support FAIL").toBe(true);
-		expect(/separate fresh context/i.test(reviewer), "reviewer must require a separate fresh context").toBe(true);
 	});
 });

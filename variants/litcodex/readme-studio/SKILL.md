@@ -7,13 +7,13 @@ description: "Create or refresh a verified project README and distinctive static
 
 ```yaml
 contract_schema_version: 1
-artifact_kind: litcodex_skill_entrypoint
+artifact_kind: codex_skill_entrypoint
 skill_name: "readme-studio"
 host: Codex CLI
 reader_projection: shared_rule
 automatic_route: false
-registration_surface: "plugins/litcodex/skills/readme-studio/SKILL.md"
-selection_surface: "$litcodex:readme-studio in the Codex skill picker"
+registration_surface: "${CODEX_HOME:-$HOME/.codex}/skills/readme-studio/SKILL.md"
+selection_surface: "$readme-studio in the Codex skill picker"
 output_channels:
   artifact_genre: client_deliverable
   limitations_channel: reply

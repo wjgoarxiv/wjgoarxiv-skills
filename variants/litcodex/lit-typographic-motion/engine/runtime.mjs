@@ -1,5 +1,5 @@
-// Motion runtime: a product-owned cache under ${XDG_CACHE_HOME:-~/.cache}/litcodex/motion-runtime,
-// filled only by `litcodex motion-runtime install` (or the installer/postinstall pre-warm) from the
+// Motion runtime: a skill-owned cache under ${XDG_CACHE_HOME:-~/.cache}/lit-typographic-motion/runtime,
+// filled only by this skill's `scripts/runtime.mjs install` from the
 // pinned lockfile, pinned font URLs and a hash-pinned audio requirements file. Renders only read it
 // (MO-A-42/43). This module also carries the six doctor/status probes (MO-A-44/55): the five film
 // probes and the cover encoder that cover mode needs.
@@ -18,7 +18,7 @@ export const AUDIO_REQUIREMENTS = join(RUNTIME_SOURCES, "requirements-audio.txt"
 export const WORD_TIMING_PINS = join(RUNTIME_SOURCES, "word-timing-models.json");
 
 export function cacheRoot(env = process.env) {
-	return join(env.XDG_CACHE_HOME || join(env.HOME || homedir(), ".cache"), "litcodex", "motion-runtime");
+	return join(env.XDG_CACHE_HOME || join(env.HOME || homedir(), ".cache"), "lit-typographic-motion", "runtime");
 }
 
 /** The versioned cache directory: a new lockfile or font pin list gets a fresh directory. */
@@ -145,7 +145,7 @@ function withLock(root, action) {
 	try {
 		fd = openSync(lock, "wx");
 	} catch {
-		throw new Error(`another motion-runtime install holds ${lock}`);
+		throw new Error(`another runtime install holds ${lock}`);
 	}
 	return Promise.resolve()
 		.then(action)

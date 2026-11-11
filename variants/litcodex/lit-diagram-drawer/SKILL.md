@@ -12,15 +12,15 @@ Emit exactly one probe for the selected top-level skill. Supporting skills do no
 
 ```yaml
 contract_schema_version: 1
-artifact_kind: litcodex_skill_entrypoint
+artifact_kind: codex_skill_entrypoint
 skill_name: "lit-diagram-drawer"
 host: Codex CLI
 reader_projection: shared_rule
-registration_surface: "Codex plugin skills root at plugins/litcodex/skills/lit-diagram-drawer/SKILL.md"
+registration_surface: "Codex user skills root at ${CODEX_HOME:-$HOME/.codex}/skills/lit-diagram-drawer/SKILL.md"
 invocation_surfaces:
-  - "$litcodex:lit-diagram-drawer"
+  - "$lit-diagram-drawer"
   - "Codex skill picker"
-bare_user_prompt_submit_route: false
+  - "implicit diagram deliverable requests"
 activation_banner: "🔥 **LIT IGNITED · lit-diagram-drawer** 🔥"
 contract_priority:
   - system and developer instructions
@@ -41,7 +41,7 @@ output_channels:
   limitations_channel: reply
 ```
 
-Use this Codex skill when the user selects it in the skill picker, invokes `$litcodex:lit-diagram-drawer`, or requests a diagram deliverable that the host or an active LitCodex workflow routes here. A quoted example or isolated diagram keyword does not activate it. Route product screens and interaction layouts to `frontend-ui-ux`, drawings of real equipment (P&ID, PFD, apparatus figure, isometric cutaway) to `lit-schematic`, and measured scientific plots to `lit-scientific-visualization`.
+Use this Codex skill when the user selects it in the skill picker, invokes `$lit-diagram-drawer`, or requests a diagram deliverable that Codex or an installed lit workflow routes here. A quoted example or isolated diagram keyword does not activate it. Route product screens and interaction layouts to `frontend-ui-ux`, drawings of real equipment (P&ID, PFD, apparatus figure, isometric cutaway) to `lit-schematic`, and measured scientific plots to `lit-scientific-visualization`.
 
 ## #contract.inputs
 
@@ -135,7 +135,7 @@ Return the editable source and only the exports requested by the user. State the
 - Report checks as `PASS`, `FAIL`, or `BLOCKED` using the actual result. A missing browser or font is a user-run setup boundary, not permission to install dependencies or change host configuration.
 - Inspect exported PNGs directly. Record source validation, successful export, and image inspection as separate evidence.
 - For imported files, note the source format, any requested page selection, parsed grammar, discarded inert directives, and any unsupported constructs that could affect meaning.
-- Package/install claims require the LitCodex package’s own tests and payload checks; this skill’s source files alone do not prove marketplace or npm delivery.
+- Install claims require the copied skill folder (`${CODEX_HOME:-$HOME/.codex}/skills/lit-diagram-drawer`) listed in a new Codex session and `scripts/doctor.mjs` run from it; this skill’s source files alone do not prove that the copy works.
 
 ## #contract.hard_stops
 

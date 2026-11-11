@@ -1,24 +1,23 @@
 # Runtime, pre-warm and blocked states
 
-The LitCodex motion runtime is pinned and installed before a session, then only read during a render. A Codex session under `--sandbox workspace-write` usually has no network and cannot write outside its workspace, so an install attempted mid-render would fail in a way that looks like a broken engine. This skill therefore never installs, fetches or repairs anything while rendering.
+The motion runtime is pinned and installed before a session by this skill's own `scripts/runtime.mjs`, then only read during a render. A Codex session under `--sandbox workspace-write` usually has no network and cannot write outside its workspace, so an install attempted mid-render would fail in a way that looks like a broken engine. This skill therefore never installs, fetches or repairs anything while rendering.
 
 ## Commands
 
 | Command | What it does |
 | --- | --- |
-| `litcodex motion-runtime install` | Copies the pinned `runtime/package.json` and `runtime/package-lock.json` into the cache and runs `npm ci --omit=dev --ignore-scripts`, fetches Galmuri9 and MesloLGS NF with their licence files from pinned URLs and verifies every sha256, then writes a receipt. |
-| `litcodex motion-runtime install --audio` | Also creates the Tier 2 venv from the newest `python3.14` to `python3.10` on PATH, then `python3` or `python` if that one is 3.10 to 3.14 (the pinned wheels stop at 3.14, so a newer `python3` is skipped; `LITCODEX_MOTION_PYTHON` names the one interpreter to use instead), and runs `pip install --require-hashes --only-binary=:all: -r runtime/requirements-audio.txt` (librosa, ISC; no aubio, essentia or madmom). |
-| `litcodex motion-runtime install --word-timing` | States the download size and the pinned models first. This release pins none, so it fails closed. |
-| `litcodex motion-runtime status` | Prints the six probes below plus the audio and word-timing tiers; exit 0 only when pre-warm is ready. |
-| `litcodex doctor` | Prints the same six motion probes with the rest of the install diagnosis. |
+| `node "$SKILL_DIR/scripts/runtime.mjs" install` | Copies the pinned `runtime/package.json` and `runtime/package-lock.json` into the cache and runs `npm ci --omit=dev --ignore-scripts`, fetches Galmuri9 and MesloLGS NF with their licence files from pinned URLs and verifies every sha256, then writes a receipt. |
+| `node "$SKILL_DIR/scripts/runtime.mjs" install --audio` | Also creates the Tier 2 venv from the newest `python3.14` to `python3.10` on PATH, then `python3` or `python` if that one is 3.10 to 3.14 (the pinned wheels stop at 3.14, so a newer `python3` is skipped; `LITCODEX_MOTION_PYTHON` names the one interpreter to use instead), and runs `pip install --require-hashes --only-binary=:all: -r runtime/requirements-audio.txt` (librosa, ISC; no aubio, essentia or madmom). |
+| `node "$SKILL_DIR/scripts/runtime.mjs" install --word-timing` | States the download size and the pinned models first. This release pins none, so it fails closed. |
+| `node "$SKILL_DIR/scripts/runtime.mjs" status [--json] [--no-browser]` | Prints the six probes below plus the audio and word-timing tiers; exit 0 only when pre-warm is ready. |
 
 The render commands themselves (`stage`, `cover`, `cover-gate`, `film`, `sound`, `look`, `gate`, `completion`) live in `scripts/render.mjs`; `node scripts/render.mjs --help` prints them with every exit code.
 
-`litcodex install` and the package's global postinstall both attempt the pre-warm. A failed pre-warm (offline, no npm) never fails the product install; it prints one receipt line naming `litcodex motion-runtime install`. Inside a skill session the same installed script is `node <skills>/lit-typographic-motion/scripts/runtime.mjs install|status`.
+`SKILL_DIR` is the folder that holds this skill's SKILL.md (normally `${CODEX_HOME:-$HOME/.codex}/skills/lit-typographic-motion`). Nothing pre-warms the runtime for you: copying the skill only copies files, so run `node "$SKILL_DIR/scripts/runtime.mjs" install` once, outside any sandboxed session, before the first render; `status` then reports `ready`.
 
 ## Where the cache lives
 
-`${XDG_CACHE_HOME:-~/.cache}/litcodex/motion-runtime/<id>`, where `<id>` is derived from the pinned lockfile and the font pin list, so a new release gets a fresh directory. An install lock (`.install.lock`) keeps two installs from racing. The render resolves the cache with the same `HOME` and `XDG_CACHE_HOME` it runs under: pre-warm with the environment the session will use. A cache warmed under your real home is invisible to a session that runs with an isolated home.
+`${XDG_CACHE_HOME:-~/.cache}/lit-typographic-motion/runtime/<id>`, where `<id>` is derived from the pinned lockfile and the font pin list, so a new release gets a fresh directory. An install lock (`.install.lock`) keeps two installs from racing. The render resolves the cache with the same `HOME` and `XDG_CACHE_HOME` it runs under: pre-warm with the environment the session will use. A cache warmed under your real home is invisible to a session that runs with an isolated home.
 
 ## The six probes
 
@@ -26,7 +25,7 @@ The render commands themselves (`stage`, `cover`, `cover-gate`, `film`, `sound`,
 2. ffmpeg: its path and version line plus the preview encoder rung available here (`libwebp_anim` when ffmpeg lists it, else `img2webp`, else GIF), or `not found on PATH`.
 3. WebGL2 renderer: the `UNMASKED_RENDERER_WEBGL` string from a real headless page, tried on the launch ladder; `unknown (debug-info extension unavailable)` when Chrome hides it.
 4. Renderer warning: none for a real GPU; a software-GL warning (SwiftShader, llvmpipe, softpipe, lavapipe, Apple Software Renderer, Microsoft Basic Render Driver) saying samples are lowered; or the unknown-renderer warning.
-5. Pre-warm: `ready` with the cache path, or the exact missing or hash-mismatched dependencies and fonts and the command that fixes them. LitCodex's reused Pretendard files are checked against LitCodex's own recorded hashes.
+5. Pre-warm: `ready` with the cache path, or the exact missing or hash-mismatched dependencies and fonts and the command that fixes them. The bundled Pretendard files in `fonts/pretendard/` are checked against their recorded hashes.
 6. Cover encoder: `img2webp` and `dwebp` from libwebp with their versions (cover mode encodes an animated WebP and its gate decodes the file again), else the `gifski` fallback, else `BLOCKED_NO_COVER_ENCODER`, the state a cover render stops in with exit 21. These are host tools; the pre-warm never installs them (`brew install webp` on macOS, the `webp` package on most Linux distributions).
 
 ## Chrome launch ladder
@@ -59,7 +58,7 @@ Report the exit name, its message and the fix command. Never describe one cause 
 
 ## Host notes for Codex
 
-- In a `workspace-write` Codex session, run `status` first. If pre-warm is missing, ask the user to run `litcodex motion-runtime install` outside the sandbox, or request escalation for that single command when the host allows it.
+- In a `workspace-write` Codex session, run `status` first. If pre-warm is missing, ask the user to run `node "$SKILL_DIR/scripts/runtime.mjs" install` outside the sandbox, or request escalation for that single command when the host allows it.
 - If Chrome cannot launch inside the sandbox, the render exits 10 with Chrome's message. Keep the treatment and the command, report the state, and give the user the exact command to run outside the sandbox.
 - A full stage render of a 15 s 9:16 film takes about two to four minutes here. Give the command a timeout of at least 600 s, or pass `--detach` and poll `.run/progress.json`; never shorten the film to save render time.
 - Renders write only into the output directory you pass with `--out`.

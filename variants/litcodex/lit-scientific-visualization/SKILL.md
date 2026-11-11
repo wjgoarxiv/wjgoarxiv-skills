@@ -10,27 +10,25 @@ metadata:
 
 Emit exactly one probe line for the selected top-level discipline. Supporting skills do not add another probe or repeat the harness-rendered mark.
 
-Use [lit-diagram-drawer](../lit-diagram-drawer/SKILL.md) for conceptual or system diagrams and [lit-schematic](../lit-schematic/SKILL.md) for P&IDs, apparatus figures and isometric cutaways; this skill remains for plots of measured scientific data.
+Use the separate `lit-diagram-drawer` skill (`$lit-diagram-drawer`) for conceptual or system diagrams and `lit-schematic` (`$lit-schematic`) for P&IDs, apparatus figures and isometric cutaways, when they are installed; this skill remains for plots of measured scientific data.
 
 ## #contract.activation
 
 ```yaml
 contract_schema_version: 1
-artifact_kind: litcodex_skill_entrypoint
+artifact_kind: codex_skill_entrypoint
 skill_name: "lit-scientific-visualization"
 host: Codex CLI
 reader_projection: shared_rule
-registration_surface: "Codex plugin skills root at plugins/litcodex/skills/lit-scientific-visualization/SKILL.md"
+registration_surface: "Codex user skills root at ${CODEX_HOME:-$HOME/.codex}/skills/lit-scientific-visualization/SKILL.md"
 invocation_surfaces:
-  - "exact bare lit-scientific-visualization UserPromptSubmit route"
-  - "$litcodex:lit-scientific-visualization"
+  - "$lit-scientific-visualization"
   - "Codex skill picker"
-bare_user_prompt_submit_route: true
-hook_mode_marker: "<lit-scientific-visualization-mode>"
-authored_skill_root: "../../vendor/scientific-visualization"
-authored_skill_entrypoint: "../../vendor/scientific-visualization/SKILL.md"
-authored_scripts_root: "../../vendor/scientific-visualization/scripts"
-authored_assets_root: "../../vendor/scientific-visualization/assets"
+implicit_invocation: false
+authored_skill_root: "vendor/scientific-visualization"
+authored_skill_entrypoint: "vendor/scientific-visualization/SKILL.md"
+authored_scripts_root: "vendor/scientific-visualization/scripts"
+authored_assets_root: "vendor/scientific-visualization/assets"
 dependency_preflight: "scripts/dependency-preflight.py --json"
 activation_banner: "🔥 **LIT IGNITED · lit-scientific-visualization** 🔥"
 contract_priority:
@@ -53,25 +51,26 @@ output_channels:
   limitations_channel: reply
 ```
 
-This is a Codex-native adapter around an immutable, user-tuned authored skill snapshot. Resolve this
-adapter's directory, then read the authored SKILL.md in full at
-`../../vendor/scientific-visualization/SKILL.md` before designing or modifying a figure.
-Do not summarize, abbreviate, normalize, or silently repair the authored source. Treat
-`../../vendor/scientific-visualization` as the authored SKILL_ROOT. Therefore every
-`<skill-path>/scripts` placeholder in the authored text resolves to
-`../../vendor/scientific-visualization/scripts`, and every asset lookup resolves from
-`../../vendor/scientific-visualization/assets`.
+This is a Codex-native adapter around an immutable, user-tuned authored skill snapshot that ships
+inside this skill folder. Resolve this adapter's directory (the folder of this SKILL.md, as listed
+in the session's skill list; a standard copy is `${CODEX_HOME:-$HOME/.codex}/skills/lit-scientific-visualization`),
+then read the authored SKILL.md in full at `vendor/scientific-visualization/SKILL.md` under that
+directory before designing or modifying a figure. Do not summarize, abbreviate, normalize, or
+silently repair the authored source. Treat `vendor/scientific-visualization` under this skill's
+directory as the authored SKILL_ROOT. Therefore every `<skill-path>/scripts` placeholder in the
+authored text resolves to `vendor/scientific-visualization/scripts`, and every asset lookup resolves
+from `vendor/scientific-visualization/assets`, both under this skill's directory.
 
 The original subtree contains exactly the 16 authorized Git-tracked source files. Generated
-`__pycache__` directories and `.pyc` files are excluded intentionally. Adapter code, MIT licensing,
-NOTICE, and provenance stay outside that subtree so byte parity remains independently auditable.
+`__pycache__` directories and `.pyc` files are excluded intentionally. Adapter code, MIT licensing
+(`vendor/LICENSE-scientific-visualization.txt`), `vendor/NOTICE`, and `vendor/PROVENANCE.md` stay
+outside that subtree so byte parity remains independently auditable.
 
-This skill has three Codex-native invocation surfaces. The exact complete prompt
-`lit-scientific-visualization` activates a dedicated `UserPromptSubmit` route that injects the
-`<lit-scientific-visualization-mode>` safety envelope plus this complete adapter body. The scoped
-`$litcodex:lit-scientific-visualization` form and Codex skill picker continue to use plugin skill
-discovery. Generic plotting requests, extra prose, quoted or fenced text, block quotes, paths,
-slash-style text, and near misses do not activate the exact hook route.
+This skill has two Codex-native invocation surfaces, both through Codex's own skill discovery of
+the user skills folder: `$lit-scientific-visualization` and the Codex skill picker. Implicit
+invocation is off (`agents/openai.yaml` sets `allow_implicit_invocation: false`), so generic
+plotting requests, extra prose, quoted or fenced text, block quotes, paths, slash-style text, and
+near misses do not select it on their own.
 
 ## #contract.inputs
 
@@ -110,8 +109,7 @@ slash-style text, and near misses do not activate the exact hook route.
 
 | Input channel | Accept when | Required handling | Evidence to retain |
 | --- | --- | --- | --- |
-| Exact hook invocation | The trimmed complete prompt is `lit-scientific-visualization` | Emit the banner and follow the injected mode envelope plus this full adapter | Mode marker and direct hook replay |
-| Picker invocation | Codex resolves `$litcodex:lit-scientific-visualization` | Emit the banner and load this adapter before the authored source | Skill id and resolved roots |
+| Explicit invocation | Codex resolves `$lit-scientific-visualization` or the picker selects it | Emit the banner and load this adapter before the authored source | Skill id and resolved roots |
 | Data artifact | It is inside the authorized workspace or explicitly supplied | Inspect schema, units, missingness, and sample counts before plotting | Path, shape, columns, units, filters |
 | Existing plot script | The user asks to repair or restyle it | Preserve scientific meaning; apply authored restraints and verify output | Diff and rendered artifact |
 | Journal target | A named publication or venue is material | Confirm live requirements when they may have changed | Current source or explicit “bundled guidance only” caveat |
@@ -139,9 +137,9 @@ inside them.
 1. **Emit the exact banner.** The first user-visible line is
    `🔥 **LIT IGNITED · lit-scientific-visualization** 🔥` when the skill truly activates.
 2. **Load the full authored workflow.** Read
-   `../../vendor/scientific-visualization/SKILL.md` from beginning to end. Resolve all
-   authored relative paths from `../../vendor/scientific-visualization`; never from
-   `~/skills`, the current cwd, or the adapter's own `scripts` directory.
+   `vendor/scientific-visualization/SKILL.md` under this skill's directory from beginning to end.
+   Resolve all authored relative paths from that `vendor/scientific-visualization` folder; never
+   from a personal skills folder, the current cwd, or the adapter's own `scripts` directory.
 3. **Inspect the task and data.** Identify the scientific question, plotted variables, units,
    uncertainty semantics, sample sizes, intended comparisons, target medium, journal constraints,
    and required raster/vector formats. Do not infer error-bar meaning or statistical significance.
@@ -168,7 +166,7 @@ inside them.
    Missing optional modules degrade only the capabilities that use them.
 9. **Generate a real artifact when execution is requested, rich by default.** Use deterministic
    sample/data inputs, explicit output paths, and the user's requested formats. Do not overwrite
-   unrelated figures. The rich layer below is LitCodex's standing request on behalf of the user, so
+   unrelated figures. The rich layer below is this skill's standing request on behalf of the user, so
    the source's "only when requested" clauses for gridlines and annotation are satisfied:
    - **Light grid.** Major gridlines only, thin and pale, drawn behind the data, applied right after
      `rcparams()`:
@@ -225,7 +223,7 @@ inside them.
 
 | Output field | Required content | Forbidden substitute |
 | --- | --- | --- |
-| Runtime status | Result of the real preflight | Assuming npx installed Python libraries |
+| Runtime status | Result of the real preflight | Assuming the skill copy installed Python libraries |
 | Scientific contract | Variables, units, uncertainty, samples, transformations | An attractive plot without semantic checks |
 | Artifact | Exact path and format | “Figure generated” without a file |
 | Verification | Render/export/metadata/visual checks actually run | Source review alone |
@@ -238,8 +236,9 @@ inside them.
   `b1b8f1bf8791daecdbb00dc70631cd955e72976664d302af0bc81e218b9cec3b`. The aggregate is SHA-256
   over 16 Git-index-ordered records in the form
   `<file-sha256><two spaces><045_scientific-visualization/relative-path><LF>`.
-- Package evidence must show all 16 original files, adapter files, preflight, license, NOTICE, and
-  provenance inside the packed marketplace and a fresh temporary `CODEX_HOME` installation.
+- Install evidence must show all 16 original files, adapter files, preflight, license, NOTICE, and
+  provenance inside the copied skill folder (for example a fresh temporary `CODEX_HOME` with the
+  folder under `skills/lit-scientific-visualization`), and a preflight with `sourcePayloadComplete: true`.
 - Runtime evidence begins with preflight JSON. Exit 3 means honest degraded operation, not skill
   installation failure and not permission to install anything.
 - Rendering evidence includes the actual output file, nonzero size, readable image/vector metadata,
@@ -267,14 +266,14 @@ inside them.
 
 - Do not edit, reformat, paraphrase, or omit any file in the immutable 16-file authored subtree.
 - Do not include `__pycache__`, `.pyc`, local virtual environments, generated figures, or unrelated
-  private skills in the package.
-- Do not resolve `<skill-path>` to `~/skills/045_scientific-visualization`; installed operation must
-  resolve from this package's authored source root.
-- Do not broaden the exact bare `lit-scientific-visualization` `UserPromptSubmit` route to generic
-  plotting prose, quoted or fenced text, block quotes, paths, slash-style text, or near misses.
-- Do not break the independent `$litcodex:lit-scientific-visualization` and Codex picker routes.
-- Do not silently run package installers, alter global Python, or claim that `npx` installed
-  Matplotlib/NumPy/seaborn/Plotly/MDAnalysis.
+  private skills in the skill folder.
+- Do not resolve `<skill-path>` to a personal `045_scientific-visualization` folder; installed
+  operation must resolve from this skill folder's authored source root.
+- Do not turn on implicit invocation for generic plotting prose, quoted or fenced text, block
+  quotes, paths, slash-style text, or near misses.
+- Do not break the `$lit-scientific-visualization` and Codex picker routes.
+- Do not silently run package installers, alter global Python, or claim that copying the skill
+  installed Matplotlib/NumPy/seaborn/Plotly/MDAnalysis.
 - Do not call plotting functions before `rcparams()`, restore unrequested titles/lines or heavy grids, clip axis
   endpoint labels, hide the zero tick on zero-origin axes, or weaken the authored export settings.
 - Do not treat the CP/SDS reference workflow, palette attributions, or journal checklist as a license

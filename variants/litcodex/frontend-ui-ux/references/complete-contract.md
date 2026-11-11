@@ -10,15 +10,15 @@ description: "Plan, implement, and verify distinctive production interfaces thro
 
 ```yaml
 contract_schema_version: 1
-artifact_kind: litcodex_skill_entrypoint
+artifact_kind: codex_skill_entrypoint
 skill_name: "frontend-ui-ux"
 host: Codex CLI
-registration_surface: "plugins/litcodex/skills/frontend-ui-ux/SKILL.md"
-selection_surface: "$litcodex:frontend-ui-ux in the Codex skill picker"
+registration_surface: "${CODEX_HOME:-$HOME/.codex}/skills/frontend-ui-ux/SKILL.md"
+selection_surface: "$frontend-ui-ux in the Codex skill picker"
 automatic_route: false
 ```
 
-This is a picker-native Codex plugin skill. A textual mention is ordinary user input unless the
+This is a picker-native Codex user skill, self-contained in its folder. A textual mention is ordinary user input unless the
 host actually selects this skill. It does not promise a slash command, a bare-text hook, a
 background agent, or a hidden design service.
 
@@ -309,16 +309,16 @@ Run an independent review after implementation. The handoff must include:
 
 For eligible visual evidence, preserve a bounded material PNG as a regular non-symlink PNG file below a
 caller-authorized evidence root. A path, text receipt, base64 assertion, HTTP response, or test result
-alone is not rendered evidence. The installed Visual QA command shape is:
+alone is not rendered evidence. The installed Visual QA command shape is (the separate `visual-qa` skill, when it is installed):
 
 ```bash
-LITCODEX_VISUAL_QA_SKILL_FILE="<absolute path of the SKILL.md selected for visual-qa>"
-LITCODEX_VISUAL_QA_ROOT="$(cd "$(dirname "$LITCODEX_VISUAL_QA_SKILL_FILE")" && pwd -P)"
-test -f "$LITCODEX_VISUAL_QA_SKILL_FILE" || {
+VISUAL_QA_SKILL_FILE="<absolute path of the SKILL.md selected for visual-qa>"
+VISUAL_QA_ROOT="$(cd "$(dirname "$VISUAL_QA_SKILL_FILE")" && pwd -P)"
+test -f "$VISUAL_QA_SKILL_FILE" || {
   printf '%s\n' 'visual-qa selected SKILL.md does not exist' >&2
   exit 1
 }
-node "$LITCODEX_VISUAL_QA_ROOT/scripts/validate-evidence.mjs" \
+node "$VISUAL_QA_ROOT/scripts/validate-evidence.mjs" \
   --input "evidence-bundle.json" \
   --tier "smoke" \
   --now "2026-07-25T06:00:00.000Z" \

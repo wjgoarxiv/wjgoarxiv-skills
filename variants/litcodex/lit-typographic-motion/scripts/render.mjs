@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// lit-typographic-motion render CLI for LitCodex. One end-to-end command (`film`) runs a craft
+// lit-typographic-motion render CLI for Codex. One end-to-end command (`film`) runs a craft
 // round: timeline -> pre-flight gate -> stills -> cut sheet -> (stop with --stills-only) -> master,
 // preview, poster and reduced-motion still under .run/ -> full gate -> promote or withhold.
 // Single modes: stills, sheet, video, perf, gate. `cover` renders a seamless README cover loop and
@@ -42,7 +42,7 @@ import { FontBook, missingGlyphs } from "../engine/type.mjs";
 const SELF = fileURLToPath(import.meta.url);
 const MODES = ["scaffold", "styles", "stage", "cover", "cover-gate", "assets", "blender", "sound", "look", "film", "stills", "sheet", "video", "perf", "gate", "completion", "determinism"];
 
-export const USAGE = `lit-typographic-motion render CLI (LitCodex)
+export const USAGE = `lit-typographic-motion render CLI
 Every render reads <dir>/treatment.json first (or --treatment <file>); references/treatment.md.
 Usage:
   node render.mjs scaffold --out <dir>

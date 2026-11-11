@@ -1,6 +1,6 @@
 # Type and timing
 
-This file covers Phase 1 (timing) and the type rules the LitCodex engine enforces while it lays out and paces your lines. Every number below is the one in `engine/constants.mjs`; where the spec marks a number as a proposed default, the engine and the gate report label it `[provisional]`.
+This file covers Phase 1 (timing) and the type rules the engine enforces while it lays out and paces your lines. Every number below is the one in `engine/constants.mjs`; where the spec marks a number as a proposed default, the engine and the gate report label it `[provisional]`.
 
 ## The one reading floor
 
@@ -32,11 +32,11 @@ The pre-flight gate re-checks the result (MO-C-07/08, MO-A-13, MO-A-15, MO-A-16 
 
 ## Tier 2: your own audio
 
-`--audio <file>` asks for a beat grid from that file. It runs only if `litcodex motion-runtime install --audio` created the hash-pinned librosa venv earlier, outside the session. The analysis writes `.run/beat-grid.json` for this run only; it is never cached or reused. Shot starts then snap forward to the analysed beats instead of the regular grid, the same holds and floors apply, and the audio is muxed into the MP4. If the venv is absent or its pins changed, the render continues on Tier 1 with the warning `audio analysis not prewarmed: run litcodex motion-runtime install --audio`; if the analysis itself fails (for example a corrupt file) it also falls back to Tier 1 with the reason. The engine never installs or repairs the venv during a render.
+`--audio <file>` asks for a beat grid from that file. It runs only if `node "$SKILL_DIR/scripts/runtime.mjs" install --audio` created the hash-pinned librosa venv earlier, outside the session. The analysis writes `.run/beat-grid.json` for this run only; it is never cached or reused. Shot starts then snap forward to the analysed beats instead of the regular grid, the same holds and floors apply, and the audio is muxed into the MP4. If the venv is absent or its pins changed, the render continues on Tier 1 with the warning `audio analysis not prewarmed: run node "<skill>/scripts/runtime.mjs" install --audio`; if the analysis itself fails (for example a corrupt file) it also falls back to Tier 1 with the reason. The engine never installs or repairs the venv during a render.
 
 ## Tier 3: word timing
 
-Word-level alignment is opt-in with `--word-timing` and never part of bare `lit`. This release pins no licence-verified Korean-capable alignment model, so the tier fails closed: the render exits 14 and names `litcodex motion-runtime install --word-timing`, and that install command states the download size and the (empty) pin list before refusing. Non-commercial weights are never pinned.
+Word-level alignment is opt-in with `--word-timing` and never part of bare `lit`. This release pins no licence-verified Korean-capable alignment model, so the tier fails closed: the render exits 14 and names `node "$SKILL_DIR/scripts/runtime.mjs" install --word-timing`, and that install command states the download size and the (empty) pin list before refusing. Non-commercial weights are never pinned.
 
 ## Script runs
 
@@ -50,7 +50,7 @@ The type kit splits every string into script runs before choosing faces.
 
 - Line breaks and reveal steps happen only at whitespace between 어절. A long Korean line shrinks in size before it would ever break inside a 어절.
 - Hangul runs never get tracking or width motion; their tracking is 0 even when the Latin run beside them animates.
-- Weight steps on Hangul only move between LitCodex's own lit-pptx Pretendard Regular (400) and Bold (700), reused by path and checked against LitCodex's recorded hashes. Nothing between or beyond is synthesised, and no horizontal scale is applied.
+- Weight steps on Hangul only move between the bundled Pretendard Regular (400) and Bold (700) in `fonts/pretendard/`, checked against their recorded hashes. Nothing between or beyond is synthesised, and no horizontal scale is applied.
 - Galmuri9 needs a large grid multiple to stay crisp: keep it at 36 px or more on screen.
 
 ## Latin type rules
@@ -76,7 +76,7 @@ The type kit splits every string into script runs before choosing faces.
 | Archivo, 9 static instances | bundled in `fonts/archivo/`, instanced at development time with a recorded recipe (`fonts/archivo/SHA256SUMS`) | `fonts/archivo/OFL.txt` |
 | VT323 | bundled in `fonts/vt323/` | `fonts/vt323/OFL.txt` |
 | EMS Allure, Felix, Osmotron, Readability, Tech | bundled SVG single-stroke faces in `fonts/stroke/` | `fonts/stroke/OFL.txt`, `fonts/stroke/CREDITS` |
-| Pretendard Regular and Bold | reused from `../lit-pptx/pretendard-font/` | `../lit-pptx/pretendard-font/LICENSE.txt` |
+| Pretendard Regular and Bold | bundled in `fonts/pretendard/` (unmodified official OTF files) | `fonts/pretendard/LICENSE.txt` |
 | Galmuri9 | fetched at pre-warm, pinned URL and sha256 | cached `fonts/licenses/Galmuri-ofl.md` |
 | MesloLGS NF | fetched at pre-warm, pinned URL and sha256 | three cached files: the Meslo Apache notice, the Apache-2.0 text and the DejaVu Bitstream Vera notice |
 

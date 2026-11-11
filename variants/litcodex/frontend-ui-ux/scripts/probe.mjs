@@ -3,7 +3,7 @@ import { spawn, spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { probeBrowserDriver } from '../../browser-drive/scripts/capability-probe.mjs';
+import { probeBrowserDriver } from './capability-probe.mjs';
 import { inspectPage } from './page-probe.mjs';
 import { hoverCandidates, inspectHovered } from './hover-probe.mjs';
 import { measureLock } from './lock-probe.mjs';

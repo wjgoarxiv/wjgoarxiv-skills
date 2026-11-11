@@ -9,7 +9,7 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, describe, expect, it, type TestContext } from "vitest";
 
-import { probeBrowserDriver } from "../browser-drive/scripts/capability-probe.mjs";
+import { probeBrowserDriver } from "./scripts/capability-probe.mjs";
 import {
 	COLOR_ROLES, DEFAULT_STYLE_BY_FAMILY, FAMILIES, LOCK_FILE, MOMENT_KINDS, MOMENT_SCALE_BY_FAMILY,
 	densityForBrief, initLock, kitStyles, lockRecord, setMoment, styleForBrief, tokensCss, validateStyle,

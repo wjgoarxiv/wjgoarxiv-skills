@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "note": "The decoded gate row this recipe reached when it was pinned (npm run qa:cover-recipes re-renders it and fails when median d or the moving share leave +-15 %, seamLocal leaves TARGET or the file passes 2 MiB). Measured 2026-10-20 on headless Chrome's software rung and libwebp 1.6.0.",
+  "note": "The decoded gate row this recipe reached when it was pinned (node scripts/qa-cover-recipes.mjs re-renders it and fails when median d or the moving share leave +-15 %, seamLocal leaves TARGET or the file passes 2 MiB). Measured 2026-10-20 on headless Chrome's software rung and libwebp 1.6.0.",
   "row": {
     "medianD": 0.002077,
     "movingFrac": 1,

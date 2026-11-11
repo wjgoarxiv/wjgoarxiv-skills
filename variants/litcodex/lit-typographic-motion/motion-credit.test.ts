@@ -8,7 +8,6 @@ import { PRESETS, presetFontKeys } from "./engine/presets.mjs";
 import { USAGE } from "./scripts/render.mjs";
 
 const skillRoot = fileURLToPath(new URL("./", import.meta.url));
-const repoRoot = fileURLToPath(new URL("../../../../", import.meta.url));
 const COMMIT = "ca251e3dddda422b364385eb484b5a3593a0990d";
 const CREDIT = "Typographic-motion engine adapted from mexicat/pdoom-video (MIT, Giacomo Magnanini), commit `ca251e3`.";
 
@@ -19,16 +18,14 @@ describe("MO-A-36 / MO-A-48 credit and licences", () => {
 		expect(ENGINE_CREDIT).toContain(COMMIT);
 	});
 
-	it("packs NOTICE, THIRD_PARTY_NOTICES and the EMS licence files", () => {
-		const manifest = readFileSync(join(repoRoot, "tools", "pack-payload-manifest.json"), "utf8");
-		for (const path of ["engine/NOTICE", "engine/THIRD_PARTY_NOTICES", "fonts/stroke/OFL.txt", "fonts/stroke/CREDITS", "fonts/archivo/OFL.txt", "fonts/vt323/OFL.txt"]) {
-			expect(manifest).toContain(`marketplace/plugins/litcodex/skills/lit-typographic-motion/${path}`);
+	it("ships NOTICE, THIRD_PARTY_NOTICES and the font licence files in the skill folder", () => {
+		for (const path of ["engine/NOTICE", "engine/THIRD_PARTY_NOTICES", "fonts/stroke/OFL.txt", "fonts/stroke/CREDITS", "fonts/archivo/OFL.txt", "fonts/vt323/OFL.txt", "fonts/pretendard/LICENSE.txt"]) {
+			expect(existsSync(join(skillRoot, path)), path).toBe(true);
 		}
 	});
 
 	it("states the one-line credit on the help surfaces", () => {
 		expect(USAGE).toContain(CREDIT);
-		expect(readFileSync(join(repoRoot, "packages/litcodex-ai/src/cli.ts"), "utf8")).toContain(CREDIT);
 	});
 
 	it("lists every font the presets use, with a licence path that exists or is fetched with it", () => {

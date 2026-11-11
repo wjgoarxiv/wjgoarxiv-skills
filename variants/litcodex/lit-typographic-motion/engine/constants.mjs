@@ -1,4 +1,6 @@
-// Every number the LitCodex motion engine and its gate use, in one place.
+import { fileURLToPath } from "node:url";
+
+// Every number the motion engine and its gate use, in one place.
 // Rows marked PROVISIONAL are the spec's [NEW] defaults (Section C open question 1, D2). They are
 // implemented exactly as written and stay fixed for this release; no user sign-off is recorded yet.
 
@@ -256,7 +258,8 @@ export class Exit extends Error {
 	}
 }
 
-export const INSTALL_COMMAND = "litcodex motion-runtime install";
+// The one network step: this skill's own pre-warm script, named by its absolute path.
+export const INSTALL_COMMAND = `node "${fileURLToPath(new URL("../scripts/runtime.mjs", import.meta.url))}" install`;
 
 // Stage path frame formats (MO-C-10 as amended): exactly one of these, matching the treatment.
 export const STAGE_FORMATS = Object.freeze({ "16:9": Object.freeze({ width: 1920, height: 1080 }), "9:16": Object.freeze({ width: 1080, height: 1920 }) });

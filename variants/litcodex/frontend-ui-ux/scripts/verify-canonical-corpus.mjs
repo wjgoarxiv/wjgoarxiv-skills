@@ -18,8 +18,8 @@ import {
 	StableFileReadError,
 } from "./stable-file-read.mjs";
 
-export const CANONICAL_CORPUS_RELATIVE_ROOT =
-	"plugins/litcodex/skills/frontend-ui-ux/references/_canonical-corpus";
+// Relative to this skill folder.
+export const CANONICAL_CORPUS_RELATIVE_ROOT = "references/_canonical-corpus";
 
 const EXPECTED = Object.freeze({
 	commit: "8ec16c5129df7b9778959e8367657d0e79c2c3bb",

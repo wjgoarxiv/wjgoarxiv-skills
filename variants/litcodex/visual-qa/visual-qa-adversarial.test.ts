@@ -8,7 +8,7 @@ import { describe, expect, it } from "vitest";
 import { canonicalJson, isRecord, sha256 } from "./scripts/strict-input.mjs";
 import { validateEvidence } from "./scripts/validate-evidence.mjs";
 import { reviewEligibility, validateReviewReceipt } from "./scripts/validate-review-receipt.mjs";
-import { validateDesignContract } from "../frontend-ui-ux/scripts/validate-design-contract.mjs";
+import { validateDesignContract } from "./scripts/validate-design-contract.mjs";
 import {
 	designContract,
 	evidenceBundle,

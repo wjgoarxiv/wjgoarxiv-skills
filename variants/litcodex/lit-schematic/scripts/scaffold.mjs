@@ -7,7 +7,7 @@
 //
 // It writes <dir>/build.mjs (and every other module of the example, such as the iso scene.mjs)
 // with the kit imports pointing at this installed skill, never overwrites an existing file, and
-// never writes inside the installed LitCodex plugin or skills folder.
+// never writes inside this installed skill folder.
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import { join, resolve, sep } from "node:path";
@@ -24,10 +24,10 @@ export function scaffold(kind, dir) {
   const example = TEMPLATES[kind];
   if (!example) throw new Error(`kind must be one of ${Object.keys(TEMPLATES).join(", ")}`);
   const target = resolve(dir);
-  const installedRoot = realpathSync(resolve(SKILL_ROOT, "..", ".."));
+  const installedRoot = realpathSync(SKILL_ROOT);
   mkdirSync(target, { recursive: true });
   const real = realpathSync(target);
-  if (real === installedRoot || real.startsWith(installedRoot + sep)) throw new Error("refusing to write inside the installed LitCodex files; pick a directory in your project");
+  if (real === installedRoot || real.startsWith(installedRoot + sep)) throw new Error("refusing to write inside the installed lit-schematic skill folder; pick a directory in your project");
   const modules = readdirSync(join(SKILL_ROOT, "examples", example)).filter((f) => f.endsWith(".mjs"));
   for (const name of modules) {
     if (existsSync(join(target, name))) throw new Error(`${join(target, name)} already exists; move it or pick another directory`);

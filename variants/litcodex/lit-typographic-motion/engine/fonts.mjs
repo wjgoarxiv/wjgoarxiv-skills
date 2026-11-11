@@ -1,14 +1,15 @@
 // Font catalogue: where every face the presets use comes from, its pinned sha256, and its licence.
-// Bundled faces ship in this skill; reused faces are LitCodex's own lit-pptx Hangul pair, checked
-// against LitCodex's recorded hashes (MO-A-55); fetched faces arrive only through
-// `litcodex motion-runtime install` and are read from the product cache (MO-A-42, MO-FT-03a).
+// Bundled faces ship in this skill. The Pretendard Hangul pair ships here too, as `copied`: the
+// unmodified official files (never subset, so they stay outside the bundled-font size budget),
+// checked against the recorded hashes (MO-A-55); fetched faces arrive only through this skill's
+// `scripts/runtime.mjs install` and are read from its cache (MO-A-42, MO-FT-03a).
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 export const SKILL_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const PPTX_FONTS = "../lit-pptx/pretendard-font";
+const PRETENDARD = "fonts/pretendard";
 
 const archivo = [75, 100, 125].flatMap((width) =>
 	[400, 700, 900].map((weight) => ({
@@ -39,19 +40,19 @@ export const FONTS = Object.freeze([
 		key: "pretendard-400",
 		family: "Pretendard",
 		weight: 400,
-		source: "reuse",
-		path: `${PPTX_FONTS}/public/static/Pretendard-Regular.otf`,
+		source: "copied",
+		path: `${PRETENDARD}/public/static/Pretendard-Regular.otf`,
 		sha256: "3ffbacde6ab8411f1d2db54bb9b1f0b3ee2a738932033722cf0388c06aed1c93",
-		licence: [`${PPTX_FONTS}/LICENSE.txt`],
+		licence: [`${PRETENDARD}/LICENSE.txt`],
 	},
 	{
 		key: "pretendard-700",
 		family: "Pretendard",
 		weight: 700,
-		source: "reuse",
-		path: `${PPTX_FONTS}/public/static/Pretendard-Bold.otf`,
+		source: "copied",
+		path: `${PRETENDARD}/public/static/Pretendard-Bold.otf`,
 		sha256: "2e91915fab54df71cc9598ebf608b2bdb54c6fe3c066ac61dff0bc44fca71cc7",
-		licence: [`${PPTX_FONTS}/LICENSE.txt`],
+		licence: [`${PRETENDARD}/LICENSE.txt`],
 	},
 	{
 		key: "vt323",
@@ -138,7 +139,7 @@ export const FETCHED = Object.freeze([
 	},
 ]);
 
-/** Absolute path of a catalogue entry, given the product cache directory. */
+/** Absolute path of a catalogue entry, given the runtime cache directory. */
 export function fontPath(entry, cacheDir) {
 	return entry.source === "cache" ? join(cacheDir, entry.path) : join(SKILL_ROOT, entry.path);
 }

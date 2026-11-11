@@ -342,11 +342,11 @@ describe("references/depth.md", () => {
 		for (const heading of ["## When 3D, and which kind", "## What the renderer gives you", "## The scaffold's world", "## Craft and the gate", "## Camera moves and the flash audit", "## The Blender rung"]) expect(depth, heading).toContain(heading);
 		for (const term of ["/lit/three/", "GPU rung", "software rung", "findBlender", "LITCODEX_BLENDER", "LitStage.plate", "plate.json", "render3d", "MO-C-02", "MO-C-03", "exit 18", "One plate per film", "ASSET-USED", "slow the light change"]) expect(depth, term).toContain(term);
 	});
-	it("is reachable from the cover reference and names no sibling product", () => {
+	it("is reachable from the cover reference and points at nothing outside this skill folder", () => {
 		const cover = readFileSync(join(skillRoot, "references", "cover.md"), "utf8");
 		expect(cover).toContain("references/depth.md");
 		expect(cover).toContain("hero-3d");
-		expect(depth).not.toMatch(/CLAUDE_PLUGIN_ROOT|\.litclaude|Claude Code|LitClaude|claude -p/u);
+		expect(depth).not.toMatch(/\.\.\/|plugins\/|marketplaces\//u);
 	});
 });
 

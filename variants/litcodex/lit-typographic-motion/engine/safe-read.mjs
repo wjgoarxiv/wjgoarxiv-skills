@@ -1,5 +1,5 @@
-// Bounded reads of files a model or a render wrote. The Stop hook runs the done-check synchronously inside a
-// 5 s manifest timeout, so a path that is a named pipe, a link to a device, or a huge file must end in a
+// Bounded reads of files a model or a render wrote. The done-check (`render.mjs completion`) must answer
+// quickly even on hostile output folders, so a path that is a named pipe, a link to a device, or a huge file must end in a
 // refusal, never a blocked read. lstat first, open without following links and without blocking, check the
 // opened descriptor again, and stop at the byte limit.
 import { closeSync, constants, fstatSync, lstatSync, openSync, readSync } from "node:fs";

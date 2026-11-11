@@ -10,12 +10,12 @@ description: "Use after changing a web, application, or terminal interface. Capt
 
 ```yaml
 contract_schema_version: 1
-artifact_kind: litcodex_skill_entrypoint
+artifact_kind: codex_skill_entrypoint
 skill_name: "visual-qa"
 host: Codex CLI
-registration_surface: "plugins/litcodex/skills/visual-qa/SKILL.md"
-activation_surface: "Codex plugin skill picker"
-explicit_selection_label: "$litcodex:visual-qa"
+registration_surface: "${CODEX_HOME:-$HOME/.codex}/skills/visual-qa/SKILL.md"
+activation_surface: "Codex skill picker"
+explicit_selection_label: "$visual-qa"
 ```
 
 This is a picker-native Codex skill. Selecting it activates the workflow. Merely finding this file,
@@ -152,15 +152,16 @@ validator, and accepts the exact same beta object shape produced by the frontend
 two design schema files are byte-identical and the package-local validators are behaviorally aligned;
 there is no runtime import or path dependency between the two skills.
 
-Every runnable block resolves the managed marketplace path. Do not replace it with a path from an
-unrelated checkout.
+Every runnable block resolves the copied skill folder under `${CODEX_HOME:-$HOME/.codex}/skills/visual-qa`.
+If you copied it elsewhere, set `VISUAL_QA_ROOT` to the folder that holds the SKILL.md Codex selected; do
+not replace it with a path from an unrelated checkout.
 
 Validate a design contract:
 
 ```bash
-LITCODEX_VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/marketplaces/litcodex/plugins/litcodex/skills/visual-qa"
-test -f "$LITCODEX_VISUAL_QA_ROOT/SKILL.md" || { printf '%s\n' 'visual-qa is not installed in the managed Codex marketplace' >&2; exit 1; }
-node "$LITCODEX_VISUAL_QA_ROOT/scripts/validate-design-contract.mjs" --input visual-design-contract.json
+VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/skills/visual-qa"
+test -f "$VISUAL_QA_ROOT/SKILL.md" || { printf '%s\n' 'visual-qa is not installed in the Codex skills folder' >&2; exit 1; }
+node "$VISUAL_QA_ROOT/scripts/validate-design-contract.mjs" --input visual-design-contract.json
 ```
 
 The contract must declare at least one primary route, region, component, critical interaction,
@@ -253,17 +254,17 @@ round must assemble a complete inventory whose hashes all match the same current
 PNG comparison:
 
 ```bash
-LITCODEX_VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/marketplaces/litcodex/plugins/litcodex/skills/visual-qa"
-test -f "$LITCODEX_VISUAL_QA_ROOT/SKILL.md" || { printf '%s\n' 'visual-qa is not installed in the managed Codex marketplace' >&2; exit 1; }
-node "$LITCODEX_VISUAL_QA_ROOT/scripts/cli.mjs" image-diff reference.png actual.png
+VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/skills/visual-qa"
+test -f "$VISUAL_QA_ROOT/SKILL.md" || { printf '%s\n' 'visual-qa is not installed in the Codex skills folder' >&2; exit 1; }
+node "$VISUAL_QA_ROOT/scripts/cli.mjs" image-diff reference.png actual.png
 ```
 
 Terminal layout check:
 
 ```bash
-LITCODEX_VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/marketplaces/litcodex/plugins/litcodex/skills/visual-qa"
-test -f "$LITCODEX_VISUAL_QA_ROOT/SKILL.md" || { printf '%s\n' 'visual-qa is not installed in the managed Codex marketplace' >&2; exit 1; }
-node "$LITCODEX_VISUAL_QA_ROOT/scripts/cli.mjs" tui-check capture.txt --cols 80
+VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/skills/visual-qa"
+test -f "$VISUAL_QA_ROOT/SKILL.md" || { printf '%s\n' 'visual-qa is not installed in the Codex skills folder' >&2; exit 1; }
+node "$VISUAL_QA_ROOT/scripts/cli.mjs" tui-check capture.txt --cols 80
 ```
 
 The PNG path accepts regular non-symlink PNG files inside the caller-authorized evidence root. It validates
@@ -293,8 +294,9 @@ or a broken interaction. A clean accessibility tree cannot overrule a visibly un
 
 ## 7. Obtain two independent Codex reviews
 
-When review is requested, use the existing `litcodex-litwork-reviewer` role in two separate fresh contexts.
-Do not invent or install another reviewer definition. Give both contexts the same canonical pre-receipt manifest,
+When review is requested, use a reviewer agent role that this Codex setup already provides (LitCodex, when
+installed, provides `litcodex-litwork-reviewer`) in two separate fresh contexts. With no such role, return
+`BLOCKED_INDEPENDENT_REVIEW_UNAVAILABLE`. Do not invent or install another reviewer definition. Give both contexts the same canonical pre-receipt manifest,
 inventory bytes, per-item evidence bytes, combined capture bytes, and their
 ordered hashes. Do not give either reviewer the other's draft or verdict.
 
@@ -325,9 +327,9 @@ one agrees.
 Validate each receipt:
 
 ```bash
-LITCODEX_VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/marketplaces/litcodex/plugins/litcodex/skills/visual-qa"
-test -f "$LITCODEX_VISUAL_QA_ROOT/SKILL.md" || { printf '%s\n' 'visual-qa is not installed in the managed Codex marketplace' >&2; exit 1; }
-node "$LITCODEX_VISUAL_QA_ROOT/scripts/validate-review-receipt.mjs" < review-receipt.json
+VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/skills/visual-qa"
+test -f "$VISUAL_QA_ROOT/SKILL.md" || { printf '%s\n' 'visual-qa is not installed in the Codex skills folder' >&2; exit 1; }
+node "$VISUAL_QA_ROOT/scripts/validate-review-receipt.mjs" < review-receipt.json
 ```
 
 ## 8. Validate the bundle and clean up
@@ -347,9 +349,9 @@ base64, missing bytes, item/hash mismatch, receipt drift, timestamp drift, incom
 unverified renderer ownership cannot produce PASS.
 
 ```bash
-LITCODEX_VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/marketplaces/litcodex/plugins/litcodex/skills/visual-qa"
-test -f "$LITCODEX_VISUAL_QA_ROOT/SKILL.md" || { printf '%s\n' 'visual-qa is not installed in the managed Codex marketplace' >&2; exit 1; }
-node "$LITCODEX_VISUAL_QA_ROOT/scripts/validate-evidence.mjs" \
+VISUAL_QA_ROOT="${CODEX_HOME:-$HOME/.codex}/skills/visual-qa"
+test -f "$VISUAL_QA_ROOT/SKILL.md" || { printf '%s\n' 'visual-qa is not installed in the Codex skills folder' >&2; exit 1; }
+node "$VISUAL_QA_ROOT/scripts/validate-evidence.mjs" \
   --input evidence-bundle.json \
   --tier full \
   --now 2026-07-25T06:00:00.000Z \
@@ -375,11 +377,11 @@ result is better than a fabricated PASS.
 
 ## Package verification
 
-When changing this skill, verify syntax and direct runtime behavior from this directory, then run
-the repository's focused checks, typecheck, docs audit, legacy-token scan, marketplace
-materialization, pack payload inspection, and an isolated installed-path probe. Confirm all three
-schemas, every runtime module, and `references/capture-playbook.md` survive packaging. Tests alone
-do not prove that the installed Codex picker and managed marketplace path work.
+When changing this skill, verify syntax and direct runtime behavior from this directory, run the
+folder's own tests (`npx vitest run` from this directory), then copy the folder into a fresh
+temporary `CODEX_HOME` under `skills/visual-qa` and probe the installed path. Confirm all three
+schemas, every runtime module, and `references/capture-playbook.md` survive the copy. Tests alone
+do not prove that the installed Codex picker and the copied skill path work.
 
 ## #contract.output_channels
 

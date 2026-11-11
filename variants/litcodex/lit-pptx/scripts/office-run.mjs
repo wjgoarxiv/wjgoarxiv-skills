@@ -7,8 +7,8 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const deckRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const docRoot = resolve(deckRoot, "../lit-docx");
-const cacheBase = join(process.env.XDG_CACHE_HOME || join(homedir(), ".cache"), "litcodex", "office");
+// Skill-owned cache; nothing outside this skill folder and this cache is read or written.
+const cacheBase = join(process.env.XDG_CACHE_HOME || join(homedir(), ".cache"), "lit-office");
 const commands = {
   pptx: {
     compile: ["node", join(deckRoot, "scripts/compile-deck.js")],
@@ -18,17 +18,6 @@ const commands = {
     render: ["python", join(deckRoot, "scripts/render_pages.py")],
     learn: ["python", join(deckRoot, "scripts/learn_template.py")],
     validate: ["python", join(deckRoot, "scripts/validate_pptx.py")],
-  },
-  docx: {
-    convert: ["python", join(docRoot, "scripts/convert_md_to_docx.py")],
-    qa: ["python", join(docRoot, "scripts/docx_craft.py")],
-    edit: ["python", join(docRoot, "scripts/edit_docx.py")],
-    pdf: ["python", join(docRoot, "scripts/convert_md_to_pdf.py")],
-    extract_pdf: ["python", join(docRoot, "scripts/convert_pdf.py")],
-    slop: ["python", join(docRoot, "scripts/slop_lint.py")],
-    audit: ["python", join(docRoot, "scripts/visual_audit.py")],
-    clean: ["python", join(docRoot, "scripts/clean_markdown.py")],
-    images: ["python", join(docRoot, "scripts/embed_images.py")],
   },
 };
 
@@ -82,10 +71,9 @@ function npmChildEnv() {
 }
 
 function cacheFor(skill) {
-  const root = skill === "pptx" ? deckRoot : docRoot;
-  const lock = join(root, "runtime/requirements.lock");
+  const lock = join(deckRoot, "runtime/requirements.lock");
   const hash = createHash("sha256").update(readFileSync(lock));
-  if (skill === "pptx") hash.update(readFileSync(join(root, "runtime/package-lock.json")));
+  hash.update(readFileSync(join(deckRoot, "runtime/package-lock.json")));
   return join(cacheBase, skill, hash.digest("hex").slice(0, 16));
 }
 
@@ -93,15 +81,15 @@ function ready(skill) {
   const cache = cacheFor(skill);
   return existsSync(join(cache, "python.ready")) &&
     existsSync(join(cache, "venv", process.platform === "win32" ? "Scripts/python.exe" : "bin/python")) &&
-    (skill === "docx" || (existsSync(join(cache, "node.ready")) && existsSync(join(cache, "node_modules/pptxgenjs"))));
+    existsSync(join(cache, "node.ready")) && existsSync(join(cache, "node_modules/pptxgenjs"));
 }
 
 function ensurePython(skill, cache) {
   if (existsSync(join(cache, "python.ready"))) return;
-  const root = skill === "pptx" ? deckRoot : docRoot;
+  const root = deckRoot;
   const venv = join(cache, "venv");
   const python = join(venv, process.platform === "win32" ? "Scripts/python.exe" : "bin/python");
-  process.stderr.write(`[lit-office] preparing ${skill} Python runtime in product cache\n`);
+  process.stderr.write(`[lit-office] preparing ${skill} Python runtime in ${cache}\n`);
   mkdirSync(cache, { recursive: true });
   const uv = spawnSync("uv", ["--version"], { stdio: "ignore" });
   if (uv.status === 0) {
@@ -116,7 +104,7 @@ function ensurePython(skill, cache) {
 
 function ensureNode(cache) {
   if (existsSync(join(cache, "node.ready"))) return;
-  process.stderr.write("[lit-office] preparing pptx Node runtime in product cache\n");
+  process.stderr.write(`[lit-office] preparing pptx Node runtime in ${cache}\n`);
   mkdirSync(cache, { recursive: true });
   for (const name of ["package.json", "package-lock.json"]) {
     copyFileSync(join(deckRoot, "runtime", name), join(cache, name));
@@ -132,32 +120,29 @@ function ensureNode(cache) {
 function main() {
   const [skill, command, ...args] = process.argv.slice(2);
   if (skill === "install" && command === undefined) {
-    for (const name of ["pptx", "docx"]) {
-      const cache = cacheFor(name);
-      ensurePython(name, cache);
-      if (name === "pptx") ensureNode(cache);
-    }
-    process.stdout.write("[lit-office] office runtime ready\n");
+    const cache = cacheFor("pptx");
+    ensurePython("pptx", cache);
+    ensureNode(cache);
+    process.stdout.write("[lit-office] pptx runtime ready\n");
     return;
   }
   if (skill === "doctor") {
     const which = (name) => onPath(name) !== null;
     process.stdout.write(`${JSON.stringify({
       pptx: { ready: ready("pptx"), cache: cacheFor("pptx") },
-      docx: { ready: ready("docx"), cache: cacheFor("docx") },
       optional: { pandoc: which("pandoc"), xelatex: which("xelatex"), soffice: which("soffice") },
     }, null, 2)}\n`);
     return;
   }
   const selected = commands[skill]?.[command];
   if (!selected) {
-    process.stderr.write("Usage: office-run.mjs doctor | pptx <compile|qa|inventory|embed|render|learn|validate> ... | docx <convert|qa|edit|pdf|extract_pdf|slop|audit|clean|images> ...\n");
+    process.stderr.write("Usage: office-run.mjs install | doctor | pptx <compile|qa|inventory|embed|render|learn|validate> ...\n");
     process.exitCode = 2;
     return;
   }
   const cache = cacheFor(skill);
   if (!ready(skill)) {
-    process.stderr.write("office runtime not installed; run `npm exec --package @litfamily/litcodex -- litcodex office-runtime install` outside the sandbox or approve network for this one step\n");
+    process.stderr.write(`pptx runtime not installed; run \`node "${join(deckRoot, "scripts/office-run.mjs")}" install\` outside the sandbox or approve network for this one step\n`);
     process.exitCode = 78;
     return;
   }

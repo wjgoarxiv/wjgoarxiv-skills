@@ -8,7 +8,7 @@ Fill `templates/readme-facts.json` with one entry per factual claim that will ap
 
 Badges are claims too. Inspect the actual badge source (for example, the workflow/status file or maintained project endpoint) and confirm the label, URL, and displayed claim match before inclusion. Record its label, HTTP(S) URL, and local evidence source in the ledger. Before rendering or interpolating any badge URL into a template, require a clean structural-check result and accept only an absolute HTTP(S) URL with no embedded credentials or raw control/whitespace. The helper enforces that URL shape when run; it does not fetch the URL, check its status, or prove that the badge reports the stated fact. Never invent a passing build, coverage percentage, release version, star count, platform matrix, or license badge. Avoid badges that duplicate the title or add no user decision value.
 
-Run this read-only, network-free checker from the authorized project root. Bind its runtime path to the exact selected skill entrypoint; do not assume a marketplace or cache layout:
+Run this read-only, network-free checker from the authorized project root. Bind its runtime path to the exact selected skill entrypoint (normally `${CODEX_HOME:-$HOME/.codex}/skills/readme-studio/SKILL.md`); do not assume any other install layout:
 
 ```bash
 README_STUDIO_SKILL_FILE="<absolute path of the SKILL.md selected for this turn>"

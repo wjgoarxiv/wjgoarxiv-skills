@@ -26,7 +26,7 @@ import { coverTreatment } from "./fixtures/treatments.mjs";
 // asset list, the cap-height floor, the seek-order check, pinned recipe rows and shipped negatives).
 // Renders run on real Chrome with a pre-warmed fixture cache and skip, with the reason, without them.
 const skillRoot = fileURLToPath(new URL("./", import.meta.url));
-const repoRoot = fileURLToPath(new URL("../../../../", import.meta.url));
+const coverQa = join(fileURLToPath(new URL("./", import.meta.url)), "scripts", "qa-cover-recipes.mjs");
 const RENDER = join(skillRoot, "scripts", "render.mjs");
 const PAGES = join(skillRoot, "fixtures", "cover");
 const FIXTURES = process.env.LITCODEX_MOTION_TEST_FIXTURES;
@@ -512,7 +512,7 @@ describe("C014-C016 (rows): each recipe keeps its page and gate row; each negati
 		expect([base.readUInt32BE(16), base.readUInt32BE(20)]).toEqual([1536, 1024]);
 		const page = readFileSync(join(skillRoot, "recipes", "painted-light", "index.html"), "utf8");
 		expect(/panels: (\[\[.*?\]\]),/u.exec(page)?.[1]).toBe("[[13, 303], [320, 607], [623, 906], [921, 1208], [1224, 1526]]");
-		const qa = readFileSync(join(repoRoot, "scripts", "qa-cover-recipes.mjs"), "utf8");
+		const qa = readFileSync(coverQa, "utf8");
 		expect(qa).toContain('"fixtures", "cover", "painted-light-base.png"');
 		expect(qa).not.toContain("litfamily-machines.png");
 		expect(JSON.parse(readFileSync(join(skillRoot, "recipes", "painted-light", "expected.json"), "utf8")).base).toMatch(/^fixtures\/cover\/painted-light-base\.png /u);
@@ -525,9 +525,8 @@ describe("C014-C016 (rows): each recipe keeps its page and gate row; each negati
 			expect(readFileSync(join(skillRoot, "recipes", "negatives", name, "index.html"), "utf8"), name).toMatch(/NEGATIVE, never a recipe/u);
 		}
 	});
-	it("the recipe QA is wired as npm run qa:cover-recipes and runs the declared painted-light regression for --feather", () => {
-		const pkg = JSON.parse(readFileSync(join(repoRoot, "package.json"), "utf8"));
-		expect(pkg.scripts["qa:cover-recipes"]).toBe("node scripts/qa-cover-recipes.mjs");
+	it("the recipe QA ships as scripts/qa-cover-recipes.mjs and runs the declared painted-light regression for --feather", () => {
+		expect(existsSync(coverQa)).toBe(true);
 		const reg = JSON.parse(readFileSync(join(skillRoot, "recipes", "painted-light", "expected.json"), "utf8")).regressions["feather-150"];
 		expect(reg.patch).toEqual({ find: "feather: 24,", replace: "feather: 150," });
 		expect(readFileSync(join(skillRoot, "recipes", "painted-light", "index.html"), "utf8")).toContain(reg.patch.find);
@@ -537,7 +536,7 @@ describe("C014-C016 (rows): each recipe keeps its page and gate row; each negati
 describe("the cover recipe QA proves a negative only by the gates it declares", () => {
 	// An empty cache holds no motion runtime, so the renderer blocks before any capture.
 	const qa = (args: string[]) =>
-		spawnSync(process.execPath, [join(repoRoot, "scripts", "qa-cover-recipes.mjs"), "--out", temp("litcodex-cover-qa-"), ...args], {
+		spawnSync(process.execPath, [coverQa, "--out", temp("litcodex-cover-qa-"), ...args], {
 			encoding: "utf8",
 			timeout: 120000,
 			env: { ...process.env, XDG_CACHE_HOME: temp("litcodex-no-runtime-") },
@@ -561,7 +560,7 @@ describe("the cover recipe QA proves a negative only by the gates it declares", 
 	});
 
 	it("the verdict needs a gated render and every declared gate failing; an undeclared FLOOR failure is not enough", async () => {
-		const { judgeCase } = (await import(join(repoRoot, "scripts", "qa-cover-recipes.mjs"))) as {
+		const { judgeCase } = (await import(coverQa)) as {
 			judgeCase: (mustFail: string[] | undefined, run: { status: number | null; manifest: unknown }) => { ok: boolean; why: string };
 		};
 		const gates = (over: Record<string, unknown> = {}) => ({

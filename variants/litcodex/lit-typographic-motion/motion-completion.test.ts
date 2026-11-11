@@ -56,7 +56,7 @@ describe("a film turn is not done without a verified render and a look receipt",
 	});
 });
 
-// The Stop hook runs this check synchronously with a 5 s manifest timeout. A render folder is written by a
+// `render.mjs completion` must answer quickly on any output folder. A render folder is written by a
 // model, so a fifo or a link to a device at a path the check reads must end in a verdict, never a hang.
 describe("the done-check reads only bounded regular files", () => {
 	const completion = fileURLToPath(new URL("./engine/completion.mjs", import.meta.url));

@@ -259,7 +259,7 @@ img2webp, lossy, loop forever, `-m 4`, every frame `-d` = round(1000 / fps) ms, 
 `edgeFrames` frames at `edgeQ`, default keyframes. `-m 6` took minutes and gained little; `-mixed`
 changes nothing while every frame is lossy. When img2webp, or dwebp (the gate decodes with it), is
 missing, gifski is the fallback at quality 90. With neither, the render stops with exit 21
-`BLOCKED_NO_COVER_ENCODER` before any capture. `litcodex doctor` prints which one this host has.
+`BLOCKED_NO_COVER_ENCODER` before any capture. `node "$SKILL_DIR/scripts/runtime.mjs" status` prints which one this host has.
 
 ## The gate (decoded file)
 
@@ -369,7 +369,7 @@ last round stamped with the final render's stills and viewing `sheet.png`, `post
 
 Each recipe keeps its decoded gate row in `recipes/<name>/expected.json`: median d, moving share,
 longest still, spike, seamLocal and bytes, with the settings and the treatment it was pinned with.
-`npm run qa:cover-recipes` in a LitCodex checkout re-renders every recipe through this renderer and
+`node "$SKILL_DIR/scripts/qa-cover-recipes.mjs"` re-renders every recipe through this renderer and
 fails when median d or the moving share leaves +-15 % of its row, seamLocal leaves TARGET or the file
 passes 2 MiB. The `hero-3d` row was measured on the GPU rung; the QA prints the rung each row rendered
 on, and a run that fell back to the software rung says so instead of hiding it.
@@ -410,7 +410,7 @@ node "$R" completion --out <dir>
 minutes; give the call a timeout of at least 600 s, or add `--detach` and read `.run/exit.json` when it
 lands. It writes `cover.webp` (or `cover.gif`), `poster.png`, `stills/`, `manifest.json` and
 `gate-report.txt`. Exit 13 names the gates that miss TARGET; 14 the runtime is not pre-warmed
-(`litcodex motion-runtime install` outside the sandbox); 16 the treatment or asset-list field; 17 the
+(`node "$SKILL_DIR/scripts/runtime.mjs" install` outside the sandbox); 16 the treatment or asset-list field; 17 the
 page contract or the asset list; 18 a call that is not a function of `t`, or a frame that differs in a
 fresh browser or when sought out of order; 19 a network request; 21 no cover encoder; 22 a listed asset
 is missing.

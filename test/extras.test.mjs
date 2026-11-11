@@ -10,7 +10,7 @@ const json = (p) => JSON.parse(read(p).toString('utf8'));
 const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((d) => (d.isDirectory() ? walk(join(dir, d.name)) : [join(dir, d.name)]));
 
 const market = json('.claude-plugin/marketplace.json');
-const SUPPORT_FOLDERS = { figures: ['lit-humanizer'] };
+const SUPPORT_FOLDERS = { figures: ['lit-humanizer'], design: ['browser-drive', 'lit-diagram-drawer', 'lit-typographic-motion'] };
 
 test('every marketplace entry is a plugin folder with a manifest and at least one skill', () => {
   assert.equal(market.name, 'wjgoarxiv-skills');
@@ -75,4 +75,27 @@ test('the figures plugin carries its three skills and every file they reach outs
     assert.ok(statSync(fig(f)).isFile(), f);
   }
   assert.equal(existsSync(fig('skills/lit-humanizer/SKILL.md')), false, 'lit-humanizer support files are not a skill here');
+});
+
+test('the design plugin carries frontend-ui-ux, visual-qa and every file they reach outside their folders', () => {
+  assert.ok(market.plugins.some((p) => p.name === 'design' && p.source === './plugins/design'));
+  const des = (f) => join(root, 'plugins/design', f);
+  for (const id of ['frontend-ui-ux', 'visual-qa']) assert.ok(statSync(des(`skills/${id}/SKILL.md`)).isFile(), id);
+  for (const f of ['skills/frontend-ui-ux/scripts/interface-probe.mjs', 'skills/frontend-ui-ux/scripts/design-lock.mjs', 'skills/frontend-ui-ux/kit/fonts.json',
+    'skills/frontend-ui-ux/references/_canonical-corpus/manifest.json', 'skills/visual-qa/scripts/cli.mjs', 'skills/visual-qa/scripts/evidence.mjs',
+    'skills/browser-drive/scripts/capability-probe.mjs', 'lib/secret-shapes.mjs', 'lib/strict-json.mjs', 'lib/rename-aliases.mjs',
+    'skills/lit-diagram-drawer/assets/fonts/PretendardVariable.woff2', 'skills/lit-diagram-drawer/assets/fonts/OFL.txt',
+    'skills/lit-typographic-motion/fonts/jetbrains-mono/JetBrainsMono-wght-latin.woff2', 'skills/lit-typographic-motion/fonts/jetbrains-mono/OFL.txt']) {
+    assert.ok(statSync(des(f)).isFile(), f);
+  }
+  for (const id of ['browser-drive', 'lit-diagram-drawer', 'lit-typographic-motion']) {
+    assert.equal(existsSync(des(`skills/${id}/SKILL.md`)), false, `${id} support files are not a skill here`);
+  }
+  const kit = des('skills/frontend-ui-ux/kit');
+  for (const font of json('plugins/design/skills/frontend-ui-ux/kit/fonts.json').fonts) {
+    for (const f of [font, font.licence]) {
+      const sha = createHash('sha256').update(readFileSync(join(kit, f.source))).digest('hex');
+      assert.equal(sha, f.sha256, f.source);
+    }
+  }
 });

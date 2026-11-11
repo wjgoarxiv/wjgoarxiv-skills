@@ -1,0 +1,9 @@
+{
+  "name": "design",
+  "description": "frontend-ui-ux and visual-qa, moved unchanged from LitClaude: build and inspect interfaces from a locked house style and kit with a responsive interface probe, then verify the built interface with captured evidence across viewports and states.",
+  "version": "0.1.0",
+  "author": { "name": "wjgoarxiv" },
+  "license": "MIT AND Apache-2.0",
+  "keywords": ["claude-code", "skills", "frontend", "ui", "ux", "design-system", "interface-probe", "visual-qa", "screenshots"],
+  "skills": "./skills"
+}

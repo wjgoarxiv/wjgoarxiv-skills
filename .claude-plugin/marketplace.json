@@ -17,6 +17,11 @@
       "name": "figures",
       "source": "./plugins/figures",
       "description": "lit-diagram-drawer, lit-schematic and lit-scientific-visualization: conceptual diagrams, physical schematics and publication plots of measured data, with the scientific-visualization source the plot skill adapts."
+    },
+    {
+      "name": "design",
+      "source": "./plugins/design",
+      "description": "frontend-ui-ux and visual-qa: interfaces built from a locked house style and design kit with a responsive interface probe, and verification of a built interface with captured screenshots and evidence."
     }
   ]
 }

@@ -13,9 +13,9 @@ This is a local pilot. It has no remote yet; the GitHub install form arrives whe
 | `decks` | `lit-pptx` | A finished PowerPoint deck (.pptx): a design direction for the audience and content, Markdown slide source, native editable charts, embedded Pretendard fonts, a QA gate and rendered-page review | LitClaude `fc0fe5d` (1.0.48) |
 | `documents` | `lit-docx` | A finished Word document (.docx): report, brief, manual, proposal, memo or journal manuscript in a tonality chosen for the content or a named publisher profile, DOCX/PDF to Markdown, in-place edits of an existing .docx, PDF render, and a QA gate with rendered pages | LitClaude `8c736ce` (1.0.49 plus the decks move) |
 | `figures` | `lit-diagram-drawer`, `lit-schematic`, `lit-scientific-visualization` | Conceptual and technical diagrams as HTML/SVG with PNG and Office-safe SVG export; physical schematics (P&ID, PFD, BFD, equipment layout, apparatus figure, isometric cutaway) as millimetre-sized SVG with a QA gate and 600 dpi render; publication plots of measured data from the scientific-visualization source the plot skill adapts | LitClaude `2381bfe` (files identical to 1.0.49) |
+| `design` | `frontend-ui-ux`, `visual-qa` | Interfaces built and inspected from one locked house style, layout family and design kit, with a design contract, a design-intelligence database and an interface probe across the responsive matrix; verification of a built interface with captured screenshots at several viewports and states, an evidence manifest and a blocker contract | LitClaude `aaea364` (files identical to 1.0.49) |
 
-Families still to move, one per product release: `video-covers` (lit-typographic-motion,
-readme-studio) and `design` (frontend-ui-ux, visual-qa).
+Family still to move, in a later product release: `video-covers` (lit-typographic-motion, readme-studio).
 
 ## Install in Claude Code
 
@@ -26,14 +26,15 @@ claude plugin marketplace add <path to your wjgoarxiv-skills clone>
 claude plugin install decks@wjgoarxiv-skills
 claude plugin install documents@wjgoarxiv-skills
 claude plugin install figures@wjgoarxiv-skills
+claude plugin install design@wjgoarxiv-skills
 ```
 
 Inside a session the same thing is `/plugin marketplace add <path>` and then `/plugin install decks@wjgoarxiv-skills`.
 After publication the marketplace line becomes `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`.
 
-The skills then answer as `decks:lit-pptx`, `documents:lit-docx`, `figures:lit-diagram-drawer` and
-`figures:lit-schematic`. `lit-scientific-visualization` is user-invoked only, as it was in LitClaude: type
-`/figures:lit-scientific-visualization <request>`. LitClaude's own `lit` routing for decks, documents and figures keeps
+The skills then answer as `decks:lit-pptx`, `documents:lit-docx`, `figures:lit-diagram-drawer`,
+`figures:lit-schematic`, `design:frontend-ui-ux` and `design:visual-qa`. `lit-scientific-visualization` is user-invoked only, as it was in LitClaude: type
+`/figures:lit-scientific-visualization <request>`. LitClaude's own `lit` routing for decks, documents, figures and interfaces keeps
 working: the stub it loads points at the moved skill when it is installed.
 
 ## Layout
@@ -67,6 +68,21 @@ runtime itself. The pinned runtime installs on first use into
   Its integrity check also covers `vendor/handoff/` (4 files, with provenance and licence), so that copy is here too,
   unused by anything else.
 
+`design` carries what frontend-ui-ux and visual-qa reach outside their own folders, unchanged, at the same relative
+places:
+- `lib/`: `strict-json.mjs`, `rename-aliases.mjs` and `secret-shapes.mjs`, which the probe, the evidence checker and the
+  review rules import;
+- `skills/browser-drive/scripts/capability-probe.mjs`: the interface probe finds and checks the browser driver with it.
+  There is no `SKILL.md` beside it; browser-drive itself stays in the LitFamily products;
+- `skills/lit-diagram-drawer/assets/fonts/` and `skills/lit-typographic-motion/fonts/jetbrains-mono/`: the Pretendard
+  and JetBrains Mono fonts with their OFL licences, which the design kit's `kit/fonts.json` copies by path and checks by
+  sha256. These folders have no `SKILL.md` either.
+
+frontend-ui-ux's own `LICENSE` (MIT) and `THIRD-PARTY-NOTICE.txt` cover its design data, and its
+`references/_canonical-corpus/legal/` holds the Apache-2.0 licence of the reference corpus, so the plugin declares
+`MIT AND Apache-2.0`. LitClaude keeps a copy of the interface probe scripts in its frontend-ui-ux stub, because its
+lit workflows check web-interface edits with that probe.
+
 lit-schematic looks for Pretendard first in `lit-diagram-drawer/assets/fonts/`, which `figures` carries; its second
 place, `lit-pptx/fonts/`, is not copied.
 
@@ -84,4 +100,5 @@ claude plugin validate .
 claude plugin validate plugins/decks
 claude plugin validate plugins/documents
 claude plugin validate plugins/figures
+claude plugin validate plugins/design
 ```

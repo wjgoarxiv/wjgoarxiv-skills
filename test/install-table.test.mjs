@@ -29,10 +29,10 @@ const expected = (family, id) => {
   const codexHome = '"${CODEX_HOME:-$HOME/.codex}';
   const hermesHome = '"${HERMES_HOME:-$HOME/.hermes}';
   return {
-    'Claude Code': [`claude plugin marketplace add ${CLONE}`, `claude plugin install ${family}@wjgoarxiv-skills`],
+    'Claude Code': ['claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills', `claude plugin install ${family}@wjgoarxiv-skills`],
     'Codex CLI': [`mkdir -p ${codexHome}/skills"`, `cp -R "${CLONE}/variants/litcodex/${id}" ${codexHome}/skills/${id}"`],
     OpenCode: [`rm -r ~/.config/opencode/skills/${id}`, `cp -R "${CLONE}/variants/litopencode/${id}" ~/.config/opencode/skills/${id}`],
-    'Grok Build': [`grok plugin install "${CLONE}/variants/litgrok/${id}" --trust`],
+    'Grok Build': ['git clone https://github.com/wjgoarxiv/wjgoarxiv-skills', `grok plugin install "${CLONE}/variants/litgrok/${id}" --trust`],
     'Muse Code': [`muse skills install ${CLONE}/variants/litmuse/${id} --scope user`],
     'Antigravity CLI': [`mkdir -p ~/.gemini/config/skills && cp -R "${CLONE}/variants/litgravity/${id}" ~/.gemini/config/skills/`],
     'Hermes Agent': [`mkdir -p ${hermesHome}/skills"`, `cp -R "${CLONE}/variants/lithermes/${id}" ${hermesHome}/skills/"`],

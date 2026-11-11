@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+- README: the repository is public at https://github.com/wjgoarxiv/wjgoarxiv-skills, so the Claude Code install
+  section and the Claude Code column of the pick-one table give `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`
+  (a local clone stays the offline form), and the Grok Build column starts with LitGrok's
+  `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills` line. Every cell again matches its product's current stub;
+  `npm test` checks the new lines.
 - `variants/litgrok/`: the nine SKILL.md files, both `complete-contract.md` references and `CHANGES.md` give the
   folder-path install line, `grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/<id>" --trust`.
   Grok Build copied the whole repository, `.git` included, for the earlier `#` subfolder form.

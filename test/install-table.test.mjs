@@ -32,7 +32,7 @@ const expected = (family, id) => {
     'Claude Code': [`claude plugin marketplace add ${CLONE}`, `claude plugin install ${family}@wjgoarxiv-skills`],
     'Codex CLI': [`mkdir -p ${codexHome}/skills"`, `cp -R "${CLONE}/variants/litcodex/${id}" ${codexHome}/skills/${id}"`],
     OpenCode: [`rm -r ~/.config/opencode/skills/${id}`, `cp -R "${CLONE}/variants/litopencode/${id}" ~/.config/opencode/skills/${id}`],
-    'Grok Build': [`grok plugin install "${CLONE}#variants/litgrok/${id}" --trust`],
+    'Grok Build': [`grok plugin install "${CLONE}/variants/litgrok/${id}" --trust`],
     'Muse Code': [`muse skills install ${CLONE}/variants/litmuse/${id} --scope user`],
     'Antigravity CLI': [`mkdir -p ~/.gemini/config/skills && cp -R "${CLONE}/variants/litgravity/${id}" ~/.gemini/config/skills/`],
     'Hermes Agent': [`mkdir -p ${hermesHome}/skills"`, `cp -R "${CLONE}/variants/lithermes/${id}" ${hermesHome}/skills/"`],
@@ -75,7 +75,7 @@ test('every cell carries the install lines its product stub gives, and every pat
       assert.deepEqual(codeSpans(cell), want[h], `${id} × ${h}`);
     });
     for (const line of Object.values(want).flat()) {
-      for (const m of line.matchAll(/<path to your wjgoarxiv-skills clone>[/#]([^"\s]+)/gu)) {
+      for (const m of line.matchAll(/<path to your wjgoarxiv-skills clone>\/([^"\s]+)/gu)) {
         assert.ok(statSync(join(root, m[1])).isDirectory(), `${id}: ${m[1]} exists`);
       }
     }
@@ -129,6 +129,12 @@ test('every variant is a moved skill id, and its receipt matches the unchanged c
     const same = now.length === covered.size && now.every((f) => covered.has(f) && createHash('sha256').update(read(f)).digest('hex') === rows.find((r) => r[2] === f)[0]);
     if (!same) assert.ok(existsSync(join(root, dir, 'CHANGES.md')), `${dir} differs from its receipt, so CHANGES.md says why`);
   }
+});
+
+// Grok Build copies the whole repository, .git included, for a `<source>#<subfolder>` install, and only the folder
+// for a folder path, so no install line or prose here may give the `#` form.
+test('no install line names a #subfolder of the repository', () => {
+  assert.doesNotMatch(readme, /wjgoarxiv-skills clone>#|wjgoarxiv-skills#/u);
 });
 
 test('the OpenCode column names a variant folder for every moved skill', () => {

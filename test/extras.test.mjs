@@ -10,7 +10,7 @@ const json = (p) => JSON.parse(read(p).toString('utf8'));
 const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((d) => (d.isDirectory() ? walk(join(dir, d.name)) : [join(dir, d.name)]));
 
 const market = json('.claude-plugin/marketplace.json');
-const SUPPORT_FOLDERS = { figures: ['lit-humanizer'], design: ['browser-drive', 'lit-diagram-drawer', 'lit-typographic-motion'] };
+const SUPPORT_FOLDERS = { figures: ['lit-humanizer'], design: ['browser-drive', 'lit-diagram-drawer', 'lit-typographic-motion'], 'video-covers': ['lit-pptx'] };
 
 test('every marketplace entry is a plugin folder with a manifest and at least one skill', () => {
   assert.equal(market.name, 'wjgoarxiv-skills');
@@ -96,6 +96,41 @@ test('the design plugin carries frontend-ui-ux, visual-qa and every file they re
     for (const f of [font, font.licence]) {
       const sha = createHash('sha256').update(readFileSync(join(kit, f.source))).digest('hex');
       assert.equal(sha, f.sha256, f.source);
+    }
+  }
+});
+
+test('the video-covers plugin carries lit-typographic-motion, readme-studio and every file they reach outside their folders', () => {
+  assert.ok(market.plugins.some((p) => p.name === 'video-covers' && p.source === './plugins/video-covers'));
+  const vc = (f) => join(root, 'plugins/video-covers', f);
+  for (const id of ['lit-typographic-motion', 'readme-studio']) assert.ok(statSync(vc(`skills/${id}/SKILL.md`)).isFile(), id);
+  for (const f of ['skills/lit-typographic-motion/scripts/motion.mjs', 'skills/lit-typographic-motion/scripts/motion-runtime.mjs',
+    'skills/lit-typographic-motion/scripts/motion-doctor.mjs', 'skills/lit-typographic-motion/engine/node/done.mjs',
+    'skills/lit-typographic-motion/engine/package-lock.json', 'skills/lit-typographic-motion/engine/NOTICE',
+    'skills/lit-typographic-motion/engine/THIRD_PARTY_NOTICES', 'skills/lit-typographic-motion/fonts/manifest.json',
+    'skills/readme-studio/scripts/validate-readme-facts.mjs', 'skills/readme-studio/templates/remotion-cover/package-lock.json',
+    'lib/mark.mjs', 'lib/mark-logo.png', 'lib/output_mark.py', 'lib/project-state-root.mjs',
+    'lib/rules/constants.mjs', 'lib/rules/discovery.mjs', 'lib/rules/scanner.mjs',
+    'skills/lit-pptx/fonts/pretendard/Pretendard-Regular.otf', 'skills/lit-pptx/fonts/pretendard/Pretendard-Bold.otf',
+    'skills/lit-pptx/fonts/pretendard/OFL.txt']) {
+    assert.ok(statSync(vc(f)).isFile(), f);
+  }
+  assert.equal(existsSync(vc('skills/lit-pptx/SKILL.md')), false, 'lit-pptx support files are not a skill here');
+  // The engine reaches the mark helper as ../../../../lib from engine/node, and the font manifest reaches Pretendard
+  // as ../../lit-pptx/fonts/pretendard; both resolve inside this plugin and the fonts match their pinned hashes.
+  for (const f of ['cover.mjs', 'encode.mjs', 'end-card.mjs']) {
+    const body = read(`plugins/video-covers/skills/lit-typographic-motion/engine/node/${f}`).toString('utf8');
+    assert.match(body, /\.\.\/\.\.\/\.\.\/\.\.\/lib\/mark\.mjs/u, f);
+  }
+  const fonts = join(root, 'plugins/video-covers/skills/lit-typographic-motion/fonts');
+  const manifest = json('plugins/video-covers/skills/lit-typographic-motion/fonts/manifest.json');
+  const pretendard = Object.values(manifest).flatMap((v) => (v && typeof v === 'object' ? Object.entries(v) : []))
+    .filter(([key]) => key.startsWith('pretendard-')).map(([, font]) => font);
+  assert.ok(pretendard.length >= 2, 'the manifest names the Pretendard weights');
+  for (const font of pretendard) {
+    for (const f of [{ path: font.path, sha256: font.sha256 }, ...font.licence]) {
+      const sha = createHash('sha256').update(readFileSync(join(fonts, f.path))).digest('hex');
+      assert.equal(sha, f.sha256, f.path);
     }
   }
 });

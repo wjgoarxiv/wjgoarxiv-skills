@@ -22,6 +22,11 @@
       "name": "design",
       "source": "./plugins/design",
       "description": "frontend-ui-ux and visual-qa: interfaces built from a locked house style and design kit with a responsive interface probe, and verification of a built interface with captured screenshots and evidence."
+    },
+    {
+      "name": "video-covers",
+      "source": "./plugins/video-covers",
+      "description": "lit-typographic-motion and readme-studio: finished short films and silent README cover loops, made from a treatment and checked by their own gate, and factual READMEs with inspected covers."
     }
   ]
 }

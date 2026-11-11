@@ -1,0 +1,9 @@
+{
+  "name": "video-covers",
+  "description": "lit-typographic-motion and readme-studio, moved unchanged from LitClaude: finished short films and silent README cover loops from a treatment, a board round and a gated render, and factual READMEs with inspected covers and outlined title type.",
+  "version": "0.1.0",
+  "author": { "name": "wjgoarxiv" },
+  "license": "MIT AND OFL-1.1",
+  "keywords": ["claude-code", "skills", "video", "motion-graphics", "kinetic-typography", "readme", "cover", "film"],
+  "skills": "./skills"
+}

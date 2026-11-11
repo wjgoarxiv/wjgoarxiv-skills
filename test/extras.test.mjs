@@ -10,6 +10,7 @@ const json = (p) => JSON.parse(read(p).toString('utf8'));
 const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((d) => (d.isDirectory() ? walk(join(dir, d.name)) : [join(dir, d.name)]));
 
 const market = json('.claude-plugin/marketplace.json');
+const SUPPORT_FOLDERS = { figures: ['lit-humanizer'] };
 
 test('every marketplace entry is a plugin folder with a manifest and at least one skill', () => {
   assert.equal(market.name, 'wjgoarxiv-skills');
@@ -18,7 +19,11 @@ test('every marketplace entry is a plugin folder with a manifest and at least on
     const dir = p.source.replace(/^\.\//, '');
     const manifest = json(`${dir}/.claude-plugin/plugin.json`);
     assert.equal(manifest.name, p.name);
-    const skills = readdirSync(join(root, dir, 'skills'));
+    const folders = readdirSync(join(root, dir, 'skills'));
+    // A folder without SKILL.md is not a skill: it carries files a moved skill imports by relative path.
+    const support = folders.filter((id) => !existsSync(join(root, dir, 'skills', id, 'SKILL.md')));
+    assert.deepEqual(support, SUPPORT_FOLDERS[p.name] ?? [], `${p.name} support folders`);
+    const skills = folders.filter((id) => !support.includes(id));
     assert.ok(skills.length >= 1, `${p.name} has skills`);
     for (const id of skills) {
       const md = read(`${dir}/skills/${id}/SKILL.md`).toString('utf8');
@@ -56,4 +61,18 @@ test('the documents plugin carries lit-docx and the runtime files its scripts re
   for (const f of ['SKILL.md', 'NOTICE', 'scripts/convert_md_to_docx.py', 'scripts/qa_docx.py', 'templates/docx/korean-generic.docx']) {
     assert.ok(statSync(join(root, 'plugins/documents/skills/lit-docx', f)).isFile(), f);
   }
+});
+
+test('the figures plugin carries its three skills and every file they reach outside their folders', () => {
+  assert.ok(market.plugins.some((p) => p.name === 'figures' && p.source === './plugins/figures'));
+  const fig = (f) => join(root, 'plugins/figures', f);
+  for (const id of ['lit-diagram-drawer', 'lit-schematic', 'lit-scientific-visualization']) assert.ok(statSync(fig(`skills/${id}/SKILL.md`)).isFile(), id);
+  for (const f of ['lib/mark.mjs', 'lib/mark-logo.png', 'lib/npm-invocation.mjs', 'lib/project-state-root.mjs', 'lib/rules/discovery.mjs',
+    'lib/bundled-skills-integrity.mjs', 'bin/litclaude-scientific-visualization-doctor.js', 'vendor/scientific-visualization/SKILL.md',
+    'vendor/scientific-visualization/scripts/style_presets.py', 'vendor/handoff/SKILL.md', 'vendor/licenses/045_scientific-visualization-MIT.txt',
+    'skills/lit-humanizer/scripts/core.mjs', 'skills/lit-humanizer/scripts/detect.mjs', 'skills/lit-humanizer/rules.json',
+    'skills/lit-diagram-drawer/assets/fonts/PretendardVariable.woff2']) {
+    assert.ok(statSync(fig(f)).isFile(), f);
+  }
+  assert.equal(existsSync(fig('skills/lit-humanizer/SKILL.md')), false, 'lit-humanizer support files are not a skill here');
 });

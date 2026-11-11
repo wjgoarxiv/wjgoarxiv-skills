@@ -12,6 +12,11 @@
       "name": "documents",
       "source": "./plugins/documents",
       "description": "lit-docx: finished Word documents (.docx) from a request, notes or source files, plus DOCX/PDF to Markdown and in-place edits, with its own office runtime."
+    },
+    {
+      "name": "figures",
+      "source": "./plugins/figures",
+      "description": "lit-diagram-drawer, lit-schematic and lit-scientific-visualization: conceptual diagrams, physical schematics and publication plots of measured data, with the scientific-visualization source the plot skill adapts."
     }
   ]
 }

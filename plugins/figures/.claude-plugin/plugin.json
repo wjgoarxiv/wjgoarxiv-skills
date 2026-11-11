@@ -1,0 +1,9 @@
+{
+  "name": "figures",
+  "description": "lit-diagram-drawer, lit-schematic and lit-scientific-visualization, moved unchanged from LitClaude: conceptual diagrams, physical schematics (P&ID, PFD, apparatus, cutaways) and publication plots of measured data, each with its own checks.",
+  "version": "0.1.0",
+  "author": { "name": "wjgoarxiv" },
+  "license": "MIT",
+  "keywords": ["claude-code", "skills", "diagram", "schematic", "p&id", "figure", "matplotlib", "scientific-visualization"],
+  "skills": "./skills"
+}

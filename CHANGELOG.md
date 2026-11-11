@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- `variants/litgrok/`: the nine SKILL.md files, both `complete-contract.md` references and `CHANGES.md` give the
+  folder-path install line, `grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/<id>" --trust`.
+  Grok Build copied the whole repository, `.git` included, for the earlier `#` subfolder form.
+- README: the Grok Build column and the table intro follow LitGrok's current notes (the folder-path line above).
+  `npm test` rejects a `#` subfolder install line in the README and in every edition.
+- `variants/litcodex/lit-diagram-drawer/`: the visible-text detector is bundled in `humanizer/` (copied unchanged from
+  LitCodex `b82ad1c`). `diagram-metrics.mjs` and `doctor.mjs` reached it in a sibling `lit-humanizer` folder, so the
+  verifiers failed from a one-folder copy. `npm test` now follows the paths every edition builds from its own location
+  and runs that detector and doctor from a folder copied alone.
 - `variants/`: the LitHermes (`a2466f2`) edition of the nine moved skills, copied unchanged with
   `receipts/variants-lithermes.sha256`. Then, one commit per product, the Codex CLI, OpenCode, Grok Build, Antigravity
   CLI, Muse Code and Hermes Agent editions were made to run on their own: each folder carries the files it reads,

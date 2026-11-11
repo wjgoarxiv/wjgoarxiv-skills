@@ -20,22 +20,22 @@
 
 # wjgoarxiv-skills
 
-These nine skills grew up inside LitFamily, the set of add-ons that brings one way of working (plans, loops, goals,
-reviews) to seven coding agents. Over time they became the heaviest part of every product: a deck builder with its
+These nine skills grew up inside LitFamily, my set of add-ons that brings one way of working (plans, loops, goals,
+reviews) to seven coding agents. Over time they turned into the heaviest part of every product: a deck builder with its
 own office runtime, a document studio, three kinds of figure, an interface kit and a film engine. Most people did not
-need all of that on every install, and some wanted just one of them without the rest of LitFamily. So the skills
-moved here, unchanged, and each LitFamily product kept only a small stub of the same name that says what the skill
-does and how to install it from this shelf. Nothing here needs a LitFamily product: pick the one skill you want, for
-the agent you already use, and leave the rest on the shelf.
+need all of that on every install, and some wanted just one of them without the rest of LitFamily. So I kept LitFamily
+itself light and moved the skills out here, unchanged. Each LitFamily product kept only a small stub with the same name,
+which tells you what the skill does and how to install it from this shelf. You can use everything here without any
+LitFamily product. Pick the one skill you want, for the agent you already use, and leave the rest on the shelf.
 
 The repository is public at https://github.com/wjgoarxiv/wjgoarxiv-skills.
 
 ## The big picture
 
-Every LitFamily product kept its core and a stub for each moved skill, and every stub points to one place in this
-repository. Where it points depends on the harness. LitClaude's copies lean on shared files beside them (`lib/`,
-`vendor/`, support folders), so Claude Code installs a whole family plugin. The six other products each shipped their
-own edition of the same nine skills, written for their own harness, and those editions now live under
+Every LitFamily product kept its core, plus one stub for each skill that moved out, and every stub points to one place
+in this repository. Which place depends on the harness. LitClaude's copies lean on shared files sitting next to them
+(`lib/`, `vendor/`, support folders), so on Claude Code you install a whole family plugin. The six other products each
+had their own edition of the same nine skills, written for their own harness. Those editions now live under
 `variants/<product>/<id>/`, one self-contained folder per skill.
 
 <p align="center">
@@ -47,22 +47,26 @@ own edition of the same nine skills, written for their own harness, and those ed
 
 ## Inside: one request, five units, five gates
 
-Here is the same shelf drawn as a process plant. A request comes in on the left and goes to the family that makes
-that kind of file. Each family brings its own quality gate, made of the checks its skills already run: overflow and
-contrast for decks, integrity and prose lint for documents, the schematic QA gate and a look at the render for
-figures, a viewport matrix for interfaces, a flash audit and a seam check for films. A draft that passes leaves as
-the deliverable; one that fails goes back for another pass. The stream table underneath is the whole repository in
-one grid: which plugin, which skills, and what leaves.
+Here is the same shelf again, drawn as a process plant. A request comes in on the left and goes to the family that makes
+that kind of file. Each family has its own quality gate, built from the checks its skills already run: overflow and
+contrast for decks, integrity and prose lint for documents, the schematic QA gate and a look at the render for figures,
+a viewport matrix for interfaces, and a flash audit and a seam check for films. A draft that passes leaves as the
+deliverable. A draft that fails goes back for another pass. The stream table underneath is the whole repository in one
+grid: which plugin, which skills, and what comes out.
 
 <p align="center">
-  <img src="docs/assets/schematic/skill-plant.en.png" width="900" alt="Process flow diagram of wjgoarxiv-skills as a plant: a request is split to five family units. Each draft passes a QA analyser whose diverter valve sends it to the deliverable or back for rework. A stream table below lists each family's skills and outputs.">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/schematic/skill-plant.en.dark.png">
+    <source media="(prefers-color-scheme: light)" srcset="docs/assets/schematic/skill-plant.en.png">
+    <img src="docs/assets/schematic/skill-plant.en.png" width="900" alt="Process flow diagram of wjgoarxiv-skills as a plant: a request is split to five family units. Each draft passes a QA analyser whose diverter valve sends it to the deliverable or back for rework. A stream table below lists each family's skills and outputs.">
+  </picture>
 </p>
 
 ## The five families
 
-Each skill makes one kind of file, and some hand their output to another. Charts and diagrams flow into decks and
-documents, and a built interface flows into its check. The map draws an arrow only where a skill's own `SKILL.md`
-names the handoff; the dashed one is a pairing that simply suits a README.
+Each skill makes one kind of file, and some of them hand their output on to another skill. Charts and diagrams flow into
+decks and documents, and a built interface flows into its check. I drew an arrow only where a skill's own `SKILL.md`
+names the handoff. The dashed one is the exception: it is just a pairing that happens to suit a README.
 
 <p align="center">
   <picture>
@@ -71,17 +75,17 @@ names the handoff; the dashed one is a pairing that simply suits a README.
   </picture>
 </p>
 
-The pictures on this page double as samples. The cover at the top is a silent, seamless README cover loop, the kind
-of thing `video-covers` makes. The big picture, the skill map and the install paths were drawn and exported with
+The pictures on this page are samples too. The cover at the top is a silent, seamless README cover loop, exactly the
+kind of thing `video-covers` makes. I drew and exported the big picture, the skill map and the install paths with
 `lit-diagram-drawer`, and the plant and the manifold with `lit-schematic`.
 
 ### `decks`: slides people can still edit
 
-`lit-pptx` builds a finished PowerPoint deck from a request, notes or source files. It first chooses a design
-direction for the audience and the content, then writes the slides as Markdown and compiles them with native,
-editable charts and embedded Pretendard fonts. A QA gate looks for overflow, weak contrast and sparse or blank
-slides, and the rendered pages get a review before the deck is done. Charts can come in from
-`lit-scientific-visualization` and diagrams from `lit-diagram-drawer`.
+`lit-pptx` builds a finished PowerPoint deck from a request, notes or source files. It picks a design direction for the
+audience and the content first, then writes the slides in Markdown and compiles them with native, editable charts and
+embedded Pretendard fonts. A QA gate looks for overflow, weak contrast and sparse or blank slides, and the rendered
+pages get a review before the deck counts as done. Charts can come in from `lit-scientific-visualization`, and diagrams
+from `lit-diagram-drawer`.
 
 <p align="center">
   <picture>
@@ -94,10 +98,10 @@ Moved from LitClaude `fc0fe5d` (1.0.48).
 
 ### `documents`: Word files that look designed
 
-`lit-docx` produces a finished Word document: a report, brief, manual, proposal, memo or journal manuscript, in a
-tonality chosen for the content or in a named publisher profile (Elsevier, ACS, IEEE, Nature, or a Korean generic
-style). It also turns DOCX or PDF into clean Markdown, edits an existing .docx in place, renders a PDF, and gates the
-result with integrity, prose and design checks on the rendered pages.
+`lit-docx` makes a finished Word document: a report, brief, manual, proposal, memo or journal manuscript. It picks a
+tonality for the content, or follows a publisher profile you name (Elsevier, ACS, IEEE, Nature, or a Korean generic
+style). It can also turn DOCX or PDF into clean Markdown, edit an existing .docx in place and render a PDF. At the end
+it gates the result with integrity, prose and design checks on the rendered pages.
 
 <p align="center">
   <picture>
@@ -110,12 +114,12 @@ Moved from LitClaude `8c736ce` (1.0.49 plus the decks move).
 
 ### `figures`: three skills for three kinds of picture
 
-A figure starts with one question: what is the reader looking at? Measured data becomes a plot, an idea or a system
-becomes a diagram, and real hardware becomes a schematic. `lit-scientific-visualization` makes publication plots of
-measured data from the scientific-visualization source it adapts. `lit-diagram-drawer` draws conceptual and technical
-diagrams as HTML/SVG and exports PNG and Office-safe SVG for slides and documents. `lit-schematic` draws physical
-equipment (P&ID, PFD, BFD, equipment layouts, apparatus figures, isometric cutaways) as millimetre-sized SVG with a QA
-gate and a 600 dpi render.
+Every figure starts with the same question: what is the reader actually looking at? Measured data becomes a plot, an
+idea or a system becomes a diagram, and real hardware becomes a schematic. `lit-scientific-visualization` makes
+publication plots of measured data, built on the scientific-visualization source it adapts. `lit-diagram-drawer` draws
+conceptual and technical diagrams as HTML/SVG and exports PNG and Office-safe SVG for slides and documents.
+`lit-schematic` draws physical equipment (P&ID, PFD, BFD, equipment layouts, apparatus figures, isometric cutaways) as
+millimetre-sized SVG, with a QA gate and a 600 dpi render.
 
 <p align="center">
   <picture>
@@ -128,10 +132,10 @@ Moved from LitClaude `2381bfe` (files identical to 1.0.49).
 
 ### `design`: build an interface, then check it
 
-`frontend-ui-ux` builds and inspects interfaces from one locked house style, layout family and design kit, with a
-design contract, a design-intelligence database and an interface probe that runs across the responsive matrix. Once a
-page exists, `visual-qa` verifies it: it exercises its states at several viewport sizes, captures screenshots, writes
-an evidence manifest, and when something blocks a check, it names exactly what.
+`frontend-ui-ux` builds and inspects interfaces from one locked house style, layout family and design kit. Behind it sit
+a design contract, a design-intelligence database and an interface probe that runs across the responsive matrix. Once a
+page exists, `visual-qa` takes over and verifies it. It exercises the page's states at several viewport sizes, captures
+screenshots and writes an evidence manifest, and when something blocks a check, it names exactly what.
 
 <p align="center">
   <picture>
@@ -144,11 +148,12 @@ Moved from LitClaude `aaea364` (files identical to 1.0.49).
 
 ### `video-covers`: short films and the README they sit in
 
-`lit-typographic-motion` directs a finished short film from a one-line request: a treatment first, then a storyboard
-round you can see before the full render, an original score, look rounds and a QA gate (flash audit, legibility,
-determinism, sound). It covers kinetic type, lyric or quote videos, title sequences and stage films, and its cover
-mode makes a silent, seamless README cover loop like the one at the top of this page. `readme-studio` writes factual
-READMEs from the repository itself, with an inspected cover, outlined title type and an optional motion cover.
+`lit-typographic-motion` directs a finished short film from a one-line request. It writes a treatment first, then runs a
+storyboard round you can see before the full render, and then comes an original score, look rounds and a QA gate (flash
+audit, legibility, determinism, sound). It handles kinetic type, lyric or quote videos, title sequences and stage films.
+Its cover mode makes a silent, seamless README cover loop, like the one at the top of this page. `readme-studio` writes
+factual READMEs from the repository itself, with an inspected cover, outlined title type and, if you want one, a motion
+cover.
 
 <p align="center">
   <picture>
@@ -161,8 +166,8 @@ Moved from LitClaude `4d03ca8` (files identical to 1.0.49).
 
 ## Pick one skill for one harness
 
-There are two ways in, and your agent decides which one you take. Claude Code adds this marketplace and installs the
-family plugin. Every other harness clones the repository once and copies a single folder.
+There are two ways in, and your agent decides which one you take. On Claude Code you add this marketplace and install
+the family plugin. On every other harness you clone the repository once and copy a single folder.
 
 <p align="center">
   <picture>
@@ -171,21 +176,20 @@ family plugin. Every other harness clones the repository once and copies a singl
   </picture>
 </p>
 
-Find the skill in the left column and your harness along the top. The cell holds the install lines that harness's
-LitFamily stub gives for that skill, unchanged, so the stub and this table say the same thing. Claude Code
-installs straight from GitHub. The other harnesses copy from a local clone: run
-`git clone https://github.com/wjgoarxiv/wjgoarxiv-skills` once and replace `<path to your wjgoarxiv-skills clone>` with
-that folder. The Grok Build cells carry the clone line because LitGrok's notes give it.
+Find your skill in the left column and your harness along the top. Each cell holds the install lines that harness's
+LitFamily stub gives for that skill, copied as they are, so the stub and this table always say the same thing. Claude
+Code installs straight from GitHub. The other harnesses copy from a local clone: run
+`git clone https://github.com/wjgoarxiv/wjgoarxiv-skills` once, then replace `<path to your wjgoarxiv-skills clone>`
+with that folder. The Grok Build cells carry the clone line because LitGrok's notes give it.
 
-Claude Code installs the whole family plugin, because LitClaude's copies reach shared files beside them (`lib/`,
-`vendor/`, support folders); only that family installs. Every other harness installs one folder: its product's own
-edition of that skill from `variants/<product>/<id>/`, which carries everything it reads inside the folder. Grok Build
-takes the folder path as a one-skill plugin and copies only that folder into its plugin store (given a `#` subfolder of
-the repository instead, it copies the whole repository, `.git` included, for each skill), Muse Code through
-`muse skills install`, and Codex CLI, OpenCode, Antigravity CLI and Hermes Agent by copying it into their skills
-folder. The OpenCode line replaces the LitOpenCode stub folder of
-the same name; the other copies sit beside their product's stub under a different name, and each product's installer
-leaves them alone on upgrade.
+Claude Code installs the whole family plugin because LitClaude's copies reach into shared files next to them (`lib/`,
+`vendor/`, support folders). Still, only that one family gets installed. Every other harness installs one folder: its
+product's own edition of the skill from `variants/<product>/<id>/`, which carries everything it reads inside the folder.
+Grok Build takes the folder path as a one-skill plugin and copies only that folder into its plugin store. (Give it a `#`
+subfolder of the repository instead and it copies the whole repository, `.git` included, for each skill.) Muse Code
+installs it through `muse skills install`, and Codex CLI, OpenCode, Antigravity CLI and Hermes Agent simply copy it into
+their skills folder. The OpenCode line replaces the LitOpenCode stub folder of the same name. On the other harnesses the
+copy sits next to its product's stub under a different name, and each product's installer leaves it alone on upgrade.
 
 | Skill | Family | Claude Code | Codex CLI | OpenCode | Grok Build | Muse Code | Antigravity CLI | Hermes Agent |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -200,20 +204,20 @@ leaves them alone on upgrade.
 | `readme-studio` | `video-covers` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install video-covers@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/readme-studio" "${CODEX_HOME:-$HOME/.codex}/skills/readme-studio"` | `rm -r ~/.config/opencode/skills/readme-studio`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/readme-studio" ~/.config/opencode/skills/readme-studio` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/readme-studio" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/readme-studio --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/readme-studio" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/readme-studio" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
 
 `lit-scientific-visualization` is an adapter for the scientific-visualization source. The family plugin keeps that
-source in `plugins/figures/vendor/scientific-visualization/`; every edition under `variants/` carries its own copy
+source in `plugins/figures/vendor/scientific-visualization/`. Every edition under `variants/` carries its own copy
 inside the skill folder, so one line installs both. The Antigravity stubs also give a workspace-only form of the same
 copy into `.agents/skills/`, and the OpenCode film stub adds one runtime step after the copy:
-`node ~/.config/opencode/skills/lit-typographic-motion/runtime.mjs install`. The other editions install their engines
-on first use.
+`node ~/.config/opencode/skills/lit-typographic-motion/runtime.mjs install`. The other editions install their engines on
+first use.
 
-`npm test` checks this table against the marketplace: one row for every skill a family plugin ships, the lines each
-stub gives, and that every folder a line names exists here.
+`npm test` checks this table against the marketplace: one row for every skill a family plugin ships, the exact lines
+each stub gives, and that every folder a line names really exists here.
 
 ## Per-harness notes
 
 ### Claude Code
 
-Claude Code takes each family as a plugin from this marketplace, so you install only the families you use:
+Claude Code takes each family as a plugin from this marketplace, so you only install the families you actually use:
 
 ```bash
 claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills
@@ -224,32 +228,35 @@ claude plugin install design@wjgoarxiv-skills
 claude plugin install video-covers@wjgoarxiv-skills
 ```
 
-Inside a session the same thing is `/plugin marketplace add wjgoarxiv/wjgoarxiv-skills` and then
-`/plugin install decks@wjgoarxiv-skills`. Offline, the marketplace line can point at a local clone instead:
+Inside a session it is `/plugin marketplace add wjgoarxiv/wjgoarxiv-skills` and then
+`/plugin install decks@wjgoarxiv-skills`. Offline, you can point the marketplace line at a local clone instead:
 `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`.
 
-The skills then answer as `decks:lit-pptx`, `documents:lit-docx`, `figures:lit-diagram-drawer`,
+After that the skills answer as `decks:lit-pptx`, `documents:lit-docx`, `figures:lit-diagram-drawer`,
 `figures:lit-schematic`, `design:frontend-ui-ux`, `design:visual-qa`, `video-covers:lit-typographic-motion` and
-`video-covers:readme-studio`. `lit-scientific-visualization` is user-invoked only, as it was in LitClaude: type
-`/figures:lit-scientific-visualization <request>`. LitClaude's own `lit` routing for decks, documents, figures,
-interfaces, films and READMEs keeps working: the stub it loads points at the moved skill when it is installed.
+`video-covers:readme-studio`. `lit-scientific-visualization` is user-invoked only, same as it was in LitClaude, so you
+type `/figures:lit-scientific-visualization <request>`. LitClaude's own `lit` routing for decks, documents, figures,
+interfaces, films and READMEs keeps working: when the moved skill is installed, the stub it loads points there.
 
 ### The six other harnesses (`variants/`)
 
-The family plugins hold LitClaude's copies, written for Claude Code. Six other products shipped their own edition of
-the same nine skills, written for their own harness, before they moved them out. Think of the repository as a tank
-and each harness as a branch off one header: Claude Code draws the whole family, and every other branch draws one
-folder from its own edition.
+The family plugins hold LitClaude's copies, which were written for Claude Code. Before the move, the six other products
+each shipped their own edition of the same nine skills, written for their own harness. I find it easiest to picture the
+repository as a tank and each harness as a branch off one header. Claude Code draws the whole family, and every other
+branch draws one folder from its own edition.
 
 <p align="center">
   <picture>
+    <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="docs/assets/schematic/editions-manifold.en.dark.png">
     <source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/schematic/editions-manifold.en.png">
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/schematic/editions-manifold-loop.en.dark.webp">
+    <source media="(prefers-color-scheme: light)" srcset="docs/assets/schematic/editions-manifold-loop.en.webp">
     <img src="docs/assets/schematic/editions-manifold-loop.en.webp" width="900" alt="Isometric cutaway of a manifold: a tank labelled wjgoarxiv-skills repo, holding five family layers, feeds a vertical header with seven valved branches. The large red top branch is Claude Code (whole family plugin). The six smaller branches are Codex CLI, OpenCode, Grok Build, Muse Code, Antigravity CLI and Hermes Agent, each fed from its variants folder.">
   </picture>
 </p>
 
-Each edition first went in unchanged under `variants/<product>/<id>/`, copied byte for byte from the product commit
-that last shipped it, with one receipt per product in `receipts/variants-<product>.sha256`.
+Each edition first came in unchanged under `variants/<product>/<id>/`, copied byte for byte from the product commit that
+last shipped it, with one receipt per product in `receipts/variants-<product>.sha256`.
 
 | Folder | Harness | Copied from |
 | --- | --- | --- |
@@ -260,24 +267,25 @@ that last shipped it, with one receipt per product in `receipts/variants-<produc
 | `variants/litmuse/` | Muse Code | LitMuse `e966b07` (0.1.11 plus the skills lock), `plugin/skills/<id>/` |
 | `variants/lithermes/` | Hermes Agent | LitHermes `a2466f2` (1.0.39 plus the skills lock), `packages/lithermes-installer/assets/lithermes-plugin/skills/<id>/` |
 
-Inside its product, each edition leaned on parts of that product a one-folder install does not bring: runtime
-commands, environment variables, hooks and done gates, doctor lines, agent definitions, and files in sibling skills or
-the product's shared `lib/` and `vendor/` folders. A later commit per product made each folder work on its own: it
-copies the files it reads into the folder, replaces product commands with scripts inside the folder, and drops every
-path that leaves the folder. `variants/<product>/CHANGES.md` lists each change and its reason. The procedures,
-references, engines and QA gates stay; the Codex edition dropped the tests that drove LitCodex's plugin internals.
+Inside its product, though, each edition leaned on things a one-folder install does not bring along: runtime commands,
+environment variables, hooks and done gates, doctor lines, agent definitions, and files in sibling skills or in the
+product's shared `lib/` and `vendor/` folders. So each product got one more commit that makes its folders work on their
+own. It copies the files a skill reads into its folder, swaps product commands for scripts inside the folder, and drops
+every path that leads outside the folder. `variants/<product>/CHANGES.md` lists each change and the reason for it. The
+procedures, references, engines and QA gates all stay; the Codex edition dropped the tests that drove LitCodex's plugin
+internals.
 
 Some internal names stay on purpose, because measured expectations or saved files depend on them: schema ids such as
 `litfamily.*` and the product-prefixed ones, the brand word in sample cover recipes, and (in the Codex edition) the
 `LITCODEX_*` knobs and error codes of its own scripts. Third-party corpora pinned by hash, such as frontend-ui-ux's
-`references/_canonical-corpus/`, are unchanged and may name other coding agents.
+`references/_canonical-corpus/`, are left as they came and may name other coding agents.
 
 ### Why the skills keep their `lit-` names
 
-The `lit-` prefix records where a skill came from; you do not need anything called lit to use it. The ids stay
-exactly as they were because each LitFamily product's stub carries the same name. With a LitFamily product installed,
-its routing finds the moved skill by that name; without one, the name is just a name. Renaming the skills here would
-break that link, and the receipts that prove each copy is unchanged would no longer match.
+The `lit-` prefix is just a name tag that records where a skill came from. You can use the skill without anything called
+lit installed. The ids stay exactly as they were because each LitFamily product's stub carries the same name. With a
+LitFamily product installed, its routing finds the moved skill by that name; without one, the name is just a name.
+Renaming the skills here would break that link, and the receipts that prove each copy is unchanged would stop matching.
 
 ## Layout
 
@@ -297,30 +305,30 @@ receipts/variants-<product>.sha256  sha256, source path at that product's commit
 test/                               node --test checks for manifests, receipts and the pick-one table
 ```
 
-`decks` carries 16 files of LitClaude's office runtime under `lib/`: the first-use installer
-(`office-runtime.mjs` and its lockfiles), the Python bootstrap, the data, integrity, render and mark helpers, and
-the modules they import. `documents` carries the same 16 files for lit-docx; LitClaude no longer ships the office
-runtime itself. The pinned runtime installs on first use into
-`${XDG_CACHE_HOME:-~/.cache}/litclaude/office-runtime`, the cache older LitClaude releases used, so a machine with
-`decks`, `documents` and an older LitClaude installs it once. The two copies differ only in `office-runtime.mjs`: in
-`documents` its status reads `ready` once the Python half lit-docx uses is installed.
+`decks` carries 16 files of LitClaude's office runtime under `lib/`: the first-use installer (`office-runtime.mjs` and
+its lockfiles), the Python bootstrap, the data, integrity, render and mark helpers, and the modules they import.
+`documents` carries the same 16 files for lit-docx. LitClaude itself no longer ships the office runtime. The pinned
+runtime installs on first use into `${XDG_CACHE_HOME:-~/.cache}/litclaude/office-runtime`, the same cache older
+LitClaude releases used, so a machine with `decks`, `documents` and an older LitClaude installs it only once. The two
+copies differ only in `office-runtime.mjs`: in `documents`, its status reads `ready` once the Python half that lit-docx
+uses is installed.
 
-`figures` carries what its three skills reach outside their own folders, unchanged, at the same relative places:
-- `lib/`: the mark helper and the modules it imports, and `npm-invocation.mjs` for the diagram renderer;
+`figures` carries what its three skills reach outside their own folders, unchanged and at the same relative places:
+- `lib/`: the mark helper and the modules it imports, plus `npm-invocation.mjs` for the diagram renderer;
 - `skills/lit-humanizer/`: only `rules.json` and four scripts, which the diagram verifier and doctor run on visible
-  text. It has no `SKILL.md`, so it is not a skill here; the full lit-humanizer stays in the LitFamily products;
-- `vendor/scientific-visualization/`: the 16-file source `lit-scientific-visualization` reads before plotting, with
-  its provenance and MIT licence;
-- `bin/litclaude-scientific-visualization-doctor.js` and `lib/bundled-skills-integrity.mjs`: the read-only doctor.
-  Its integrity check also covers `vendor/handoff/` (4 files, with provenance and licence), so that copy is here too,
-  unused by anything else.
+  text. There is no `SKILL.md`, so it is not a skill here; the full lit-humanizer stays in the LitFamily products;
+- `vendor/scientific-visualization/`: the 16-file source `lit-scientific-visualization` reads before plotting, with its
+  provenance and MIT licence;
+- `bin/litclaude-scientific-visualization-doctor.js` and `lib/bundled-skills-integrity.mjs`: the read-only doctor. Its
+  integrity check also covers `vendor/handoff/` (4 files, with provenance and licence), so that copy is here too, even
+  though nothing else uses it.
 
-`design` carries what frontend-ui-ux and visual-qa reach outside their own folders, unchanged, at the same relative
+`design` carries what frontend-ui-ux and visual-qa reach outside their own folders, unchanged and at the same relative
 places:
 - `lib/`: `strict-json.mjs`, `rename-aliases.mjs` and `secret-shapes.mjs`, which the probe, the evidence checker and the
   review rules import;
-- `skills/browser-drive/scripts/capability-probe.mjs`: the interface probe finds and checks the browser driver with it.
-  There is no `SKILL.md` beside it; browser-drive itself stays in the LitFamily products;
+- `skills/browser-drive/scripts/capability-probe.mjs`: the interface probe uses it to find and check the browser driver.
+  There is no `SKILL.md` next to it; browser-drive itself stays in the LitFamily products;
 - `skills/lit-diagram-drawer/assets/fonts/` and `skills/lit-typographic-motion/fonts/jetbrains-mono/`: the Pretendard
   and JetBrains Mono fonts with their OFL licences, which the design kit's `kit/fonts.json` copies by path and checks by
   sha256. These folders have no `SKILL.md` either.
@@ -328,33 +336,33 @@ places:
 LitClaude keeps a copy of the interface probe scripts in its frontend-ui-ux stub, because its lit workflows check
 web-interface edits with that probe.
 
-`video-covers` carries what lit-typographic-motion and readme-studio reach outside their own folders, unchanged, at
+`video-covers` carries what lit-typographic-motion and readme-studio reach outside their own folders, unchanged and at
 the same relative places:
 - `lib/`: the mark helper (`mark.mjs`, `mark-logo.png`, `output_mark.py`) that draws the cover mark and the end card,
-  and `project-state-root.mjs` with the three `rules/` modules it imports;
+  plus `project-state-root.mjs` and the three `rules/` modules it imports;
 - `skills/lit-pptx/fonts/pretendard/`: Pretendard Regular and Bold with their OFL licence, which the film engine's
-  `fonts/manifest.json` reads by path and checks by sha256. There is no `SKILL.md` there; lit-pptx itself is in
+  `fonts/manifest.json` reads by path and checks by sha256. There is no `SKILL.md` there; lit-pptx itself lives in
   `decks`.
 
-The moved lit-typographic-motion text was written for LitClaude, and a few of its lines describe LitClaude parts
-that do not come with this plugin:
+The moved lit-typographic-motion text was written for LitClaude, so a few of its lines describe LitClaude parts that do
+not come with this plugin:
 - `SKILL.md`, `references/look.md` and `references/cover.md` say a Stop hook checks the done list and holds the turn.
-  That check was a LitClaude hook and does not run outside LitClaude; the skill's own `motion.mjs gate` and its done
+  That check was a LitClaude hook and does not run outside LitClaude. The skill's own `motion.mjs gate` and its done
   list still apply, and nothing ends the turn for you.
-- The text and the BLOCKED 14 message name `litclaude-ai motion-runtime install`. Outside LitClaude, and in
-  LitClaude releases after 1.0.49, run the same installer straight from the plugin:
+- The text and the BLOCKED 14 message name `litclaude-ai motion-runtime install`. Outside LitClaude, and in LitClaude
+  releases after 1.0.49, run the same installer straight from the plugin:
   `node <plugin>/skills/lit-typographic-motion/scripts/motion-runtime.mjs install` (or `status`). It installs into
-  `${XDG_CACHE_HOME:-~/.cache}/litclaude/motion-runtime`, the cache LitClaude used, so a machine that pre-warmed it
-  with LitClaude 1.0.49 or earlier needs nothing new.
-- `recipes/painted-light/expected.json` names a test fixture from the LitClaude repository; that fixture is not
-  carried, so the recipe's reference image is a description only.
+  `${XDG_CACHE_HOME:-~/.cache}/litclaude/motion-runtime`, the cache LitClaude used, so a machine that pre-warmed it with
+  LitClaude 1.0.49 or earlier needs nothing new.
+- `recipes/painted-light/expected.json` names a test fixture from the LitClaude repository. That fixture did not come
+  along, so the recipe's reference image is only a description.
 
-lit-schematic looks for Pretendard first in `lit-diagram-drawer/assets/fonts/`, which `figures` carries; its second
-place, `lit-pptx/fonts/`, is not copied.
+lit-schematic looks for Pretendard first in `lit-diagram-drawer/assets/fonts/`, which `figures` carries. Its second
+place, `lit-pptx/fonts/`, was not copied.
 
 ## Licences
 
-The repository has no single licence of its own. Each family plugin carries the licence its files came under, in
+This repository has no single licence of its own. Each family plugin carries the licence its files came under, in
 `plugins/<family>/LICENSE`, and declares it in its `plugin.json`:
 
 | Plugin | Declared licence | Where it comes from |

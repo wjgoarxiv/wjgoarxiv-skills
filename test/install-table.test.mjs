@@ -134,7 +134,9 @@ test('every variant is a moved skill id, and its receipt matches the unchanged c
 // Grok Build copies the whole repository, .git included, for a `<source>#<subfolder>` install, and only the folder
 // for a folder path, so no install line or prose here may give the `#` form.
 test('no install line names a #subfolder of the repository', () => {
-  assert.doesNotMatch(readme, /wjgoarxiv-skills clone>#|wjgoarxiv-skills#/u);
+  const docs = ['README.md', ...walk(join(root, 'variants')).map((f) => relative(root, f)).filter((f) => /\.(md|json|ya?ml)$/u.test(f) && !f.includes('_canonical-corpus'))];
+  const hits = docs.filter((f) => /wjgoarxiv-skills clone>#|wjgoarxiv-skills#/u.test(read(f).toString('utf8')));
+  assert.deepEqual(hits, []);
 });
 
 test('the OpenCode column names a variant folder for every moved skill', () => {

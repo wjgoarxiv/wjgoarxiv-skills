@@ -25,7 +25,7 @@ The drawing carries subject matter only: no method notes, generator credits or Q
 contract_schema_version: litgrok.schematic/v1
 artifact_type: grok_build_skill
 surface: <skill dir>/SKILL.md
-discovery: skill listed by Grok Build at /skills (one-skill plugin install: grok plugin install "<path to your wjgoarxiv-skills clone>#variants/litgrok/lit-schematic" --trust)
+discovery: skill listed by Grok Build at /skills (one-skill plugin install: grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-schematic" --trust)
 route_candidate: /lit-schematic <brief>
 live_route_status: unverified; Grok Build slash parsing and reload behavior are host-dependent
 rule_route: none shipped; this description carries the P&ID, PFD, BFD, 공정도, 계장도, 장치도, 모식도, apparatus and isometric/cutaway wording

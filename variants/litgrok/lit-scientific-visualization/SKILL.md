@@ -33,7 +33,7 @@ contract_schema_version: litgrok.scientific-visualization/v1
 artifact_type: grok_build_skill
 surface: <skill dir>/SKILL.md
 invocation: user-invocable skill or an explicit scientific-visualization request
-install: grok plugin install "<path to your wjgoarxiv-skills clone>#variants/litgrok/lit-scientific-visualization" --trust (one skill; no hooks, rules or MCP servers)
+install: grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-scientific-visualization" --trust (one skill; no hooks, rules or MCP servers)
 activation_banner: "🔥 **LIT IGNITED · lit-scientific-visualization** 🔥"
 resource_root: vendor/scientific-visualization (inside this skill folder)
 verdicts: [PASS, DEGRADED, FAIL, BLOCKED]

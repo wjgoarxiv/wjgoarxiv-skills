@@ -7,7 +7,7 @@ argument-hint: "<what the film is for, plus any words, facts or style>"
 
 # lit-typographic-motion: film director
 
-Installed on its own as a one-skill plugin (`grok plugin install "<path to your wjgoarxiv-skills clone>#variants/litgrok/lit-typographic-motion" --trust`); `<skill dir>` is the folder that holds this SKILL.md, the path Grok Build shows for the skill. Run every command from that skill root as `node scripts/motion.mjs <mode> --out <dir>`. Every frame and track passes through this skill's renderer; hand-encoded films are not the deliverable.
+Installed on its own as a one-skill plugin (`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-typographic-motion" --trust`); `<skill dir>` is the folder that holds this SKILL.md, the path Grok Build shows for the skill. Run every command from that skill root as `node scripts/motion.mjs <mode> --out <dir>`. Every frame and track passes through this skill's renderer; hand-encoded films are not the deliverable.
 
 Under bare `lit`, ask no questions: choose defaults and label them, and label every invention and the generated sound in the reply.
 

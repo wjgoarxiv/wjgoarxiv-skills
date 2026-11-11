@@ -23,7 +23,7 @@ reader_projection: shared_rule
 contract_schema_version: litgrok.diagram-drawer/v1
 artifact_type: grok_build_skill
 surface: <skill dir>/SKILL.md
-discovery: skill listed by Grok Build at /skills (one-skill plugin install: grok plugin install "<path to your wjgoarxiv-skills clone>#variants/litgrok/lit-diagram-drawer" --trust)
+discovery: skill listed by Grok Build at /skills (one-skill plugin install: grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-diagram-drawer" --trust)
 route_candidate: /lit-diagram-drawer <brief>
 live_route_status: unverified; Grok Build slash parsing and reload behavior are host-dependent
 resource_root: <skill dir> (the folder that holds this SKILL.md)

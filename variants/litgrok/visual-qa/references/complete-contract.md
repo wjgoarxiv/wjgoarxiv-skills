@@ -659,7 +659,7 @@ Run these to confirm the skill is installed as Grok Build sees it. The commands 
 installation probe, not a claim about a live host session.
 
 ```bash
-grok plugin install "<path to your wjgoarxiv-skills clone>#variants/litgrok/visual-qa" --trust
+grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/visual-qa" --trust
 grok inspect --json   # the skills list names visual-qa with its SKILL.md path
 find <skill dir> -maxdepth 2 -type f -print
 ```

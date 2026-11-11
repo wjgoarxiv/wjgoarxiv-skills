@@ -14,9 +14,15 @@ Each folder carries a one-skill plugin manifest, `.grok-plugin/plugin.json`
 (`"skills": ["./"]`), so Grok Build installs exactly that folder:
 
 ```bash
-grok plugin install "<path to your wjgoarxiv-skills clone>#variants/litgrok/<id>" --trust
+grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/<id>" --trust
 grok plugin uninstall <id>
 ```
+
+The line names the folder path. An earlier version of these folders gave the clone with a
+`#variants/litgrok/<id>` subfolder suffix; Grok Build 1.0.13 resolves a `#`
+subfolder source by copying the whole repository, `.git` included, into its plugin store for every
+skill, while a folder path copies only that folder. Every SKILL.md and both `complete-contract.md`
+references now give the folder path, the same line LitGrok's moved-skill notes give.
 
 Why this idiom and not a copy into a skills folder:
 

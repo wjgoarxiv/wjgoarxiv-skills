@@ -25,7 +25,7 @@ After steps 1-2 and before step 3, put the numbered choice in the reply with the
 5. Produce a 60fps 5-second master, static poster and <=2.5 MiB inline preview; inspect first/middle/last, light/dark and mobile with reduced-motion delivery and semantic Markdown. Source alone is not a render. Record unavailable fonts/tools and continue independent work.
 6. Assemble the README with a centered identity block, restrained section icons, a source-backed feature grid, and verified footer links; include badges, embeds and details only when their endpoints and claims pass references/decoration-patterns.md, keeping essentials in plain Markdown.
 
-Install on its own: `grok plugin install "<path to your wjgoarxiv-skills clone>#variants/litgrok/readme-studio" --trust` (one skill; no hooks, rules or MCP servers).
+Install on its own: `grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/readme-studio" --trust` (one skill; no hooks, rules or MCP servers).
 
 Resolve resources from the absolute directory of the SKILL.md selected for this turn, wherever Grok Build installed it. Bind README_SKILL_ROOT to that directory; quote paths with spaces:
 

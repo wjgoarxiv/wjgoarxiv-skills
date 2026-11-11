@@ -489,7 +489,7 @@ node "$FRONTEND_SKILL_ROOT/scripts/import-design-intelligence.mjs" --check \
 ```
 
 `grok inspect --json` shows which skill metadata the host currently discovers (after
-`grok plugin install "<path to your wjgoarxiv-skills clone>#variants/litgrok/frontend-ui-ux" --trust`).
+`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/frontend-ui-ux" --trust`).
 Treat that inspection as discovery evidence, not a replacement for the hash checks above. The exact canonical-corpus manifest, dataset digest, and validator output are the
 authoritative integrity receipts; do not duplicate mutable resource counts in prose.
 

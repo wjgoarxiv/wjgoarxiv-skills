@@ -1,37 +1,37 @@
 // The motion runtime: pinned engine dependencies, fetched fonts and the opt-in audio venv, all in a
-// LitGravity-owned cache (MO-A-42..55). It keeps the cache mechanics of the other LitGravity engines (a
+// skill-owned cache (MO-A-42..55). It keeps the cache mechanics of the other lit engines (a
 // directory keyed by the lockfile, an mkdir lock, `npm ci --omit=dev --ignore-scripts`) but not their
-// first-use install: only `npx @litfamily/litgravity runtime install motion` (or this skill's
-// scripts/motion-runtime.mjs) writes here. A render only reads, and an unwarmed cache is BLOCKED 14,
+// first-use install: only this skill's `scripts/motion-runtime.mjs install`
+// writes here. A render only reads, and an unwarmed cache is BLOCKED 14,
 // never an install from inside a render: a render has no business downloading anything.
 //
-//   $LITGRAVITY_MOTION_RUNTIME                                     when set (tests, isolated probes)
-//   ${XDG_DATA_HOME:-~/.local/share}/litgravity/runtime/motion     otherwise
+//   $LIT_MOTION_RUNTIME                                     when set (tests, isolated probes)
+//   ${XDG_DATA_HOME:-~/.local/share}/lit-skills/runtime/motion     otherwise
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { pickPython } from "../../../../lib/python-pick.mjs";
-import { describeSpawn, runNpmSync } from "../../../../lib/host-exec.mjs";
+import { pickPython } from "../lib/python-pick.mjs";
+import { describeSpawn, runNpmSync } from "../lib/host-exec.mjs";
 
 export const SKILL_ROOT = fileURLToPath(new URL("../../", import.meta.url));
 export const ENGINE_ROOT = path.join(SKILL_ROOT, "engine");
 export const FONT_ROOT = path.join(SKILL_ROOT, "fonts");
-const READY = ".litgravity-ready";
+const READY = ".lit-skills-ready";
 const STALE_LOCK_MS = 20 * 60 * 1000;
-export const INSTALL_COMMAND = "npx @litfamily/litgravity runtime install motion";
-// The optional audio tier is not part of `litgravity runtime install`; it installs through this skill's own script.
+export const INSTALL_COMMAND = `node "${path.join(SKILL_ROOT, "scripts", "motion-runtime.mjs")}" install`;
+// The optional audio tier is not part of the plain `install`; it installs with `install --audio` through the same script.
 export const AUDIO_INSTALL_COMMAND = `node "${path.join(SKILL_ROOT, "scripts", "motion-runtime.mjs")}" install --audio`;
 
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const fileSha = (file) => sha256(readFileSync(file));
 
 export function runtimeRoot(env = process.env) {
-  if (env.LITGRAVITY_MOTION_RUNTIME) return path.resolve(env.LITGRAVITY_MOTION_RUNTIME);
+  if (env.LIT_MOTION_RUNTIME) return path.resolve(env.LIT_MOTION_RUNTIME);
   const dataHome = env.XDG_DATA_HOME || path.join(homedir(), ".local", "share");
-  return path.join(dataHome, "litgravity", "runtime", "motion");
+  return path.join(dataHome, "lit-skills", "runtime", "motion");
 }
 
 export function lockHash() {
@@ -93,7 +93,7 @@ export function nodeStatus(env) {
 const AUDIO_LOCK = path.join(ENGINE_ROOT, "audio", "requirements.lock");
 const venvPython = (dir) => (process.platform === "win32" ? path.join(dir, "Scripts", "python.exe") : path.join(dir, "bin", "python"));
 
-const pickedPython = (env) => pickPython(env.LITGRAVITY_MOTION_PYTHON, "LITGRAVITY_MOTION_PYTHON");
+const pickedPython = (env) => pickPython(env.LIT_MOTION_PYTHON, "LIT_MOTION_PYTHON");
 
 export function pythonCommand(env = process.env) {
   return pickedPython(env).command;
@@ -202,7 +202,7 @@ function withLock(root, fn) {
 
 /** Fetch bytes from an http(s) or file URL. A mirror (tests, air-gapped hosts) serves files by sha256. */
 async function fetchBytes(url, { sha256: expected, env }) {
-  const mirror = env.LITGRAVITY_MOTION_MIRROR;
+  const mirror = env.LIT_MOTION_MIRROR;
   const source = mirror && expected ? `${mirror.replace(/\/$/u, "")}/${expected}` : url;
   let bytes;
   if (source.startsWith("file://")) bytes = readFileSync(fileURLToPath(source));
@@ -271,13 +271,13 @@ export async function installNode({ env = process.env, log = () => {} } = {}) {
   log(`installing pinned engine packages (${Object.entries(status.pinned).map(([k, v]) => `${k} ${v}`).join(", ")}) into ${dir}`);
   const args = ["ci", "--omit=dev", "--ignore-scripts", "--no-audit", "--no-fund", "--loglevel=error"];
   let cache = null;
-  if (env.LITGRAVITY_MOTION_MIRROR) {
+  if (env.LIT_MOTION_MIRROR) {
     cache = path.join(tmpdir(), `lit-motion-npm-${process.pid}-${Date.now()}`);
     const lock = JSON.parse(readFileSync(path.join(ENGINE_ROOT, "package-lock.json"), "utf8"));
     for (const [name, pkg] of Object.entries(lock.packages)) {
       if (!name) continue;
       const integrity = Buffer.from(pkg.integrity.replace(/^sha512-/u, ""), "base64").toString("hex");
-      const mirror = env.LITGRAVITY_MOTION_MIRROR.replace(/\/$/u, "");
+      const mirror = env.LIT_MOTION_MIRROR.replace(/\/$/u, "");
       const source = `${mirror}/${path.basename(new URL(pkg.resolved).pathname)}`;
       const bytes = source.startsWith("file://") ? readFileSync(fileURLToPath(source)) : Buffer.from(await (await fetch(source)).arrayBuffer());
       if (createHash("sha512").update(bytes).digest("hex") !== integrity) throw new Error(`integrity mismatch for ${name}`);

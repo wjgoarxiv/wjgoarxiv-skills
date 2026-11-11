@@ -27,7 +27,7 @@ The scripts print a code per finding. Find the code here, apply the repair, and 
 | `CONTENT_FILL` | Node bounds use under 68% of the width or 40% of the height | Recompose to use the canvas |
 | `NODE_GAP` | Two node boxes are under 12 px apart | Separate them |
 | `PROCESS_TEXT`, `UNSAFE_VISIBLE_TEXT`, `UNSAFE_TEXT` | Visible text names the generator, a template or variant, design rules, a script or a URL | Replace it with subject text |
-| `HUMANIZER_BLOCK`, `HUMANIZER_ERROR` | Drafting residue in visible copy, or the `lit-humanizer` detector is missing | Rephrase while keeping valid citations and factual labels; report a missing detector as a blocker |
+| `HUMANIZER_BLOCK`, `HUMANIZER_ERROR` | Drafting residue in visible copy, or the bundled detector (`humanizer/`) is missing | Rephrase while keeping valid citations and factual labels; report a missing detector as a blocker |
 
 ## Routes, labels, arrowheads
 
@@ -61,6 +61,6 @@ The scripts print a code per finding. Find the code here, apply the repair, and 
 | `FONT_MISSING`, `FONT_PROOF_INVALID`, `PRETENDARD_FONT_NOT_LOADED_FROM_LOCAL_ASSET`, `PRETENDARD_NOT_LOADED_OR_COMPUTED` | The bundled font is absent or never loaded | Reference the local font in `@font-face`; a fallback render counts as unverified |
 | `SVG_DIMENSIONS_MISMATCH`, `SVG_OUTSIDE_VIEWPORT`, `PNG_WRITE_FAILED`, `EXPORT_FAILED` | Capture measured the wrong size or wrote nothing | Fix the viewBox or layout and export again |
 | `OFFICE_SVG_ROOT_MISSING`, `OFFICE_UNSAFE_ACTIVE_OR_EXTERNAL_CONTENT`, `OFFICE_UNSUPPORTED_CSS_URL_OR_VARIABLE` | Active, external or unsupported content in an Office-safe export | Remove scripts, handlers, external references, CSS variables and non-fragment `url()` |
-| `RENDERER_REQUIRED`, `CHROME_REQUIRED` | The renderer or browser is not ready | Report `BLOCKED:` with `npx @litfamily/litgravity runtime install diagram`; claim no PNG |
+| `RENDERER_REQUIRED`, `CHROME_REQUIRED` | The renderer or browser is not ready | Report `BLOCKED:` with `node "<skill-dir>/scripts/diagram-runtime.mjs" install --json` for a terminal; claim no PNG |
 | `DIAGRAM_RUNTIME_INSTALL_FAILED`, `DIAGRAM_RUNTIME_CHROME_FAILED`, `DIAGRAM_RUNTIME_LOCKED` | First-use install failed, or another installer holds the lock | Quote the error line, report `BLOCKED:` once and wait for the user to pre-warm |
 | `FOIL_NOT_FLAGGED`, `FOIL_COUNT`, `TEMPLATE_COUNT` | The corpus gate found a missing foil or template | Restore the shipped files and rerun `verify-all.mjs` |

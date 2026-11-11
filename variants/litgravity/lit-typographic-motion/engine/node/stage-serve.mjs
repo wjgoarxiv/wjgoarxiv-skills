@@ -10,7 +10,7 @@ import { EXIT } from "../core/constants.mjs";
 import { readPlate } from "./blender.mjs";
 import { BlockedError } from "./chrome.mjs";
 import { decodePng } from "./png.mjs";
-import { checkFont, fontLocation, fontsDir, loadFontManifest } from "./runtime.mjs";
+import { checkFont, fontLocation, fontsDir, loadFontManifest, INSTALL_COMMAND } from "./runtime.mjs";
 
 export const STAGE_ORIGIN = "http://lit.stage";
 export const KIT_FILE = fileURLToPath(new URL("../stage/stage-kit.js", import.meta.url));
@@ -61,9 +61,9 @@ export function stageFonts(env = process.env) {
     const check = checkFont(key, font, env);
     if (!check.ok) {
       if (font.source !== "bundled" && !existsSync(fontsDir(env))) {
-        throw new BlockedError(EXIT.BLOCKED_DEPS_NOT_PREWARMED, `BLOCKED_DEPS_NOT_PREWARMED: the stage fonts are not in the LitGravity cache (${fontsDir(env)}); run npx @litfamily/litgravity runtime install motion outside this session`);
+        throw new BlockedError(EXIT.BLOCKED_DEPS_NOT_PREWARMED, `BLOCKED_DEPS_NOT_PREWARMED: the stage fonts are not in the skill runtime cache (${fontsDir(env)}); run ${INSTALL_COMMAND} outside this session`);
       }
-      throw new BlockedError(EXIT.BLOCKED_FONT_FETCH, `BLOCKED_FONT_FETCH: font ${key} is ${check.problem} (${check.path}); run npx @litfamily/litgravity runtime install motion outside this session`);
+      throw new BlockedError(EXIT.BLOCKED_FONT_FETCH, `BLOCKED_FONT_FETCH: font ${key} is ${check.problem} (${check.path}); run ${INSTALL_COMMAND} outside this session`);
     }
     const file = fontLocation(key, font, env);
     const format = { ".otf": "opentype", ".woff2": "woff2" }[path.extname(file)] ?? "truetype";

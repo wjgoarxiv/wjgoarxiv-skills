@@ -101,7 +101,7 @@ Verify the lane from the repository. The prompt and memory are hints.
 - `read_file` and `grep_search` (or `rg` through `run_command`) for the stack, tokens and contract.
 - `write_file` and the host's edit tool (`replace_file_content` on older builds) change source in build modes only; audit and review modes stay read-only.
 - `run_command` runs builds, tests, the validator and the probe. Headless `agy -p` refuses it unless the user started agy in a permissive mode, so read first and ask for the permission you need.
-- `invoke_subagent` with `TypeName` `lit-executor` handles a separable component, `quality-reviewer` handles a read-only pass over the diff. A child without `TypeName` is general-purpose with every tool.
+- `invoke_subagent` can hand a separable component to a child, and a read-only child can review the diff; name a `TypeName` from `agy agents` for the read-only pass. A child without `TypeName` is general-purpose with every tool.
 - Installing a package, font or browser needs the user's approval.
 
 ## Failure patterns

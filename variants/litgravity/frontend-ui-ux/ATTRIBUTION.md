@@ -2,7 +2,7 @@
 
 The craft-floor and slop-register rules (`references/craft-floor.md`,
 `references/slop-register.md`), the interface probe (`scripts/interface-probe.mjs` and its
-modules) and the build, polish, audit and harden modes were written for LitGravity after studying
+modules) and the build, polish, audit and harden modes were written for this skill after studying
 public projects, credited below. **No source file, prose, fixture or golden file from any studied
 project is vendored, copied or redistributed here.** A guard test fails if any packed file is
 byte-identical to a listed reference skill file.

@@ -5,11 +5,11 @@ This is the full operating contract for `visual-qa`. `SKILL.md` carries the work
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litgravity.skill-contract.v1
+contract_schema_version: lit.skill-contract.v1
 artifact_type: skill
 activation:
-  primary: the bare-lit router (a prompt that asks to check a built interface) or /litgravity:visual-qa
-  fallback: read the SKILL.md path named in the activation note with read_file
+  primary: /visual-qa, or a request to check a built interface that agy matches to the description
+  fallback: read_file on ~/.gemini/config/skills/visual-qa/SKILL.md (or .agents/skills/visual-qa/SKILL.md)
   aliases: []
 preconditions:
   - a visual or terminal artifact exists and has stopped changing
@@ -17,7 +17,7 @@ preconditions:
   - the capture, image, terminal, auth and reviewer capabilities have been probed
 ```
 
-agy reaches this skill in two ways. The bare-`lit` router adds an activation note before the first model call that names the skill file and the route; the skill body then arrives through `read_file` on that path. The slash form `/litgravity:visual-qa` loads the same file. Neither route captures anything for you, so the first act in either case is a capability probe: which browser, terminal, image, authentication and reviewer capabilities are callable in this conversation, before any tier is promised.
+agy reaches this skill in two ways once the folder sits in `~/.gemini/config/skills/visual-qa/` (or a workspace `.agents/skills/visual-qa/`). The slash form `/visual-qa` loads it, and agy offers it to the model when a request matches the description; the skill body then arrives through `read_file` on that path. Neither route captures anything for you, so the first act in either case is a capability probe: which browser, terminal, image, authentication and reviewer capabilities are callable in this conversation, before any tier is promised.
 
 Select this skill to prove a claim about an interface that already exists. Building belongs to `frontend-ui-ux`. Starting before the product artifact under review has stopped changing produces evidence bound to a revision nobody will ship.
 
@@ -203,7 +203,7 @@ The manifest reads the contract as bytes with a hash and requires the canonical 
 
 Coupling runs through the hash and the semantics, and a skill name plays no part in it. A full run accounts one inventory entry per surface the contract declares, leaving out references, whose identity the contract already binds by hash. Smoke may use a declared subset that includes the primary route, every critical interaction, at least one contract-declared negative or empty state when one exists, and the narrowest and widest viewport ids. Every smoke id is declared with the same kind, and each captured viewport points to a PNG whose decoded width and height equal that viewport. A contract that changes after the manifest was written invalidates the proof taken against it. Only a contract-recorded accepted exception with a dated `expires_at` can back an evidence exception; an undated standing decision fails closed.
 
-Validate (`VISUAL_QA_SKILL_ROOT` is the directory of the `SKILL.md` path the activation note gave):
+Validate (`VISUAL_QA_SKILL_ROOT` is the directory of this skill's `SKILL.md`):
 
 ```bash
 VISUAL_QA_SKILL_ROOT="<that directory>"
@@ -261,7 +261,7 @@ node "$VISUAL_QA_SKILL_ROOT/scripts/cli.mjs" validate-review \
 
 Operational contract:
 
-- Reviewer ids are exactly `quality-reviewer` and `lit-verifier`. The validator also accepts the namespaced form `litgravity/quality-reviewer`.
+- Reviewer ids are exactly `quality-reviewer` and `lit-verifier`, the two role names defined in `references/reviewer-charters.md`. The validator also accepts one namespace segment in front, such as `<plugin>/quality-reviewer`.
 - Both reviewers receive the same immutable inputs and run in separate fresh contexts.
 - Neither sees the other's draft verdict.
 - At most two reviewers run at once, for ten minutes each, over at most two fresh-review rounds.
@@ -270,7 +270,7 @@ An implementation author may prepare evidence and serves as neither reviewer. Wh
 
 ### Reviewer charters
 
-On agy each reviewer is one `invoke_subagent` call with `TypeName` `quality-reviewer` or `lit-verifier`, a fresh `Prompt` that carries only the immutable inputs, and a `Role` that states the charter. Both are read-only agents. A child spawned without `TypeName` is general-purpose with every tool and is excluded as a reviewer. The host has no wait tool; each reviewer sends a message when it finishes, the root enforces the ten-minute budget, and the receipt names the agent as `quality-reviewer` or `lit-verifier`.
+On agy each reviewer is one `invoke_subagent` call with a read-only `TypeName` that `agy agents` lists, a fresh `Prompt` that carries only the immutable inputs, and a `Role` that states the charter. A child spawned without `TypeName` is general-purpose with every tool and is excluded as a reviewer. The host has no wait tool; each reviewer sends a message when it finishes, the root enforces the ten-minute budget, and the receipt names the agent as `quality-reviewer` or `lit-verifier`.
 
 `quality-reviewer` reviews contract adherence, inventory completeness, accessibility-relevant observations, responsive behavior, state coverage, and whether the evidence supports the claimed verdict, keeping product defects apart from evidence defects. `lit-verifier` reviews evidence provenance, immutable identity, capture capability, resource bounds, schema validity, reference comparability, reviewer independence, and whether the final claim exceeds the proof. `references/reviewer-charters.md` holds the full briefs.
 
@@ -297,7 +297,7 @@ A capability installed somewhere on the machine may still be out of reach in thi
 
 The project's Playwright comes first when the repository already installs, configures and exercises it. Keep the project's server lifecycle, base URL, fixtures and trace policy.
 
-The Chrome or Chromium installed on the machine is the secondary path, driven headless with a throwaway profile by `frontend-ui-ux/scripts/chrome-driver.mjs` (the driver the interface probe uses; `CHROME_PATH` overrides discovery and `LITGRAVITY_CHROME_NO_SANDBOX=1` adds `--no-sandbox` where a container needs it). It runs through `run_command`, and a successful status call in this conversation is its entry condition. The driver launches its own process and attaches to nothing else. Attaching to any existing browser or port starts with verifying the pid, port and command ownership and confirming that the process belongs to the current authorized workflow; the attachment receipt records those three facts.
+The Chrome or Chromium installed on the machine is the secondary path, driven headless with a throwaway profile by `scripts/probe/chrome-driver.mjs` (the driver the bundled interface probe uses; `CHROME_PATH` overrides discovery and `LIT_CHROME_NO_SANDBOX=1` adds `--no-sandbox` where a container needs it). It runs through `run_command`, and a successful status call in this conversation is its entry condition. The driver launches its own process and attaches to nothing else. Attaching to any existing browser or port starts with verifying the pid, port and command ownership and confirming that the process belongs to the current authorized workflow; the attachment receipt records those three facts.
 
 The safety boundary: no cookie or profile sharing, no arbitrary debugging port, no copied profile contents, no dependency, browser, driver or extension installed without approval, no host browser configuration changed for convenience, and no way around authentication or bot protection. Visual metrics are advisory unless repository-owned fixtures harden them.
 
@@ -378,12 +378,12 @@ Hand off by identity. The finished receipt carries the design-contract hash, the
 Run these to confirm that the bundle agy loaded matches this contract:
 
 ```bash
-agy plugin validate <plugin-dir> --json --strict
-litgravity doctor
+agy -p "/skills"
+node "$VISUAL_QA_SKILL_ROOT/scripts/probe/chrome-driver.mjs" status
 node "$VISUAL_QA_SKILL_ROOT/scripts/cli.mjs" image-diff <reference.png> <actual.png>
 ```
 
-`agy plugin validate` reports no errors and no warnings, and `/skills` in an `agy -p` session lists `litgravity:visual-qa`. Both schemas, both validators and the analyzers ship together under this skill directory; the packed file list is authoritative, and docs carry no mutable file count.
+`/skills` in an `agy -p` session lists `visual-qa` from `~/.gemini/config/skills/visual-qa` (or the workspace `.agents/skills/visual-qa`), and `chrome-driver.mjs status` names the browser the probe will drive. Both schemas, both validators and the analyzers ship together under this skill directory; the packed file list is authoritative, and docs carry no mutable file count.
 
 ## Completion checklist
 

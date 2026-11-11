@@ -12,7 +12,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { which } from "../engine/node/host.mjs";
 
-export const USAGE = "usage: motion-doctor.mjs [--json]\nlit-typographic-motion doctor (LitGravity): seven readiness probes, read-only\n";
+export const USAGE = "usage: motion-doctor.mjs [--json]\nlit-typographic-motion doctor: seven readiness probes, read-only\n";
 
 const versionOf = (tool, env) => {
   const probe = spawnSync(tool, ["-version"], { encoding: "utf8", env });

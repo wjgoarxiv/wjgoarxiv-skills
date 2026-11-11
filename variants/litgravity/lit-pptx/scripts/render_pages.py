@@ -71,7 +71,7 @@ def to_pdf(source: Path, out_dir: Path) -> tuple[Path | None, str]:
     soffice = shutil.which("soffice") or shutil.which("libreoffice") or _windows_soffice()
     if not soffice:
         return None, "LibreOffice (soffice) is not on PATH"
-    with tempfile.TemporaryDirectory(prefix="litgravity-soffice-") as profile:
+    with tempfile.TemporaryDirectory(prefix="lit-soffice-") as profile:
         profile_fonts(source, Path(profile))
         result = subprocess.run(
             [

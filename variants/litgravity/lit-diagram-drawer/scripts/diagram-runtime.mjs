@@ -3,17 +3,17 @@
 //
 // Only PNG export needs a renderer: scripts/export.mjs drives agent-browser (pinned in
 // ./diagram-runtime-lock/package.json) against Chrome for Testing 154. Source checks, importers and
-// the verifiers need nothing beyond Node. The renderer installs on first export into a LitGravity-owned
+// the verifiers need nothing beyond Node. The renderer installs on first export into a skill-owned
 // cache:
 //
-//   $LITGRAVITY_DIAGRAM_RUNTIME                                     when set (tests, isolated probes)
-//   ${XDG_DATA_HOME:-~/.local/share}/litgravity/runtime/diagram     otherwise
+//   $LIT_DIAGRAM_RUNTIME                                     when set (tests, isolated probes)
+//   ${XDG_DATA_HOME:-~/.local/share}/lit-skills/runtime/diagram     otherwise
 //
 // The environment lives in node-<key>; <key> hashes the lock file and the platform, so a pin change
 // gets a fresh directory. Nothing is installed globally and no agy configuration is touched.
 // agent-browser keeps its state, sockets and downloaded browsers under $HOME/.agent-browser and has no
 // setting for that directory, so every agent-browser child runs with HOME=<runtime root>/home. A Chrome
-// or Chromium already on the machine (LITGRAVITY_DIAGRAM_CHROME, CHROME_PATH, AGENT_BROWSER_EXECUTABLE_PATH,
+// or Chromium already on the machine (LIT_DIAGRAM_CHROME, CHROME_PATH, AGENT_BROWSER_EXECUTABLE_PATH,
 // the macOS app bundle, or a chrome/chromium name on PATH) is handed over through
 // AGENT_BROWSER_EXECUTABLE_PATH and nothing is downloaded; only when none exists does
 // `agent-browser install` fetch Chrome for Testing 154 into <runtime root>/home/.agent-browser/browsers.
@@ -30,11 +30,11 @@ import { homedir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { supportsAgentBrowserVersion } from "./runtime-probes.mjs";
-import { describeSpawn, resolveOnPath, runNpmSync, runSync } from "../../../lib/host-exec.mjs";
+import { describeSpawn, resolveOnPath, runNpmSync, runSync } from "./lib/host-exec.mjs";
 
 const LOCK_DIR = fileURLToPath(new URL("./diagram-runtime-lock/", import.meta.url));
 const LOCK_FILES = ["package.json"];
-const READY = ".litgravity-ready";
+const READY = ".lit-skills-ready";
 const CHROME_MAJOR = "154.";
 const STALE_LOCK_MS = 20 * 60 * 1000;
 
@@ -62,9 +62,9 @@ function lockDigest() {
 }
 
 export function runtimeRoot() {
-  if (process.env.LITGRAVITY_DIAGRAM_RUNTIME) return path.resolve(process.env.LITGRAVITY_DIAGRAM_RUNTIME);
+  if (process.env.LIT_DIAGRAM_RUNTIME) return path.resolve(process.env.LIT_DIAGRAM_RUNTIME);
   const dataHome = process.env.XDG_DATA_HOME || path.join(homedir(), ".local", "share");
-  return path.join(dataHome, "litgravity", "runtime", "diagram");
+  return path.join(dataHome, "lit-skills", "runtime", "diagram");
 }
 
 export const runtimeDir = () => path.join(runtimeRoot(), `node-${lockDigest()}`);
@@ -86,7 +86,7 @@ const WIN_CHROME = ["ProgramFiles", "ProgramFiles(x86)", "LOCALAPPDATA"].map((na
 
 // First usable system Chrome or Chromium with its version line. A candidate that does not run is skipped.
 export function systemChrome() {
-  const explicit = [process.env.LITGRAVITY_DIAGRAM_CHROME, process.env.CHROME_PATH, process.env.AGENT_BROWSER_EXECUTABLE_PATH];
+  const explicit = [process.env.LIT_DIAGRAM_CHROME, process.env.CHROME_PATH, process.env.AGENT_BROWSER_EXECUTABLE_PATH];
   const onPath = PATH_CHROME.map((name) => resolveOnPath(name));
   for (const candidate of [...explicit, ...MAC_CHROME, ...WIN_CHROME, ...onPath]) {
     if (!candidate || !existsSync(candidate)) continue;
@@ -177,7 +177,7 @@ export function ensureRenderer() {
     rmSync(dir, { recursive: true, force: true });
     mkdirSync(dir, { recursive: true });
     for (const file of LOCK_FILES) copyFileSync(path.join(LOCK_DIR, file), path.join(dir, file));
-    notice(`LitGravity diagram runtime: installing agent-browser ${pinnedVersion()} into ${dir} — first export only.`);
+    notice(`diagram runtime: installing agent-browser ${pinnedVersion()} into ${dir} — first export only.`);
     const result = runNpmSync(["install", "--omit=dev", "--no-package-lock", "--no-audit", "--no-fund", "--loglevel=error"], {
       encoding: "utf8",
       cwd: dir,
@@ -197,7 +197,7 @@ export function ensureRenderer() {
 export function ensureChrome(bin) {
   const chrome = chromeStatus(bin);
   if (chrome.ok) return chrome;
-  notice(`LitGravity diagram runtime: no system Chrome found; fetching Chrome for Testing 154 into ${agentHome()} with agent-browser install — first export only.`);
+  notice(`diagram runtime: no system Chrome found; fetching Chrome for Testing 154 into ${agentHome()} with agent-browser install — first export only.`);
   const result = run(bin, ["install"], { stdio: ["ignore", "pipe", "pipe"], timeout: STALE_LOCK_MS, env: rendererEnv() });
   if (result.error || result.status !== 0) {
     throw new Error(`DIAGRAM_RUNTIME_CHROME_FAILED: agent-browser install failed (${describeSpawn(result)})`);

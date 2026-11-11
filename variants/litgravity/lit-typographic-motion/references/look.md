@@ -7,7 +7,7 @@ its frame-difference plot, the poster and the seam pair) and its own done; see `
 
 ## Viewing pixels
 
-Only files you open with the Read tool count as viewed. OCR, pixel statistics and file listings may
+Only files you open with `read_file` count as viewed. OCR, pixel statistics and file listings may
 be written down as `aids`, but they never count as looking. Every render (stills-only or full)
 writes the stills set into `<dir>/stills/`, listed in `stills/index.json`:
 
@@ -26,7 +26,7 @@ viewed the frames.
 
 Answer all ten every round. Each answer names the frame it is about and what you saw there.
 
-1. A stranger would say this film is for: `<…>`. Ask a fresh subagent (the Agent tool) with only the
+1. A stranger would say this film is for: `<…>`. Ask a fresh child (`invoke_subagent`) with only the
    contact sheet and the beat stills, never the request or the treatment, and record its sentence
    verbatim with `by: blind`. If no subagent can run, answer it yourself with `by: self`.
 2. Does every beat show its `onScreen` plan?
@@ -66,7 +66,7 @@ The values below are placeholders; `look` refuses them.
 }
 ```
 
-- `viewed` lists every stills file you opened with Read this round, paths relative to `<dir>`.
+- `viewed` lists every stills file you opened with `read_file` this round, paths relative to `<dir>`.
 - `verdict` is `yes` or `no` for questions 1–6 and 8–10, and `none` or `named` for question 7.
 - `observed` is at least one sentence naming a concrete visible detail in `frame`; a bare yes or no
   is refused, and so is the same sentence used for two answers.
@@ -98,10 +98,10 @@ Done needs all of:
 - the last round stamped with the stills manifest of the final full render (`look` after the render,
   never before);
 - the last round's `viewed` covering the board, the poster, the contact sheet, every beat still and
-  every transition strip, each of them opened with the Read tool in this session;
+  every transition strip, each of them opened with `read_file` in this session;
 - the last round free of revise answers, or round 3 with its open items said in the reply.
 
-The Stop hook checks every item and holds the turn with a named reason. A missing, unreadable or
+`node "$SKILL_ROOT/scripts/motion.mjs" done <dir>` checks every item and names the reason while the film is not done (exit 13); run it before you call the work finished. A missing, unreadable or
 outdated `treatment.json` or `look.json` is a named reason, never a pass.
 
 ## Never downgrade to pass

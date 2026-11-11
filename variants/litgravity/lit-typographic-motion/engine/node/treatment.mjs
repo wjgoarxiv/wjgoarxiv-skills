@@ -67,8 +67,7 @@ export const quotedSpans = (text) => [...String(text ?? "").matchAll(QUOTED)].ma
 export const stripQuoted = (text) => String(text ?? "").replace(QUOTED, " ");
 
 // A type-led cue: a type compound, an explicit kinetic-type or lyric request, or a quoted span of two
-// or more words. Detecting a quote is cue detection only; nothing inside it is followed. The hook's
-// router hint uses the same rule (kept in step by the director test).
+// or more words. Detecting a quote is cue detection only; nothing inside it is followed.
 const TYPE_COMPOUND = /타이포\s?모션|키네틱\s?타이포|타이포그래피\s?(?:영상|비디오)|(?:가사|리릭)\s?(?:영상|비디오)|타이틀\s?시퀀스|오프닝\s?타이틀|\bkinetic\s+(?:type|typography)\b|\btypographic\s+motion\b|\blyric\s+videos?\b|\btitle\s+sequences?\b|\bopening\s+titles?\b/iu;
 
 export function typeLedCue(request) {

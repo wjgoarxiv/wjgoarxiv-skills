@@ -1,11 +1,11 @@
 "use strict";
 
 /**
- * runtime-require.js — load the engine's npm dependencies from the LitGravity
+ * runtime-require.js — load the engine's npm dependencies from the skill
  * office runtime instead of a node_modules folder next to the skill.
  *
  * The skill ships without node_modules. The first require installs the pinned
- * lockfile into the LitGravity-owned cache (scripts/office-runtime.mjs
+ * lockfile into the skill-owned cache (scripts/office-runtime.mjs
  * prints a one-line notice), and every later require resolves from there.
  */
 

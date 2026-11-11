@@ -610,7 +610,7 @@ export function writeScore({ treatment, frameCount, fps, cutTimes = [], dir }) {
   }
   const { plan } = score;
   const summary = {
-    schema: "litgravity.motion-sound-cues/v1",
+    schema: "lit.motion-sound-cues/v1",
     mode: "score",
     file,
     sha256: createHash("sha256").update(wav).digest("hex"),

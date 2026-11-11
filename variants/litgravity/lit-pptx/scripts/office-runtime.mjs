@@ -4,10 +4,10 @@
 // The deck engine needs pptxgenjs (and sharp for recoloured or mesh backgrounds); the
 // Python helpers need python-pptx, python-docx, markdown, beautifulsoup4, pymupdf, pyyaml
 // and defusedxml. None of them ship in the npm tarball. They install on first use from the
-// pinned lockfiles in ./office-runtime-lock/ into a LitGravity-owned cache:
+// pinned lockfiles in ./office-runtime-lock/ into a skill-owned cache:
 //
-//   $LITGRAVITY_OFFICE_RUNTIME                                      when set (tests, isolated probes)
-//   ${XDG_DATA_HOME:-~/.local/share}/litgravity/runtime/office      otherwise
+//   $LIT_OFFICE_RUNTIME                                      when set (tests, isolated probes)
+//   ${XDG_DATA_HOME:-~/.local/share}/lit-skills/runtime/office      otherwise
 //
 // Each environment lives in node-<key> or python-<key>. <key> hashes the lockfiles, the
 // platform and the Python minor version, so a lockfile change or a new interpreter gets a
@@ -25,13 +25,13 @@ import { copyFileSync, existsSync, mkdirSync, readFileSync, realpathSync, rmSync
 import { homedir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { pickPython } from "../../../lib/python-pick.mjs";
-import { describeSpawn, firstLine, runNpmSync, runSync } from "../../../lib/host-exec.mjs";
+import { pickPython } from "./lib/python-pick.mjs";
+import { describeSpawn, firstLine, runNpmSync, runSync } from "./lib/host-exec.mjs";
 
 const LOCK_DIR = fileURLToPath(new URL("./office-runtime-lock/", import.meta.url));
 const NODE_LOCK_FILES = ["package.json", "package-lock.json"];
 const PYTHON_LOCK_FILE = "requirements.lock";
-const READY = ".litgravity-ready";
+const READY = ".lit-skills-ready";
 const MIN_PYTHON = [3, 10];
 const STALE_LOCK_MS = 20 * 60 * 1000;
 
@@ -57,7 +57,7 @@ const npmChildEnv = (env) => Object.fromEntries(Object.entries(env).filter(([key
 }));
 
 export function probePython() {
-  return pickPython(process.env.LITGRAVITY_OFFICE_PYTHON, "LITGRAVITY_OFFICE_PYTHON");
+  return pickPython(process.env.LIT_OFFICE_PYTHON, "LIT_OFFICE_PYTHON");
 }
 
 export function pythonCommand() {
@@ -72,9 +72,9 @@ function lockDigest(files, extra) {
 }
 
 export function runtimeRoot() {
-  if (process.env.LITGRAVITY_OFFICE_RUNTIME) return path.resolve(process.env.LITGRAVITY_OFFICE_RUNTIME);
+  if (process.env.LIT_OFFICE_RUNTIME) return path.resolve(process.env.LIT_OFFICE_RUNTIME);
   const dataHome = process.env.XDG_DATA_HOME || path.join(homedir(), ".local", "share");
-  return path.join(dataHome, "litgravity", "runtime", "office");
+  return path.join(dataHome, "lit-skills", "runtime", "office");
 }
 
 export function nodeRuntimeDir() {
@@ -140,7 +140,7 @@ export function ensureNode() {
     mkdirSync(status.dir, { recursive: true });
     for (const file of NODE_LOCK_FILES) copyFileSync(path.join(LOCK_DIR, file), path.join(status.dir, file));
     const pins = Object.entries(status.pinned).map(([name, version]) => `${name} ${version}`).join(", ");
-    notice(`LitGravity office runtime: installing pinned Node packages (${pins}) into ${status.dir} — first use only.`);
+    notice(`office runtime: installing pinned Node packages (${pins}) into ${status.dir} — first use only.`);
     const result = runNpmSync(["ci", "--omit=dev", "--ignore-scripts", "--no-audit", "--no-fund", "--loglevel=error"], {
       encoding: "utf8",
       cwd: status.dir,
@@ -171,7 +171,7 @@ export function ensurePython() {
   return withLock(status.dir, () => {
     if (existsSync(path.join(status.dir, READY))) return pythonStatus();
     rmSync(status.dir, { recursive: true, force: true });
-    notice(`LitGravity office runtime: creating a Python ${status.host.version} environment with ${status.pinned.length} pinned packages in ${status.dir} — first use only.`);
+    notice(`office runtime: creating a Python ${status.host.version} environment with ${status.pinned.length} pinned packages in ${status.dir} — first use only.`);
     const venv = run(status.host.command, ["-m", "venv", status.dir], { stdio: ["ignore", "pipe", "pipe"] });
     if (venv.error || venv.status !== 0) {
       throw new Error(`OFFICE_RUNTIME_VENV_FAILED: python -m venv failed (${describeSpawn(venv)})`);

@@ -73,7 +73,7 @@ Record both. Each answers a different question.
 Run in order and end in a verdict.
 
 1. Reproduce on the declared profile with a cold cache.
-2. Capture one load trace and one interaction trace; save both paths under `.litgravity/evidence/<slug>/perf/`.
+2. Capture one load trace and one interaction trace; save both paths under `.lit-skills/evidence/<slug>/perf/`.
 3. Rank findings by milliseconds against the budget each breaks.
 4. Attribute every finding to exactly one cause from the diagnosis list.
 5. Fix the largest attributed cause and change nothing else.

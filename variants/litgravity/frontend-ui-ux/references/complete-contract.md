@@ -5,19 +5,19 @@ This is the preserved full operating contract of `frontend-ui-ux`. `SKILL.md` ca
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litgravity.skill-contract.v1
+contract_schema_version: lit.skill-contract.v1
 artifact_type: skill
 activation:
-  primary: /litgravity:frontend-ui-ux, or the bare-lit router when the prompt carries an interface noun and a design verb
-  aliases: [frontend-ui-ux, "lit frontend-ui-ux", natural-language interface design intent]
-  fallback: read_file on the SKILL.md path named in the activation note
+  primary: /frontend-ui-ux, or a request agy matches to the description (an interface noun and a design verb)
+  aliases: [frontend-ui-ux, natural-language interface design intent]
+  fallback: read_file on ~/.gemini/config/skills/frontend-ui-ux/SKILL.md (or .agents/skills/frontend-ui-ux/SKILL.md)
 preconditions:
   - a frontend surface, component, screen or interaction is in scope
   - the target repository and its runtime constraints are readable
   - the reference pack under references/ resolves from the skill directory
 ```
 
-agy reaches this skill in two ways. The bare-`lit` router runs before the first model call, recognizes a prompt that names the skill or pairs a design verb with an interface noun, and adds an activation note that names the skill file and the route. The slash form `/litgravity:frontend-ui-ux` loads the same file. Closed backtick and tilde fences, inline code, slash-command mentions, mid-sentence skill-name mentions and non-interface design requests stay inert. The activation note carries a pointer and the file path; the skill body arrives through `read_file` (older builds: `view_file`). A plugin has no `commands/` folder on agy, so the slash form belongs to the skill itself and `lit` has no command twin.
+agy reaches this skill in two ways once the folder sits in `~/.gemini/config/skills/frontend-ui-ux/` (or a workspace `.agents/skills/frontend-ui-ux/`). The slash form `/frontend-ui-ux` loads it, and agy offers it to the model when a request pairs a design verb with an interface noun and so matches the description. Quoted text, inline code, mid-sentence skill-name mentions and non-interface design requests are not requests for this skill. The skill body arrives through `read_file` (older builds: `view_file`); no hook or command is involved.
 
 Project rules (`AGENTS.md` and similar files) form a separate context lane. They apply whether or not this route activates, and their presence says nothing about which skill was selected. When this procedure runs for implementation, its intended writes are the user-approved Design Contract, interface code, tests and a work receipt. The hooks write none of those and leave agy settings untouched.
 
@@ -278,7 +278,7 @@ Duplicate object keys are rejected. A runtime parser keeps the last value of a r
 
 Canonical form sorts keys recursively, keeps array order, and ends with one newline. That newline is part of the canonical bytes: every contract hash recorded anywhere in the family is taken over the form `canonicalDesignContract` produces.
 
-Resolve `FRONTEND_UIUX_SKILL_ROOT` to the directory of the `SKILL.md` path in the activation note (the installed plugin copy), and quote absolute paths:
+Resolve `FRONTEND_UIUX_SKILL_ROOT` to the directory of this skill's `SKILL.md` (the installed copy), and quote absolute paths:
 
 ```bash
 node "$FRONTEND_UIUX_SKILL_ROOT/scripts/validate-design-contract.mjs" "path/to/design-contract.json"
@@ -347,13 +347,12 @@ The check prints `"status": "PASS"` with the dataset block (2,277 records, 1,023
 Run these to confirm that the bundle agy loaded matches this contract:
 
 ```bash
-agy plugin validate <plugin-dir> --json --strict
-litgravity doctor
+agy -p "/skills"
 node "$FRONTEND_UIUX_SKILL_ROOT/scripts/verify-corpus.mjs"
 node "$FRONTEND_UIUX_SKILL_ROOT/scripts/chrome-driver.mjs" status
 ```
 
-`agy plugin validate` reports no errors and no warnings. `verify-corpus.mjs` prints `PASS: <n> files, <bytes> corpus bytes` for an intact canonical library and names every missing, extra or drifted path otherwise. `chrome-driver.mjs status` names the Chrome or Chromium the probe will drive, or the reason none was found (set `CHROME_PATH`). `/skills` in an `agy -p` session lists `litgravity:frontend-ui-ux`. Every packaged resource above is hash-pinned by the canonical-corpus manifest, and docs carry no mutable resource count.
+`/skills` lists `frontend-ui-ux` from `~/.gemini/config/skills/frontend-ui-ux` (or the workspace `.agents/skills/frontend-ui-ux`). `verify-corpus.mjs` prints `PASS: <n> files, <bytes> corpus bytes` for an intact canonical library and names every missing, extra or drifted path otherwise. `chrome-driver.mjs status` names the Chrome or Chromium the probe will drive, or the reason none was found (set `CHROME_PATH`). Every packaged resource above is hash-pinned by the canonical-corpus manifest, and docs carry no mutable resource count.
 
 ## Discovery before design
 
@@ -369,7 +368,7 @@ State the primary user, the critical task, the success signal, the failure conse
 
 ## Implementation handoff
 
-Before editing broadly, hand the implementation lane (the main conversation, or `lit-executor` through `invoke_subagent` for a separable component) the component inventory, token decisions, layout rules, critical states, responsive adaptations, accessibility requirements and the evidence plan. During implementation:
+Before editing broadly, hand the implementation lane (the main conversation, or a child through `invoke_subagent` for a separable component) the component inventory, token decisions, layout rules, critical states, responsive adaptations, accessibility requirements and the evidence plan. During implementation:
 
 - keep semantic structure stable before decorative refinement;
 - introduce a token before duplicating a raw value;
@@ -411,5 +410,5 @@ Hand off by identity. Publish the canonical contract path and its SHA-256 togeth
 ```yaml
 artifact_genre: client_deliverable
 limitations_channel: reply
-reader_facing: result, material risk, required action; receipts stay in .litgravity/evidence
+reader_facing: result, material risk, required action; receipts stay in .lit-skills/evidence
 ```

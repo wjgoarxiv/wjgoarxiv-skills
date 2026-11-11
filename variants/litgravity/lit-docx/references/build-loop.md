@@ -2,18 +2,18 @@
 
 `SKILL.md` carries the spine. This file holds the runtime facts, the data-file grammar, the gate groups, the look step and the workflows around the main build (Markdown out of DOCX and PDF, in-place edits, publisher PDF, registry changes). Open it when a step fails or when the job is something other than "Markdown to a new .docx".
 
-Path convention in commands: `SKILL_ROOT` is the folder of `SKILL.md`; `OFFICE="$SKILL_ROOT/../lit-pptx/scripts"` is where the shared office helpers live (`office-runtime.mjs`, `office_data.py`, `render_pages.py`, `ooxml_integrity.py`, `office_runtime_bootstrap.py`, the pinned lock folder). `lit-docx` and `lit-pptx` use one runtime, so the engine is installed once.
+Path convention in commands: `SKILL_ROOT` is the folder of `SKILL.md`; `OFFICE="$SKILL_ROOT/scripts/office"` is where the office helpers live (`office-runtime.mjs`, `office_data.py`, `render_pages.py`, `ooxml_integrity.py`, `office_runtime_bootstrap.py`, the pinned lock folder). They match the files `lit-pptx` ships, so with both skills installed the engine is installed once.
 
 ## 1. Runtime readiness
 
 | Command | Effect |
 | --- | --- |
 | `node "$OFFICE/office-runtime.mjs" status --json` | readiness, cache path, missing pieces, host tools (`soffice`, `pandoc`, `xelatex`); installs nothing |
-| `node "$OFFICE/office-runtime.mjs" install --json` | installs the pinned Node and Python halves into `$XDG_DATA_HOME/litgravity/runtime/office`; `--python` installs only the half this skill needs |
+| `node "$OFFICE/office-runtime.mjs" install --json` | installs the pinned Node and Python halves into `$XDG_DATA_HOME/lit-skills/runtime/office`; `--python` installs only the half this skill needs |
 
 - Documents need only the Python half (python-docx, Markdown, beautifulsoup4, PyMuPDF, PyYAML and pins). The first helper call installs it by itself and prints one notice line; every helper then re-runs under that interpreter, so `python3` is the right command.
-- `LITGRAVITY_OFFICE_PYTHON` names another interpreter (3.10 or newer). A Python release that has no published wheels yet fails with `No matching distribution found`; point the variable at a release with wheels (3.12 to 3.14) and rerun the install. `LITGRAVITY_OFFICE_RUNTIME` replaces the cache root; `LITGRAVITY_NODE` names the Node binary the helpers call.
-- A refused `run_command` or a failed install is `BLOCKED:`. Quote the error line and give the user command `npx @litfamily/litgravity runtime install office`.
+- `LIT_OFFICE_PYTHON` names another interpreter (3.10 or newer). A Python release that has no published wheels yet fails with `No matching distribution found`; point the variable at a release with wheels (3.12 to 3.14) and rerun the install. `LIT_OFFICE_RUNTIME` replaces the cache root; `LIT_NODE` names the Node binary the helpers call.
+- A refused `run_command` or a failed install is `BLOCKED:`. Quote the error line and give the user command `node "$OFFICE/office-runtime.mjs" install --python`.
 - Host tools are reported and never installed: `soffice` (rendered pages and the page checks), `pandoc` (DOCX to Markdown, the publisher PDF path), `xelatex` (publisher PDF).
 
 ## 2. Numbers from a data file
@@ -86,11 +86,11 @@ It writes a PDF and `page-NN.png` files through `soffice` (`--dpi` defaults to 1
 
 ## 7. Evidence layout
 
-| File under `.litgravity/evidence/<slug>/` | Content |
+| File under `.lit-skills/evidence/<slug>/` | Content |
 | --- | --- |
 | `gate.txt` | the last `qa_docx.py` output with its exit code |
 | `office-status.txt` | the runtime `status` output |
 | `pages.md` | one line per page opened and what it showed, including the "wrong if" verdict |
 | `lint.md` | the lint report for a manuscript |
 
-Ledger lines: a `decision` line for the direction card and an `evidence` line per artifact (`{ts, kind, text, path?}` appended to `.litgravity/ledger/<conversation-id>.jsonl`).
+Ledger lines: a `decision` line for the direction card and an `evidence` line per artifact (`{ts, kind, text, path?}` appended to `.lit-skills/evidence/<slug>/ledger.jsonl`).

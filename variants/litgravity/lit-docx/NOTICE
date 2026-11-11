@@ -1,13 +1,13 @@
-lit-docx — LitGravity document skill
+lit-docx — document skill for agy
 
 Converters, publisher registry and templates, slop lint, visual audit and
 page-fill checks are ported from the author's MIT-licensed
 "publisher-docx-skill". Written for this port: scripts/qa_docx.py, the --kind
 option of scripts/slop_lint.py, the PNG pages in scripts/visual_audit.py, and
-the shared helpers that live in the sibling skill folder lit-pptx/scripts
-(ooxml_integrity.py, render_pages.py, office-runtime.mjs,
-office_runtime_bootstrap.py, office_data.py). The references/ documents were
-written anew for LitGravity.
+the office helpers in scripts/office/ (ooxml_integrity.py, render_pages.py,
+office-runtime.mjs, office_runtime_bootstrap.py, office_data.py), which are
+the same files the lit-pptx skill ships, copied here so this folder stands
+alone. The references/ documents were written anew for this skill.
 
 MIT License
 
@@ -32,4 +32,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 Runtime dependencies are not bundled; they install on first use from
-lit-pptx/scripts/office-runtime-lock/requirements.lock, each under its own licence.
+scripts/office/office-runtime-lock/requirements.lock, each under its own licence.

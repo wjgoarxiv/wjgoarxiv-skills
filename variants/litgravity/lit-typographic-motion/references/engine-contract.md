@@ -13,7 +13,7 @@ never needs it.
    places them on the beat grid as the canonical timeline.
 2. **Page, in headless Chrome.** Chrome is driven over the DevTools pipe (`--remote-debugging-pipe`), so
    no control port listens. The page files in `engine/web/` are served from disk through Fetch
-   interception, and the page receives the plan and the font bytes (bundled, the reused lit-pptx files,
+   interception, and the page receives the plan and the font bytes (bundled files,
    or the pre-warmed cache).
 3. **Frame n.** For each of `samples` sub-frames, at
    `t = max(0, n/fps + (shutter/fps)·((i + 0.5)/samples − 0.5))`, the shot active at that time is

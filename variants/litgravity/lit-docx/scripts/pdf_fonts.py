@@ -3,7 +3,7 @@
 XeLaTeX fails deep inside fontspec with ``The font "Pretendard" cannot be found`` after pandoc has already run. This
 module asks the machine which font families it has before that, and stops with a BLOCKED message that names each
 missing family and how to install it. When the font list cannot be read (no ``fc-list``, no ``reg``), nothing is
-blocked: XeLaTeX stays the judge. ``LITGRAVITY_SKIP_FONT_PREFLIGHT=1`` skips the check.
+blocked: XeLaTeX stays the judge. ``LIT_SKIP_FONT_PREFLIGHT=1`` skips the check.
 """
 
 from __future__ import annotations
@@ -67,7 +67,7 @@ def font_available(family: str, fonts: list[str]) -> bool:
 
 def require_fonts(families: list[str], fonts: object = _AUTO) -> None:
     """Stop with a BLOCKED message naming every family in ``families`` that the machine lacks."""
-    if os.environ.get("LITGRAVITY_SKIP_FONT_PREFLIGHT") == "1":
+    if os.environ.get("LIT_SKIP_FONT_PREFLIGHT") == "1":
         return
     available = installed_fonts() if fonts is _AUTO else fonts
     if available is None:
@@ -79,5 +79,5 @@ def require_fonts(families: list[str], fonts: object = _AUTO) -> None:
     for family in missing:
         hint = _HINTS.get(family.lower(), f'install the "{family}" font for this system')
         lines.append(f'  - missing font "{family}": {hint}')
-    lines.append("Install them and rerun, or set LITGRAVITY_SKIP_FONT_PREFLIGHT=1 if XeLaTeX can reach the font another way.")
+    lines.append("Install them and rerun, or set LIT_SKIP_FONT_PREFLIGHT=1 if XeLaTeX can reach the font another way.")
     raise SystemExit("\n".join(lines))

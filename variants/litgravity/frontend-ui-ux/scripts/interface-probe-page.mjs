@@ -1119,8 +1119,8 @@ export function measureInterface(options) {
     }
     const repeated = [...groups.values()].filter((list) => list.length >= t("CF-506").minRepeats).flat();
     repeated.slice(0, options.hoverSample).forEach((el, index) => {
-      el.setAttribute("data-litgravity-probe-hover", String(index));
-      hoverTargets.push({ selector: `[data-litgravity-probe-hover="${index}"]`, name: selectorOf(el) });
+      el.setAttribute("data-lit-probe-hover", String(index));
+      hoverTargets.push({ selector: `[data-lit-probe-hover="${index}"]`, name: selectorOf(el) });
     });
   }
 

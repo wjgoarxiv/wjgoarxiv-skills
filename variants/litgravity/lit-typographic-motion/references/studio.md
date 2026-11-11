@@ -189,7 +189,7 @@ shot's type zone dashed over the frame, and a header with the style, palette and
 length and bed. On the stage path the same render runs the board check, the gate's text and style
 rules on the board frames, writes `stills/check.json` and prints the verdict on the board.
 
-- Exit 0: open the board and every still with Read, record round 1 with its change, and render the
+- Exit 0: open the board and every still with `read_file`, record round 1 with its change, and render the
   film.
 - Exit 13 `BOARD_CHECK_FAIL`: the message names each failed rule. Fix the page and render the board
   again before the full render; a full render fails the same rules.
@@ -222,7 +222,7 @@ When the request asks for a preview or a storyboard first (미리보기, 스토�
 storyboard), set `preview: true` in the treatment. The film is then done at the board: a board round
 whose check passed, looked at, with the board in the viewed list. The reply shows the board and says the
 film is not rendered yet; when the user says go, set `preview` to false and render the film. Without
-those words a bare `lit` still asks no questions and renders the film, and the reply still names the
+those words a delegated request still asks no questions and renders the film, and the reply still names the
 board.
 
 ## The house file
@@ -230,7 +230,7 @@ board.
 `motion-house.json` sits beside the output folder (the user's working directory):
 
 ```json
-{ "schema": "litgravity.motion-house/v1", "style": "<style id>", "createdAt": "<time>", "films": [{ "dir": "<folder>", "style": "<style id>", "path": "<stage or type>", "format": "<16:9 or 9:16>", "durationSec": 0, "at": "<time>" }] }
+{ "schema": "lit.motion-house/v1", "style": "<style id>", "createdAt": "<time>", "films": [{ "dir": "<folder>", "style": "<style id>", "path": "<stage or type>", "format": "<16:9 or 9:16>", "durationSec": 0, "at": "<time>" }] }
 ```
 
 The renderer writes it when a full render passes and nothing is withheld; the first film sets the

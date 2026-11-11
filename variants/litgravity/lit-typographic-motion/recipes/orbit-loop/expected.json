@@ -1,5 +1,5 @@
 {
-  "schema": "litgravity.motion-cover-recipe/v1",
+  "schema": "lit.motion-cover-recipe/v1",
   "note": "The decoded gate row this recipe reached when it shipped (scripts/qa-cover-recipes.mjs re-renders it and fails when median d or moving leave +-15 %, seamLocal leaves TARGET or bytes pass 2 MiB). Measured 2026-10-20 on headless Chrome's software rung and libwebp 1.6.0.",
   "row": {
     "medianD": 0.002669,
@@ -25,13 +25,13 @@
   },
   "treatment": {
     "mode": "cover",
-    "request": "A README motion cover for LitGravity that shows work moving through gates.",
+    "request": "A README motion cover for Typemotion that shows work moving through gates.",
     "idea": "Dots lap three rings and every crossing at the gate lights the next cell of a ledger under the name.",
     "recipe": "orbit-loop",
     "recipeReason": "A small system beside a still name shows checking without words.",
     "hero": "The dots lapping three rings.",
     "beat": "Each crossing at the gate lights the next ledger cell.",
-    "brandWord": "LITGRAVITY",
+    "brandWord": "TYPEMOTION",
     "motto": {
       "text": "KEEP THE WORK LIT.",
       "source": "project",

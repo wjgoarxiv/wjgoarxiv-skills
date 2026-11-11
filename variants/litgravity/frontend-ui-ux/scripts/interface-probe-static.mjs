@@ -8,7 +8,7 @@ import { dirname, extname, join, relative } from "node:path";
 import { RULES } from "./interface-probe-rules.mjs";
 
 const SOURCE_EXTENSIONS = new Set([".html", ".htm", ".css", ".scss", ".sass", ".less", ".js", ".mjs", ".jsx", ".ts", ".tsx", ".vue", ".svelte", ".astro"]);
-const SKIPPED_DIRECTORIES = new Set(["node_modules", ".git", ".next", ".nuxt", ".svelte-kit", "coverage", ".litgravity", "dist", "build", "out"]);
+const SKIPPED_DIRECTORIES = new Set(["node_modules", ".git", ".next", ".nuxt", ".svelte-kit", "coverage", ".lit-skills", "dist", "build", "out"]);
 const MAX_FILES = 400;
 const MAX_FILE_BYTES = 2 * 1024 * 1024;
 

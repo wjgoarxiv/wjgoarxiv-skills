@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """OOXML package integrity check for .pptx and .docx files.
 
-Written for LitGravity's lit-pptx and lit-docx. It answers one question: will
+Written for lit-pptx and lit-docx. It answers one question: will
 the file open? It does not validate against the ECMA schemas. It checks the
 package the way a reader meets it:
 

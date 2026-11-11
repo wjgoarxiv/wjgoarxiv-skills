@@ -1,5 +1,5 @@
 # Pinned Python runtime for lit-pptx and lit-docx. Installed on first use into a
-# LitGravity-owned virtual environment with `pip install --only-binary=:all:`;
+# skill-owned virtual environment with `pip install --only-binary=:all:`;
 # nothing is installed globally. Requires Python 3.10 or newer.
 beautifulsoup4==4.15.0
 defusedxml==0.7.1

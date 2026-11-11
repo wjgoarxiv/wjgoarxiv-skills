@@ -76,7 +76,7 @@ The next stage reads this package. What is missing does not exist for it.
 - Finite surface list: routes, states, viewport bands, auth requirements.
 - The design contract hash that the independent review pass binds its receipt to.
 
-Write it to `.litgravity/design/<slug>-direction.md` (the contract's `intent` and `direction` groups repeat the decided parts).
+Write it to `.lit-skills/design/<slug>-direction.md` (the contract's `intent` and `direction` groups repeat the decided parts).
 
 ## Worked example
 

@@ -1,5 +1,5 @@
 // Brief -> render plan. A brief is a small JSON the skill writes from the user's request
-// (schema litgravity.motion-brief/v1). It either lists shots explicitly or gives plain `lines`, which
+// (schema lit.motion-brief/v1). It either lists shots explicitly or gives plain `lines`, which
 // are composed into a default film: a title slam, the middle lines as reveals, and an end card.
 // Every display string goes through smart() (MO-A-34); the timeline comes from core/timeline.mjs.
 import { readFileSync } from "node:fs";
@@ -10,7 +10,7 @@ import { smart, plain, eojeol } from "../core/text.mjs";
 import { TIMELINE } from "../core/constants.mjs";
 import { TreatmentError } from "./treatment.mjs";
 
-export const BRIEF_SCHEMA = "litgravity.motion-brief/v1";
+export const BRIEF_SCHEMA = "lit.motion-brief/v1";
 const SCENE_IDS = ["title-slam", "karaoke-line", "kinetic-list", "number-counter", "signature", "end-card"];
 
 export class BriefError extends Error {}

@@ -5,7 +5,7 @@ palette, the three type voices, the motion vocabulary, the shader passes and the
 layout grid, what to avoid, and what makes this film its own. The type engine carries each preset as
 data (`engine/core/presets.mjs`), and the house styles carry the same palettes for the stage path
 (`styles/<id>.json`, `studio.md`); this page is the reasoning behind that data. The treatment's
-`style` decides the preset on the type path, so the brief leaves `style` out; under a bare `lit`, state
+`style` decides the preset on the type path, so the brief leaves `style` out; under a delegated request, state
 the style and the rule that chose it in one sentence.
 
 ## Template

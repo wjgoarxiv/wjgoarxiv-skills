@@ -3,8 +3,9 @@ import { sha256 } from "./evidence-io.mjs";
 
 export const REVIEW_SCHEMA = "litfamily.review-receipt/v1alpha1";
 export const REVIEWERS = ["quality-reviewer", "lit-verifier"];
-// A receipt may name the agent bare or as the namespaced subagent type (`litgravity/quality-reviewer`).
-const reviewerIdentity = (id) => (typeof id === "string" && id.startsWith("litgravity/") ? id.slice("litgravity/".length) : id);
+// A receipt may name the role bare or with one namespace segment in front (`<namespace>/quality-reviewer`),
+// as an agent type defined in a plugin would be named.
+const reviewerIdentity = (id) => (typeof id === "string" && /^[a-z0-9][a-z0-9-]*\/[a-z]/u.test(id) ? id.slice(id.indexOf("/") + 1) : id);
 const HASH = /^[a-f0-9]{64}$/u;
 const ID = /^[a-z][a-z0-9-]*:[a-z0-9][a-z0-9./-]*$/u;
 const INPUT_KEYS = [

@@ -1,5 +1,5 @@
 {
-  "name": "litgravity-readme-motion-workspace",
+  "name": "lit-readme-motion-workspace",
   "private": true,
   "type": "module",
   "scripts": {"compositions": "remotion compositions src/index.tsx", "render": "remotion render", "still": "remotion still"},

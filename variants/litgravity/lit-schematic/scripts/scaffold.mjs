@@ -7,10 +7,10 @@
 //
 // It writes <dir>/build.mjs (and every other module of the example, such as the iso scene.mjs)
 // with the kit imports pointing at this installed skill, never overwrites an existing file, and
-// never writes inside the plugin.
+// never writes inside the skill folder.
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
-import { join, resolve, sep } from "node:path";
+import { join, relative, resolve, sep } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
 const SKILL_ROOT = resolve(fileURLToPath(new URL("..", import.meta.url)));
@@ -24,19 +24,21 @@ export function scaffold(kind, dir) {
   const example = TEMPLATES[kind];
   if (!example) throw new Error(`kind must be one of ${Object.keys(TEMPLATES).join(", ")}`);
   const target = resolve(dir);
-  const pluginRoot = realpathSync(resolve(SKILL_ROOT, "..", ".."));
+  const skillRoot = realpathSync(SKILL_ROOT);
   mkdirSync(target, { recursive: true });
   const real = realpathSync(target);
-  if (real === pluginRoot || real.startsWith(pluginRoot + sep)) throw new Error("refusing to write inside the installed plugin; pick a directory in your project");
+  if (real === skillRoot || real.startsWith(skillRoot + sep)) throw new Error("refusing to write inside the installed skill; pick a directory in your project");
   const modules = readdirSync(join(SKILL_ROOT, "examples", example)).filter((f) => f.endsWith(".mjs"));
   for (const name of modules) {
     if (existsSync(join(target, name))) throw new Error(`${join(target, name)} already exists; move it or pick another directory`);
   }
   const lib = pathToFileURL(join(SKILL_ROOT, "scripts", "lib")).href;
+  // The examples import the kit by its path relative to examples/<name>/ inside this skill.
+  const fromExample = relative(join(SKILL_ROOT, "examples", example), join(SKILL_ROOT, "scripts")).split(sep).join("/");
   for (const name of modules) {
     const source = readFileSync(join(SKILL_ROOT, "examples", example, name), "utf8")
-      .replaceAll('"../../scripts/lib/', `"${lib}/`)
-      .replaceAll('"../../scripts/', `"${pathToFileURL(join(SKILL_ROOT, "scripts")).href}/`);
+      .replaceAll(`"${fromExample}/lib/`, `"${lib}/`)
+      .replaceAll(`"${fromExample}/`, `"${pathToFileURL(join(SKILL_ROOT, "scripts")).href}/`);
     writeFileSync(join(target, name), source);
   }
   return join(target, "build.mjs");

@@ -10,7 +10,7 @@ import { fileURLToPath } from "node:url";
 import { matchesKeyword } from "../core/presets.mjs";
 import { contrastRatio, relativeLuminance } from "../core/util.mjs";
 
-export const STYLE_SCHEMA = "litgravity.motion-style/v1";
+export const STYLE_SCHEMA = "lit.motion-style/v1";
 export const STYLE_IDS = Object.freeze(["swiss-signal", "tidal", "terminalcore", "paper"]);
 export const DEFAULT_STYLE = "swiss-signal";
 export const TYPE_ROLES = Object.freeze(["display", "headline", "body", "label"]);

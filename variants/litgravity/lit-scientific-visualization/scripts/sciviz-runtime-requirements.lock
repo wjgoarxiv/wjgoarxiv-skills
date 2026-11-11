@@ -1,5 +1,5 @@
 # Pinned Python runtime for lit-scientific-visualization (matplotlib and numpy with their
-# dependencies). Installed on first use into a LitGravity-owned virtual environment with
+# dependencies). Installed on first use into a skill-owned virtual environment with
 # `pip install --only-binary=:all:`; nothing is installed globally. Requires Python 3.10 or newer.
 # Wheel availability was checked on PyPI for cp310 to cp315 (macOS arm64/universal2 and
 # manylinux x86_64) when this file was written; the markers pick the newest build per interpreter.

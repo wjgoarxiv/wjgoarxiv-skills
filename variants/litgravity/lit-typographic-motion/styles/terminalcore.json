@@ -1,5 +1,5 @@
 {
-  "schema": "litgravity.motion-style/v1",
+  "schema": "lit.motion-style/v1",
   "id": "terminalcore",
   "name": "Terminalcore",
   "summary": "A navy terminal: phosphor type that appears at typing speed, one signal hue, hard cuts, nothing eases.",

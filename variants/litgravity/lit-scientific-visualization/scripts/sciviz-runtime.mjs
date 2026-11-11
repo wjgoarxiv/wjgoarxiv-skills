@@ -3,10 +3,10 @@
 //
 // The bundled figure helpers (style_presets.py, figure_export.py, color_palettes.py) need
 // matplotlib and numpy. They do not ship in the npm tarball. They install on first use from the
-// pinned lock file next to this module into a LitGravity-owned virtual environment:
+// pinned lock file next to this module into a skill-owned virtual environment:
 //
-//   $LITGRAVITY_SCIVIZ_RUNTIME                                      when set (tests, isolated probes)
-//   ${XDG_DATA_HOME:-~/.local/share}/litgravity/runtime/sciviz      otherwise
+//   $LIT_SCIVIZ_RUNTIME                                      when set (tests, isolated probes)
+//   ${XDG_DATA_HOME:-~/.local/share}/lit-skills/runtime/sciviz      otherwise
 //
 // The environment lives in python-<key>. <key> hashes the lock file, the platform and the Python
 // minor version, so a lock change or a new interpreter gets a fresh environment instead of
@@ -26,13 +26,13 @@ import { existsSync, mkdirSync, readFileSync, realpathSync, rmSync, statSync, wr
 import { homedir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { pickPython } from "../../../lib/python-pick.mjs";
-import { describeSpawn } from "../../../lib/host-exec.mjs";
+import { pickPython } from "./lib/python-pick.mjs";
+import { describeSpawn } from "./lib/host-exec.mjs";
 
 const HERE = fileURLToPath(new URL("./", import.meta.url));
 const SKILL_DIR = path.resolve(HERE, "..");
 const LOCK_FILE = path.join(HERE, "sciviz-runtime-requirements.lock");
-const READY = ".litgravity-ready";
+const READY = ".lit-skills-ready";
 const MIN_PYTHON = [3, 10];
 const STALE_LOCK_MS = 20 * 60 * 1000;
 const IMPORT_PROBE = "import matplotlib, numpy; print(matplotlib.__version__, numpy.__version__)";
@@ -40,7 +40,7 @@ const IMPORT_PROBE = "import matplotlib, numpy; print(matplotlib.__version__, nu
 const run = (command, args, options = {}) => spawnSync(command, args, { encoding: "utf8", ...options });
 
 export function probePython() {
-  return pickPython(process.env.LITGRAVITY_SCIVIZ_PYTHON, "LITGRAVITY_SCIVIZ_PYTHON");
+  return pickPython(process.env.LIT_SCIVIZ_PYTHON, "LIT_SCIVIZ_PYTHON");
 }
 
 export function pythonCommand() {
@@ -48,9 +48,9 @@ export function pythonCommand() {
 }
 
 export function runtimeRoot() {
-  if (process.env.LITGRAVITY_SCIVIZ_RUNTIME) return path.resolve(process.env.LITGRAVITY_SCIVIZ_RUNTIME);
+  if (process.env.LIT_SCIVIZ_RUNTIME) return path.resolve(process.env.LIT_SCIVIZ_RUNTIME);
   const dataHome = process.env.XDG_DATA_HOME || path.join(homedir(), ".local", "share");
-  return path.join(dataHome, "litgravity", "runtime", "sciviz");
+  return path.join(dataHome, "lit-skills", "runtime", "sciviz");
 }
 
 function lockDigest(extra) {
@@ -115,7 +115,7 @@ export function ensurePython() {
   return withLock(status.dir, () => {
     if (existsSync(path.join(status.dir, READY))) return pythonStatus();
     rmSync(status.dir, { recursive: true, force: true });
-    notice(`LitGravity sciviz runtime: creating a Python ${status.host.version} environment with ${status.pinned.length} pinned lines (matplotlib, numpy and dependencies) in ${status.dir} - first use only.`);
+    notice(`sciviz runtime: creating a Python ${status.host.version} environment with ${status.pinned.length} pinned lines (matplotlib, numpy and dependencies) in ${status.dir} - first use only.`);
     const venv = run(status.host.command, ["-m", "venv", status.dir], { stdio: ["ignore", "pipe", "pipe"] });
     if (venv.error || venv.status !== 0) {
       throw new Error(`SCIVIZ_RUNTIME_VENV_FAILED: python -m venv failed (${describeSpawn(venv)})`);
@@ -149,12 +149,12 @@ export function sciVizRuntimeStatus() {
     lock: LOCK_FILE,
     python: { ready: python.ready, dir: python.dir, interpreter: python.interpreter, host: python.host, packages: python.pinned.length },
     firstUse: python.ready ? "ready" : "installs on first lit-scientific-visualization run",
-    preWarm: "npx @litfamily/litgravity runtime install sciviz",
+    preWarm: `node "${fileURLToPath(import.meta.url)}" install`,
   };
 }
 
 // Child environment for a figure script: bundled helpers importable, headless backend, a
-// runtime-local matplotlib config/cache dir, and no .pyc files written into the plugin cache.
+// runtime-local matplotlib config/cache dir, and no .pyc files written into the installed skill folder.
 export function figureEnv(status = pythonStatus()) {
   const existing = process.env.PYTHONPATH ? [process.env.PYTHONPATH] : [];
   return {

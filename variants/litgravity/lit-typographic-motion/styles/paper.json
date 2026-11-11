@@ -1,5 +1,5 @@
 {
-  "schema": "litgravity.motion-style/v1",
+  "schema": "lit.motion-style/v1",
   "id": "paper",
   "name": "Paper",
   "summary": "A warm paper ground, near-black ink, one terracotta signal and one blue moment; soft springs, hand-drawn calm.",

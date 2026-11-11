@@ -1,5 +1,5 @@
 {
-  "schema": "litgravity.motion-word-timing/v1",
+  "schema": "lit.motion-word-timing/v1",
   "note": "Tier 3 (MO-A-20..22): opt-in with --word-timing, never from a bare lit. Models download only through `node <skill>/scripts/motion-runtime.mjs install --word-timing`, outside any sandboxed session, after the size and these pins are printed. A licence outside allowedLicenses fails closed. The aligner runtime (the Python environment that runs these models) is not part of this release, so a --word-timing render exits 14 until it ships.",
   "allowedLicenses": [
     "apache-2.0",

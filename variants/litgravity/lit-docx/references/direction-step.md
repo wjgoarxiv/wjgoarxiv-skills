@@ -40,8 +40,8 @@ When a fact stays open after reading the source and it changes the direction (a 
 versus a screen read moves Brief and Report apart), call `ask_question` with one question, offer the
 inferred choice as the recommended default and continue with that default if the question goes
 unanswered. A headless run records the default as a `decision` line in
-`.litgravity/ledger/<conversation-id>.jsonl` (`{"ts","kind":"decision","text","path"}`) and proceeds. A
-bare `lit` request asks nothing and decides with the same ranking.
+`.lit-skills/evidence/<slug>/ledger.jsonl` (`{"ts","kind":"decision","text","path"}`) and proceeds. A
+delegated request ("알아서", "just make it") asks nothing and decides with the same ranking.
 
 ## 2. Start from the document type
 
@@ -323,7 +323,7 @@ document.
 | No tonality and no publisher on a document that is not a manuscript | the plain profile is a fallback; rerun the step and pick a pack |
 | A reply with one direction and no alternatives | add the two alternatives in order |
 | A reason that restates the document type | name the signals that fired and their counts |
-| A style question under a bare `lit` request | decide with the ranking and mention the alternatives |
+| A style question under a delegated request | decide with the ranking and mention the alternatives |
 | A dial moved by 3 or more without the user's word | return to the pack default or ask once with a default |
 | Headings written as conclusions, a key figure without a basis line | rewrite as noun phrases; add the period and the source |
 | A component on the card with no purpose, a pull quote, a sidebar outside Manual, key figures on the cover or a second strip | drop it or give it a purpose; read `output.components` after the build |

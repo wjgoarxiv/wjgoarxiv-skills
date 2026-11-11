@@ -1,4 +1,4 @@
-lit-pptx — LitGravity deck skill
+lit-pptx — deck skill for agy
 
 Deck engine, templates, QA gate, design laws and stage/role prompts
 Copyright (c) 2026 wjgoarxiv. Author of the Markdown-first deck
@@ -7,8 +7,7 @@ engine (scripts/compile-deck.js, scripts/lib/*.js), the enrolled templates
 scripts/qa_deck.py, scripts/validate_pptx.py and the 정/반/합 improvement
 loop, first published as the author's personal "pptx-toolkit" skill. The
 references/, specs/ and references/agents/ documents were written anew for
-LitGravity. Distributed under the LitGravity MIT licence (LICENSE at the
-package root).
+this skill. Distributed under the MIT licence in LICENSE next to this file.
 
 Written for this port (not from the personal skill's earlier files):
   scripts/layout_inventory.py      text/picture/table geometry inventory

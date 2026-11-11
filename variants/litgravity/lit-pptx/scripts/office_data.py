@@ -63,7 +63,7 @@ import re
 import sys
 from pathlib import Path
 
-sys.dont_write_bytecode = True  # the installed plugin directory stays read-only
+sys.dont_write_bytecode = True  # the installed skill directory stays read-only
 
 PLACEHOLDER = re.compile(r"\{\{\s*(.+?)\s*\}\}")
 FRONTMATTER = re.compile(r"\A---[ \t]*\n(.*?)\n---[ \t]*(?:\n|\Z)", re.S)

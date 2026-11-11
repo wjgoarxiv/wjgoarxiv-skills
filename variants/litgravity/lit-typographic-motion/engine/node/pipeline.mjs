@@ -67,7 +67,7 @@ export async function prepare({ briefPath, out, env = process.env, wordTiming = 
     if (status.state !== "ready") throw new BlockedError(EXIT.BLOCKED_DEPS_NOT_PREWARMED, `BLOCKED_DEPS_NOT_PREWARMED: word timing (--word-timing) needs its pinned models and aligner runtime (${status.reason}); run ${INSTALL_COMMAND} --word-timing`);
   }
   const node = nodeStatus(env);
-  if (!node.ready) throw new BlockedError(EXIT.BLOCKED_DEPS_NOT_PREWARMED, `BLOCKED_DEPS_NOT_PREWARMED: the pinned engine dependencies are not in the LitGravity cache (${node.problem}); run ${INSTALL_COMMAND} outside this session`);
+  if (!node.ready) throw new BlockedError(EXIT.BLOCKED_DEPS_NOT_PREWARMED, `BLOCKED_DEPS_NOT_PREWARMED: the pinned engine dependencies are not in the skill runtime cache (${node.problem}); run ${INSTALL_COMMAND} outside this session`);
   const runDir = path.join(out, ".run");
   mkdirSync(runDir, { recursive: true });
   let beatGrid = null;

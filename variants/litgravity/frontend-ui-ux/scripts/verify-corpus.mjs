@@ -19,7 +19,7 @@ const SKILL_ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const REFERENCES = join(SKILL_ROOT, "references");
 const MANIFEST = join(REFERENCES, "_canonical-corpus", "manifest.json");
 const ROOTS = ["design", "designpowers", "perfection", "ui-ux-db"];
-const SCHEMA = "litgravity.canonical-frontend-corpus/v1";
+const SCHEMA = "lit.canonical-frontend-corpus/v1";
 const MAX_FILE_BYTES = 8 * 1024 * 1024;
 
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");

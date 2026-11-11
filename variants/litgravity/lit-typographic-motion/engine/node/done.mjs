@@ -1,4 +1,4 @@
-// The done-check (director brief section 9), shared by the Stop hook. A film is done only with a
+// The done-check (director brief section 9), run by `motion.mjs done <dir>`. A film is done only with a
 // valid treatment, gate PASS on the final full render, at least two look rounds (the first a stills
 // round with a change, the last stamped with the final render's stills manifest), and the last
 // round's viewed list covering the poster, the sheet, every beat still and every strip, each opened
@@ -134,7 +134,7 @@ export function evaluatePreviewDone({ out, viewedFiles = null }) {
     return { status: "NOT_DONE", reasons: ["look.json is unreadable"], downgraded: [], openItems: [], preview: true };
   }
   const last = look.rounds[look.rounds.length - 1];
-  if (!last) reasons.push("no look round on the board: open the storyboard and the stills with Read and record round 1");
+  if (!last) reasons.push("no look round on the board: open the storyboard and the stills with read_file and record round 1");
   else {
     if (last.stillsSha256 !== stills.sha256) reasons.push("the look round was recorded before the latest board; look again and record it");
     const required = stills.index.files.filter((f) => ["board", "sheet", "beat"].includes(f.kind)).map((f) => f.file);
@@ -181,7 +181,7 @@ export function evaluateCoverDone({ out, raw, viewedFiles = null }) {
   const rounds = look.rounds;
   const openItems = [];
   let unviewed = false;
-  if (!rounds.length) reasons.push("look.json has no round: open the sheet, the poster and the seam pair with Read and record a look round");
+  if (!rounds.length) reasons.push("look.json has no round: open the sheet, the poster and the seam pair with read_file and record a look round");
   else {
     const first = rounds[0];
     const last = rounds[rounds.length - 1];

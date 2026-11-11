@@ -9,7 +9,7 @@ the score and the bed are synthesized in product code, deterministically, from t
 
 | `sound.mode` | What is muxed | When |
 | --- | --- | --- |
-| `score` | A layered score built for this film: drums, bass, chords, lead, arrangement FX and the on-screen events as separate stems, mixed and mastered | The default under a bare `lit`, on the type path and the stage path alike |
+| `score` | A layered score built for this film: drums, bass, chords, lead, arrangement FX and the on-screen events as separate stems, mixed and mastered | The default under a delegated request, on the type path and the stage path alike |
 | `generated` | One of the style's preset beds: a pad chord progression with a pulse and the accents the beats ask for | Minimal films only (`register: minimal`) |
 | `supplied` | The user's own audio file (`sound.file`), padded or trimmed to the film | The user gave a track |
 | `authored` | A WAV the model wrote itself into the stage dir (`sound.file`) | The treatment calls for sound the bed cannot make |

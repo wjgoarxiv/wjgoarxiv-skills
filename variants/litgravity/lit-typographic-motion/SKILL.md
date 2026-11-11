@@ -11,7 +11,7 @@ This skill is a film director with a house studio. Every film starts with a trea
 - **Type path.** Films whose words are the film: kinetic type, a lyric or quote video, a title sequence. You write `brief.json` without a `style` (the treatment's style decides) and the bundled WebGL2 type engine sets the words. 1920x1080.
 - **Cover mode.** A README, hero or banner loop. No beats, no sound, no ending. Read `references/cover.md` before anything else in this mode.
 
-`SKILL_ROOT` below is the folder that holds this `SKILL.md`. The activation note (or the skill listing) gives the file's absolute path; derive the folder from it and run every script by its absolute path under it. The plugin lives in a different folder after each install location (project scope, user scope), so a remembered path goes stale.
+`SKILL_ROOT` below is the folder that holds this `SKILL.md`. The skill listing (or the `read_file` call that opened it) gives the file's absolute path; derive the folder from it and run every script by its absolute path under it. The skill lives in a different folder per install location (`~/.gemini/config/skills/` for the user, `.agents/skills/` in a workspace), so a remembered path goes stale.
 
 ## When this applies
 
@@ -19,7 +19,7 @@ This skill is a film director with a house studio. Every film starts with a trea
 - The user asks for a README cover, a hero or banner loop, an animated project header, or a motion cover for a repository.
 - The user asks for a critique of a render this skill made: look at the frames and run the gate, and write nothing else.
 
-Activation in LitGravity: `lit motion <request>`, `lit film …`, `lit video …`, `lit 영상 …`, a prompt that starts with `lit-typographic-motion` or `/litgravity:lit-typographic-motion`, or a `lit <task>` whose task asks to make a film (a film compound such as 모션그래픽, 키네틱 타이포, 가사 영상, 타이틀 시퀀스, kinetic type, lyric video, title sequence, cover loop, or a bare 영상 / video / clip together with a making verb). The PreInvocation router names the route before the first model call, and the session route table lists this skill for a prompt without the keyword, so read this file and follow it in that case too.
+Activation on agy: `/lit-typographic-motion <request>`, or a request that agy matches to this skill's description because it asks to make a film (a film compound such as 모션그래픽, 키네틱 타이포, 가사 영상, 타이틀 시퀀스, kinetic type, lyric video, title sequence, cover loop, or a bare 영상 / video / clip together with a making verb). Read this file and follow it in either case. A **delegated request** hands the choices over ("알아서", "just make it") or runs headless.
 
 Send these elsewhere, and say so in one line:
 
@@ -41,16 +41,16 @@ Send these elsewhere, and say so in one line:
 | Style, format, length, genre | Fixed by rules from the request (`references/studio.md`, `references/treatment.md`); the validator refuses any other. |
 | An audio file | `sound.mode: supplied` with its `file`; it is muxed and cued to the cuts (`references/sound.md`). |
 | A painting, logo or wordmark for a cover | Listed in `assets.json` with its sha256 and `source: user`; a missing one is exit 22. |
-| Output folder | A new `motion-<slug>/` in the user's working directory. The installed plugin folder and `.litgravity/` stay clear of renders. |
+| Output folder | A new `motion-<slug>/` in the user's working directory. The installed skill folder and `.lit-skills/` stay clear of renders. |
 
-State lives in the output folder: `treatment.json`, `look.json`, `stills/`, `manifest.json`, `gate-report.txt` and `.run/` (progress, the detached render's pid and result, the first valid treatment). The LitGravity hooks keep their own small record of the motion route outside the workspace, under the state directory they use for every route.
+State lives in the output folder: `treatment.json`, `look.json`, `stills/`, `manifest.json`, `gate-report.txt` and `.run/` (progress, the detached render's pid and result, the first valid treatment).
 
 ## Mode matrix
 
 | Mode | Trigger | Finish line |
 | --- | --- | --- |
-| lit default | the motion route from `lit` | Ask no questions; the rules choose style, format and length; label each default in the reply. Done by `references/look.md`. |
-| explicit | `lit-typographic-motion …` or the user names it | Same loop; with the user present, show the board after round 1 and ask once before the full render. |
+| default | a delegated request | Ask no questions; the rules choose style, format and length; label each default in the reply. Done by `references/look.md`. |
+| explicit | `/lit-typographic-motion …` or the user names it | Same loop; with the user present, show the board after round 1 and ask once before the full render. |
 | preview | the request asks for a preview or storyboard first | `preview: true`; done at the board (`references/studio.md`). |
 | cover | `treatment.json` has `"mode": "cover"` | Done by `references/cover.md`. |
 | review only | a critique of an existing render | Open the frames, run `gate` or `cover-gate`, report. Write nothing. |
@@ -73,7 +73,7 @@ node "$SKILL_ROOT/scripts/motion-runtime.mjs" status --json
 node "$SKILL_ROOT/scripts/motion-runtime.mjs" install --json
 ```
 
-It fetches one npm package and a few fonts into `$XDG_DATA_HOME/litgravity/runtime/motion` (default `~/.local/share/litgravity/runtime/motion`) and checks every hash. A headless `agy -p` run refuses `run_command` when a command needs approval, and the run ends with no output. So read first, ask the user for the permission once, and when the shell is refused stop with `BLOCKED:` and give the user this command for a terminal: `npx @litfamily/litgravity runtime install motion`. The optional beat-analysis tier installs with `install --audio` and needs a Python between 3.10 and 3.14 (the installer finds one on PATH, and `LITGRAVITY_MOTION_PYTHON` picks another). Readiness of Chrome, ffmpeg and libwebp: `node "$SKILL_ROOT/scripts/motion-doctor.mjs"` and `npx @litfamily/litgravity doctor`. Details: `references/runtime.md`.
+It fetches one npm package and a few fonts into `$XDG_DATA_HOME/lit-skills/runtime/motion` (default `~/.local/share/lit-skills/runtime/motion`) and checks every hash. A headless `agy -p` run refuses `run_command` when a command needs approval, and the run ends with no output. So read first, ask the user for the permission once, and when the shell is refused stop with `BLOCKED:` and give the user this command for a terminal: `node "$SKILL_ROOT/scripts/motion-runtime.mjs" install`. The optional beat-analysis tier installs with `install --audio` and needs a Python between 3.10 and 3.14 (the installer finds one on PATH, and `LIT_MOTION_PYTHON` picks another). Readiness of Chrome, ffmpeg and libwebp: `node "$SKILL_ROOT/scripts/motion-doctor.mjs"`. Details: `references/runtime.md`.
 
 ## Procedure
 
@@ -122,20 +122,20 @@ Every frame and track passes through these renderers. A film encoded by hand wit
 
 ## Tools and permissions on agy
 
-- `read_file` (older builds: `view_file`) loads this file and the references, and it is the look tool: it opens every rendered PNG. A frame counts as viewed once `read_file` has opened it in this conversation, and the PostToolUse hook keeps that list.
+- `read_file` (older builds: `view_file`) loads this file and the references, and it is the look tool: it opens every rendered PNG. A frame counts as viewed once `read_file` has opened it in this conversation; record it in the look round's `viewed` list.
 - `run_command` runs `node` on the scripts above, always by absolute path, plus `ffmpeg`, `img2webp`, `dwebp` and `gifski` through the engine. A render uses no package fetch and no network. Headless runs refuse commands that need approval, so request the permission before the first render and expect a refusal in `agy -p`.
 - `write_file` and the edit tool write the treatment, the brief, the page, the answers files and `assets.json` inside the output folder.
-- `invoke_subagent` with `TypeName` `quality-reviewer` (a read-only agent) can give a second look at the contact sheet. Its notes feed your look round; the round stays yours to record.
+- `invoke_subagent` can give a second look at the contact sheet (name a read-only `TypeName` that `agy agents` lists, or brief the child to read only). Its notes feed your look round; the round stays yours to record.
 - `generate_image`, when the build offers it, may make a cover's base painting; that asset is `source: generated` in `assets.json` and the reply labels it.
-- Skills, agents and hooks of a plugin load with no approval step on agy, so the done gate below is always active when the plugin is installed.
+- No hook watches this skill: the done-check below is a command you run yourself, and nothing holds the turn for you.
 
 ## Evidence
 
-While the motion route is active, LitGravity's PostToolUse hook records every `motion.mjs` command (its subcommand, `--out` and `--round`) and every image `read_file` opened. agy gives that hook the tool call and its error text and leaves out the command's output, so the exit line of a render stays unseen by the hook; a render that wrote no manifest shows up as "no full render has finished". The Stop hook then runs this skill's own done-check, `engine/node/done.mjs`, on the last output folder.
+Before you call the work finished, run the done-check on the output folder: `node "$SKILL_ROOT/scripts/motion.mjs" done <dir>` (it runs `engine/node/done.mjs`; exit 13 and a named reason while it is not done). It trusts the `viewed` lists in `look.json`, so list only frames `read_file` really opened. A render that wrote no manifest reads "no full render has finished".
 
 A film is done with all of these: a valid treatment; gate PASS; at least two look rounds, the first a board round that names a change; the last round stamped with the final render's stills; its viewed list covering the board, the poster, the sheet, every beat still and every strip, each opened with `read_file`. A preview is done at a passed, viewed board. A cover is done when the decoded cover passed every TARGET gate on its last render and the last look round viewed that render's sheet, poster and seam pair.
 
-When it is not done, the Stop hook holds the turn with the named reason, at most twice, and then asks the reply to say plainly that the work is not done, why, and what to run to finish it. A finished render with a downgrade, an open look item or a generated asset holds once so the reply says so. When no image can be opened at all, record `look --blocked no-vision-tool`; the result is DONE_UNVIEWED and the reply must say nobody looked at the frames.
+When it is not done, fix the named reason and run the check again, at most twice; then say plainly in the reply that the work is not done, why, and what to run to finish it. A finished render with a downgrade, an open look item or a generated asset (the check lists them) is said in the reply. When no image can be opened at all, record `look --blocked no-vision-tool`; the result is DONE_UNVIEWED and the reply must say nobody looked at the frames.
 
 A downgrade (a shorter film, fewer beats that show the subject, sound switched to none without being asked, stage switched to type) is recorded against the first valid treatment and always said in the reply. An exit code alone never makes the work done.
 
@@ -149,7 +149,7 @@ Stop at a blocked exit, at a gate failure you cannot fix within round 3, or when
 | 11 | BLOCKED_NO_WEBGL2 | No WebGL on any rung (type path; stage path only when the page asks for WebGL). |
 | 12 | BLOCKED_NO_FFMPEG_FOR_VIDEO | Stills and the sheet exist; the film needs ffmpeg (`brew install ffmpeg`). |
 | 13 | GATE_FAIL_QA | Fix the named rule and run the next round. A flash-audit FAIL withholds every export. |
-| 14 | BLOCKED_DEPS_NOT_PREWARMED | Run step 0, or give the user `npx @litfamily/litgravity runtime install motion` for a terminal. |
+| 14 | BLOCKED_DEPS_NOT_PREWARMED | Run step 0, or give the user `node "$SKILL_ROOT/scripts/motion-runtime.mjs" install` for a terminal. |
 | 15 | BLOCKED_FONT_FETCH | A cached font is missing or its sha256 differs; the same pre-warm command fixes it. |
 | 16 | BLOCKED_TREATMENT_INVALID | Fix the named field. |
 | 17 | STAGE_CONTRACT_ERROR | Fix the named element, API, raster, clip, size or missing copy line. |
@@ -196,7 +196,7 @@ Below the activation line, in plain words and without internal names: one line o
 - Printing the request, a file name or an internal term (path, preset, gate, beat, treatment) on screen.
 - Shortening the film, dropping a beat or the subject, locking the camera, switching sound to none or stage to type to pass a check.
 - Listing a frame as viewed that `read_file` never opened, or recording a look round without looking.
-- Asking questions under the lit default, or leaving the user with a stills-only run that was not a preview.
+- Asking questions under a delegated request, or leaving the user with a stills-only run that was not a preview.
 - Third-party libraries, downloads or network use in the page (except the vendored three.js build the stage serves; see `references/depth.md`).
 - Invented screens for a real product; an arc with no turn; adjacent shots on one layout.
 - Outlined or haloed type, fake Hangul condensing, tracking or width motion on Hangul, glitch as texture.

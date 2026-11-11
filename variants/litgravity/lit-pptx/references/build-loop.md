@@ -15,13 +15,13 @@
 
 Where things live:
 
-- Cache root: `$XDG_DATA_HOME/litgravity/runtime/office`, default `~/.local/share/litgravity/runtime/office`; `LITGRAVITY_OFFICE_RUNTIME` replaces the root (tests, isolated probes).
+- Cache root: `$XDG_DATA_HOME/lit-skills/runtime/office`, default `~/.local/share/lit-skills/runtime/office`; `LIT_OFFICE_RUNTIME` replaces the root (tests, isolated probes).
 - Environments are keyed by a hash of the lock files, the platform and the Python minor version (`node-<key>`, `python-<key>`), so a lock change or a new interpreter gets a fresh environment and an old one stays untouched.
-- `LITGRAVITY_OFFICE_PYTHON` names the interpreter (default `python3`, minimum 3.10). A Python release that has no published wheels yet fails the pip step with `No matching distribution found`; point the variable at a release that has wheels (3.12 to 3.14) and rerun `install`.
-- `LITGRAVITY_NODE` names the Node binary the Python helpers use to reach the runtime.
+- `LIT_OFFICE_PYTHON` names the interpreter (default `python3`, minimum 3.10). A Python release that has no published wheels yet fails the pip step with `No matching distribution found`; point the variable at a release that has wheels (3.12 to 3.14) and rerun `install`.
+- `LIT_NODE` names the Node binary the Python helpers use to reach the runtime.
 - Installs run `npm ci --ignore-scripts` and `pip install --only-binary=:all:`; nothing is installed globally and no agy configuration is touched. One installer per environment runs at a time (a lock directory), and a stale lock older than 20 minutes is taken over.
 
-Failure vocabulary: `OFFICE_RUNTIME_PYTHON_UNAVAILABLE` (no interpreter of 3.10 or newer), `OFFICE_RUNTIME_VENV_FAILED`, `OFFICE_RUNTIME_PYTHON_INSTALL_FAILED` (pip exit and the last 600 characters of its error), `OFFICE_RUNTIME_LOCKED`. Each one is reported as `BLOCKED:` with the line quoted and the user command `npx @litfamily/litgravity runtime install office`.
+Failure vocabulary: `OFFICE_RUNTIME_PYTHON_UNAVAILABLE` (no interpreter of 3.10 or newer), `OFFICE_RUNTIME_VENV_FAILED`, `OFFICE_RUNTIME_PYTHON_INSTALL_FAILED` (pip exit and the last 600 characters of its error), `OFFICE_RUNTIME_LOCKED`. Each one is reported as `BLOCKED:` with the line quoted and the user command `node "$SKILL_ROOT/scripts/office-runtime.mjs" install`.
 
 ## 2. Writing the source: the pieces that cause most repairs
 
@@ -110,8 +110,8 @@ python3 "$SKILL_ROOT/scripts/render_pages.py" deck.pptx --out-dir renders --page
 
 | File | Content |
 | --- | --- |
-| `.litgravity/evidence/<slug>/build.md` | the direction card, compile notes, fill lines |
-| `.litgravity/evidence/<slug>/gate.txt` | the last `qa_deck.py` output with its exit code |
-| `.litgravity/evidence/<slug>/office-status.txt` | the `status` output of the runtime |
-| `.litgravity/evidence/<slug>/pages.md` | one line per page opened and what it showed, including the card's "wrong if" verdict |
+| `.lit-skills/evidence/<slug>/build.md` | the direction card, compile notes, fill lines |
+| `.lit-skills/evidence/<slug>/gate.txt` | the last `qa_deck.py` output with its exit code |
+| `.lit-skills/evidence/<slug>/office-status.txt` | the `status` output of the runtime |
+| `.lit-skills/evidence/<slug>/pages.md` | one line per page opened and what it showed, including the card's "wrong if" verdict |
 | ledger lines | a `decision` line for the direction, an `evidence` line per gate result |

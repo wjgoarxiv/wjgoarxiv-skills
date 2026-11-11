@@ -10,7 +10,7 @@ Capture before touching a file. With no baseline there is no parity list and no 
 - Capture every affected route at `compact` and `expanded` (the probe's 390 and 1440 rows, plus boundary widths).
 - Capture `loading`, `empty`, `error`, `disabled` and overflow per route.
 - Record tab order, focus targets and step count for each critical task.
-- Save the captures and a copy of the probe's `findings.json` under `.litgravity/evidence/<slug>/baseline/`.
+- Save the captures and a copy of the probe's `findings.json` under `.lit-skills/evidence/<slug>/baseline/`.
 
 ## Debt map
 

@@ -8,7 +8,7 @@ import path from "node:path";
 import { STYLE_IDS } from "./styles.mjs";
 
 export const HOUSE_FILE = "motion-house.json";
-export const HOUSE_SCHEMA = "litgravity.motion-house/v1";
+export const HOUSE_SCHEMA = "lit.motion-house/v1";
 const MAX_FILMS = 50;
 
 export const houseFileFor = (out) => path.join(path.dirname(path.resolve(out)), HOUSE_FILE);

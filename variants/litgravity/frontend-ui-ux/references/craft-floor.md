@@ -4,11 +4,11 @@ This file and `references/slop-register.md` load whenever `frontend-ui-ux` activ
 
 ## 1. Run the probe
 
-`FRONTEND_UIUX_SKILL_ROOT` is the directory of the `SKILL.md` path the activation note gave. Run the probe against the page you built or were asked to review. It accepts an HTML file, a project directory (it prefers `dist/`, `build/` or `out/` over an unbuilt source page) or an `http(s)` URL:
+`FRONTEND_UIUX_SKILL_ROOT` is the directory of this skill's `SKILL.md`. Run the probe against the page you built or were asked to review. It accepts an HTML file, a project directory (it prefers `dist/`, `build/` or `out/` over an unbuilt source page) or an `http(s)` URL:
 
 ```bash
-FRONTEND_UIUX_SKILL_ROOT="<directory of the SKILL.md path in the activation note>"
-node "$FRONTEND_UIUX_SKILL_ROOT/scripts/interface-probe.mjs" "<page.html | project dir | URL>" --out ".litgravity/evidence/<slug>/probe"
+FRONTEND_UIUX_SKILL_ROOT="<directory of this SKILL.md>"
+node "$FRONTEND_UIUX_SKILL_ROOT/scripts/interface-probe.mjs" "<page.html | project dir | URL>" --out ".lit-skills/evidence/<slug>/probe"
 ```
 
 What it does, in order:
@@ -197,7 +197,7 @@ Each row in the review table points at one fix. A quick way to work through a ta
 
 ## 8. Where the evidence goes
 
-- `.litgravity/evidence/<slug>/probe/findings.json` and `screenshots/<row>.png` for the seven rows.
-- The printed review table, saved as `.litgravity/evidence/<slug>/probe/review.md` when the reply cites it.
-- One `evidence` ledger line (`.litgravity/ledger/<conversation-id>.jsonl`) per completed round.
+- `.lit-skills/evidence/<slug>/probe/findings.json` and `screenshots/<row>.png` for the seven rows.
+- The printed review table, saved as `.lit-skills/evidence/<slug>/probe/review.md` when the reply cites it.
+- One `evidence` ledger line (`.lit-skills/evidence/<slug>/ledger.jsonl`) per completed round.
 - The final reply states the viewports and states verified, the open HIGH items (as limitations with their reasons) and the Block or Approve line.

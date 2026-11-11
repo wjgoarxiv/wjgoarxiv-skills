@@ -6,7 +6,7 @@ import { spawn, spawnSync } from "node:child_process";
 import { existsSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { ENCODE_ARGS, PREVIEW } from "../core/constants.mjs";
-import { firstLine, resolveOnPath } from "../../../../lib/host-exec.mjs";
+import { firstLine, resolveOnPath } from "../lib/host-exec.mjs";
 
 // PATH is searched in JavaScript: `where` prints CRLF lines and never tries PATHEXT, so ffmpeg.exe was never found on Windows.
 export function which(name, env = process.env) {

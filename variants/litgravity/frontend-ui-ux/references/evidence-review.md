@@ -48,7 +48,7 @@ Every observation carries these fields. A missing field voids it.
 - Expected result written before acting, then the literal observed result.
 - Artifact path and the capability that produced it.
 
-Keep the records under `.litgravity/evidence/<slug>/`, one file per scenario class or one table with a row per observation.
+Keep the records under `.lit-skills/evidence/<slug>/`, one file per scenario class or one table with a row per observation.
 
 ## Scenario classes
 

@@ -9,7 +9,7 @@ import { mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { which } from "./encode.mjs";
-import { describeSpawn } from "../../../../lib/host-exec.mjs";
+import { describeSpawn } from "../lib/host-exec.mjs";
 
 export const findDwebp = (env = process.env) => which("dwebp", env);
 

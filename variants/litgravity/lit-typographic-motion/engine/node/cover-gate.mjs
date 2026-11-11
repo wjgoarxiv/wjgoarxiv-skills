@@ -14,7 +14,7 @@ import { lumaGrid } from "./cover-image.mjs";
 import { findFfmpeg } from "./encode.mjs";
 import { decodePng } from "./png.mjs";
 import { decodeWebp } from "./webp.mjs";
-import { describeSpawn } from "../../../../lib/host-exec.mjs";
+import { describeSpawn } from "../lib/host-exec.mjs";
 
 const median = (xs) => {
   const s = [...xs].sort((a, b) => a - b);

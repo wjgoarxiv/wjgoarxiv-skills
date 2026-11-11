@@ -6,16 +6,16 @@ import { homedir } from "node:os";
 import path from "node:path";
 import { argumentsMap, boundedRead, exclusiveWrite } from "./safe-files.mjs";
 
-// fontkit resolves from the LitGravity readme runtime cache first (npx @litfamily/litgravity runtime install readme),
+// fontkit resolves from the readme runtime cache first (node <readme-studio skill folder>/scripts/readme-runtime.mjs install),
 // then from a node_modules next to this file. The helper stays self-contained because it is copied into task workspaces.
-const cache = process.env.LITGRAVITY_README_RUNTIME
-  ? path.resolve(process.env.LITGRAVITY_README_RUNTIME)
-  : path.join(process.env.XDG_DATA_HOME || path.join(homedir(), ".local", "share"), "litgravity", "runtime", "readme");
+const cache = process.env.LIT_README_RUNTIME
+  ? path.resolve(process.env.LIT_README_RUNTIME)
+  : path.join(process.env.XDG_DATA_HOME || path.join(homedir(), ".local", "share"), "lit-skills", "runtime", "readme");
 async function loadFontkit() {
   try { return await import(pathToFileURL(createRequire(path.join(cache, "package.json")).resolve("fontkit")).href); }
   catch {
     try { return await import("fontkit"); }
-    catch { console.error("BLOCKED: fontkit is not installed. Pre-warm it with: npx @litfamily/litgravity runtime install readme"); process.exit(1); }
+    catch { console.error("BLOCKED: fontkit is not installed. Pre-warm it with: node <readme-studio skill folder>/scripts/readme-runtime.mjs install"); process.exit(1); }
   }
 }
 const { create } = await loadFontkit();

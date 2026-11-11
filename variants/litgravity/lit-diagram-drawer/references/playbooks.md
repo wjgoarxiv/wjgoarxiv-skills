@@ -1,10 +1,10 @@
 # Playbooks, evidence layout and reply shape
 
-Four playbooks, one per mode in `SKILL.md`. Each lists the commands in order, the evidence it leaves under `.litgravity/evidence/<slug>/` and the line that goes into the ledger. `<skill-dir>` is the folder that holds `SKILL.md`.
+Four playbooks, one per mode in `SKILL.md`. Each lists the commands in order, the evidence it leaves under `.lit-skills/evidence/<slug>/` and the line that goes into the ledger. `<skill-dir>` is the folder that holds `SKILL.md`.
 
 ## Create
 
-1. Write the content brief to `.litgravity/evidence/<slug>/brief.md`: audience, purpose, type id, theme, canvas preset, language, required facts, labeled relationships, trust-boundary lists when a boundary exists, destination and requested formats.
+1. Write the content brief to `.lit-skills/evidence/<slug>/brief.md`: audience, purpose, type id, theme, canvas preset, language, required facts, labeled relationships, trust-boundary lists when a boundary exists, destination and requested formats.
 2. `node "<skill-dir>/scripts/doctor.mjs"` and `node "<skill-dir>/scripts/diagram-runtime.mjs" status --json`, saved together as `runtime.txt`.
 3. Write `inventory.md`: one row per node and per labeled edge with its source path or quote, plus the one question the diagram answers.
 4. Copy the closest template from `assets/examples/` into `docs/diagrams/<slug>/`, rename it `<slug>.html`, and replace the facts. Keep the structural grammar of the type guide.
@@ -49,10 +49,10 @@ Four playbooks, one per mode in `SKILL.md`. Each lists the commands in order, th
 
 ## Ledger lines
 
-One line per artifact in `.litgravity/ledger/<conversation-id>.jsonl`:
+One line per artifact in `.lit-skills/evidence/<slug>/ledger.jsonl`:
 
 ```json
-{"ts":"2026-10-20T09:14:00Z","kind":"evidence","text":"verify-diagram clean for docs/diagrams/billing-flow/billing-flow.html","path":".litgravity/evidence/billing-flow/verify-diagram.txt"}
+{"ts":"2026-10-20T09:14:00Z","kind":"evidence","text":"verify-diagram clean for docs/diagrams/billing-flow/billing-flow.html","path":".lit-skills/evidence/billing-flow/verify-diagram.txt"}
 {"ts":"2026-10-20T09:20:00Z","kind":"decision","text":"headless: kept type=flowchart as the recommended default","path":""}
 ```
 
@@ -60,8 +60,8 @@ When a goal record exists, the criterion that depends on the diagram points at t
 
 ## Reply shape
 
-Lead with the verdict (PASS, FAIL or BLOCKED). Then the editable source path and the exports, the type id, variant and canvas, material simplifications, and any risk such as a font fallback or an UNVERIFIED render. Keep logs, inventory and previews in the evidence folder and say where they are. A blocked first-use install quotes the error line and the pre-warm command `npx @litfamily/litgravity runtime install diagram`.
+Lead with the verdict (PASS, FAIL or BLOCKED). Then the editable source path and the exports, the type id, variant and canvas, material simplifications, and any risk such as a font fallback or an UNVERIFIED render. Keep logs, inventory and previews in the evidence folder and say where they are. A blocked first-use install quotes the error line and the pre-warm command `node "<skill-dir>/scripts/diagram-runtime.mjs" install --json`.
 
 ## Reviewer child
 
-For a diagram with more than about 12 nodes, ask a read-only reviewer to compare the preview with the inventory: `invoke_subagent` with `TypeName` `quality-reviewer`, a prompt that names the preview PNG, `inventory.md` and the question "which inventory items are missing or mislabeled in the image". The child replies by message. Its findings are data for you to verify, and the verdict stays with the parent conversation.
+For a diagram with more than about 12 nodes, ask a read-only reviewer to compare the preview with the inventory: `invoke_subagent` (with a read-only `TypeName` when `agy agents` lists one, otherwise a brief that forbids edits), a prompt that names the preview PNG, `inventory.md` and the question "which inventory items are missing or mislabeled in the image". The child replies by message. Its findings are data for you to verify, and the verdict stays with the parent conversation.

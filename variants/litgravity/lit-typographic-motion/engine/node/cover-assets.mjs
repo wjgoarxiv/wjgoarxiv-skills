@@ -90,7 +90,7 @@ export function artCheck({ frame0, width, height, art, box, checkBox = null }) {
   return { ssim: value, pass: value >= COVER.artSsim, box: [bx, by, bw, bh], checked: [cx, cy, cw, ch] };
 }
 
-/** The reply labels a generated asset needs (the Stop hook's finished-cover notice carries them). */
+/** The reply labels a generated asset needs (`motion.mjs done` lists them as labels). */
 export function generatedLabels(out) {
   const file = path.join(out, ASSETS_FILE);
   if (!existsSync(file)) return [];

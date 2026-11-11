@@ -8,7 +8,7 @@ Rounds share one counter (1-3) with the look rounds in `look.md`.
    glyph coverage, timeline), the beat stills, one transition strip per cut, the contact sheet and the
    storyboard `board.png` in `<dir>/stills/`. Nothing is encoded yet. The brief carries no `style`: the
    treatment's style decides the preset.
-2. **Look.** Open every file the stills index lists with the Read tool and answer the look questions
+2. **Look.** Open every file the stills index lists with `read_file` and answer the look questions
    in `look.md`: nothing clipped at the edges, no empty frame at a cut, type legible at its size, the
    preset's palette and nothing else, the accent at most once, no working title or index on screen.
    Record the round with `look --round N`.
@@ -60,7 +60,7 @@ user signs them off; the report labels them.
 | MO-D-03 empty frames (provisional) | no empty near-black run longer than 2x the minimum hold (+1 s at the ends) | a scene that failed to paint |
 | MO-D-04 glyphs (provisional) | every character in its run's font | change the text or style |
 | MO-SH-01..11 | seed formula, event budget, glitch/surge/flicker caps, dither seed per shot, guides off, <= 2 terminal layers, software downgrade | engine-enforced; report any FAIL as an engine defect |
-| MO-A-33, MO-FT-04, MO-A-58 | Hangul weights from the lit-pptx pair only; no tracking or width motion on Hangul; post overrides in range, invert only on cuts | |
+| MO-A-33, MO-FT-04, MO-A-58 | Hangul weights from the bundled Pretendard pair only; no tracking or width motion on Hangul; post overrides in range, invert only on cuts | |
 
 ## Report (MO-C-17)
 

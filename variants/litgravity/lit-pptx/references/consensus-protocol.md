@@ -10,12 +10,12 @@ Sequential Planner → Architect → Critic loop for PPTX slide structure planni
 - Creates a slide-by-slide implementation plan
 - Specifies layout, content, data, and render path per slide
 
-### Architect (Agent tool with agents/architect.md)
+### Architect (`invoke_subagent` with agents/architect.md)
 - Reviews plan for layout feasibility, template compliance
 - Checks font names, dimensions, data expression validity
 - Flags BLOCKER issues that would cause rendering failures
 
-### Critic (Agent tool with agents/critic.md)
+### Critic (`invoke_subagent` with agents/critic.md)
 - Evaluates content quality, anti-slop compliance
 - Checks for forbidden patterns, generic headings, padding
 - Scores overall quality on 1-10 scale

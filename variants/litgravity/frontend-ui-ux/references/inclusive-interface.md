@@ -56,7 +56,7 @@ Latin-only testing hides these defects. Exercise Korean, Japanese and Chinese co
 - Accept full-width digits and Latin in inputs, and normalize with NFKC before comparison.
 - Hangul body text needs line height of 1.5 or more (CF-103) and a measure under 60 characters (CF-101).
 
-The `visual-qa` skill carries `../visual-qa/references/korean-and-mixed-script-checks.md` for the capture side of these checks.
+When the `visual-qa` skill is installed beside this one, its `references/korean-and-mixed-script-checks.md` covers the capture side of these checks.
 
 ## Adaptive preferences
 

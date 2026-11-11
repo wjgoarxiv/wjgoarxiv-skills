@@ -168,7 +168,7 @@ export function lookCommand({ out, round, answersFile = null, blocked = null, no
     const frames = [...new Set([...checked.viewed, ...checked.answers.map((a) => a.frame)])].map((file) => ({ file, sha256: sha256(readFileSync(path.join(out, file))) }));
     record = { ...base, ...checked, frames, revise: reviseTriggers(checked.answers, stills.index.mode === "cover" ? "cover" : "film") };
   }
-  writeFileSync(path.join(out, LOOK_FILE), `${JSON.stringify({ schema: "litgravity.motion-look/v1", rounds: [...look.rounds, record] }, null, 2)}\n`);
+  writeFileSync(path.join(out, LOOK_FILE), `${JSON.stringify({ schema: "lit.motion-look/v1", rounds: [...look.rounds, record] }, null, 2)}\n`);
   const message = blocked
     ? `LOOK round ${round}: recorded blocked (${blocked}); the film can only end as DONE_UNVIEWED, and the reply must say nobody viewed the frames`
     : record.revise.length

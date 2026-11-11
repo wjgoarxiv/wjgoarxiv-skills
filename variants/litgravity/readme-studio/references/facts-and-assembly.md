@@ -4,12 +4,12 @@ Begin at the package users actually install. Inspect its manifest, executable en
 
 For every reader-visible claim, record an id, the exact proposed value and a relative source in `readme-facts.json`. Reopen the source and compare meaning. The checker validates shape and safe existing file paths, including path-traversal and symlink rejection. Even for successful input it returns factual_accuracy=not-checked on purpose, because false prose that cites a real file still passes structure validation. A status badge additionally needs an inspected real status endpoint. The checker performs no fetch and makes no availability or truth claim.
 
-Run the helper from `<skill-dir>`, the folder holding SKILL.md; the activation note gives the SKILL.md absolute path. The shell working directory and a guessed plugin-cache path are the wrong anchors. Set `README_STUDIO_SKILL_ROOT` to `<skill-dir>` and `README_STUDIO_PROJECT_ROOT` to the authorized project root:
+Run the helper from `<skill-dir>`, the folder holding SKILL.md; the `read_file` call that opened SKILL.md gives its absolute path. The shell working directory and a guessed install path are the wrong anchors. Set `README_STUDIO_SKILL_ROOT` to `<skill-dir>` and `README_STUDIO_PROJECT_ROOT` to the authorized project root:
 
 ```bash
 node "$README_STUDIO_SKILL_ROOT/scripts/validate-readme-facts.mjs" \
   --project-root "$README_STUDIO_PROJECT_ROOT" \
-  --facts "$README_STUDIO_PROJECT_ROOT/.litgravity/evidence/readme-studio/readme-facts.json"
+  --facts "$README_STUDIO_PROJECT_ROOT/.lit-skills/evidence/readme-studio/readme-facts.json"
 ```
 
 Badge URLs are absolute HTTP(S), free of credentials, and free of raw whitespace and control characters. Leave out any badge that cannot be verified instead of guessing. Add docs, support, contribution and license links after checking the actual target, and confirm that a conventional filename exists before linking it.

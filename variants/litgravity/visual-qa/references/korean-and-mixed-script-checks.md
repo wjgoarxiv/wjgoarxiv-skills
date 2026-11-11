@@ -4,7 +4,7 @@ Korean text widens, wraps and falls back differently from Latin text. These chec
 
 ## What to prepare
 
-- A string set per surface: a short label, a typical sentence, a long sentence of about 60 syllables with no spaces inside the longest word, a mixed line (`LitGravity 설정 v1.2 (베타)`), a line with digits and units (`3,200원 · 12개`), a combining-mark sample, and one emoji sequence.
+- A string set per surface: a short label, a typical sentence, a long sentence of about 60 syllables with no spaces inside the longest word, a mixed line (`Workbench 설정 v1.2 (베타)`), a line with digits and units (`3,200원 · 12개`), a combining-mark sample, and one emoji sequence.
 - The font stack in the manifest's `capture_environment.font_set`. A capture without it cannot be compared later.
 - The expansion test: take the English or short Korean string and lengthen it by 30 %. Layouts that only fit the shortest label are defects waiting for the next translation.
 

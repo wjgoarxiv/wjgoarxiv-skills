@@ -83,7 +83,7 @@ export function writeStills({ out, plan, frames, width, height, fps, frameCount,
   plan.strips.forEach((fs, i) => put(`strip-${String(i + 1).padStart(2, "0")}.png`, stripPng(fs.map((f) => frames.get(f)), width, height), { kind: "strip", cut: i, frames: fs }));
   put("sheet.png", sheetPng(plan.sheet.map((f) => frames.get(f)), width, height), { kind: "sheet", frames: plan.sheet });
   if (posterFile) entries.push({ file: path.relative(out, posterFile), sha256: sha256(readFileSync(posterFile)), kind: "poster", frames: [plan.poster] });
-  const index = { schema: "litgravity.motion-stills/v1", path: renderPath, round, stillsOnly, width, height, fps, frameCount, files: entries };
+  const index = { schema: "lit.motion-stills/v1", path: renderPath, round, stillsOnly, width, height, fps, frameCount, files: entries };
   const bytes = Buffer.from(`${JSON.stringify(index, null, 2)}\n`);
   writeFileSync(path.join(dir, INDEX_FILE), bytes);
   return { index, sha256: sha256(bytes), files: entries.map((e) => e.file) };

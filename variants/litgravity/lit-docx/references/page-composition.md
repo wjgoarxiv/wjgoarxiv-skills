@@ -15,7 +15,7 @@ problem onto the next page and breaks the density the user chose.
 
 ```bash
 SKILL_ROOT="<directory of this SKILL.md>"
-OFFICE="$SKILL_ROOT/../lit-pptx/scripts"
+OFFICE="$SKILL_ROOT/scripts/office"
 python3 "$SKILL_ROOT/scripts/convert_md_to_docx.py" doc.md doc.docx
 python3 "$SKILL_ROOT/scripts/qa_docx.py" doc.docx --source doc.md --layout --kind report
 python3 "$OFFICE/render_pages.py" doc.docx --out-dir pages --pages 4

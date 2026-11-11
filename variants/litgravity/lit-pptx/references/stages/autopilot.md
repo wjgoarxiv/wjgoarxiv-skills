@@ -45,4 +45,4 @@ Do not expose internal agent orchestration.
 Persist `.pptx-pipeline/autopilot-state.json` (`active`, `phase` ∈ thesis|antithesis|synthesis|compile|qa|complete, `qa_cycle`, `max_qa_cycles`, timestamps). Resume only if valid JSON pointing inside the working directory; if stale/malformed/points into the skill folder, stop and ask.
 
 ## Tools
-`Agent` (thesis/antithesis/synthesis), `Read`/`Write`, `Bash` (compile-deck.js, qa_deck.py, layout_inventory.py, render_pages.py). Generated files go to the user's working directory — never inside the skill folder.
+`invoke_subagent` (thesis/antithesis/synthesis), `read_file`/`write_file`, `run_command` (compile-deck.js, qa_deck.py, layout_inventory.py, render_pages.py). Generated files go to the user's working directory — never inside the skill folder.

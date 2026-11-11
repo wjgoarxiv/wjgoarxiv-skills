@@ -6,7 +6,7 @@ A reference image shows one state at one viewport, rendered by a stack you may n
 
 Record the image dimensions and device scale. Measure the main content width, outer margins, columns, type sizes, baseline spacing and large color regions before coding. Sample flat interior pixels from edges-free areas and gradient-free fills. Use the smallest spacing scale that explains the measured gaps, and take each value from a measurement.
 
-`run_command` with Python or Node can sample pixels from the file (a short script next to the evidence in `.litgravity/evidence/<slug>/` is enough). The `visual-qa` skill (`../visual-qa/scripts/cli.mjs`, command `image-diff`) compares two PNGs once you have a capture of your own.
+`run_command` with Python or Node can sample pixels from the file (a short script next to the evidence in `.lit-skills/evidence/<slug>/` is enough). When the `visual-qa` skill is installed beside this one, its `scripts/cli.mjs` (command `image-diff`) compares two PNGs once you have a capture of your own.
 
 Keep an internal note that separates direct observations from responsive or behavior assumptions and states that other states are absent from the frame. A reference establishes one state. Hover, focus, error, loading and narrower layouts come from the product's interaction contract, or from a question about a material unknown. Observation labels stay out of the interface itself.
 
@@ -26,7 +26,7 @@ One frame proves one width. Classify regions as fixed rail, fluid column or cent
 
 ## Iterate against the capture
 
-Capture the build at the reference dimensions and device scale (the probe's `--out` folder holds screenshots at fixed widths; for an exact frame use the chrome driver from a short script, or the project's Playwright). Compare structure, spacing, type, then color. Fix the largest measured mismatch and recapture. Stop after three passes that do not reduce the overall difference. A fidelity review record can retain per-region measurements, source and output paths, unconfirmed states and asset decisions in `.litgravity/evidence/<slug>/fidelity.md`. The reader reply needs the result and a material limitation once.
+Capture the build at the reference dimensions and device scale (the probe's `--out` folder holds screenshots at fixed widths; for an exact frame use the chrome driver from a short script, or the project's Playwright). Compare structure, spacing, type, then color. Fix the largest measured mismatch and recapture. Stop after three passes that do not reduce the overall difference. A fidelity review record can retain per-region measurements, source and output paths, unconfirmed states and asset decisions in `.lit-skills/evidence/<slug>/fidelity.md`. The reader reply needs the result and a material limitation once.
 
 Use "pixel perfect" when dimensions and scale match, every visible state is compared, no unexplained measured gap remains, and the typeface and assets are approved. Otherwise describe the measured result and the remaining mismatch plainly.
 

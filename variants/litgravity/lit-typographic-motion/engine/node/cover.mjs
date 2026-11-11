@@ -129,7 +129,7 @@ function writeCoverStills({ out, round, gate, durations, kept, width, height }) 
   return { dir, entries, tiles, finish(sheetFile) {
     const bytes = readFileSync(sheetFile);
     entries.push({ file: `${STILLS_DIR}/sheet.png`, sha256: sha256(bytes), kind: "sheet" });
-    const index = { schema: "litgravity.motion-stills/v1", path: "cover", mode: "cover", round, stillsOnly: false, width, height, durationSec: gate.sourceDurationSec, files: entries, gate: { pass: gate.pass, target: gate.target } };
+    const index = { schema: "lit.motion-stills/v1", path: "cover", mode: "cover", round, stillsOnly: false, width, height, durationSec: gate.sourceDurationSec, files: entries, gate: { pass: gate.pass, target: gate.target } };
     const indexBytes = Buffer.from(`${JSON.stringify(index, null, 2)}\n`);
     writeFileSync(path.join(dir, INDEX_FILE), indexBytes);
     return { index, sha256: sha256(indexBytes) };
@@ -305,7 +305,7 @@ export async function renderCover({ out, round = 1, env = process.env, log = () 
   const report = `${formatCoverReport(gate, { strict: true })}${notices.map((n) => `warning: ${n}\n`).join("")}`;
   writeFileSync(path.join(out, "gate-report.txt"), report);
   const manifest = {
-    schema: "litgravity.motion-cover/v1", mode: "cover", round, recipe: treatment.recipe,
+    schema: "lit.motion-cover/v1", mode: "cover", round, recipe: treatment.recipe,
     treatmentSha256: sha256(readFileSync(path.join(out, "treatment.json"))), stillsSha256: indexed.sha256,
     page: treatment.page, size: treatment.out, scale: COVER.captureScale, rung, warnings: notices, fps: treatment.fps, frames: times.length, frameMs: ms,
     encoder: encoded.encoder, encode: treatment.encode, file: path.basename(encoded.file), bytes: statSync(encoded.file).size, captureSec,
@@ -380,6 +380,6 @@ export async function renderCoverWindow({ out, round = 1, window: [t0, t1], env 
     label: `window ${t0.toFixed(3)}-${t1.toFixed(3)} s (shaded) with ${COVER.windowPadSec} s on each side | ${picks.length} frames before encoding`,
     status: "a window render never counts as done", workDir: path.join(out, ".run", "cover-window-sheet"),
   });
-  writeJson(path.join(dir, "window.json"), { schema: "litgravity.motion-cover-window/v1", round, t0, t1, padSec: COVER.windowPadSec, frames: picks, note: "frames before encoding; a window render never counts as done" });
+  writeJson(path.join(dir, "window.json"), { schema: "lit.motion-cover-window/v1", round, t0, t1, padSec: COVER.windowPadSec, frames: picks, note: "frames before encoding; a window render never counts as done" });
   return { code: EXIT.OK, message: `WINDOW round ${round}: ${picks.length} frames from ${lo.toFixed(3)} to ${hi.toFixed(3)} s; sheet in ${path.join(dir, "sheet.png")}\na window render never counts as done: fix the cause, then render the full cover` };
 }

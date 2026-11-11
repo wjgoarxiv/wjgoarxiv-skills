@@ -10,7 +10,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { EXIT, EXIT_NAME, CREDIT_LINE } from "../engine/core/constants.mjs";
 
-export const USAGE = `lit-typographic-motion render CLI (LitGravity)
+export const USAGE = `lit-typographic-motion render CLI
 
 usage:
   motion.mjs styles --out <dir> [--format 16:9|9:16]              the house-style gallery: one demo board per style
@@ -31,6 +31,7 @@ usage:
   motion.mjs look  --out <dir> --round N --answers <file>         records one look round in <dir>/look.json
                    (--blocked no-vision-tool when no image tool can be reached)
   motion.mjs gate  <dir>                                          reruns the full type-path gate on a render
+  motion.mjs done  <dir> [--json]                                 the done-check on an output folder (exit 13 while not done)
   motion.mjs stills|sheet|video|perf <brief.json> --out <dir>     one type-path stage alone
 
 Every render reads <dir>/treatment.json first (exit 16 names the field). A render with --stills-only
@@ -96,7 +97,7 @@ export async function main(argv, { env = process.env, stdout = process.stdout, s
           const span = String(args.window).split(",").map(Number);
           if (span.length !== 2) throw new BlockedError(EXIT.USAGE, "--window takes t0,t1 in seconds");
           result = await cover.renderCoverWindow({ out, round, window: span, env, log });
-        } else if (args.foreground || env.LITGRAVITY_MOTION_FOREGROUND === "1") result = await run();
+        } else if (args.foreground || env.LIT_MOTION_FOREGROUND === "1") result = await run();
         else {
           const { renderStageDetached } = await import("../engine/node/stage.mjs");
           result = await renderStageDetached({ out, round, cli: fileURLToPath(import.meta.url), mode: "cover", env, log });
@@ -108,7 +109,7 @@ export async function main(argv, { env = process.env, stdout = process.stdout, s
         const stillsOnly = Boolean(args["stills-only"]);
         if (args.worker) return await detachedWorker({ run: () => stage.renderStage({ out, round, stillsOnly: false, env, log }), out, BlockedError });
         // A full render runs detached with a progress file, so a tool timeout never kills it.
-        if (stillsOnly || args.foreground || env.LITGRAVITY_MOTION_FOREGROUND === "1") result = await stage.renderStage({ out, round, stillsOnly, env, log });
+        if (stillsOnly || args.foreground || env.LIT_MOTION_FOREGROUND === "1") result = await stage.renderStage({ out, round, stillsOnly, env, log });
         else {
           result = await stage.renderStageDetached({ out, round, cli: fileURLToPath(import.meta.url), env, log });
           if (result.blocked) throw new BlockedError(result.code, result.message);
@@ -121,7 +122,7 @@ export async function main(argv, { env = process.env, stdout = process.stdout, s
           return await detachedWorker({ run: () => blenderCommand({ out, final: true, env, log, progress }), out, BlockedError });
         }
         // The final plate can take most of an hour, so it runs detached like a full stage render.
-        if (!final || args.foreground || env.LITGRAVITY_MOTION_FOREGROUND === "1") result = await blenderCommand({ out, final, env, log });
+        if (!final || args.foreground || env.LIT_MOTION_FOREGROUND === "1") result = await blenderCommand({ out, final, env, log });
         else {
           const { renderStageDetached } = await import("../engine/node/stage.mjs");
           result = await renderStageDetached({ out, round: 1, cli: fileURLToPath(import.meta.url), mode: "blender", env, log });
@@ -146,6 +147,14 @@ export async function main(argv, { env = process.env, stdout = process.stdout, s
       const { diffs, kept, durations, ...rest } = r;
       const ok = r.pass && (!strict || r.target);
       result = { code: ok ? EXIT.OK : EXIT.GATE_FAIL_QA, message: args.json ? JSON.stringify(rest, null, 1) : formatCoverReport(r, { strict }).trimEnd() };
+    } else if (mode === "done") {
+      if (!target) throw new BlockedError(EXIT.USAGE, "done needs the output directory");
+      const { evaluateDone } = await import("../engine/node/done.mjs");
+      const r = evaluateDone({ out: path.resolve(target) });
+      const text = (x) => (typeof x === "string" ? x : JSON.stringify(x));
+      const lines = [`done-check: ${r.status}`, ...r.reasons.map((x) => `- ${text(x)}`), ...(r.downgraded ?? []).map((x) => `downgrade: ${text(x)}`),
+        ...(r.openItems ?? []).map((x) => `open: ${text(x)}`), ...(r.labels ?? []).map((x) => `label: ${text(x)}`)];
+      result = { code: r.status === "NOT_DONE" ? EXIT.GATE_FAIL_QA : EXIT.OK, message: args.json ? JSON.stringify(r, null, 1) : lines.join("\n") };
     } else if (mode === "gate") {
       if (!target) throw new BlockedError(EXIT.USAGE, "gate needs the output directory");
       result = await pipeline.gateOnly({ out: path.resolve(target), viewed: Number(args.viewed ?? 0), env, log });
@@ -192,7 +201,7 @@ async function detachedWorker({ run, out, BlockedError }) {
   return result.code;
 }
 
-// Compare real paths: reached through a symlink (/var -> /private/var, a linked plugin dir) a plain
+// Compare real paths: reached through a symlink (/var -> /private/var, a linked skill dir) a plain
 // string compare would treat the script as imported and silently exit 0.
 const invokedDirectly = (() => {
   try {

@@ -45,4 +45,4 @@ Treat gestures as shortcuts. Swipe-to-dismiss needs a close control; drag-to-reo
 
 ## Review record
 
-For each interaction, retain an internal Design Contract or QA record keyed to its hash: the trigger, the accessible name, reachable states, keyboard path, async failure and retry behavior, and how QA reached the state. Keep this record detailed in `.litgravity/evidence/<slug>/`. In the chat reply, mention the limitation that changes the user's next decision and leave the rest in the file.
+For each interaction, retain an internal Design Contract or QA record keyed to its hash: the trigger, the accessible name, reachable states, keyboard path, async failure and retry behavior, and how QA reached the state. Keep this record detailed in `.lit-skills/evidence/<slug>/`. In the chat reply, mention the limitation that changes the user's next decision and leave the rest in the file.

@@ -67,4 +67,4 @@ Each entry names a kind of visible breakage, the state and width where it usuall
 - Quote what is visible. Write `the label reads "Sav"` with the visible string.
 - Keep severity out of the opening clause; the line starts with the result word (`FAIL`, `BLOCKED`) and the file name.
 - Keep product defects, evidence defects (a capture that voids itself) and capability blockers in separate groups of the reply.
-- Describe a defect once. The fix belongs to `frontend-ui-ux` or `litwork`; add a fix only when the user asked for fix suggestions.
+- Describe a defect once. The fix belongs to the build work (for example `frontend-ui-ux`); add a fix only when the user asked for fix suggestions.

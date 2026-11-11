@@ -58,7 +58,7 @@ Tags such as `PT-1` belong in a methods-style figure only when the text refers t
 
 ## 6. Korean labels
 
-Hangul labels use **Pretendard** for the whole label (`fontFor` switches automatically when a label contains Hangul). Keep units and formulas in Latin (`압력 5 MPa`, `CO2 공급`). Korean labels run wider: allow about 1 em per syllable. The renderer loads Pretendard from this plugin; in the SVG the family name stays `Pretendard` with system fallbacks. For an English paper with Korean annotations remove the Korean before submission.
+Hangul labels use **Pretendard** for the whole label (`fontFor` switches automatically when a label contains Hangul). Keep units and formulas in Latin (`압력 5 MPa`, `CO2 공급`). Korean labels run wider: allow about 1 em per syllable. The renderer loads Pretendard from this skill's `assets/fonts/`; in the SVG the family name stays `Pretendard` with system fallbacks. For an English paper with Korean annotations remove the Korean before submission.
 
 ## 7. Export
 

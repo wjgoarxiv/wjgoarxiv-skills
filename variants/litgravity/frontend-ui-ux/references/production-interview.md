@@ -7,7 +7,7 @@ This reference sets how the skill decides between asking and building, and how a
 - A critique, audit or plan is read-only.
 - A build with a clear target proceeds to source changes and an inspected render.
 - A bare skill name with several frontends in the repository needs a target choice. Naming a skill settles the skill and leaves the scope open.
-- The activation note and any post-edit reminder are prompts to inspect the changed UI. They grant no permission to redesign unrelated screens.
+- Loading this skill and any post-edit reminder are prompts to inspect the changed UI. They grant no permission to redesign unrelated screens.
 
 ## Direction and inventory first
 
@@ -27,11 +27,11 @@ There is no mandatory interview. Ask when two plausible answers would materially
 
 ## Headless runs
 
-`ask_question` can be unanswerable under `agy -p`. In that case write the recommended default, record it as a `decision` line in `.litgravity/ledger/<conversation-id>.jsonl` (`{"kind":"decision","text":"default: <choice> because <reason>"}`), continue, and state the assumption once in the reply. A decision that touches permissions, credentials, publication or brand marks stops the run as BLOCKED, since a default cannot grant those.
+`ask_question` can be unanswerable under `agy -p`. In that case write the recommended default, record it as a `decision` line in `.lit-skills/evidence/<slug>/ledger.jsonl` (`{"kind":"decision","text":"default: <choice> because <reason>"}`), continue, and state the assumption once in the reply. A decision that touches permissions, credentials, publication or brand marks stops the run as BLOCKED, since a default cannot grant those.
 
 ## Retain answers
 
-Keep earlier answers in the conversation and in `.litgravity/interview/<slug>-direction.md`. On resume, read the confirmed choices and inspect partial work before asking anything new, and leave a resolved question closed. When all material choices are answered or delegated, state the default and proceed on the remaining details that do not change the result.
+Keep earlier answers in the conversation and in `.lit-skills/interview/<slug>-direction.md`. On resume, read the confirmed choices and inspect partial work before asking anything new, and leave a resolved question closed. When all material choices are answered or delegated, state the default and proceed on the remaining details that do not change the result.
 
 A skill name or keyword-only request authorizes no build: review, plan and keyword-only requests stay read-only. An answer resolves the design choice it asked about. It grants no broader file, host, permission, credential or publication authority.
 

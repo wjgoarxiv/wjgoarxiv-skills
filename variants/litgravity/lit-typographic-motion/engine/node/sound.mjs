@@ -622,7 +622,7 @@ export function writeBed({ treatment, frameCount, fps, cutTimes = [], dir }) {
   const wav = encodeWav({ left: bed.left, right: bed.right, sampleRate: SOUND.sampleRate });
   writeFileSync(file, wav);
   const summary = {
-    schema: "litgravity.motion-sound-cues/v1",
+    schema: "lit.motion-sound-cues/v1",
     mode: "generated",
     file,
     sha256: createHash("sha256").update(wav).digest("hex"),

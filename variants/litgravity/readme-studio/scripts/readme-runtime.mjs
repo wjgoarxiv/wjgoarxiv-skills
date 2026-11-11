@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 // Runtime for readme-studio: the pinned fontkit that shape-text-to-svg.mjs needs.
-// It installs on first use from ./readme-runtime-lock/ into a LitGravity-owned cache:
+// It installs on first use from ./readme-runtime-lock/ into a skill-owned cache:
 //
-//   $LITGRAVITY_README_RUNTIME                                     when set (tests, isolated probes)
-//   ${XDG_DATA_HOME:-~/.local/share}/litgravity/runtime/readme     otherwise
+//   $LIT_README_RUNTIME                                     when set (tests, isolated probes)
+//   ${XDG_DATA_HOME:-~/.local/share}/lit-skills/runtime/readme     otherwise
 //
 // Nothing is installed globally and no agy configuration is touched. The Remotion and
 // HyperFrames cover templates install per task with `npm ci` in their own project directory.
@@ -12,7 +12,7 @@
 //   node readme-runtime.mjs install [--json]   npm ci from the lock into the cache
 //   node readme-runtime.mjs path               print the cache node_modules path when ready
 
-import { describeSpawn, runNpmSync } from "../../../lib/host-exec.mjs";
+import { describeSpawn, runNpmSync } from "./lib/host-exec.mjs";
 import { copyFileSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import path from "node:path";
@@ -23,9 +23,9 @@ const LOCK_FILES = ["package.json", "package-lock.json"];
 const REQUIRED = ["fontkit"];
 
 export function cacheDir(env = process.env) {
-  if (env.LITGRAVITY_README_RUNTIME) return path.resolve(env.LITGRAVITY_README_RUNTIME);
+  if (env.LIT_README_RUNTIME) return path.resolve(env.LIT_README_RUNTIME);
   const data = env.XDG_DATA_HOME || path.join(homedir(), ".local", "share");
-  return path.join(data, "litgravity", "runtime", "readme");
+  return path.join(data, "lit-skills", "runtime", "readme");
 }
 
 export function missing(cache = cacheDir()) {
@@ -58,7 +58,7 @@ const main = () => {
   const json = flags.includes("--json");
   if (command === "path") {
     const s = status();
-    if (!s.ready) { process.stderr.write(`readme runtime not ready; run: npx @litfamily/litgravity runtime install readme\n`); return 1; }
+    if (!s.ready) { process.stderr.write(`readme runtime not ready; run: node "${fileURLToPath(import.meta.url)}" install\n`); return 1; }
     process.stdout.write(`${path.join(s.cache, "node_modules")}\n`);
     return 0;
   }
@@ -66,10 +66,10 @@ const main = () => {
     process.stderr.write("Usage: readme-runtime.mjs status|install|path [--json]\n");
     return 2;
   }
-  if (command === "install" && !json) process.stdout.write("Installing the pinned fontkit for readme-studio into the LitGravity runtime cache...\n");
+  if (command === "install" && !json) process.stdout.write("Installing the pinned fontkit for readme-studio into the skill runtime cache...\n");
   const report = command === "install" ? install() : status();
   if (json) process.stdout.write(`${JSON.stringify(report)}\n`);
-  else if (report.error) process.stdout.write(`BLOCKED: ${report.error}\nPre-warm from a terminal: npx @litfamily/litgravity runtime install readme\n`);
+  else if (report.error) process.stdout.write(`BLOCKED: ${report.error}\nPre-warm from a terminal: node "${fileURLToPath(import.meta.url)}" install\n`);
   else process.stdout.write(`readme runtime ${report.ready ? "ready" : "not ready"} at ${report.cache}${report.missing.length ? ` (missing: ${report.missing.join(", ")})` : ""}\n`);
   return command === "install" && !report.ready ? 1 : 0;
 };

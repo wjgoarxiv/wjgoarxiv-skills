@@ -1,6 +1,6 @@
 """Tier 2 timing for lit-typographic-motion: a librosa beat grid for one audio file.
 
-Runs inside the LitMuse motion venv created by `node <skill>/scripts/motion-runtime.mjs install --audio`
+Runs inside the motion audio venv created by `node <skill>/scripts/motion-runtime.mjs install --audio`
 (pinned, hash-checked wheels). It analyses the user's own audio once, before any frame is
 rendered, and writes a small JSON the engine reads through its beat interface. The JSON is a
 build artifact of this run only (MO-A-17): never cached across briefs, never checked in.
@@ -36,7 +36,7 @@ def main(argv):
         return (arr / peak).round(4).tolist() if peak > 0 else arr.tolist()
 
     result = {
-        "schema": "litmuse.motion-beat-grid/v1",
+        "schema": "lit.motion-beat-grid/v1",
         "source": "librosa " + librosa.__version__,
         "duration": round(duration, 4),
         "tempo": round(float(np.atleast_1d(tempo)[0]), 3),

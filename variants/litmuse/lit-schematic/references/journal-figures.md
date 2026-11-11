@@ -2,7 +2,7 @@
 
 Column widths: 85 mm single, 120 mm intermediate, 178 mm double. Panels read (a), (b) from top
 left. Type at 7 pt with a 6 pt floor. Latin text uses Arial embedded as text in the SVG and
-PDF. Hangul labels use the Pretendard copy shipped with `lit-diagram-drawer` assets.
+PDF. Hangul labels use the Pretendard copy shipped in this skill, `assets/fonts/PretendardVariable.woff2` (OFL, `assets/fonts/OFL.txt`).
 
 Stream colours come from the colour-vision-safe set with a key on the figure. Colour supports
 the labels; labels carry the meaning in text. Keep the title out of the art; the caption owns

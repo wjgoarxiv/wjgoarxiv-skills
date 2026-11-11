@@ -3,10 +3,10 @@
 //
 // The bundled figure helpers (style_presets.py, figure_export.py, color_palettes.py) need
 // matplotlib and numpy. They do not ship in the npm tarball. They install on first use from the
-// pinned lock file next to this module into a LitMuse-owned virtual environment:
+// pinned lock file next to this module into a per-user virtual environment:
 //
-//   $LITMUSE_SCIVIZ_RUNTIME                                      when set (tests, isolated probes)
-//   ${XDG_DATA_HOME:-~/.local/share}/litmuse/runtime/sciviz      otherwise
+//   $LIT_SCIVIZ_RUNTIME                                      when set (tests, isolated probes)
+//   ${XDG_DATA_HOME:-~/.local/share}/wjgoarxiv-skills/runtime/sciviz      otherwise
 //
 // The environment lives in python-<key>. <key> hashes the lock file, the platform and the Python
 // minor version, so a lock change or a new interpreter gets a fresh environment instead of
@@ -26,12 +26,12 @@ import { existsSync, mkdirSync, readFileSync, realpathSync, rmSync, statSync, wr
 import { homedir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { pickPython } from "../../../lib/host-process.mjs";
+import { pickPython } from "../lib/host-process.mjs";
 
 const HERE = fileURLToPath(new URL("./", import.meta.url));
 const SKILL_DIR = path.resolve(HERE, "..");
 const LOCK_FILE = path.join(HERE, "sciviz-runtime-requirements.lock");
-const READY = ".litmuse-ready";
+const READY = ".lit-runtime-ready";
 const STALE_LOCK_MS = 20 * 60 * 1000;
 const IMPORT_PROBE = "import matplotlib, numpy; print(matplotlib.__version__, numpy.__version__)";
 
@@ -39,13 +39,13 @@ const run = (command, args, options = {}) => spawnSync(command, args, { encoding
 
 /** The host interpreter the environment is built from: the same supported-version pick as the office runtime. */
 export function hostPython(env = process.env) {
-  return pickPython(env.LITMUSE_SCIVIZ_PYTHON, { env });
+  return pickPython(env.LIT_SCIVIZ_PYTHON, { env });
 }
 
 export function runtimeRoot() {
-  if (process.env.LITMUSE_SCIVIZ_RUNTIME) return path.resolve(process.env.LITMUSE_SCIVIZ_RUNTIME);
+  if (process.env.LIT_SCIVIZ_RUNTIME) return path.resolve(process.env.LIT_SCIVIZ_RUNTIME);
   const dataHome = process.env.XDG_DATA_HOME || path.join(homedir(), ".local", "share");
-  return path.join(dataHome, "litmuse", "runtime", "sciviz");
+  return path.join(dataHome, "wjgoarxiv-skills", "runtime", "sciviz");
 }
 
 function lockDigest(extra) {
@@ -105,12 +105,12 @@ export function ensurePython() {
   const status = pythonStatus();
   if (status.ready) return status;
   if (!status.host.ok) {
-    throw new Error(`SCIVIZ_RUNTIME_PYTHON_UNAVAILABLE: ${status.host.command}: ${status.host.detail}. Install Python 3.10 to 3.14 or set LITMUSE_SCIVIZ_PYTHON to one.`);
+    throw new Error(`SCIVIZ_RUNTIME_PYTHON_UNAVAILABLE: ${status.host.command}: ${status.host.detail}. Install Python 3.10 to 3.14 or set LIT_SCIVIZ_PYTHON to one.`);
   }
   return withLock(status.dir, () => {
     if (existsSync(path.join(status.dir, READY))) return pythonStatus();
     rmSync(status.dir, { recursive: true, force: true });
-    notice(`LitMuse sciviz runtime: creating a Python ${status.host.version} environment with ${status.pinned.length} pinned lines (matplotlib, numpy and dependencies) in ${status.dir} - first use only.`);
+    notice(`Sciviz runtime: creating a Python ${status.host.version} environment with ${status.pinned.length} pinned lines (matplotlib, numpy and dependencies) in ${status.dir} - first use only.`);
     const venv = run(status.host.command, ["-m", "venv", status.dir], { stdio: ["ignore", "pipe", "pipe"] });
     if (venv.error || venv.status !== 0) {
       throw new Error(`SCIVIZ_RUNTIME_VENV_FAILED: ${(venv.stderr || venv.error?.message || "").trim().slice(-600)}`);
@@ -144,12 +144,12 @@ export function sciVizRuntimeStatus() {
     lock: LOCK_FILE,
     python: { ready: python.ready, dir: python.dir, interpreter: python.interpreter, host: python.host, packages: python.pinned.length },
     firstUse: python.ready ? "ready" : "installs on first lit-scientific-visualization run",
-    preWarm: "npx @litfamily/litmuse runtime install sciviz",
+    preWarm: `node ${JSON.stringify(fileURLToPath(import.meta.url))} install`,
   };
 }
 
 // Child environment for a figure script: bundled helpers importable, headless backend, a
-// runtime-local matplotlib config/cache dir, and no .pyc files written into the plugin cache.
+// runtime-local matplotlib config/cache dir, and no .pyc files written into the installed skill folder.
 export function figureEnv(status = pythonStatus()) {
   const existing = process.env.PYTHONPATH ? [process.env.PYTHONPATH] : [];
   return {

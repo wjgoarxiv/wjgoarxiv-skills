@@ -6,12 +6,12 @@ description: Design and implement production frontend interfaces behind a valida
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litmuse.llm-contract.v1
+contract_schema_version: lit.llm-contract.v1
 artifact_type: skill
 activation:
-  primary: read_skill frontend-ui-ux, or the slash form /frontend-ui-ux
-  aliases: [frontend-ui-ux, "lit frontend-ui-ux", natural-language interface design intent]
-  prompt_hook: UserPromptSubmit route table (adds a pointer, never the skill body)
+  primary: read_skill frontend-ui-ux
+  aliases: [frontend-ui-ux, natural-language interface design intent]
+  prompt_hook: none (a user skill ships no hooks)
   command_route: none
 preconditions:
   - a frontend surface, component, screen, or interaction is in scope
@@ -19,19 +19,17 @@ preconditions:
   - the reference pack under references/ resolves from the skill directory
 ```
 
-This skill is reached through Muse's skill catalog (`read_skill frontend-ui-ux`, or `/frontend-ui-ux`)
-or through the LitMuse UserPromptSubmit hook when a bare `lit` prompt names it or carries both a design
-verb and an interface noun. Closed backtick and tilde fences, inline code, slash-command mentions,
-mid-sentence skill-name mentions, and non-interface design requests remain inert. The hook injects a
-short route pointer that tells the model which skill to load; it is not the exact `SKILL.md` body and
-it is not this complete contract. A hook adds context only; it does not prove that `read_skill` ran, and
-it needs `muse plugins approve litmuse:hook:<id>` before it runs at all. There is no dedicated slash
-command for this skill beyond the generic `/frontend-ui-ux` form.
+This skill is reached through Muse's skill catalog: `read_skill frontend-ui-ux`, or the model loading it
+because a prompt names it or carries both a design verb and an interface noun. Closed backtick and tilde
+fences, inline code, slash-command mentions, mid-sentence skill-name mentions, and non-interface design
+requests remain inert. The catalog entry is a description only; it is not the exact `SKILL.md` body and
+it is not this complete contract, and seeing it does not prove that `read_skill` ran. The skill ships no
+hooks and no slash command.
 
 Project rules (`AGENTS.md` and the like) are a separate context lane. They may be present whether or
 not this frontend route activates, and their presence is not evidence that this skill was selected.
 When this procedure is selected for implementation, its intended mutations are the user-approved
-repository Design Contract, interface code, tests, and work receipt. The hooks themselves do not write
+repository Design Contract, interface code, tests, and work receipt. Loading the skill does not write
 those artifacts or change Muse settings.
 
 Select this skill when the deliverable is an interface decision or interface code. Do not
@@ -370,7 +368,7 @@ Canonical form sorts keys recursively, preserves array order, and ends with one 
 newline is part of the canonical bytes: every contract hash recorded anywhere in this system is
 taken over the form `canonicalDesignContract` produces.
 
-Resolve FRONTEND_UIUX_SKILL_ROOT to the directory of the SKILL.md path that `read_skill` returned (the cached plugin copy), not the working directory. Validate with quoted absolute paths:
+Resolve FRONTEND_UIUX_SKILL_ROOT to the directory of the SKILL.md path that `read_skill` returned (the installed skill folder), not the working directory. Validate with quoted absolute paths:
 
 ```bash
 node "$FRONTEND_UIUX_SKILL_ROOT/scripts/validate-design-contract.mjs" "path/to/design-contract.json"
@@ -486,21 +484,20 @@ dataset difference fails closed.
 
 ## Install verification
 
-Run these to confirm the bundle Muse actually loaded is the bundle this contract describes.
+Run these to confirm the copy Muse actually loaded is the copy this contract describes.
 
 ```bash
-muse plugins validate <plugin-dir> --json
-npx @litfamily/litmuse doctor
+muse skills list --source user
 node "$FRONTEND_UIUX_SKILL_ROOT/scripts/verify-corpus.mjs"
 node "$FRONTEND_UIUX_SKILL_ROOT/scripts/chrome-driver.mjs" status
 ```
 
-`plugins validate` must print `valid: true` with no diagnostics. `verify-corpus.mjs` prints
+`skills list` must show `frontend-ui-ux` with activation `on`. `verify-corpus.mjs` prints
 `PASS: <n> files, <bytes> corpus bytes` for an intact canonical library and names every missing,
 extra or drifted path otherwise. `chrome-driver.mjs status` names the Chrome or Chromium the probe will
 drive, or the reason none was found (set `CHROME_PATH`). The skill id must appear in Muse's skill
-catalog; when the 32 KB catalog overflows, Muse compacts later plugin entries to id plus path, and
-`read_skill frontend-ui-ux` still resolves them. Every packaged resource named above is hash-pinned
+catalog; when the 32 KB catalog overflows, Muse may compact an entry to id plus path, and
+`read_skill frontend-ui-ux` still resolves it. Every packaged resource named above is hash-pinned
 by the exact canonical-corpus manifest; docs do not duplicate a mutable resource count.
 
 ## Discovery before design

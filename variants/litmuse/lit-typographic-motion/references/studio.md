@@ -222,7 +222,7 @@ When the request asks for a preview or a storyboard first (미리보기, 스토�
 storyboard), set `preview: true` in the treatment. The film is then done at the board: a board round
 whose check passed, looked at, with the board in the viewed list. The reply shows the board and says the
 film is not rendered yet; when the user says go, set `preview` to false and render the film. Without
-those words a bare `lit` still asks no questions and renders the film, and the reply still names the
+those words a no-questions run still asks no questions and renders the film, and the reply still names the
 board.
 
 ## The house file
@@ -230,7 +230,7 @@ board.
 `motion-house.json` sits beside the output folder (the user's working directory):
 
 ```json
-{ "schema": "litmuse.motion-house/v1", "style": "<style id>", "createdAt": "<time>", "films": [{ "dir": "<folder>", "style": "<style id>", "path": "<stage or type>", "format": "<16:9 or 9:16>", "durationSec": 0, "at": "<time>" }] }
+{ "schema": "lit.motion-house/v1", "style": "<style id>", "createdAt": "<time>", "films": [{ "dir": "<folder>", "style": "<style id>", "path": "<stage or type>", "format": "<16:9 or 9:16>", "durationSec": 0, "at": "<time>" }] }
 ```
 
 The renderer writes it when a full render passes and nothing is withheld; the first film sets the

@@ -20,6 +20,6 @@ scene, then derive the assembled view, exploded positions, layer sets, and frame
 from it. Explode slides parts along assembly axes in fitter order, outer parts before inner
 parts.
 
-Route guard: a `lit` prompt asking for a cutaway or piping diagram as animation or video
+Route guard: a prompt asking for a cutaway or piping diagram as animation or video
 lands here. A narrated or titled film of a machine hands off to `lit-typographic-motion`
 after the static drawing passes.

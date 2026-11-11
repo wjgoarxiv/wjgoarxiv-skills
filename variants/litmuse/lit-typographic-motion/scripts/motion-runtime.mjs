@@ -3,11 +3,10 @@
 // hash-verified fonts with their licences, and the optional librosa venv for beat analysis. It is
 // the only step that writes the motion cache, and it never runs from a render:
 //
-//   $LITMUSE_MOTION_RUNTIME                                     when set (tests, isolated probes)
-//   ${XDG_DATA_HOME:-~/.local/share}/litmuse/runtime/motion     otherwise
+//   $LIT_MOTION_RUNTIME                                     when set (tests, isolated probes)
+//   ${XDG_DATA_HOME:-~/.local/share}/wjgoarxiv-skills/runtime/motion     otherwise
 //
-// `npx @litfamily/litmuse runtime install motion` (and `runtime status`) call this file with
-// `install --json` / `status --json` and read {name, ready, cache, missing}. Muse's sandbox network
+// With --json, `install` and `status` print {name, ready, cache, missing}. Muse's sandbox network
 // is proxy-only, so the pre-warm runs from a terminal, outside any Muse session.
 //
 //   node motion-runtime.mjs status [--json]           readiness report, never installs
@@ -17,14 +16,14 @@
 import { realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
-export const USAGE = `lit-typographic-motion runtime (LitMuse)
+export const USAGE = `lit-typographic-motion runtime
 
 usage:
   node motion-runtime.mjs status [--json]
   node motion-runtime.mjs install [--json] [--audio] [--word-timing]
   node motion-runtime.mjs path
 
-install  pre-warms the pinned engine package and the fonts into the LitMuse motion cache, from a
+install  pre-warms the pinned engine package and the fonts into the per-user motion cache, from a
          terminal outside Muse. --audio adds the librosa beat-grid venv (Tier 2); --word-timing
          prints the Tier-3 model size and pins, then stops: its aligner runtime is not shipped.
 status   reports what is ready and the command that fixes anything missing.
@@ -65,7 +64,7 @@ export async function main(argv, { env = process.env, stdout = process.stdout, s
       stdout.write(`${runtime.wordTimingPlan().lines.join("\n")}\n`);
       return 14;
     }
-    if (!json) stdout.write("Installing the pinned engine package and fonts for lit-typographic-motion into the LitMuse runtime cache...\n");
+    if (!json) stdout.write("Installing the pinned engine package and fonts for lit-typographic-motion into the per-user motion cache...\n");
     try {
       await runtime.installRuntime({ env, audio: rest.includes("--audio"), log: (line) => stderr.write(`motion-runtime: ${line}\n`) });
       const status = runtime.runtimeStatus({ env });

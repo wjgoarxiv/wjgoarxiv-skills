@@ -38,7 +38,7 @@
 // The background rows drift one word per loop (perpetual, linear), so letters pass through the tide;
 // the hero word stays put and the tide passes through it. A terminal cursor walks the hero letter by letter.
 const { TAU, clamp, fract, mix, ease, swell, makeNoise, loopNoise, cubicPulse } = LitLoop;
-const WORD = "LITMUSE", GAP = "·", ROW_H = 64, FS = 56, ADV = FS * 0.6;
+const WORD = "PROJECT", GAP = "·", ROW_H = 64, FS = 56, ADV = FS * 0.6;
 const DRIFT = 1; // words of row travel per loop
 const noise = makeNoise(7);
 // Tide offset field: a diagonal sweep (x then y) plus slow loop noise per row, so the front is not a ruler.

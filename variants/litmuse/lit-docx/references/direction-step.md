@@ -15,7 +15,7 @@ cover, a figure tile or a tinted box; those choices are not on the card because 
 The step takes a few minutes of reading and needs no conversation. Close the brief, rank the candidates
 for the document type, let the source reorder them, write a direction card, then say the choice
 and two alternatives in the reply. The skill picks the tonality itself. It never falls back to a
-silent default, and under a bare `lit` request it asks nothing at all.
+silent default, and in a no-questions run it asks nothing at all.
 
 ## 1. Close the brief
 
@@ -195,7 +195,7 @@ two alternatives. For example: "Report 방향으로 만들었습니다. 표가 �
 승인 요청이 있어서입니다. 첫 장만 읽힐 문서라면 Brief, 절차 안내가 중심이면 Manual도 맞습니다."
 One sentence each for choice, reason and alternatives; no design lecture.
 
-Under a bare `lit` request the same sentence goes in the reply and nothing is asked before the
+In a no-questions run the same sentence goes in the reply and nothing is asked before the
 build. Under an explicit request the skill still decides; it asks only when the brief leaves the
 look open on purpose (then it builds the strip below) or a dial must move by more than 2.
 
@@ -240,7 +240,7 @@ shows.
   silent default.
 - A reply that names one direction with no alternatives, or none at all.
 - A reason that restates the document type instead of the signals that fired.
-- Asking a style question under a bare `lit` request.
+- Asking a style question in a no-questions run.
 - Moving a dial by three or more without the user's word.
 - Headings written as conclusions, or a key figure without a basis line, because an older habit
   said headings should state findings.

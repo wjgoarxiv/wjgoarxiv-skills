@@ -397,7 +397,7 @@ if (require.main === module) {
   const frontmatter = source.match(/^---[ \t]*\n([\s\S]*?)\n---/);
   if (frontmatter && /^data:[ \t]*\S/m.test(frontmatter[1])) {
     const { spawnSync } = require("child_process");
-    const resolved = spawnSync(process.env.LITMUSE_OFFICE_PYTHON || (process.platform === "win32" ? "python" : "python3"), ["-B", path.resolve(__dirname, "../../../lib/office_data.py"), "resolve", path.resolve(inputPath)], {
+    const resolved = spawnSync(process.env.LIT_OFFICE_PYTHON || (process.platform === "win32" ? "python" : "python3"), ["-B", path.resolve(__dirname, "../lib/office_data.py"), "resolve", path.resolve(inputPath)], {
       encoding: "utf8",
     });
     if (resolved.status !== 0) {
@@ -443,7 +443,7 @@ if (require.main === module) {
         // Optional: embed bundled fonts into the PPTX for a self-contained deck.
         if (embedFonts && pptxPath) {
           const { execFileSync } = require("child_process");
-          execFileSync(process.env.LITMUSE_OFFICE_PYTHON || (process.platform === "win32" ? "python" : "python3"), [path.join(__dirname, "embed_fonts.py"), pptxPath], {
+          execFileSync(process.env.LIT_OFFICE_PYTHON || (process.platform === "win32" ? "python" : "python3"), [path.join(__dirname, "embed_fonts.py"), pptxPath], {
             stdio: "inherit",
           });
         }

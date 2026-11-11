@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { lstatSync, readFileSync } from "node:fs";
 import { basename, relative, resolve, sep } from "node:path";
 
-import { stableJson } from "../../../lib/strict-json.mjs";
+import { stableJson } from "../lib/strict-json.mjs";
 import { DATASET_MAX_BYTES, DATASET_RECORDS, DATASET_SHA256 } from "./design-data.mjs";
 import { UiuxContractError } from "./errors.mjs";
 

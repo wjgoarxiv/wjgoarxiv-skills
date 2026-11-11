@@ -6,10 +6,10 @@ Backgrounds should contain no words, logos or baked-in captions. Examine the wid
 
 Resolve local Pretendard for Korean/display/prose and Meslo LGS NF for technical text. Inspect the actual family/style/version and applicable license notice; record hashes and upstream provenance. A similarly named file is insufficient. Font files must be regular, bounded, non-symlink inputs; missing glyphs, wrong family and uncertain license are blockers. Never install system fonts or add font bytes to the plugin package. Keep a redistribution license next to any authorized project-local font copy.
 
-Copy `templates/typography/` from the exact selected skill directory into a fresh output workspace. Its lockfile pins fontkit 2.0.4. The helper loads fontkit from the LitMuse readme runtime cache first (`node scripts/readme-runtime.mjs install`, or `npx @litfamily/litmuse runtime install readme`), then from a local `node_modules` after `npm ci --ignore-scripts --no-audit --no-fund` in the workspace. The helper reads a bounded descriptor, shapes glyph runs with advances and offsets, and computes a padded union of actual transformed glyph bounds. Whitespace may have an empty outline but still carries an advance. Missing-glyph id zero is rejected. Output creation is exclusive within an explicit existing root, with non-symlink parent checks.
+Copy `templates/typography/` from the exact selected skill directory into a fresh output workspace. Its lockfile pins fontkit 2.0.4. The helper loads fontkit from the per-user readme runtime cache first (`node <skill-dir>/scripts/readme-runtime.mjs install`), then from a local `node_modules` after `npm ci --ignore-scripts --no-audit --no-fund` in the workspace. The helper reads a bounded descriptor, shapes glyph runs with advances and offsets, and computes a padded union of actual transformed glyph bounds. Whitespace may have an empty outline but still carries an advance. Missing-glyph id zero is rejected. Output creation is exclusive within an explicit existing root, with non-symlink parent checks.
 
 ```bash
-node "$README_STUDIO_PROJECT_ROOT/.litmuse/evidence/readme-studio/typography/shape-text-to-svg.mjs" \
+node "$README_STUDIO_PROJECT_ROOT/.lit-evidence/readme-studio/typography/shape-text-to-svg.mjs" \
   --font "/explicit/task-font/Pretendard-Regular.otf" \
   --family "Pretendard" --text "연구 노트 / Research notes" \
   --output-root "$README_STUDIO_PROJECT_ROOT" --output "assets/title-dark.svg" \

@@ -3,7 +3,7 @@
 
 The document counterpart of lit-pptx's qa_deck.py. It combines:
 
-  1. Integrity  — plugin/lib/ooxml_integrity.py (the package opens,
+  1. Integrity  — lib/ooxml_integrity.py (the package opens,
                   relationships resolve, no NaN attribute values, python-docx reopens)
   2. Prose lint — slop_lint rules on the Markdown source (AI-tell phrases, hedging
                   pile-ups, stock openers/closers, adjective stacks, Korean rules);
@@ -39,7 +39,7 @@ import os as _os
 import sys as _sys
 
 _sys.dont_write_bytecode = True  # the installed skill directory stays read-only
-_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "..", "..", "lib"))
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "lib"))
 from office_runtime_bootstrap import ensure_runtime  # noqa: E402
 
 ensure_runtime(["docx", "markdown", "bs4", "yaml", "pymupdf"])

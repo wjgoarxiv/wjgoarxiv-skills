@@ -1,7 +1,7 @@
 {
   "schema_id": "litfamily.frontend-default-profile/v1",
   "name": "Field notes / pixel signal",
-  "authorship": "Original LitMuse profile outside the immutable library",
+  "authorship": "Original house profile outside the immutable library",
   "hierarchy": [
     "large editorial title with intentional breaks",
     "small terminal labels",

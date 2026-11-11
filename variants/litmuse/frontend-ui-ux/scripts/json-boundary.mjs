@@ -6,7 +6,7 @@ import {
   decodeStrictUtf8,
   parseStrictJson,
   StrictJsonError,
-} from "../../../lib/strict-json.mjs";
+} from "../lib/strict-json.mjs";
 
 export function readBoundedJson(path, { maxBytes, invalidCode, allowSymlink = false }) {
   const absolutePath = resolve(path);

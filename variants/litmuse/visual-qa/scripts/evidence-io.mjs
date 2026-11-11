@@ -13,7 +13,7 @@ import {
   decodeStrictUtf8,
   parseStrictJson,
   StrictJsonError,
-} from "../../../lib/strict-json.mjs";
+} from "../lib/strict-json.mjs";
 import { VisualQaError } from "./errors.mjs";
 
 export function sha256(value) {

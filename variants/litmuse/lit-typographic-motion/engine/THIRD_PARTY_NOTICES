@@ -5,8 +5,8 @@ Engine code
   ca251e3dddda422b364385eb484b5a3593a0990d, Copyright (c) 2026 Giacomo Magnanini.
   The required notice is in NOTICE next to this file.
 
-Engine dependency (installed into the LitMuse motion cache by
-`npx @litfamily/litmuse runtime install motion`, never bundled)
+Engine dependency (installed into the per-user motion cache by
+`node scripts/motion-runtime.mjs install`, never bundled)
   opentype.js 2.0.0 (MIT) — its LICENSE ships inside the installed package:
     <motion cache>/node-<lockdigest>-<platform>-<arch>/node_modules/opentype.js/LICENSE
 
@@ -22,10 +22,10 @@ Vendored library (bundled, unmodified, served to stage and cover pages at /lit/t
       addons/geometries/RoundedBoxGeometry.js   d20aeaf7077c459a8d952d215738d7b44fba028440bb862d84b622a34f0c80bb
 
 Fonts. Paths starting with fonts/ are relative to the skill directory
-(skills/lit-typographic-motion/); paths starting with <motion cache>/fonts/ are written by
-`npx @litfamily/litmuse runtime install motion` (pinned URL, sha256-verified, licence fetched with the
-font). <motion cache> is $LITMUSE_MOTION_RUNTIME, or
-${XDG_DATA_HOME:-~/.local/share}/litmuse/runtime/motion.
+(lit-typographic-motion/); paths starting with <motion cache>/fonts/ are written by
+`node scripts/motion-runtime.mjs install` (pinned URL, sha256-verified, licence fetched with the
+font). <motion cache> is $LIT_MOTION_RUNTIME, or
+${XDG_DATA_HOME:-~/.local/share}/wjgoarxiv-skills/runtime/motion.
 
   Archivo, static instances 75/100/125 x 400/700/900 (bundled; OFL 1.1, no Reserved Font Name)
     font files: fonts/archivo/Archivo-w*.ttf
@@ -53,10 +53,10 @@ ${XDG_DATA_HOME:-~/.local/share}/litmuse/runtime/motion.
     licence:    fonts/stroke/OFL.txt
     credits:    fonts/stroke/CREDITS
 
-  Pretendard Regular and Bold (reused from lit-pptx by path, not duplicated; OFL 1.1,
-  Reserved Font Name "Pretendard"; shipped unmodified)
-    font files: ../lit-pptx/fonts/pretendard/Pretendard-Regular.otf, Pretendard-Bold.otf
-    licence:    ../lit-pptx/fonts/pretendard/OFL.txt
+  Pretendard Regular and Bold (bundled; OFL 1.1, Reserved Font Name "Pretendard";
+  shipped unmodified)
+    font files: fonts/pretendard/Pretendard-Regular.otf, Pretendard-Bold.otf
+    licence:    fonts/pretendard/OFL.txt
 
   Galmuri9 (fetched at pre-warm; OFL 1.1, Reserved Font Name implied; unmodified dist file)
     font file:  <motion cache>/fonts/Galmuri9.ttf

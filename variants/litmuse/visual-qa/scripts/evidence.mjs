@@ -1,4 +1,4 @@
-import { decodeStrictUtf8, parseStrictJson, stableJson } from "../../../lib/strict-json.mjs";
+import { decodeStrictUtf8, parseStrictJson, stableJson } from "../lib/strict-json.mjs";
 import {
   DESIGN_CONTRACT_BETA_SCHEMA,
   DESIGN_CONTRACT_BETA2_SCHEMA,

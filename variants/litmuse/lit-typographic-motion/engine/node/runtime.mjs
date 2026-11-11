@@ -1,37 +1,36 @@
 // The motion runtime: pinned engine dependencies, fetched fonts and the opt-in audio venv, all in a
-// LitMuse-owned cache (MO-A-42..55). It keeps the cache mechanics of the other LitMuse engines (a
+// per-user cache (MO-A-42..55). It keeps the cache mechanics of the other engines in this skill family (a
 // directory keyed by the lockfile, an mkdir lock, `npm ci --omit=dev --ignore-scripts`) but not their
-// first-use install: only `npx @litfamily/litmuse runtime install motion` (or this skill's
-// scripts/motion-runtime.mjs) writes here. A render only reads, and an unwarmed cache is BLOCKED 14,
+// first-use install: only this skill's scripts/motion-runtime.mjs writes here. A render only reads, and an unwarmed cache is BLOCKED 14,
 // never an install from inside a Muse session, whose sandbox network is proxy-only.
 //
-//   $LITMUSE_MOTION_RUNTIME                                     when set (tests, isolated probes)
-//   ${XDG_DATA_HOME:-~/.local/share}/litmuse/runtime/motion     otherwise
+//   $LIT_MOTION_RUNTIME                                     when set (tests, isolated probes)
+//   ${XDG_DATA_HOME:-~/.local/share}/wjgoarxiv-skills/runtime/motion     otherwise
 import { createHash } from "node:crypto";
 import { spawnSync } from "node:child_process";
 import { copyFileSync, existsSync, mkdirSync, readFileSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { failureDetail, pickPython, spawnNpm } from "../../../../lib/host-process.mjs";
-import { readCapped } from "../../../../lib/capped-fetch.mjs";
+import { failureDetail, pickPython, spawnNpm } from "../../lib/host-process.mjs";
+import { readCapped } from "../../lib/capped-fetch.mjs";
 
 export const SKILL_ROOT = fileURLToPath(new URL("../../", import.meta.url));
 export const ENGINE_ROOT = path.join(SKILL_ROOT, "engine");
 export const FONT_ROOT = path.join(SKILL_ROOT, "fonts");
-const READY = ".litmuse-ready";
+const READY = ".lit-runtime-ready";
 const STALE_LOCK_MS = 20 * 60 * 1000;
-export const INSTALL_COMMAND = "npx @litfamily/litmuse runtime install motion";
-// The optional audio tier is not part of `litmuse runtime install`; it installs through this skill's own script.
+export const INSTALL_COMMAND = `node "${path.join(SKILL_ROOT, "scripts", "motion-runtime.mjs")}" install`;
+// The optional audio tier is not part of the default install; it needs --audio.
 export const AUDIO_INSTALL_COMMAND = `node "${path.join(SKILL_ROOT, "scripts", "motion-runtime.mjs")}" install --audio`;
 
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const fileSha = (file) => sha256(readFileSync(file));
 
 export function runtimeRoot(env = process.env) {
-  if (env.LITMUSE_MOTION_RUNTIME) return path.resolve(env.LITMUSE_MOTION_RUNTIME);
+  if (env.LIT_MOTION_RUNTIME) return path.resolve(env.LIT_MOTION_RUNTIME);
   const dataHome = env.XDG_DATA_HOME || path.join(homedir(), ".local", "share");
-  return path.join(dataHome, "litmuse", "runtime", "motion");
+  return path.join(dataHome, "wjgoarxiv-skills", "runtime", "motion");
 }
 
 export function lockHash() {
@@ -48,7 +47,7 @@ export function loadFontManifest() {
   return JSON.parse(readFileSync(path.join(FONT_ROOT, "manifest.json"), "utf8"));
 }
 
-/** Where a font's bytes live after install (bundled, reused lit-pptx file, or the cache). */
+/** Where a font's bytes live after install (bundled, reused by path, or the cache). */
 export function fontLocation(key, font, env) {
   if (font.source === "bundled") return path.join(FONT_ROOT, font.path);
   if (font.source === "reuse") {
@@ -95,7 +94,7 @@ const venvPython = (dir) => (process.platform === "win32" ? path.join(dir, "Scri
 
 /** The host interpreter the audio venv is built from: the same supported-version pick as the office runtime. */
 export function hostPython(env = process.env) {
-  return pickPython(env.LITMUSE_MOTION_PYTHON, { env });
+  return pickPython(env.LIT_MOTION_PYTHON, { env });
 }
 
 const minorOf = (picked) => (picked.ok ? picked.version.split(".").slice(0, 2).join(".") : null);
@@ -200,7 +199,7 @@ const RUNTIME_FETCH_LIMIT = 128 * 1024 * 1024;
 
 /** Fetch bytes from an http(s) or file URL. A mirror (tests, air-gapped hosts) serves files by sha256. */
 export async function fetchBytes(url, { sha256: expected, env }) {
-  const mirror = env.LITMUSE_MOTION_MIRROR;
+  const mirror = env.LIT_MOTION_MIRROR;
   const source = mirror && expected ? `${mirror.replace(/\/$/u, "")}/${expected}` : url;
   let bytes;
   if (source.startsWith("file://")) bytes = readFileSync(fileURLToPath(source));
@@ -269,13 +268,13 @@ export async function installNode({ env = process.env, log = () => {} } = {}) {
   log(`installing pinned engine packages (${Object.entries(status.pinned).map(([k, v]) => `${k} ${v}`).join(", ")}) into ${dir}`);
   const args = ["ci", "--omit=dev", "--ignore-scripts", "--no-audit", "--no-fund", "--loglevel=error"];
   let cache = null;
-  if (env.LITMUSE_MOTION_MIRROR) {
+  if (env.LIT_MOTION_MIRROR) {
     cache = path.join(tmpdir(), `lit-motion-npm-${process.pid}-${Date.now()}`);
     const lock = JSON.parse(readFileSync(path.join(ENGINE_ROOT, "package-lock.json"), "utf8"));
     for (const [name, pkg] of Object.entries(lock.packages)) {
       if (!name) continue;
       const integrity = Buffer.from(pkg.integrity.replace(/^sha512-/u, ""), "base64").toString("hex");
-      const mirror = env.LITMUSE_MOTION_MIRROR.replace(/\/$/u, "");
+      const mirror = env.LIT_MOTION_MIRROR.replace(/\/$/u, "");
       const source = `${mirror}/${path.basename(new URL(pkg.resolved).pathname)}`;
       const bytes = source.startsWith("file://") ? readFileSync(fileURLToPath(source)) : await readCapped(await fetch(source), RUNTIME_FETCH_LIMIT, source);
       if (createHash("sha512").update(bytes).digest("hex") !== integrity) throw new Error(`integrity mismatch for ${name}`);
@@ -298,7 +297,7 @@ export async function installNode({ env = process.env, log = () => {} } = {}) {
 
 export async function installAudio({ env = process.env, log = () => {} } = {}) {
   const python = hostPython(env);
-  if (!python.ok) throw new Error(`${python.command}: ${python.detail}; install Python 3.10 to 3.14 or set LITMUSE_MOTION_PYTHON to one`);
+  if (!python.ok) throw new Error(`${python.command}: ${python.detail}; install Python 3.10 to 3.14 or set LIT_MOTION_PYTHON to one`);
   const version = minorOf(python);
   const dir = audioDir(env, version);
   const current = audioStatus(env);

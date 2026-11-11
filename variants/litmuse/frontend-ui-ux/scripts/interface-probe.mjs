@@ -221,7 +221,7 @@ export function decideExit({ findings, viewportsRun, blockedReason }) {
 export async function runProbe(options) {
   const started = Date.now();
   const target = resolveTarget(options.target);
-  const outDir = resolve(options.out ?? mkdtempSync(join(tmpdir(), "litmuse-interface-probe-")));
+  const outDir = resolve(options.out ?? mkdtempSync(join(tmpdir(), "lit-ui-interface-probe-")));
   mkdirSync(join(outDir, "screenshots"), { recursive: true });
   const matrix = options.viewports ? MATRIX.filter((viewport) => options.viewports.includes(viewport.id)) : MATRIX;
   const manifest = {

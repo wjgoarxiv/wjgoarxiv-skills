@@ -152,8 +152,8 @@ checks the list before it opens a browser, so a bad list costs nothing.
   title exempt from the G6 size floor, and it is still measured and printed as INFO.
 - Art is scaled into its box and never cropped, and the stage raster limits still apply.
 
-When the cover is done, every `generated` entry becomes a line the reply has to carry: the Stop hook
-holds the finished turn once so that the reply says which asset was generated.
+When the cover is done, every `generated` entry becomes a line the reply has to carry: the done-check
+prints it, and the reply says which asset was generated.
 
 ## Craft rules, most important first
 
@@ -277,9 +277,9 @@ stays put, edges instead of fades. Name it in `recipeReason`.
 ### Rows and negatives
 
 Each `expected.json` keeps the decoded gate row the recipe reached (median d, moving share, longest
-still, spike, seamLocal, bytes) next to its encode settings and treatment. The repository's cover
-recipe QA re-renders every recipe through this renderer and fails when median d or the moving share
-leaves ±15 % of its row, seamLocal leaves TARGET, or the file grows past 2 MiB.
+still, spike, seamLocal, bytes) next to its encode settings and treatment. No automated recipe QA ships with this
+skill; the check is manual: render the recipe with `motion.mjs cover` and treat it as regressed when median
+d or the moving share leaves ±15 % of its row, seamLocal leaves TARGET, or the file grows past 2 MiB.
 
 Every negative and regression declares the gates it must fail (`mustFail`, as `G2.floor` or
 `G1.target`). `--negatives` renders them all, and one counts as caught only when its render
@@ -459,10 +459,10 @@ A cover is done when all of these hold:
   session;
 - the last round asks for no further round, or it is round 3 and its open items go into the reply.
 
-The LitMuse Stop hook runs this check on the last output folder and holds the turn with the named
-reason, at most twice; after that it asks the reply to say plainly that the cover is not done and
-why. When the cover is done but an asset is generated or a look item stays open, it holds once so the
-reply says so. Rounds share one counter with the renders, 1 to 3.
+Run this check with `node "$SKILL_ROOT/scripts/motion.mjs" done --out <dir>` on the last output
+folder. When it prints NOT_DONE, fix the named reason, at most twice more; after that say plainly in
+the reply that the cover is not done and why. When the cover is done but an asset is generated or a
+look item stays open, the reply says so. Rounds share one counter with the renders, 1 to 3.
 
 ## Not yet confirmed
 

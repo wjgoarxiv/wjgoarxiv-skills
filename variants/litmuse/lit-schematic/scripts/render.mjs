@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { firstLine } from '../../../lib/host-process.mjs';
+import { firstLine } from '../lib/host-process.mjs';
 
 const args = process.argv.slice(2);
 const file = args[0];

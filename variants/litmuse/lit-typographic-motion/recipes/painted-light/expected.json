@@ -1,6 +1,6 @@
 {
-  "schema": "litmuse.motion-cover-recipe/v1",
-  "note": "The decoded gate row this recipe reached when it shipped (scripts/qa-cover-recipes.mjs re-renders it and fails when median d or moving leave +-15 %, seamLocal leaves TARGET or bytes pass 2 MiB). Measured 2026-10-20 on headless Chrome's software rung and libwebp 1.6.0.",
+  "schema": "lit.motion-cover-recipe/v1",
+  "note": "The decoded gate row this recipe reached when it shipped, measured on its original brand word; a different word moves it slightly (to re-check it by hand, render the recipe with `motion.mjs cover` and compare the decoded row: it regressed when median d or moving leave +-15 %, seamLocal leaves TARGET or bytes pass 2 MiB). Measured 2026-10-20 on headless Chrome's software rung and libwebp 1.6.0.",
   "row": {
     "medianD": 0.002077,
     "movingFrac": 1,

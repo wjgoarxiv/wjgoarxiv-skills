@@ -13,8 +13,8 @@ import path from "node:path";
 import { EXIT } from "../core/constants.mjs";
 import { BlockedError } from "./chrome.mjs";
 import { rasterInfo } from "./stage-serve.mjs";
-import { readCapped } from "../../../../lib/capped-fetch.mjs";
-import { checkHop, pinnedSend } from "../../../../lib/pinned-fetch.mjs";
+import { readCapped } from "../../lib/capped-fetch.mjs";
+import { checkHop, pinnedSend } from "../../lib/pinned-fetch.mjs";
 
 const MAX_HOPS = 5;
 export const ASSET_LIMITS = Object.freeze({ files: 8, fileBytes: 4 * 1024 * 1024, totalBytes: 12 * 1024 * 1024, pageBytes: 2 * 1024 * 1024, timeoutMs: 15000 });

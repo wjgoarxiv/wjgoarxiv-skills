@@ -1,4 +1,4 @@
-# The type-path brief (`litmuse.motion-brief/v1`)
+# The type-path brief (`lit.motion-brief/v1`)
 
 A film whose words are the film goes through the WebGL2 type engine, and the brief is the file that engine
 renders. It comes second: `treatment.json` already fixed `path: type`, the length, the beats and the copy
@@ -26,7 +26,7 @@ lyric of the user's own, anything that is a sequence of lines.
 
 ```json
 {
-  "schema": "litmuse.motion-brief/v1",
+  "schema": "lit.motion-brief/v1",
   "lines": ["<opening line>", "<a middle line of the copy>", "<closing line>"]
 }
 ```
@@ -37,7 +37,7 @@ the film's own copy in their place.
 
 ```json
 {
-  "schema": "litmuse.motion-brief/v1",
+  "schema": "lit.motion-brief/v1",
   "style": "<preset or auto>",
   "bpm": 100,
   "shots": [
@@ -55,7 +55,7 @@ the film's own copy in their place.
 
 | Field | Type | What the engine does with it |
 | --- | --- | --- |
-| `schema` | string | Must be `litmuse.motion-brief/v1` when present; any other value stops the render |
+| `schema` | string | Must be `lit.motion-brief/v1` when present; any other value stops the render |
 | `title` | string | Working title. In the lines shape it becomes the opening slam; it is never drawn as a label |
 | `label` | string | The film's own name, drawn as the terminal window label (first 40 characters). Leave it out and no label appears |
 | `request` | string | The user's words, verbatim. Feeds the preset picker only; the treatment's copy is what gets set |

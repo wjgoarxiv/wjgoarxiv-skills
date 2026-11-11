@@ -25,8 +25,8 @@ one the look rounds in `references/look.md` use.
 ## When to stop (MO-C-16)
 
 - **Done:** a valid treatment, the line `QA gate: PASS`, and at least two recorded look rounds, the first
-  a stills round that names its change and the last stamped with the stills of the final full render. The
-  LitMuse Stop hook checks this through `engine/node/done.mjs` and the `read_file` calls it saw.
+  a stills round that names its change and the last stamped with the stills of the final full render. Check
+  it with `motion.mjs done --out <dir>`, which runs `engine/node/done.mjs` on the folder.
 - **Round 3 still failing:** stop. Report the failing rules and what each round changed. The film and
   its exports stay under their names for the user to judge, with one exception below.
 - **Flash audit failed (MO-C-03), in any round:** the master, preview, poster and reduced-motion still

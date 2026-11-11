@@ -28,11 +28,11 @@ list what the full set adds.
   apparatus figure, including words such as piping, instrumentation, 공정도, 계장도, 모식도, or
   장치도. A bare `lit-schematic` prompt also lands here.
 
-- A `lit` prompt describing hardware the reader recognises: vessels, reactors, pumps,
+- A prompt describing hardware the reader recognises: vessels, reactors, pumps,
   compressors, exchangers, valves, instruments, piping, panels of an experimental setup, or a
   mechanism shown with its physical parts.
 
-- A `lit` prompt asking for a cutaway or piping diagram as an animation, page, or video. This
+- A prompt asking for a cutaway or piping diagram as an animation, page, or video. This
   skill decides static, page, or loop. Finished films of other subjects belong to
   `lit-typographic-motion`.
 
@@ -165,9 +165,10 @@ the art.
   uses installed encoders; a missing encoder stops with `ENCODER_REQUIRED` plus the user-run
   setup line.
 
-- A `lit` prompt describing hardware routes here through the hook route table; software
-  architecture routes to `lit-diagram-drawer` and measured data to
-  `lit-scientific-visualization` through the boundary text above. Model surface checks the
+- A prompt describing hardware routes here through this skill's catalog description (load it with
+  `read_skill lit-schematic`); software architecture belongs to `lit-diagram-drawer` and measured data
+  to `lit-scientific-visualization` (when installed) through the boundary text above. This user skill
+  ships no hooks or agent definitions, so it needs no Muse approval. Model surface checks the
   result; browser work drives the Chrome already on the machine.
 
 ## Evidence

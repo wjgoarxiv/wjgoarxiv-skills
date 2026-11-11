@@ -1,4 +1,4 @@
-// The done-check (director brief section 9), shared by the Stop hook. A film is done only with a
+// The done-check (director brief section 9), run by `scripts/motion.mjs done --out <dir>`. A film is done only with a
 // valid treatment, gate PASS on the final full render, at least two look rounds (the first a stills
 // round with a change, the last stamped with the final render's stills manifest), and the last
 // round's viewed list covering the poster, the sheet, every beat still and every strip, each opened

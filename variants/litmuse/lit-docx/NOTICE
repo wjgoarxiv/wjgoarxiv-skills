@@ -1,10 +1,10 @@
-lit-docx — LitMuse document skill
+lit-docx — document skill (Muse edition)
 
 Converters, publisher registry and templates, slop lint, visual audit and
 references are ported from the author's MIT-licensed "publisher-docx-skill".
 Written for this port: scripts/qa_docx.py, the --kind option of
 scripts/slop_lint.py, the PNG pages in scripts/visual_audit.py, and the
-shared helpers in ../../lib (ooxml_integrity.py, render_pages.py,
+shared helpers in lib (ooxml_integrity.py, render_pages.py,
 office-runtime.mjs, office_runtime_bootstrap.py).
 
 MIT License
@@ -30,4 +30,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 Runtime dependencies are not bundled; they install on first use from
-../../lib/office-runtime-lock/requirements.lock, each under its own licence.
+lib/office-runtime-lock/requirements.lock, each under its own licence.

@@ -1,4 +1,4 @@
-lit-pptx — LitMuse deck skill
+lit-pptx — deck skill (Muse edition)
 
 Deck engine, templates, QA gate, design laws and stage/role prompts
 Copyright (c) 2026 wjgoarxiv. Author of the Markdown-first deck
@@ -6,15 +6,15 @@ engine (scripts/compile-deck.js, scripts/lib/*.js), the enrolled templates
 (templates/enrolled/*), scripts/learn_template.py, scripts/embed_fonts.py,
 scripts/qa_deck.py, scripts/validate_pptx.py, the references/, specs/ and
 references/agents/ prompts, and the 정/반/합 improvement loop, first published
-as the author's personal "pptx-toolkit" skill. Ported into LitMuse by the
-same author and distributed under the LitMuse MIT licence (LICENSE at the
+as the author's personal "pptx-toolkit" skill. Ported by the
+same author and distributed under the MIT licence (LICENSE at the
 package root).
 
 Written for this port (not from the personal skill's earlier files):
   scripts/layout_inventory.py      text/picture/table geometry inventory
-  ../../lib/ooxml_integrity.py     OOXML package integrity check
-  ../../lib/render_pages.py        soffice + PyMuPDF page renderer
-  ../../lib/office-runtime.mjs     pinned first-use runtime installer
+  lib/ooxml_integrity.py     OOXML package integrity check
+  lib/render_pages.py        soffice + PyMuPDF page renderer
+  lib/office-runtime.mjs     pinned first-use runtime installer
   scripts/lib/runtime-require.js   runtime module loader
 
 Not included: the files that arrived in the personal skill with its initial
@@ -33,6 +33,6 @@ Fonts (unmodified, SIL Open Font License 1.1; see fonts/provenance.json):
                     fonts/a2z/OFL.txt, fonts/a2z/SOURCE.md
 
 Runtime dependencies are not bundled. They install on first use from
-../../lib/office-runtime-lock/ (pptxgenjs, sharp; python-pptx, python-docx,
+lib/office-runtime-lock/ (pptxgenjs, sharp; python-pptx, python-docx,
 markdown, beautifulsoup4, pymupdf, PyYAML, defusedxml and their pinned
 dependencies), each under its own licence.

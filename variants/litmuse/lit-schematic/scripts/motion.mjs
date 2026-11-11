@@ -1,4 +1,4 @@
-import { findOnPath } from '../../../lib/host-process.mjs';
+import { findOnPath } from '../lib/host-process.mjs';
 
 const args = process.argv.slice(2);
 if (!findOnPath('ffmpeg') || !findOnPath('img2webp')) {

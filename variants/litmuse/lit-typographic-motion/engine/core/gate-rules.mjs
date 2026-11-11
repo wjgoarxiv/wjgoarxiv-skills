@@ -490,7 +490,7 @@ function timelineSchema({ manifest }) {
 function hangulWeights({ frames, allowedHangulFonts }) {
   const bad = [];
   for (const fr of frames) for (const b of fr.textBoxes ?? []) if (b.script === "hangul" && allowedHangulFonts && !allowedHangulFonts.includes(b.fontFile)) bad.push(`${b.text}: ${b.fontFile}`);
-  return bad.length ? r("MO-A-33", FAIL, `Hangul set in a non-pair font: ${bad[0]}`) : r("MO-A-33", PASS, "Hangul uses only the lit-pptx Regular/Bold pair or Galmuri");
+  return bad.length ? r("MO-A-33", FAIL, `Hangul set in a non-pair font: ${bad[0]}`) : r("MO-A-33", PASS, "Hangul uses only the Pretendard Regular/Bold pair or Galmuri");
 }
 
 /**

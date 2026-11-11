@@ -9,7 +9,7 @@ import { startFrameServer } from "./ws-server.mjs";
 import { ENGINE_ROOT, loadFontManifest, fontLocation, opentypeModule } from "./runtime.mjs";
 
 function faultListen(env) {
-  if (env.LITMUSE_MOTION_FAULT !== "listen-eperm") return null;
+  if (env.LIT_MOTION_FAULT !== "listen-eperm") return null;
   return () => {
     const error = new Error("listen EPERM: operation not permitted 127.0.0.1");
     error.code = "EPERM";

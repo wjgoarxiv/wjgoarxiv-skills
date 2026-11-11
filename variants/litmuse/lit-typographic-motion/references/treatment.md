@@ -151,7 +151,7 @@ example: a named thing with a job, an audience and one odd detail, then write th
 specifics. Set `subject.source` and `copy.source` to `invented`, and list the name, the specifics and the
 copy in `inventions[]`. The reply labels each one as an invented example, so the user knows what to swap.
 
-Under a bare `lit` nothing is asked. Pick the format from the channel, a generated sound bed, a length from
+In a no-questions run nothing is asked. Pick the format from the channel, a generated sound bed, a length from
 the arc, and name each of those defaults in one line of the reply.
 
 ## Craft bar
@@ -176,7 +176,7 @@ is not rendered yet; when the user says go, set `preview` back to false and rend
 ## Downgrades are recorded
 
 The first valid treatment of an output folder is saved to `.run/treatment.first.json`. When the done-check
-runs (`engine/node/done.mjs`, called by LitMuse's Stop hook), it compares the final treatment against that
+runs (`engine/node/done.mjs`, through `motion.mjs done --out <dir>`), it compares the final treatment against that
 first one and records a downgrade when:
 
 - the film became shorter than 80 % of its first planned length;
@@ -184,6 +184,6 @@ first one and records a downgrade when:
 - the sound moved to `none` without the request asking for silence;
 - the path moved from `stage` to `type`.
 
-A recorded downgrade does not block delivery, but the Stop hook holds the turn once so the reply says it
+A recorded downgrade does not block delivery, but the done-check prints it and the reply says it
 plainly. The better move is not to downgrade at all: a failing gate is fixed in the page or the brief, and a
 render that takes long is waited for.

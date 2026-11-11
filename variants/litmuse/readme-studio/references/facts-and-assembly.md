@@ -9,7 +9,7 @@ Run the helper from `<skill-dir>`, the directory of the SKILL.md path that `read
 ```bash
 node "$README_STUDIO_SKILL_ROOT/scripts/validate-readme-facts.mjs" \
   --project-root "$README_STUDIO_PROJECT_ROOT" \
-  --facts "$README_STUDIO_PROJECT_ROOT/.litmuse/evidence/readme-studio/readme-facts.json"
+  --facts "$README_STUDIO_PROJECT_ROOT/.lit-evidence/readme-studio/readme-facts.json"
 ```
 
 Badge URLs must be absolute HTTP(S), credential-free and free of raw whitespace/control characters. Omit unverifiable badges rather than guessing. Add docs, support, contribution and license links only after checking the actual target. Do not assume a conventional filename exists.

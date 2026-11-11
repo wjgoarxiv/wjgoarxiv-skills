@@ -1,10 +1,10 @@
-import { stableJson } from "../../../lib/strict-json.mjs";
+import { stableJson } from "../lib/strict-json.mjs";
 import { sha256 } from "./evidence-io.mjs";
 
 export const REVIEW_SCHEMA = "litfamily.review-receipt/v1alpha1";
 export const REVIEWERS = ["quality-reviewer", "lit-verifier"];
-// A receipt may name the agent bare or as the namespaced subagent type (`litmuse/quality-reviewer`).
-const reviewerIdentity = (id) => (typeof id === "string" && id.startsWith("litmuse/") ? id.slice("litmuse/".length) : id);
+// A receipt names the reviewer by its role (`quality-reviewer` or `lit-verifier`).
+const reviewerIdentity = (id) => id;
 const HASH = /^[a-f0-9]{64}$/u;
 const ID = /^[a-z][a-z0-9-]*:[a-z0-9][a-z0-9./-]*$/u;
 const INPUT_KEYS = [

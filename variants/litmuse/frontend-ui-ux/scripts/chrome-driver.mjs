@@ -4,7 +4,7 @@
 // blocker (`BLOCKED_BROWSER_DRIVER_UNAVAILABLE`), never a pass.
 //
 //   CHROME_PATH=<binary>             overrides discovery
-//   LITMUSE_CHROME_NO_SANDBOX=1      adds --no-sandbox (only for a container or sandbox that needs it)
+//   LIT_CHROME_NO_SANDBOX=1      adds --no-sandbox (only for a container or sandbox that needs it)
 //
 //   node chrome-driver.mjs status [--json]    report the discovered browser and exit
 import { spawn, spawnSync } from "node:child_process";
@@ -147,14 +147,14 @@ export class ChromeSession {
   }
 
   async start() {
-    this.profile = mkdtempSync(join(tmpdir(), "litmuse-chrome-"));
+    this.profile = mkdtempSync(join(tmpdir(), "lit-ui-chrome-"));
     const args = [
       "--headless=new", "--remote-debugging-port=0", `--user-data-dir=${this.profile}`,
       "--no-first-run", "--no-default-browser-check", "--disable-gpu", "--hide-scrollbars",
       "--disable-extensions", "--disable-background-networking", "--mute-audio", "--use-mock-keychain",
       "--password-store=basic", "about:blank",
     ];
-    if (process.env.LITMUSE_CHROME_NO_SANDBOX === "1") args.unshift("--no-sandbox");
+    if (process.env.LIT_CHROME_NO_SANDBOX === "1") args.unshift("--no-sandbox");
     this.child = spawn(this.command, args, { stdio: ["ignore", "ignore", "pipe"] });
     this.exited = new Promise((resolveExit) => this.child.on("exit", resolveExit));
     this.port = await new Promise((resolvePort, reject) => {

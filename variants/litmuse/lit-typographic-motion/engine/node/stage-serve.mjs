@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 import { EXIT } from "../core/constants.mjs";
 import { BlockedError } from "./chrome.mjs";
 import { decodePng } from "./png.mjs";
-import { checkFont, fontLocation, fontsDir, loadFontManifest } from "./runtime.mjs";
+import { checkFont, fontLocation, fontsDir, INSTALL_COMMAND, loadFontManifest } from "./runtime.mjs";
 import { readPlate } from "./blender.mjs";
 
 // The pinned three.js build and its few addons (engine/vendor/three, MIT), served at /lit/three/
@@ -62,9 +62,9 @@ export function stageFonts(env = process.env) {
     const check = checkFont(key, font, env);
     if (!check.ok) {
       if (font.source !== "bundled" && !existsSync(fontsDir(env))) {
-        throw new BlockedError(EXIT.BLOCKED_DEPS_NOT_PREWARMED, `BLOCKED_DEPS_NOT_PREWARMED: the stage fonts are not in the LitMuse cache (${fontsDir(env)}); run npx @litfamily/litmuse runtime install motion outside this session`);
+        throw new BlockedError(EXIT.BLOCKED_DEPS_NOT_PREWARMED, `BLOCKED_DEPS_NOT_PREWARMED: the stage fonts are not in the motion cache (${fontsDir(env)}); run ${INSTALL_COMMAND} outside this session`);
       }
-      throw new BlockedError(EXIT.BLOCKED_FONT_FETCH, `BLOCKED_FONT_FETCH: font ${key} is ${check.problem} (${check.path}); run npx @litfamily/litmuse runtime install motion outside this session`);
+      throw new BlockedError(EXIT.BLOCKED_FONT_FETCH, `BLOCKED_FONT_FETCH: font ${key} is ${check.problem} (${check.path}); run ${INSTALL_COMMAND} outside this session`);
     }
     const file = fontLocation(key, font, env);
     const format = { ".otf": "opentype", ".woff2": "woff2" }[path.extname(file)] ?? "truetype";

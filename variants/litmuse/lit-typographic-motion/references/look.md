@@ -3,15 +3,13 @@
 The gate tells you a film is safe to watch and its words can be read. It cannot tell you the film is
 any good, and it cannot see a glint that turned a letter into a coloured block. Look rounds are where
 you open the rendered pixels, judge them against the treatment, and write down what you saw. The
-done-check refuses a film or a cover that nobody looked at, and in LitMuse it can tell whether you
-really opened the images.
+done-check refuses a film or a cover that nobody looked at.
 
 ## What counts as looking
 
-Only an image you open with `read_file` counts. While the `lit-typographic-motion` route is active,
-LitMuse's PostToolUse hook records the path of every `read_file` call, and the Stop hook compares the
-`viewed` list of your last round against those paths. A file you list without opening is named in
-the hold reason. OCR, pixel statistics, a directory listing or a description from another tool can
+Only an image you open with `read_file` counts. No hook records your `read_file` calls in a plain Muse
+session, so the done-check (`motion.mjs done --out <dir>`) trusts the `viewed` list of your last round:
+list a file only after you opened it. Listing a file you did not open is a false record. OCR, pixel statistics, a directory listing or a description from another tool can
 be written into `aids`; they help, and they never count as viewing.
 
 Every render writes its stills into `<dir>/stills/` and lists them in `stills/index.json`:
@@ -38,7 +36,8 @@ Answer all nine in every film round. Each answer names one file of the current s
 what is visible there.
 
 1. **Who is it for?** Write down the sentence a stranger would say. Get it blind when you can: spawn
-   a read-only child with `subagent_spawn` (`subagent_type: litmuse/quality-reviewer`), hand it only
+   a child with `subagent_spawn` (no `subagent_type`; its objective allows only `read_file` and
+   `search` and no writes), hand it only
    the contact sheet and the beat stills, never the request or the treatment, and record its sentence
    verbatim with `by: "blind"`. If no child can run, answer it yourself with `by: "self"`. The
    verdict says whether that sentence matches the treatment's audience and subject.
@@ -133,11 +132,11 @@ render's stills; that round's `viewed` covering the poster, the sheet, every bea
 strip, each one opened with `read_file`; and no answer in the last round asking for more unless it is
 round 3. A cover is done on its own terms, listed in `references/cover.md`.
 
-The Stop hook evaluates this for the last output folder of the turn. It holds the turn with the
-named reasons at most twice, then asks the reply to say plainly that the work is not done, why, and
-what the user can run to finish it. A blocked render (exit 10, 11, 12, 14, 15, 21 or 22) goes straight
+Run `node "$SKILL_ROOT/scripts/motion.mjs" done --out <dir>` on the last output folder before you
+reply. When it prints NOT_DONE, fix the named reasons, at most twice more, then say plainly in the
+reply that the work is not done, why, and what the user can run to finish it. A blocked render (exit 10, 11, 12, 14, 15, 21 or 22) goes straight
 to that notice. A finished film or cover with a downgrade, an open look item, a generated asset or
-`DONE_UNVIEWED` holds once so that the reply says so.
+`DONE_UNVIEWED` is delivered with a reply that says so.
 
 ## Never downgrade to pass
 

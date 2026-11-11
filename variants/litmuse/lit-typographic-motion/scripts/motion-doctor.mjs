@@ -10,9 +10,9 @@ import { mkdtempSync, realpathSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { findOnPath } from "../../../lib/host-process.mjs";
+import { findOnPath } from "../lib/host-process.mjs";
 
-export const USAGE = "usage: motion-doctor.mjs [--json]\nlit-typographic-motion doctor (LitMuse): six readiness probes, read-only\n";
+export const USAGE = "usage: motion-doctor.mjs [--json]\nlit-typographic-motion doctor: six readiness probes, read-only\n";
 
 const which = (name, env) => findOnPath(name, { env });
 const versionOf = (tool, env) => {

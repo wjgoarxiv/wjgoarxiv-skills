@@ -7,7 +7,7 @@ short list of things it must never do. The engine keeps each preset as data in `
 This page explains why each preset looks the way it does, so a choice between them can be argued.
 
 When the user asked for a direction, write the film's own short bible in the reply using the template
-below. Under a bare `lit` route, one sentence naming the preset and the reason is enough.
+below. In a no-questions run, one sentence naming the preset and the reason is enough.
 
 ## Template for a film's own bible
 

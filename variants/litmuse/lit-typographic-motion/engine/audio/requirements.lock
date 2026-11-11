@@ -1,6 +1,6 @@
 # Pinned Python environment for lit-typographic-motion Tier 2 (librosa beat grid, ISC).
 # Installed only by `node <skill>/scripts/motion-runtime.mjs install --audio` with
-# pip install --require-hashes --only-binary=:all: into a LitMuse-owned venv; never in a render.
+# pip install --require-hashes --only-binary=:all: into a per-user venv; never in a render.
 # Generated with: uv pip compile (librosa==0.11.0) --universal --generate-hashes --only-binary :all: --python-version 3.10
 # No aubio, essentia, madmom or MMS_FA weights at any tier.
 audioop-lts==0.2.2 ; python_full_version >= '3.13' \

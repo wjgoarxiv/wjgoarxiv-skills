@@ -1,5 +1,5 @@
 {
-  "schema_version": "litmuse.canonical-frontend-corpus/v1",
+  "schema_version": "lit.canonical-frontend-corpus/v1",
   "source": {
     "commit": "8ec16c5129df7b9778959e8367657d0e79c2c3bb",
     "reference_tree": "9188410be0af35f2421ba300d91a0d7a7341caf0",

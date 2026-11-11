@@ -13,13 +13,13 @@ Read `.pptx-pipeline/spec-<slug>.md` if the interview ran, else the user's direc
 Per slide, specify: **layout** (cover|content|main|summary|closing), **title** (specific), **body structure** (section headers + sub-items), **data** (table headers, column/row counts), **images**, and **render path** (`compile-deck.js`, or note where post-hoc pptxgenjs is genuinely needed). Record the **direction card** (tonality, reason, alternatives, dials, treatments by role) and one layout family per slide from the pack (`references/layout-families.md`). Write `.pptx-pipeline/plan-draft-<slug>.md`.
 
 ### 2. Architect review
-Spawn a read-only child with `subagent_spawn` (`subagent_type: litmuse/quality-reviewer`, limited to `read_file` and `search`; put the role file path and the inputs in `objective` and take the findings from `subagent_read_result`) whose prompt is `references/agents/architect.md` plus the inputs below. Wait for APPROVE / REJECT with specific issues (sequential, not parallel).
+Spawn a read-only child with `subagent_spawn` (no `subagent_type`; the objective limits it to `read_file` and `search` and says it writes nothing; put the role file path and the inputs in `objective` and take the findings from `subagent_read_result`) whose prompt is `references/agents/architect.md` plus the inputs below. Wait for APPROVE / REJECT with specific issues (sequential, not parallel).
 
 ### 3. Handle architect feedback
 On REJECT, fix BLOCKER/WARNING items; re-review (max 3 iterations, then force-approve with notes). On APPROVE → Step 4.
 
 ### 4. Critic evaluation
-Spawn a read-only child with `subagent_spawn` (`subagent_type: litmuse/quality-reviewer`, limited to `read_file` and `search`; put the role file path and the inputs in `objective` and take the findings from `subagent_read_result`) whose prompt is `references/agents/critic.md` plus the inputs below. Wait for APPROVE / REJECT + quality score (1–10).
+Spawn a read-only child with `subagent_spawn` (no `subagent_type`; the objective limits it to `read_file` and `search` and says it writes nothing; put the role file path and the inputs in `objective` and take the findings from `subagent_read_result`) whose prompt is `references/agents/critic.md` plus the inputs below. Wait for APPROVE / REJECT + quality score (1–10).
 
 ### 5. Handle critic feedback
 On REJECT (score < 7 or CRITICAL issues), fix CRITICAL/MAJOR; loop (max 3). On APPROVE → Step 6.

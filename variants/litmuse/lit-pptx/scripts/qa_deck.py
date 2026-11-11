@@ -7,7 +7,7 @@ exits non-zero if ANY real defect is found:
   1. Layout issues  — layout_inventory.py (frame overflow / slide overflow / off-slide)
   2. Anti-slop      — validate_pptx.py (forbidden/placeholder terms, default fonts)
   3. WCAG contrast  — text colour vs its fill (body < 4.5:1, large < 3:1)
-  4. Integrity      — plugin/lib/ooxml_integrity.py (package opens,
+  4. Integrity      — lib/ooxml_integrity.py (package opens,
                       relationships resolve, no NaN attribute values)
   5. Deck craft     — deck_craft.py (sparse slides, table-only decks, shapes off
                       the canvas, stray empty boxes, [placeholder] blanks, long
@@ -22,7 +22,7 @@ exits non-zero if ANY real defect is found:
 
 No LibreOffice / rendering engine required: everything is read from the OOXML
 via python-pptx. (A renderer is only ever needed for the *visual* pass, which
-lives in plugin/lib/render_pages.py and needs soffice.)
+lives in lib/render_pages.py and needs soffice.)
 """
 
 from __future__ import annotations
@@ -31,7 +31,7 @@ import os as _os
 import sys as _sys
 
 _sys.dont_write_bytecode = True  # the installed skill directory stays read-only
-_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "..", "..", "lib"))
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "lib"))
 from office_runtime_bootstrap import ensure_runtime  # noqa: E402
 
 ensure_runtime(["pptx"])

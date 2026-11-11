@@ -3,14 +3,14 @@
 Films have sound unless the user said otherwise. The treatment's `sound` object (`{ mode, plan, genre?,
 palette?, events?, file? }`) plans it on both paths, the renderer muxes the track the plan names, and after
 the encode it decodes the film's audio stream and gates it. The score and the generated bed are synthesized
-by LitMuse's own code from the treatment: no sample library, model or package is downloaded for either, no
+by the engine's own code from the treatment: no sample library, model or package is downloaded for either, no
 melody is borrowed, and the same treatment always produces the same bytes.
 
 ## Choosing a mode
 
 | `sound.mode` | Track | Use it when |
 | --- | --- | --- |
-| `score` | A layered score built for this film: drums, bass, chords, lead, arrangement FX and the on-screen events as separate stems, mixed and mastered | The default under a bare `lit` and for every rich film, on either path |
+| `score` | A layered score built for this film: drums, bass, chords, lead, arrangement FX and the on-screen events as separate stems, mixed and mastered | The default in a no-questions run and for every rich film, on either path |
 | `generated` | One of the style's preset beds: a pad chord progression with a pulse and the accents the beats ask for | Minimal films only (`register: minimal`) |
 | `supplied` | The user's file at `sound.file` (relative to the output folder), padded or trimmed to the film | The user handed over a track |
 | `authored` | A WAV you wrote into the stage folder, named by `sound.file` | The plan needs sound the bed cannot make; the file must sit inside `<dir>/stage/` |
@@ -176,6 +176,6 @@ node "$SKILL_ROOT/scripts/motion-runtime.mjs" install --audio
 ```
 
 It needs Python 3.10 to 3.14, the range the pinned wheels cover. The newest `python3.X` in that range on PATH
-is used, so a newer `python3` is passed over (`LITMUSE_MOTION_PYTHON` names one interpreter instead). It installs hash-pinned wheels
-into the LitMuse motion cache. Without it, or when analysis finds fewer than two beats, the render warns
+is used, so a newer `python3` is passed over (`LIT_MOTION_PYTHON` names one interpreter instead). It installs hash-pinned wheels
+into the per-user motion cache. Without it, or when analysis finds fewer than two beats, the render warns
 and times shots by reading time (Tier 1); the track itself is still muxed. A render never installs the tier.

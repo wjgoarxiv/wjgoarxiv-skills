@@ -1,7 +1,7 @@
 # The stage path
 
 Load this once the treatment says `path: stage`. On this path the film is a web page you write, and the
-LitMuse renderer turns it into frames: it serves the page to a headless Chrome on a private origin,
+skill's renderer turns it into frames: it serves the page to a headless Chrome on a private origin,
 drives a virtual clock from zero, captures every frame in order, then encodes, replays and gates the
 result. You draw everything the treatment promised, the subject first. The house style gives the frame
 (palette, type roles, layout zones, motion tokens, hand-offs), served as `/lit/style.css` and
@@ -301,7 +301,7 @@ No rule is waived to pass, and the flash audit is never weakened.
 | 11 | `BLOCKED_NO_WEBGL2` | Only when the page asked for WebGL and no rung had it. |
 | 12 | `BLOCKED_NO_FFMPEG_FOR_VIDEO` | The stills and sheet exist; install ffmpeg for the film. |
 | 13 | `GATE_FAIL_QA` | Fix the named rule and render the next round. |
-| 14 | `BLOCKED_DEPS_NOT_PREWARMED` | The user runs `npx @litfamily/litmuse runtime install motion` in a terminal outside Muse. |
+| 14 | `BLOCKED_DEPS_NOT_PREWARMED` | The user runs `node "$SKILL_ROOT/scripts/motion-runtime.mjs" install` in a terminal outside Muse. |
 | 15 | `BLOCKED_FONT_FETCH` | A cached font is missing or fails its hash; same pre-warm command. |
 | 16 | `BLOCKED_TREATMENT_INVALID` | Fix the named treatment field. |
 | 17 | `STAGE_CONTRACT_ERROR` | Fix the element, API, raster, size, fps or missing copy the message names. |

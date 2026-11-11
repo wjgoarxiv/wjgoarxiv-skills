@@ -20,7 +20,7 @@ Turn a vague request into a crystal-clear deck specification. Brand-agnostic —
 Before any content scoring, settle the **direction**. If the request already names a tonality or a template, use it. Otherwise run the direction step (`references/direction-step.md`) on what is known so far and ask ONE `request_user_input` round whose first, one-click option is the chosen tonality with its reason, followed by the two alternatives and a "compare them first" option (the compare strip); "알아서 / just make it good" means the first option. Record `tonality`, `alternatives` and `reason` in `interview-state.json`. Then proceed below (Structure no longer re-asks the look).
 
 ### 1. Initialize
-Create `.pptx-pipeline/` in the user's working directory; write `interview-state.json` (`active`, `rounds`, `current_ambiguity`, `threshold`, `started_at`). Spawn a read-only child with `subagent_spawn` (`subagent_type: litmuse/quality-reviewer`, limited to `read_file` and `search`; put the role file path and the inputs in `objective` and take the findings from `subagent_read_result`) whose prompt is `references/agents/analyst.md` plus the inputs below to extract requirements.
+Create `.pptx-pipeline/` in the user's working directory; write `interview-state.json` (`active`, `rounds`, `current_ambiguity`, `threshold`, `started_at`). Spawn a read-only child with `subagent_spawn` (no `subagent_type`; the objective limits it to `read_file` and `search` and says it writes nothing; put the role file path and the inputs in `objective` and take the findings from `subagent_read_result`) whose prompt is `references/agents/analyst.md` plus the inputs below to extract requirements.
 
 ### 2. Score initial ambiguity
 Score the 4 dimensions, compute ambiguity. If ≤ 0.20 → go to Step 5; else Step 3.
@@ -32,7 +32,7 @@ Score the 4 dimensions, compute ambiguity. If ≤ 0.20 → go to Step 5; else St
 4. Re-score, update state, report a per-dimension table.
 5. Exit when ambiguity ≤ 0.20, the user says "build it", or round 10 (hard cap).
 
-If the direction is still open by Structure-scoring time, re-run the direction step with the structure now known and offer its first candidate and two alternatives, plus an existing branded `.pptx` to learn from (`learn_template.py`). Under a bare `lit` request this question is skipped: the direction step picks the first candidate and the reply names it with the alternatives.
+If the direction is still open by Structure-scoring time, re-run the direction step with the structure now known and offer its first candidate and two alternatives, plus an existing branded `.pptx` to learn from (`learn_template.py`). In a no-questions run this question is skipped: the direction step picks the first candidate and the reply names it with the alternatives.
 
 ### 4. Challenge modes
 - **Contrarian**: "What if the audience already knows this — is the deck still valuable?"

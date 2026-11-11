@@ -16,8 +16,8 @@ coverage check and the page always agree on the file.
 
 - A Latin run may track and may step between the Archivo widths 75, 100 and 125.
 - A Hangul run is pinned to tracking 0 and width 100, even inside a mixed line whose Latin part is
-  animating. Emphasis on Hangul comes from weight alone, and only from the two Pretendard files the
-  lit-pptx skill ships (Regular 400 and Bold 700). The engine synthesises nothing: no faux bold, no
+  animating. Emphasis on Hangul comes from weight alone, and only from the two Pretendard files this
+  skill ships in `fonts/pretendard/` (Regular 400 and Bold 700). The engine synthesises nothing: no faux bold, no
   horizontal scaling, no condensed Hangul (MO-A-33).
 
 ## Breaking and revealing (MO-A-13, MO-FT-05)

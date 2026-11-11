@@ -47,7 +47,7 @@ import sys as _sys
 
 _sys.dont_write_bytecode = True  # the installed skill directory stays read-only
 _HERE = _os.path.dirname(_os.path.abspath(__file__))
-_sys.path.insert(0, _os.path.join(_HERE, "..", "..", "..", "lib"))
+_sys.path.insert(0, _os.path.join(_HERE, "..", "lib"))
 _sys.path.insert(0, _HERE)
 from office_runtime_bootstrap import ensure_runtime  # noqa: E402
 

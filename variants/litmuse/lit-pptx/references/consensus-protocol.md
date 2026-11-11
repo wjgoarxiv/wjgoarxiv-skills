@@ -10,12 +10,12 @@ Sequential Planner → Architect → Critic loop for PPTX slide structure planni
 - Creates a slide-by-slide implementation plan
 - Specifies layout, content, data, and render path per slide
 
-### Architect (child via `subagent_spawn`, `subagent_type: litmuse/quality-reviewer`, with agents/architect.md)
+### Architect (read-only child via `subagent_spawn`, no `subagent_type`, objective limited to `read_file` and `search`, with agents/architect.md)
 - Reviews plan for layout feasibility, template compliance
 - Checks font names, dimensions, data expression validity
 - Flags BLOCKER issues that would cause rendering failures
 
-### Critic (child via `subagent_spawn`, `subagent_type: litmuse/quality-reviewer`, with agents/critic.md)
+### Critic (read-only child via `subagent_spawn`, no `subagent_type`, objective limited to `read_file` and `search`, with agents/critic.md)
 - Evaluates content quality, anti-slop compliance
 - Checks for forbidden patterns, generic headings, padding
 - Scores overall quality on 1-10 scale

@@ -6,19 +6,21 @@ import { homedir } from "node:os";
 import path from "node:path";
 import { argumentsMap, boundedRead, exclusiveWrite } from "./safe-files.mjs";
 
-// fontkit resolves from the LitMuse readme runtime cache first (npx @litfamily/litmuse runtime install readme),
+// fontkit resolves from the per-user readme runtime cache first (node <readme-studio skill dir>/scripts/readme-runtime.mjs install),
 // then from a node_modules next to this file. The helper stays self-contained because it is copied into task workspaces.
-const cache = process.env.LITMUSE_README_RUNTIME
-  ? path.resolve(process.env.LITMUSE_README_RUNTIME)
-  : path.join(process.env.XDG_DATA_HOME || path.join(homedir(), ".local", "share"), "litmuse", "runtime", "readme");
+const cache = process.env.LIT_README_RUNTIME
+  ? path.resolve(process.env.LIT_README_RUNTIME)
+  : path.join(process.env.XDG_DATA_HOME || path.join(homedir(), ".local", "share"), "wjgoarxiv-skills", "runtime", "readme");
 async function loadFontkit() {
   try { return await import(pathToFileURL(createRequire(path.join(cache, "package.json")).resolve("fontkit")).href); }
   catch {
     try { return await import("fontkit"); }
-    catch { console.error("BLOCKED: fontkit is not installed. Pre-warm it with: npx @litfamily/litmuse runtime install readme"); process.exit(1); }
+    catch { console.error("BLOCKED: fontkit is not installed. Pre-warm it with: node <readme-studio skill dir>/scripts/readme-runtime.mjs install, or run npm ci next to this file"); process.exit(1); }
   }
 }
-const { create } = await loadFontkit();
+// The cache resolves fontkit through require conditions (dist/main.cjs), whose named exports arrive on default.
+const fontkit = await loadFontkit();
+const create = fontkit.create ?? fontkit.default?.create;
 const xml = value => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;");
 try {
   const args = argumentsMap(process.argv.slice(2), ["--font", "--family", "--text", "--output-root", "--output", "--font-size", "--fill", "--tracking"]);

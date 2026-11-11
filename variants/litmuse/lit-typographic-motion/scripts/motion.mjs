@@ -10,7 +10,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { EXIT, EXIT_NAME, CREDIT_LINE } from "../engine/core/constants.mjs";
 
-export const USAGE = `lit-typographic-motion render CLI (LitMuse)
+export const USAGE = `lit-typographic-motion render CLI
 
 usage:
   motion.mjs styles --out <dir> [--format 16:9|9:16]              the house-style gallery: one demo board per style
@@ -31,6 +31,8 @@ usage:
   motion.mjs look  --out <dir> --round N --answers <file>         records one look round in <dir>/look.json
                    (--blocked no-vision-tool when no image tool can be reached)
   motion.mjs gate  <dir>                                          reruns the full type-path gate on a render
+  motion.mjs done  --out <dir> [--json]                           the done-check on an output folder: DONE, DONE_UNVIEWED or
+                                                                  NOT_DONE with its reasons and the lines the reply must carry
   motion.mjs stills|sheet|video|perf <brief.json> --out <dir>     one type-path stage alone
 
 Every render reads <dir>/treatment.json first (exit 16 names the field). A render with --stills-only
@@ -96,7 +98,7 @@ export async function main(argv, { env = process.env, stdout = process.stdout, s
           const span = String(args.window).split(",").map(Number);
           if (span.length !== 2) throw new BlockedError(EXIT.USAGE, "--window takes t0,t1 in seconds");
           result = await cover.renderCoverWindow({ out, round, window: span, env, log });
-        } else if (args.foreground || env.LITMUSE_MOTION_FOREGROUND === "1") result = await run();
+        } else if (args.foreground || env.LIT_MOTION_FOREGROUND === "1") result = await run();
         else {
           const { renderStageDetached } = await import("../engine/node/stage.mjs");
           result = await renderStageDetached({ out, round, cli: fileURLToPath(import.meta.url), mode: "cover", env, log });
@@ -108,7 +110,7 @@ export async function main(argv, { env = process.env, stdout = process.stdout, s
         const stillsOnly = Boolean(args["stills-only"]);
         if (args.worker) return await detachedWorker({ run: () => stage.renderStage({ out, round, stillsOnly: false, env, log }), out, BlockedError });
         // A full render runs detached with a progress file, so a tool timeout never kills it.
-        if (stillsOnly || args.foreground || env.LITMUSE_MOTION_FOREGROUND === "1") result = await stage.renderStage({ out, round, stillsOnly, env, log });
+        if (stillsOnly || args.foreground || env.LIT_MOTION_FOREGROUND === "1") result = await stage.renderStage({ out, round, stillsOnly, env, log });
         else {
           result = await stage.renderStageDetached({ out, round, cli: fileURLToPath(import.meta.url), env, log });
           if (result.blocked) throw new BlockedError(result.code, result.message);
@@ -121,7 +123,7 @@ export async function main(argv, { env = process.env, stdout = process.stdout, s
           return await detachedWorker({ run: () => blenderCommand({ out, final: true, env, log, progress }), out, BlockedError });
         }
         // The final plate can take most of an hour, so it runs detached like a full stage render.
-        if (!final || args.foreground || env.LITMUSE_MOTION_FOREGROUND === "1") result = await blenderCommand({ out, final, env, log });
+        if (!final || args.foreground || env.LIT_MOTION_FOREGROUND === "1") result = await blenderCommand({ out, final, env, log });
         else {
           const { renderStageDetached } = await import("../engine/node/stage.mjs");
           result = await renderStageDetached({ out, round: 1, cli: fileURLToPath(import.meta.url), mode: "blender", env, log });
@@ -135,6 +137,19 @@ export async function main(argv, { env = process.env, stdout = process.stdout, s
         if (!args.answers && !args.blocked) throw new BlockedError(EXIT.USAGE, "look needs --round N and --answers <file> (or --blocked no-vision-tool)");
         result = look.lookCommand({ out, round: Number(args.round), answersFile: args.answers ? path.resolve(args.answers) : null, blocked: args.blocked ?? null });
       }
+    } else if (mode === "done") {
+      if (!args.out) throw new BlockedError(EXIT.USAGE, "done needs --out <dir>");
+      const { evaluateDone } = await import("../engine/node/done.mjs");
+      const verdict = evaluateDone({ out: path.resolve(args.out), viewedFiles: null });
+      const finished = verdict.status === "DONE" || verdict.status === "DONE_UNVIEWED";
+      const say = [
+        ...(verdict.status === "DONE_UNVIEWED" ? ["nobody looked at the frames (no image could be opened)"] : []),
+        ...(verdict.labels ?? []),
+        ...(verdict.downgraded ?? []).map((d) => `downgraded: ${d}`),
+        ...(verdict.openItems ?? []).map((o) => `open item: ${o}`),
+      ];
+      const lines = [`done-check: ${verdict.status}${verdict.mode ? ` (${verdict.mode})` : ""}`, ...(verdict.reasons ?? []).map((r) => `  not done: ${r}`), ...say.map((s) => `  the reply must say: ${s}`)];
+      result = { code: finished ? EXIT.OK : EXIT.GATE_FAIL_QA, message: args.json ? JSON.stringify(verdict, null, 1) : lines.join("\n") };
     } else if (mode === "cover-gate") {
       if (!target) throw new BlockedError(EXIT.USAGE, "cover-gate needs the cover file (cover.webp, cover.gif) or a PNG frame directory");
       const { coverGate, formatCoverReport } = await import("../engine/node/cover-gate.mjs");

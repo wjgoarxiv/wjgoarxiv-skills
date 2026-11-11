@@ -128,7 +128,7 @@ node "$SKILL_ROOT/scripts/compile-deck.js" deck.md --template <TEMPLATE> --pptx 
 ## 5. Verify (always)
 ```bash
 python3 "$SKILL_ROOT/scripts/qa_deck.py" out.pptx        # overflow, contrast, anti-slop, craft floor and the deck output checks; non-zero = FAIL
-python3 "$LITMUSE_LIB/render_pages.py" out.pptx --out-dir renders --pages 5   # then open renders/page-*.png
+python3 "$LIT_LIB/render_pages.py" out.pptx --out-dir renders --pages 5   # then open renders/page-*.png
 ```
 A clean gate is defect-absence, not quality — read the rendered pages. See `references/anti-slop-checklist.md`.
 

@@ -1,18 +1,18 @@
 "use strict";
 
 /**
- * runtime-require.js — load the engine's npm dependencies from the LitMuse
+ * runtime-require.js — load the engine's npm dependencies from the pinned office
  * office runtime instead of a node_modules folder next to the skill.
  *
  * The skill ships without node_modules. The first require installs the pinned
- * lockfile into the LitMuse-owned cache (plugin/lib/office-runtime.mjs
+ * lockfile into a per-user cache (lib/office-runtime.mjs in this skill
  * prints a one-line notice), and every later require resolves from there.
  */
 
 const path = require("path");
 const { execFileSync } = require("child_process");
 
-const RUNTIME = path.resolve(__dirname, "../../../../lib/office-runtime.mjs");
+const RUNTIME = path.resolve(__dirname, "../../lib/office-runtime.mjs");
 let nodeModules = null;
 
 function runtimeRequire(name) {

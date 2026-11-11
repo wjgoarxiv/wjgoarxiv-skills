@@ -146,7 +146,7 @@ user's pick is the decision.
 for t in ledger gazette night; do
   sed "s/^tonality: .*/tonality: $t/" strip.md > "strip-$t.md"
   node    "$SKILL_ROOT/scripts/compile-deck.js" "strip-$t.md" --pptx "strip-$t.pptx"
-  python3 "$LITMUSE_LIB/render_pages.py" "strip-$t.pptx" --out-dir "strip-$t" --pages 3
+  python3 "$LIT_LIB/render_pages.py" "strip-$t.pptx" --out-dir "strip-$t" --pages 3
 done
 ```
 

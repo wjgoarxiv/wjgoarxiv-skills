@@ -17,7 +17,7 @@ import os as _os
 import sys as _sys
 
 _sys.dont_write_bytecode = True  # the installed skill directory stays read-only
-_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "..", "..", "lib"))
+_sys.path.insert(0, _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), "..", "lib"))
 from office_runtime_bootstrap import ensure_runtime  # noqa: E402
 
 ensure_runtime(["pptx"])
@@ -199,7 +199,7 @@ def embed(in_path, out_path=None):
 
 
 def _verify(pptx_path):
-    """Integrity gate: the package check in plugin/lib/ooxml_integrity.py
+    """Integrity gate: the package check in lib/ooxml_integrity.py
     (zip, content types, well-formed XML, relationship targets, embedded font
     parts) plus a python-pptx reopen."""
     from pathlib import Path

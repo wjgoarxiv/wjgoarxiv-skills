@@ -6,7 +6,7 @@ import { spawn, spawnSync } from "node:child_process";
 import { existsSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
 import { ENCODE_ARGS, PREVIEW } from "../core/constants.mjs";
-import { findOnPath } from "../../../../lib/host-process.mjs";
+import { findOnPath } from "../../lib/host-process.mjs";
 
 export const which = (name, env = process.env, ctx = {}) => findOnPath(name, { env, ...ctx });
 

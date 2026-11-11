@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
-import { spawnSafe } from '../../../lib/host-process.mjs';
+import { spawnSafe } from '../lib/host-process.mjs';
 import { fileURLToPath } from 'node:url';
 import { buildBlockRegistry } from './block-registry.mjs';
 import { decodeXmlCharacterReferences, officeCssUrlsAreSafe, officeHrefRefsAreSafe } from './office-safety.mjs';
@@ -23,8 +23,8 @@ if(path.basename(input)==='index.html'){console.error('EXPORT_SOURCE_REJECTED ga
 const resolved=path.resolve(input);
 if(!fs.existsSync(resolved)){console.error('INPUT_MISSING '+resolved);process.exit(2);}
 let renderer;
-try{renderer=ensureRenderer();const chromeState=ensureChrome(renderer.bin);if(!chromeState.ok){console.error("CHROME_REQUIRED "+chromeState.detail+"; pre-warm from a terminal: npx @litfamily/litmuse runtime install diagram");process.exit(2);}}
-catch(e){console.error("RENDERER_REQUIRED "+e.message+"; pre-warm from a terminal: npx @litfamily/litmuse runtime install diagram");process.exit(2);}
+try{renderer=ensureRenderer();const chromeState=ensureChrome(renderer.bin);if(!chromeState.ok){console.error("CHROME_REQUIRED "+chromeState.detail+"; pre-warm from a terminal: node "+JSON.stringify(path.join(root,"scripts","diagram-runtime.mjs"))+" install");process.exit(2);}}
+catch(e){console.error("RENDERER_REQUIRED "+e.message+"; pre-warm from a terminal: node "+JSON.stringify(path.join(root,"scripts","diagram-runtime.mjs"))+" install");process.exit(2);}
 const AB=renderer.bin;
 let source=fs.readFileSync(resolved,'utf8');
 const svgMatch=source.match(/<svg\b[^>]*>[\s\S]*?<\/svg>/i);

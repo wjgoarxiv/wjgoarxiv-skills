@@ -6,12 +6,12 @@ description: Verify visual and terminal interfaces with bounded local evidence, 
 ## #contract.activation
 
 ```yaml
-contract_schema_version: litmuse.llm-contract.v1
+contract_schema_version: lit.llm-contract.v1
 artifact_type: skill
 activation:
-  primary: read_skill visual-qa, or the slash form /visual-qa
+  primary: read_skill visual-qa
   aliases: []
-  prompt_hook: UserPromptSubmit route table (adds a pointer, never the skill body)
+  prompt_hook: none (a user skill ships no hooks)
   command_route: none
 preconditions:
   - a visual or terminal artifact exists and is stable
@@ -19,11 +19,10 @@ preconditions:
   - the capture, image, terminal, auth, and reviewer capabilities have been probed
 ```
 
-This skill is reached through Muse's skill catalog (`read_skill visual-qa`, or `/visual-qa`) or through
-the LitMuse UserPromptSubmit hook when a bare `lit` prompt asks to check a built interface. The hook
-injects a short route pointer that identifies the skill and its lazy reference path. It is not the exact
-`SKILL.md` body and never includes this complete contract. A hook adds context only; it does not
-establish that `read_skill` ran, and it captures nothing for you. Probe which browser, terminal, image,
+This skill is reached through Muse's skill catalog: `read_skill visual-qa`, or the model loading it because
+a prompt asks to check a built interface. The catalog entry is a description only. It is not the exact
+`SKILL.md` body and never includes this complete contract; seeing it does not establish that `read_skill`
+ran, and it captures nothing for you. The skill ships no hooks and no slash command. Probe which browser, terminal, image,
 authentication, and reviewer capabilities are callable in the current session before promising any
 tier.
 
@@ -406,11 +405,12 @@ boundary. Do not respawn reviewers until a favorable verdict appears.
 
 ### Reviewer charters
 
-In Muse each reviewer is one `subagent_spawn` call with `subagent_type` `litmuse/quality-reviewer` or
-`litmuse/lit-verifier`, a fresh objective that carries only the immutable inputs, and a `subagent_wait`
-bounded by the time budget. Both are read-only agents. Without `subagent_type` a child would be
-general-purpose with every work tool, which is not an acceptable reviewer. The receipt names the agent
-as `quality-reviewer` or `lit-verifier` (the `litmuse/` prefix is accepted).
+In Muse each reviewer is one `subagent_spawn` call with `role` `quality-reviewer` or `lit-verifier`, a
+read-only `subagent_type` that this session lists (its grant limited to `read_file` and `search`), a fresh
+objective that carries only the immutable inputs, and a `subagent_wait` bounded by the time budget. This
+skill ships no agent definitions. Without a read-only `subagent_type` a child would be general-purpose with
+every work tool, which is not an acceptable reviewer; report `BLOCKED_INDEPENDENT_REVIEW_UNAVAILABLE`
+instead. The receipt names the reviewer as `quality-reviewer` or `lit-verifier`.
 
 `quality-reviewer` reviews contract adherence, inventory completeness, accessibility-relevant
 observations, responsive behavior, state coverage, and whether the evidence supports the claimed
@@ -636,17 +636,17 @@ evidence lane and feed its severity and blocker model without overwriting nonvis
 
 ## Install verification
 
-Run these to confirm the bundle Muse loaded is the bundle this contract describes.
+Run these to confirm the copy Muse loaded is the copy this contract describes.
 
 ```bash
-muse plugins validate <plugin-dir> --json
-npx @litfamily/litmuse doctor
+muse skills list --source user
+muse skills validate "$VISUAL_QA_SKILL_ROOT" --json
 node "$VISUAL_QA_SKILL_ROOT/scripts/cli.mjs" image-diff <reference.png> <actual.png>
 ```
 
-`plugins validate` must print `valid: true` with no diagnostics, and the skill id must resolve through
-`read_skill visual-qa` (when Muse's 32 KB catalog overflows, later plugin entries are compacted to id
-plus path but still resolve). Both schemas, both validators and the analyzers ship together under this
+`skills list` must show `visual-qa` with activation `on`, `skills validate` must report the folder valid,
+and the skill id must resolve through `read_skill visual-qa` (when Muse's 32 KB catalog overflows, an
+entry may be compacted to id plus path but still resolves). Both schemas, both validators and the analyzers ship together under this
 skill directory; the packed file list is authoritative and docs do not duplicate a mutable count.
 
 ## Completion checklist

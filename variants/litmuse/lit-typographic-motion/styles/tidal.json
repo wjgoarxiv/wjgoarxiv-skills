@@ -1,5 +1,5 @@
 {
-  "schema": "litmuse.motion-style/v1",
+  "schema": "lit.motion-style/v1",
   "id": "tidal",
   "name": "Tidal",
   "summary": "Indigo ground with a slow teal-to-violet flow, off-white type that drifts with it, one coral moment.",

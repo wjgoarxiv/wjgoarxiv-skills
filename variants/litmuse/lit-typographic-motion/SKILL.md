@@ -13,7 +13,7 @@ There are three ways through it, and the treatment picks one:
 - **Type path.** Films whose words are the film: kinetic type, a lyric or quote video, a title sequence. You write `brief.json` and the bundled WebGL2 type engine sets the words with its presets and post passes. 1920x1080.
 - **Cover mode.** A README, hero or banner loop. No beats, no sound, no ending: one moving system on a fixed brand word, captured at 2x, encoded as animated WebP and gated on the decoded file. Read `references/cover.md` before anything else in this mode.
 
-`SKILL_ROOT` below is the folder of the `SKILL.md` that `read_skill` returned for `plugin:litmuse:lit-typographic-motion`. Run every script by its absolute path under it and never hardcode Muse's plugin cache path; the cache folder changes with every LitMuse update.
+`SKILL_ROOT` below is the folder of the `SKILL.md` that `read_skill` returned for `lit-typographic-motion`. Run every script by its absolute path under it and never hardcode an install path; `muse skills install` decides where the copy lives.
 
 ## When this applies
 
@@ -21,14 +21,14 @@ There are three ways through it, and the treatment picks one:
 - The user asks for a README cover, a hero or banner loop, an animated project header, or a motion cover for a repository.
 - The user asks for a critique of a render this skill made: look at the frames and run the gate, write nothing else.
 
-Activation in LitMuse: `lit motion <request>`, `lit film …`, `lit video …`, `lit 영상 …`, a prompt that starts with `lit-typographic-motion`, or a `lit <task>` whose task asks to make a film (a film compound such as 모션그래픽, 키네틱 타이포, 가사 영상, 타이틀 시퀀스, kinetic type, lyric video, title sequence, cover loop, or a bare 영상 / video / clip with a making verb). The UserPromptSubmit hook names the route; under a plain `lit` the session route table lets you pick the skill yourself.
+Activation in Muse: `read_skill lit-typographic-motion`, a prompt that starts with `lit-typographic-motion`, or a request to make a film (a film compound such as 모션그래픽, 키네틱 타이포, 가사 영상, 타이틀 시퀀스, kinetic type, lyric video, title sequence, cover loop, or a bare 영상 / video / clip with a making verb), which Muse matches to this skill by its catalog description.
 
 Send these elsewhere, and say so in one line:
 
 | Request | Where it goes |
 | --- | --- |
 | Edit, trim, cut, caption or subtitle existing footage | Not this skill. No pipeline here edits footage; say so plainly |
-| A slide deck or report with no video noun | `lit-pptx` or `lit-docx` |
+| A slide deck or report with no video noun | `lit-pptx` or `lit-docx`, when installed |
 | A web page, a background video inside a page, hover or UI motion, motion tokens | `frontend-ui-ux` |
 | A thumbnail, a script, a summary or a transcript about a video | ordinary work, not this skill |
 | A static README with a still cover image | `readme-studio` |
@@ -43,15 +43,15 @@ Send these elsewhere, and say so in one line:
 | A named style (type path) | `swiss-signal`, `terminalcore` or `tidal` overrides the agent default (`references/style-bibles.md`). |
 | An audio file | `sound.mode: supplied` with its `file`; it is always muxed and cued to the cuts (`references/sound.md`). |
 | A painting, logo or wordmark for a cover | Listed in `assets.json` with its sha256 and `source: user`; a missing one is exit 22, never a drawn stand-in. |
-| Output folder | A new `motion-<slug>/` in the user's working directory. Never the installed plugin folder, never `.litmuse/`. |
+| Output folder | A new `motion-<slug>/` in the user's working directory. Never the installed skill folder. |
 
-State lives in the output folder: `treatment.json`, `look.json`, `stills/`, `manifest.json`, `gate-report.txt` and `.run/` (progress, the detached render's pid and result, the first valid treatment). The LitMuse hooks keep their own small record of the motion route outside the workspace (below).
+State lives in the output folder: `treatment.json`, `look.json`, `stills/`, `manifest.json`, `gate-report.txt` and `.run/` (progress, the detached render's pid and result, the first valid treatment). Nothing outside the output folder keeps state; the done-check (below) reads only these files.
 
 ## Mode matrix
 
 | Mode | Trigger | Finish line |
 | --- | --- | --- |
-| lit default | the motion route from `lit` | Ask no questions. Choose format from the channel, length from the genre and a generated sound bed, and label each default in the reply. Done by `references/look.md`. |
+| no-questions | the user asked for no questions ("you choose", "알아서 해 줘", "just make it"), or the run is headless | Ask no questions. Choose format from the channel, length from the genre and a generated sound bed, and label each default in the reply. Done by `references/look.md`. |
 | explicit | `lit-typographic-motion …` or the user names format and length | The same loop. One short question only when the user is present, named neither format nor length, and the channel does not decide it. With the user present, show the board after round 1 and ask once before the full render; a request that names the style or says "you choose" skips the asking and takes the recommended. |
 | cover | `treatment.json` has `"mode": "cover"` | Done by `references/cover.md`: the decoded cover reaches every TARGET gate and the last look round viewed its sheet, poster and seam pair. |
 | review only | a critique of an existing render | Open the frames, run `gate <dir>` or `cover-gate <file> --strict`, report. Write nothing. |
@@ -108,18 +108,18 @@ Every frame and every track passes through these renderers. A film assembled by 
 - `read_skill` loads this file and, on demand, the references. `read_file` opens every reference and every rendered PNG; it is the look tool, and nothing counts as viewed unless `read_file` opened it in this session.
 - `bash` runs `node` on the scripts above, always by absolute path, plus `ffmpeg`, `img2webp`, `dwebp` and `gifski` through the engine. No global install, no package fetch, no network from a render.
 - `write_file` and `edit_file` write the treatment, the brief, the page, the answers files and `assets.json` inside the output folder.
-- `subagent_spawn` with `subagent_type: litmuse/quality-reviewer` (read-only) can give a second look at the contact sheet. Its notes are input to your look round; it cannot record the round for you.
+- `subagent_spawn` can give a second look at the contact sheet: start the child without `subagent_type` and write in its objective that it may only use `read_file` and `search` and writes nothing (a child without `subagent_type` holds every work tool, so the objective is what keeps it read-only). Its notes are input to your look round; it cannot record the round for you.
 - `image_generation`, when the session offers it, may make a cover's base painting; that asset is `source: generated` in `assets.json` and the reply labels it.
-- The runtime is pre-warmed outside Muse, from a terminal: `npx @litfamily/litmuse runtime install motion` (status: `npx @litfamily/litmuse runtime status motion`). Muse's sandbox network is proxy-only, so a render never installs anything; an unwarmed cache is exit 14 with that command. The optional beat-analysis tier installs with `node "$SKILL_ROOT/scripts/motion-runtime.mjs" install --audio`. Readiness: `node "$SKILL_ROOT/scripts/motion-doctor.mjs"` and `npx @litfamily/litmuse doctor`. Details: `references/runtime.md`.
-- Skills and commands need no approval in Muse; the hooks that run the done gate below do (`muse plugins approve litmuse:hook:<id>`). Without approved hooks the gate is advisory and the evidence rules below still bind you.
+- The runtime is pre-warmed outside Muse, from a terminal: `node "$SKILL_ROOT/scripts/motion-runtime.mjs" install` (status: `node "$SKILL_ROOT/scripts/motion-runtime.mjs" status`). Muse's sandbox network is proxy-only, so a render never installs anything; an unwarmed cache is exit 14 with that command. The optional beat-analysis tier installs with `node "$SKILL_ROOT/scripts/motion-runtime.mjs" install --audio`. Readiness: `node "$SKILL_ROOT/scripts/motion-doctor.mjs"`. Details: `references/runtime.md`.
+- This is a user skill with no hooks and no agent definitions, so nothing needs a Muse approval. No hook enforces the done-check: you run it yourself before you call the work done (below), and the evidence rules bind you either way.
 
 ## Evidence
 
-While the motion route is active, LitMuse's PostToolUse hook records every `motion.mjs` run (its subcommand, `--out`, `--round` and the `exit N NAME` line when the tool output carries it) and every image `read_file` opened. The Stop hook then runs this skill's own done-check, `engine/node/done.mjs`, on the last output folder.
+Before the reply that delivers or reports the work, run this skill's own done-check on the last output folder: `node "$SKILL_ROOT/scripts/motion.mjs" done --out <dir>` (add `--json` for the verdict as data). It runs `engine/node/done.mjs` and prints `done-check: DONE`, `DONE_UNVIEWED` or `NOT_DONE` with the reasons and the lines the reply must carry; it exits 0 when done and 13 when not. No host hook watches your `read_file` calls, so the check trusts the `viewed` list of your last look round: list only images you really opened.
 
 A film is done with all of these: a valid treatment; gate PASS on the final full render; at least two look rounds, the first a board round that names a change; the last round stamped with the final render's stills manifest; and that round's viewed list covering the board, the poster, the contact sheet, every beat still and every transition strip, each one opened with `read_file`. A preview is done at its board: a passed board check, looked at, the board viewed. A cover is done when the decoded cover passed every TARGET gate on its last render and the last look round viewed that render's sheet, poster and seam pair.
 
-When it is not done, the Stop hook holds the turn with the named reason, at most twice, and then asks the reply to say plainly that the work is not done, why, and what to run to finish it. A BLOCKED exit goes straight to that notice. A finished render with a downgrade, an open look item or a generated asset holds once so the reply says so. When no image can be opened at all, record `look --blocked no-vision-tool`; the result is DONE_UNVIEWED and the reply must say nobody looked at the frames.
+When it is not done, fix the named reason and run the next round, at most twice more; after that, say plainly in the reply that the work is not done, why, and what to run to finish it. A BLOCKED exit goes straight to that notice. When a finished render carries a downgrade, an open look item or a generated asset, the reply says so. When no image can be opened at all, record `look --blocked no-vision-tool`; the result is DONE_UNVIEWED and the reply must say nobody looked at the frames.
 
 A downgrade (a shorter film, fewer beats that show the subject, sound switched to none without being asked, stage switched to type) is recorded against the first valid treatment and always said in the reply. Never claim done from an exit code alone.
 
@@ -133,7 +133,7 @@ Stop at a blocked exit, at a gate failure you cannot fix within round 3, or when
 | 11 | BLOCKED_NO_WEBGL2 | No WebGL on any rung (type path; stage path only when the page asks for WebGL). |
 | 12 | BLOCKED_NO_FFMPEG_FOR_VIDEO | Stills and the sheet exist; the film needs ffmpeg (`brew install ffmpeg`). |
 | 13 | GATE_FAIL_QA | Fix the named rule and run the next round. A flash-audit FAIL withholds every export. |
-| 14 | BLOCKED_DEPS_NOT_PREWARMED | Ask the user to run `npx @litfamily/litmuse runtime install motion` in a terminal outside Muse. Never install from the session. |
+| 14 | BLOCKED_DEPS_NOT_PREWARMED | Ask the user to run `node "$SKILL_ROOT/scripts/motion-runtime.mjs" install` in a terminal outside Muse. Never install from the session. |
 | 15 | BLOCKED_FONT_FETCH | A cached font is missing or its sha256 differs; the same pre-warm command fixes it. |
 | 16 | BLOCKED_TREATMENT_INVALID | Fix the named field. |
 | 17 | STAGE_CONTRACT_ERROR | Fix the named element, API, raster, clip, size or missing copy line. |
@@ -176,7 +176,7 @@ Below the activation line, in plain words and with no internal names: one line o
 - Printing the request, a brief title, a file name or an internal term on screen.
 - Shortening the film, dropping a beat or the subject, switching sound to none or stage to type to pass a check.
 - Listing a frame as viewed that `read_file` never opened, or recording a look round without looking.
-- Asking questions under the lit default, or leaving the user with a stills-only run.
+- Asking questions in a no-questions run, or leaving the user with a stills-only run.
 - Third-party libraries, downloads or any network use in a stage or cover page.
 - Outlined or haloed type, fake Hangul condensing, tracking or width motion on Hangul, glitch as a constant texture.
 - In a cover: a title that fades in, cards that swap, holds over 0.5 s, soft fades the encoder drops, a reset at the seam, a painting cropped to fit, or MP4.

@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- README: a cover loop, a big-picture diagram, a skill map with a slice per family and an install-paths flowchart (each
+  in light and dark), and two schematics (the skill plant and the editions manifold), all in `docs/assets/`; a section per
+  family, per-harness notes, a licence table and a note on the `lit-` names. The pick-one table is unchanged.
+  `README_ko-KR.md` is the same page in Korean.
 - README: the repository is public at https://github.com/wjgoarxiv/wjgoarxiv-skills, so the Claude Code install
   section and the Claude Code column of the pick-one table give `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`
   (a local clone stays the offline form), and the Grok Build column starts with LitGrok's

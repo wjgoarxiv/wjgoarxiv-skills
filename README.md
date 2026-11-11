@@ -1,43 +1,175 @@
+<p align="right"><b>English</b> · <a href="README_ko-KR.md">한국어</a></p>
+
+<p align="center">
+  <a href="docs/assets/cover/cover-dark.mp4">
+    <picture>
+      <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="docs/assets/cover/poster-dark.webp">
+      <source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/cover/poster-light.webp">
+      <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cover/cover-dark.webp">
+      <source media="(prefers-color-scheme: light)" srcset="docs/assets/cover/cover-light.webp">
+      <img src="docs/assets/cover/cover-dark.webp" width="960" alt="A shelf of nine skills (decks, documents, figures, design, video covers) sends one skill at a time along a wire to one of seven coding agents: Claude Code, Codex CLI, OpenCode, Grok Build, Muse Code, Antigravity and Hermes Agent.">
+    </picture>
+  </a>
+</p>
+
+<p align="center">
+  <b>One shelf of skills for seven coding agents.</b><br>
+  Decks, documents, figures, interfaces, films and READMEs, installed one family or one folder at a time.<br>
+  <sub>Silent cover film: <a href="docs/assets/cover/cover-dark.mp4">dark MP4</a> · <a href="docs/assets/cover/cover-light.mp4">light MP4</a></sub>
+</p>
+
 # wjgoarxiv-skills
 
-Content-production skills that used to ship inside the LitFamily products. Each family is one Claude Code plugin
-in this marketplace, so you install only the ones you use. The products keep a small same-name stub for each moved
-skill that says what it did and how to install it here.
+These nine skills grew up inside LitFamily, the set of add-ons that brings one way of working (plans, loops, goals,
+reviews) to seven coding agents. Over time they became the heaviest part of every product: a deck builder with its
+own office runtime, a document studio, three kinds of figure, an interface kit and a film engine. Most people did not
+need all of that on every install, and some wanted just one of them without the rest of LitFamily. So the skills
+moved here, unchanged, and each LitFamily product kept only a small stub of the same name that says what the skill
+does and how to install it from this shelf. Nothing here needs a LitFamily product: pick the one skill you want, for
+the agent you already use, and leave the rest on the shelf.
 
 The repository is public at https://github.com/wjgoarxiv/wjgoarxiv-skills.
 
-## Plugins
+## The big picture
 
-| Plugin | Skills | What it makes | Moved from |
-| --- | --- | --- | --- |
-| `decks` | `lit-pptx` | A finished PowerPoint deck (.pptx): a design direction for the audience and content, Markdown slide source, native editable charts, embedded Pretendard fonts, a QA gate and rendered-page review | LitClaude `fc0fe5d` (1.0.48) |
-| `documents` | `lit-docx` | A finished Word document (.docx): report, brief, manual, proposal, memo or journal manuscript in a tonality chosen for the content or a named publisher profile, DOCX/PDF to Markdown, in-place edits of an existing .docx, PDF render, and a QA gate with rendered pages | LitClaude `8c736ce` (1.0.49 plus the decks move) |
-| `figures` | `lit-diagram-drawer`, `lit-schematic`, `lit-scientific-visualization` | Conceptual and technical diagrams as HTML/SVG with PNG and Office-safe SVG export; physical schematics (P&ID, PFD, BFD, equipment layout, apparatus figure, isometric cutaway) as millimetre-sized SVG with a QA gate and 600 dpi render; publication plots of measured data from the scientific-visualization source the plot skill adapts | LitClaude `2381bfe` (files identical to 1.0.49) |
-| `design` | `frontend-ui-ux`, `visual-qa` | Interfaces built and inspected from one locked house style, layout family and design kit, with a design contract, a design-intelligence database and an interface probe across the responsive matrix; verification of a built interface with captured screenshots at several viewports and states, an evidence manifest and a blocker contract | LitClaude `aaea364` (files identical to 1.0.49) |
-| `video-covers` | `lit-typographic-motion`, `readme-studio` | Finished short films (kinetic type, lyric or quote videos, title sequences, stage films) and silent, seamless README cover loops, planned as a treatment with a storyboard board round, scored, look-checked and gated; factual READMEs built from the repository with an inspected cover, outlined title type and an optional motion cover | LitClaude `4d03ca8` (files identical to 1.0.49) |
+Every LitFamily product kept its core and a stub for each moved skill, and every stub points to one place in this
+repository. Where it points depends on the harness. LitClaude's copies lean on shared files beside them (`lib/`,
+`vendor/`, support folders), so Claude Code installs a whole family plugin. The six other products each shipped their
+own edition of the same nine skills, written for their own harness, and those editions now live under
+`variants/<product>/<id>/`, one self-contained folder per skill.
 
-## Install in Claude Code
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/diagrams/big-picture.en.dark.png">
+    <img src="docs/assets/diagrams/big-picture.en.light.png" width="900" alt="Seven LitFamily products, each keeping its core and nine stubs, point into the wjgoarxiv-skills repository: LitClaude to five family plugins, the six others to their own edition folder under variants.">
+  </picture>
+</p>
 
-```bash
-claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills
-claude plugin install decks@wjgoarxiv-skills
-claude plugin install documents@wjgoarxiv-skills
-claude plugin install figures@wjgoarxiv-skills
-claude plugin install design@wjgoarxiv-skills
-claude plugin install video-covers@wjgoarxiv-skills
-```
+## Inside: one request, five units, five gates
 
-Inside a session the same thing is `/plugin marketplace add wjgoarxiv/wjgoarxiv-skills` and then
-`/plugin install decks@wjgoarxiv-skills`. Offline, the marketplace line can point at a local clone instead:
-`claude plugin marketplace add <path to your wjgoarxiv-skills clone>`.
+Here is the same shelf drawn as a process plant. A request comes in on the left and goes to the family that makes
+that kind of file. Each family brings its own quality gate, made of the checks its skills already run: overflow and
+contrast for decks, integrity and prose lint for documents, the schematic QA gate and a look at the render for
+figures, a viewport matrix for interfaces, a flash audit and a seam check for films. A draft that passes leaves as
+the deliverable; one that fails goes back for another pass. The stream table underneath is the whole repository in
+one grid: which plugin, which skills, and what leaves.
 
-The skills then answer as `decks:lit-pptx`, `documents:lit-docx`, `figures:lit-diagram-drawer`,
-`figures:lit-schematic`, `design:frontend-ui-ux`, `design:visual-qa`, `video-covers:lit-typographic-motion` and
-`video-covers:readme-studio`. `lit-scientific-visualization` is user-invoked only, as it was in LitClaude: type
-`/figures:lit-scientific-visualization <request>`. LitClaude's own `lit` routing for decks, documents, figures, interfaces, films and READMEs keeps
-working: the stub it loads points at the moved skill when it is installed.
+<p align="center">
+  <img src="docs/assets/schematic/skill-plant.en.png" width="900" alt="Process flow diagram of wjgoarxiv-skills as a plant: a request is split to five family units. Each draft passes a QA analyser whose diverter valve sends it to the deliverable or back for rework. A stream table below lists each family's skills and outputs.">
+</p>
+
+## The five families
+
+Each skill makes one kind of file, and some hand their output to another. Charts and diagrams flow into decks and
+documents, and a built interface flows into its check. The map draws an arrow only where a skill's own `SKILL.md`
+names the handoff; the dashed one is a pairing that simply suits a README.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/diagrams/skill-map.en.dark.png">
+    <img src="docs/assets/diagrams/skill-map.en.light.png" width="900" alt="Map of nine skills in five families and what each produces. lit-scientific-visualization hands chart PNGs to lit-docx and lit-pptx, lit-diagram-drawer hands diagram PNGs to lit-pptx, frontend-ui-ux hands a built interface to visual-qa, and a lit-typographic-motion cover loop pairs with readme-studio.">
+  </picture>
+</p>
+
+The pictures on this page double as samples. The cover at the top is a silent, seamless README cover loop, the kind
+of thing `video-covers` makes. The big picture, the skill map and the install paths were drawn and exported with
+`lit-diagram-drawer`, and the plant and the manifold with `lit-schematic`.
+
+### `decks`: slides people can still edit
+
+`lit-pptx` builds a finished PowerPoint deck from a request, notes or source files. It first chooses a design
+direction for the audience and the content, then writes the slides as Markdown and compiles them with native,
+editable charts and embedded Pretendard fonts. A QA gate looks for overflow, weak contrast and sparse or blank
+slides, and the rendered pages get a review before the deck is done. Charts can come in from
+`lit-scientific-visualization` and diagrams from `lit-diagram-drawer`.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/families/decks.en.dark.png">
+    <img src="docs/assets/families/decks.en.light.png" width="640" alt="Slice of the skill map: lit-diagram-drawer sends a diagram PNG and lit-scientific-visualization a chart PNG into lit-pptx, which makes a .pptx deck.">
+  </picture>
+</p>
+
+Moved from LitClaude `fc0fe5d` (1.0.48).
+
+### `documents`: Word files that look designed
+
+`lit-docx` produces a finished Word document: a report, brief, manual, proposal, memo or journal manuscript, in a
+tonality chosen for the content or in a named publisher profile (Elsevier, ACS, IEEE, Nature, or a Korean generic
+style). It also turns DOCX or PDF into clean Markdown, edits an existing .docx in place, renders a PDF, and gates the
+result with integrity, prose and design checks on the rendered pages.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/families/documents.en.dark.png">
+    <img src="docs/assets/families/documents.en.light.png" width="640" alt="Slice of the skill map: lit-scientific-visualization sends a chart PNG into lit-docx, which makes a .docx document.">
+  </picture>
+</p>
+
+Moved from LitClaude `8c736ce` (1.0.49 plus the decks move).
+
+### `figures`: three skills for three kinds of picture
+
+A figure starts with one question: what is the reader looking at? Measured data becomes a plot, an idea or a system
+becomes a diagram, and real hardware becomes a schematic. `lit-scientific-visualization` makes publication plots of
+measured data from the scientific-visualization source it adapts. `lit-diagram-drawer` draws conceptual and technical
+diagrams as HTML/SVG and exports PNG and Office-safe SVG for slides and documents. `lit-schematic` draws physical
+equipment (P&ID, PFD, BFD, equipment layouts, apparatus figures, isometric cutaways) as millimetre-sized SVG with a QA
+gate and a 600 dpi render.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/families/figures.en.dark.png">
+    <img src="docs/assets/families/figures.en.light.png" width="640" alt="Slice of the skill map: the figures family with lit-scientific-visualization, lit-diagram-drawer and lit-schematic, and the chart and diagram PNGs they hand to lit-docx and lit-pptx.">
+  </picture>
+</p>
+
+Moved from LitClaude `2381bfe` (files identical to 1.0.49).
+
+### `design`: build an interface, then check it
+
+`frontend-ui-ux` builds and inspects interfaces from one locked house style, layout family and design kit, with a
+design contract, a design-intelligence database and an interface probe that runs across the responsive matrix. Once a
+page exists, `visual-qa` verifies it: it exercises its states at several viewport sizes, captures screenshots, writes
+an evidence manifest, and when something blocks a check, it names exactly what.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/families/design.en.dark.png">
+    <img src="docs/assets/families/design.en.light.png" width="340" alt="Slice of the skill map: frontend-ui-ux builds an interface and hands the built interface to visual-qa, which writes a visual QA report.">
+  </picture>
+</p>
+
+Moved from LitClaude `aaea364` (files identical to 1.0.49).
+
+### `video-covers`: short films and the README they sit in
+
+`lit-typographic-motion` directs a finished short film from a one-line request: a treatment first, then a storyboard
+round you can see before the full render, an original score, look rounds and a QA gate (flash audit, legibility,
+determinism, sound). It covers kinetic type, lyric or quote videos, title sequences and stage films, and its cover
+mode makes a silent, seamless README cover loop like the one at the top of this page. `readme-studio` writes factual
+READMEs from the repository itself, with an inspected cover, outlined title type and an optional motion cover.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/families/video-covers.en.dark.png">
+    <img src="docs/assets/families/video-covers.en.light.png" width="340" alt="Slice of the skill map: lit-typographic-motion makes films and cover loops, and a cover loop pairs with readme-studio, which makes a README.">
+  </picture>
+</p>
+
+Moved from LitClaude `4d03ca8` (files identical to 1.0.49).
 
 ## Pick one skill for one harness
+
+There are two ways in, and your agent decides which one you take. Claude Code adds this marketplace and installs the
+family plugin. Every other harness clones the repository once and copies a single folder.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/diagrams/install-paths.en.dark.png">
+    <img src="docs/assets/diagrams/install-paths.en.light.png" width="900" alt="Flowchart: pick a skill, then Claude Code adds the marketplace and installs the family plugin, while the six other harnesses clone the repository once and copy one folder with the command shown for Codex CLI, OpenCode, Grok Build, Muse Code, Antigravity CLI and Hermes Agent.">
+  </picture>
+</p>
 
 Find the skill in the left column and your harness along the top. The cell holds the install lines that harness's
 LitFamily stub gives for that skill, unchanged, so the stub and this table say the same thing. Claude Code
@@ -77,12 +209,47 @@ on first use.
 `npm test` checks this table against the marketplace: one row for every skill a family plugin ships, the lines each
 stub gives, and that every folder a line names exists here.
 
-## Harness editions (`variants/`)
+## Per-harness notes
+
+### Claude Code
+
+Claude Code takes each family as a plugin from this marketplace, so you install only the families you use:
+
+```bash
+claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills
+claude plugin install decks@wjgoarxiv-skills
+claude plugin install documents@wjgoarxiv-skills
+claude plugin install figures@wjgoarxiv-skills
+claude plugin install design@wjgoarxiv-skills
+claude plugin install video-covers@wjgoarxiv-skills
+```
+
+Inside a session the same thing is `/plugin marketplace add wjgoarxiv/wjgoarxiv-skills` and then
+`/plugin install decks@wjgoarxiv-skills`. Offline, the marketplace line can point at a local clone instead:
+`claude plugin marketplace add <path to your wjgoarxiv-skills clone>`.
+
+The skills then answer as `decks:lit-pptx`, `documents:lit-docx`, `figures:lit-diagram-drawer`,
+`figures:lit-schematic`, `design:frontend-ui-ux`, `design:visual-qa`, `video-covers:lit-typographic-motion` and
+`video-covers:readme-studio`. `lit-scientific-visualization` is user-invoked only, as it was in LitClaude: type
+`/figures:lit-scientific-visualization <request>`. LitClaude's own `lit` routing for decks, documents, figures,
+interfaces, films and READMEs keeps working: the stub it loads points at the moved skill when it is installed.
+
+### The six other harnesses (`variants/`)
 
 The family plugins hold LitClaude's copies, written for Claude Code. Six other products shipped their own edition of
-the same nine skills, in their own harness's words, before they moved them out. Each edition first went in unchanged
-under `variants/<product>/<id>/`, copied byte for byte from the product commit that last shipped it, with one receipt
-per product in `receipts/variants-<product>.sha256`.
+the same nine skills, written for their own harness, before they moved them out. Think of the repository as a tank
+and each harness as a branch off one header: Claude Code draws the whole family, and every other branch draws one
+folder from its own edition.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-reduced-motion: reduce)" srcset="docs/assets/schematic/editions-manifold.en.png">
+    <img src="docs/assets/schematic/editions-manifold-loop.en.webp" width="900" alt="Isometric cutaway of a manifold: a tank labelled wjgoarxiv-skills repo, holding five family layers, feeds a vertical header with seven valved branches. The large red top branch is Claude Code (whole family plugin). The six smaller branches are Codex CLI, OpenCode, Grok Build, Muse Code, Antigravity CLI and Hermes Agent, each fed from its variants folder.">
+  </picture>
+</p>
+
+Each edition first went in unchanged under `variants/<product>/<id>/`, copied byte for byte from the product commit
+that last shipped it, with one receipt per product in `receipts/variants-<product>.sha256`.
 
 | Folder | Harness | Copied from |
 | --- | --- | --- |
@@ -105,9 +272,18 @@ Some internal names stay on purpose, because measured expectations or saved file
 `LITCODEX_*` knobs and error codes of its own scripts. Third-party corpora pinned by hash, such as frontend-ui-ux's
 `references/_canonical-corpus/`, are unchanged and may name other coding agents.
 
+### Why the skills keep their `lit-` names
+
+The `lit-` prefix records where a skill came from; you do not need anything called lit to use it. The ids stay
+exactly as they were because each LitFamily product's stub carries the same name. With a LitFamily product installed,
+its routing finds the moved skill by that name; without one, the name is just a name. Renaming the skills here would
+break that link, and the receipts that prove each copy is unchanged would no longer match.
+
 ## Layout
 
 ```
+README.md, README_ko-KR.md          this page in English and Korean
+docs/assets/                        the cover, diagrams, schematics and family slices shown on this page
 .claude-plugin/marketplace.json     one entry per family plugin
 plugins/<family>/.claude-plugin/plugin.json
 plugins/<family>/skills/<id>/       the skill folder, copied unchanged
@@ -149,10 +325,8 @@ places:
   and JetBrains Mono fonts with their OFL licences, which the design kit's `kit/fonts.json` copies by path and checks by
   sha256. These folders have no `SKILL.md` either.
 
-frontend-ui-ux's own `LICENSE` (MIT) and `THIRD-PARTY-NOTICE.txt` cover its design data, and its
-`references/_canonical-corpus/legal/` holds the Apache-2.0 licence of the reference corpus, so the plugin declares
-`MIT AND Apache-2.0`. LitClaude keeps a copy of the interface probe scripts in its frontend-ui-ux stub, because its
-lit workflows check web-interface edits with that probe.
+LitClaude keeps a copy of the interface probe scripts in its frontend-ui-ux stub, because its lit workflows check
+web-interface edits with that probe.
 
 `video-covers` carries what lit-typographic-motion and readme-studio reach outside their own folders, unchanged, at
 the same relative places:
@@ -160,7 +334,7 @@ the same relative places:
   and `project-state-root.mjs` with the three `rules/` modules it imports;
 - `skills/lit-pptx/fonts/pretendard/`: Pretendard Regular and Bold with their OFL licence, which the film engine's
   `fonts/manifest.json` reads by path and checks by sha256. There is no `SKILL.md` there; lit-pptx itself is in
-  `decks`. The OFL fonts are why the plugin declares `MIT AND OFL-1.1`.
+  `decks`.
 
 The moved lit-typographic-motion text was written for LitClaude, and a few of its lines describe LitClaude parts
 that do not come with this plugin:
@@ -177,6 +351,23 @@ that do not come with this plugin:
 
 lit-schematic looks for Pretendard first in `lit-diagram-drawer/assets/fonts/`, which `figures` carries; its second
 place, `lit-pptx/fonts/`, is not copied.
+
+## Licences
+
+The repository has no single licence of its own. Each family plugin carries the licence its files came under, in
+`plugins/<family>/LICENSE`, and declares it in its `plugin.json`:
+
+| Plugin | Declared licence | Where it comes from |
+| --- | --- | --- |
+| `decks` | MIT | LitClaude's own files |
+| `documents` | MIT | LitClaude's own files |
+| `figures` | MIT | LitClaude's own files; the copies under `vendor/` keep their own provenance and licence files |
+| `design` | MIT AND Apache-2.0 | frontend-ui-ux's `LICENSE` (MIT) and `THIRD-PARTY-NOTICE.txt` cover its design data, and its `references/_canonical-corpus/legal/` holds the Apache-2.0 licence of the reference corpus |
+| `video-covers` | MIT AND OFL-1.1 | LitClaude's own files, plus the Pretendard fonts under their OFL licence |
+
+The Pretendard and JetBrains Mono fonts travel unmodified, each with its OFL licence file. The editions under
+`variants/` keep the licence and font-licence files their products shipped inside each skill folder. The images in
+`docs/assets/` were made for this page, and the fonts in them appear only as rendered pixels.
 
 ## Rules for this repository
 

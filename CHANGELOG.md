@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- README: a pick-one install table, one row per moved skill and one column per harness (Claude Code, Codex CLI,
+  OpenCode, Grok Build, Muse Code, Antigravity CLI; Hermes Agent coming), each cell the install lines that harness's
+  stub gives. `npm test` checks the table against the marketplace and the folders its lines name.
+- `variants/`: the LitCodex (`b82ad1c`), LitOpenCode (`dc56845`), LitGrok (`8fd2c96`), LitGravity (`9f2533c`) and
+  LitMuse (`e966b07`) editions of the nine moved skills, copied unchanged with `receipts/variants-<product>.sha256`.
+  The LitOpenCode stubs install from `variants/litopencode/`.
 - `video-covers`: lit-typographic-motion and readme-studio, with the mark helper, `project-state-root.mjs` and its rules
   modules, and the Pretendard Regular and Bold pair the film engine's font manifest reaches, copied unchanged from
   LitClaude `4d03ca8` (1.0.49 plus the decks, documents, figures and design moves, which leave these files

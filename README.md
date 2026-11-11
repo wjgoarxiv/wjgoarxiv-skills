@@ -38,6 +38,74 @@ The skills then answer as `decks:lit-pptx`, `documents:lit-docx`, `figures:lit-d
 `/figures:lit-scientific-visualization <request>`. LitClaude's own `lit` routing for decks, documents, figures, interfaces, films and READMEs keeps
 working: the stub it loads points at the moved skill when it is installed.
 
+## Pick one skill for one harness
+
+Find the skill in the left column and your harness along the top. The cell holds the install lines that harness's
+LitFamily stub gives for that skill, unchanged, so the stub and this table say the same thing. Replace
+`<path to your wjgoarxiv-skills clone>` with your local clone; the repository has no public address yet.
+
+Not every harness can take a single skill folder. Claude Code, Grok Build and Antigravity CLI install the whole family
+plugin, because the family's skills reach shared files beside them (`lib/`, `vendor/`, support folders); only that
+family installs. Codex CLI, OpenCode and Muse Code copy one folder. The OpenCode line copies the LitOpenCode edition
+from `variants/litopencode/`, and replaces the LitOpenCode stub folder of the same name. Hermes Agent's stubs are
+not released yet.
+
+| Skill | Family | Claude Code | Codex CLI | OpenCode | Grok Build | Muse Code | Antigravity CLI | Hermes Agent |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| `lit-pptx` | `decks` | `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`<br>`claude plugin install decks@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/plugins/decks/skills/lit-pptx" "${CODEX_HOME:-$HOME/.codex}/skills/lit-pptx"` | `rm -r ~/.config/opencode/skills/lit-pptx`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-pptx" ~/.config/opencode/skills/lit-pptx` | `grok plugin install "<path to your wjgoarxiv-skills clone>#plugins/decks" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/plugins/decks/skills/lit-pptx --scope user` | `agy plugin install <path to your wjgoarxiv-skills clone>/plugins/decks` | coming |
+| `lit-docx` | `documents` | `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`<br>`claude plugin install documents@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/plugins/documents/skills/lit-docx" "${CODEX_HOME:-$HOME/.codex}/skills/lit-docx"` | `rm -r ~/.config/opencode/skills/lit-docx`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-docx" ~/.config/opencode/skills/lit-docx` | `grok plugin install "<path to your wjgoarxiv-skills clone>#plugins/documents" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/plugins/documents/skills/lit-docx --scope user` | `agy plugin install <path to your wjgoarxiv-skills clone>/plugins/documents` | coming |
+| `lit-diagram-drawer` | `figures` | `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`<br>`claude plugin install figures@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/plugins/figures/skills/lit-diagram-drawer" "${CODEX_HOME:-$HOME/.codex}/skills/lit-diagram-drawer"` | `rm -r ~/.config/opencode/skills/lit-diagram-drawer`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-diagram-drawer" ~/.config/opencode/skills/lit-diagram-drawer` | `grok plugin install "<path to your wjgoarxiv-skills clone>#plugins/figures" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/plugins/figures/skills/lit-diagram-drawer --scope user` | `agy plugin install <path to your wjgoarxiv-skills clone>/plugins/figures` | coming |
+| `lit-schematic` | `figures` | `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`<br>`claude plugin install figures@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/plugins/figures/skills/lit-schematic" "${CODEX_HOME:-$HOME/.codex}/skills/lit-schematic"` | `rm -r ~/.config/opencode/skills/lit-schematic`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-schematic" ~/.config/opencode/skills/lit-schematic` | `grok plugin install "<path to your wjgoarxiv-skills clone>#plugins/figures" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/plugins/figures/skills/lit-schematic --scope user` | `agy plugin install <path to your wjgoarxiv-skills clone>/plugins/figures` | coming |
+| `lit-scientific-visualization` | `figures` | `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`<br>`claude plugin install figures@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/plugins/figures/skills/lit-scientific-visualization" "${CODEX_HOME:-$HOME/.codex}/skills/lit-scientific-visualization"`<br>`mkdir -p "${CODEX_HOME:-$HOME/.codex}/vendor"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/plugins/figures/vendor/scientific-visualization" "${CODEX_HOME:-$HOME/.codex}/vendor/scientific-visualization"` | `rm -r ~/.config/opencode/skills/lit-scientific-visualization`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-scientific-visualization" ~/.config/opencode/skills/lit-scientific-visualization` | `grok plugin install "<path to your wjgoarxiv-skills clone>#plugins/figures" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/plugins/figures/vendor/scientific-visualization --scope user` | `agy plugin install <path to your wjgoarxiv-skills clone>/plugins/figures` | coming |
+| `frontend-ui-ux` | `design` | `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`<br>`claude plugin install design@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/plugins/design/skills/frontend-ui-ux" "${CODEX_HOME:-$HOME/.codex}/skills/frontend-ui-ux"` | `rm -r ~/.config/opencode/skills/frontend-ui-ux`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/frontend-ui-ux" ~/.config/opencode/skills/frontend-ui-ux` | `grok plugin install "<path to your wjgoarxiv-skills clone>#plugins/design" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/plugins/design/skills/frontend-ui-ux --scope user` | `agy plugin install <path to your wjgoarxiv-skills clone>/plugins/design` | coming |
+| `visual-qa` | `design` | `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`<br>`claude plugin install design@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/plugins/design/skills/visual-qa" "${CODEX_HOME:-$HOME/.codex}/skills/visual-qa"` | `rm -r ~/.config/opencode/skills/visual-qa`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/visual-qa" ~/.config/opencode/skills/visual-qa` | `grok plugin install "<path to your wjgoarxiv-skills clone>#plugins/design" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/plugins/design/skills/visual-qa --scope user` | `agy plugin install <path to your wjgoarxiv-skills clone>/plugins/design` | coming |
+| `lit-typographic-motion` | `video-covers` | `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`<br>`claude plugin install video-covers@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/plugins/video-covers/skills/lit-typographic-motion" "${CODEX_HOME:-$HOME/.codex}/skills/lit-typographic-motion"` | `rm -r ~/.config/opencode/skills/lit-typographic-motion`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-typographic-motion" ~/.config/opencode/skills/lit-typographic-motion` | `grok plugin install "<path to your wjgoarxiv-skills clone>#plugins/video-covers" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/plugins/video-covers/skills/lit-typographic-motion --scope user` | `agy plugin install <path to your wjgoarxiv-skills clone>/plugins/video-covers` | coming |
+| `readme-studio` | `video-covers` | `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`<br>`claude plugin install video-covers@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/plugins/video-covers/skills/readme-studio" "${CODEX_HOME:-$HOME/.codex}/skills/readme-studio"` | `rm -r ~/.config/opencode/skills/readme-studio`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/readme-studio" ~/.config/opencode/skills/readme-studio` | `grok plugin install "<path to your wjgoarxiv-skills clone>#plugins/video-covers" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/plugins/video-covers/skills/readme-studio --scope user` | `agy plugin install <path to your wjgoarxiv-skills clone>/plugins/video-covers` | coming |
+
+`lit-scientific-visualization` is an adapter that reads the scientific-visualization source in
+`plugins/figures/vendor/scientific-visualization/`. That is why the Codex lines copy the source as well, and why the
+Muse line installs the source itself, which answers as `scientific-visualization`.
+
+`npm test` checks this table against the marketplace: one row for every skill a family plugin ships, the lines each
+stub gives, and that every folder a line names exists here.
+
+## Harness editions (`variants/`)
+
+The family plugins hold LitClaude's copies, written for Claude Code. Five other products shipped their own edition of
+the same nine skills, in their own harness's words, before they moved them out. Those editions are kept here
+unchanged under `variants/<product>/<id>/`, copied byte for byte from the product commit that last shipped them,
+with one receipt per product in `receipts/variants-<product>.sha256`.
+
+| Folder | Harness | Copied from |
+| --- | --- | --- |
+| `variants/litcodex/` | Codex CLI | LitCodex `b82ad1c` (1.0.38 plus the skills lock), `plugins/litcodex/skills/<id>/` |
+| `variants/litopencode/` | OpenCode | LitOpenCode `dc56845` (1.0.43 plus the skills lock), `skills/<id>/` |
+| `variants/litgrok/` | Grok Build | LitGrok `8fd2c96` (1.0.34 plus the skills lock), `.grok/skills/<id>/` |
+| `variants/litgravity/` | Antigravity CLI | LitGravity `9f2533c` (0.1.8 plus the skills lock), `plugin/skills/<id>/` |
+| `variants/litmuse/` | Muse Code | LitMuse `e966b07` (0.1.11 plus the skills lock), `plugin/skills/<id>/` |
+
+Only the LitOpenCode stubs point at their editions today; the other stubs still point at the family plugins. Because
+the editions are unchanged, some of their lines still name parts of the product they came from, which that product
+removed with the move:
+- LitCodex: `litcodex office-runtime` and `litcodex motion-runtime`, the film check hook, and the
+  `vendor/scientific-visualization/` source the adapter reaches as `../../vendor`.
+- LitOpenCode: `LITOPENCODE_OFFICE_PYTHON` (lit-pptx, lit-docx); `litopencode motion-runtime`,
+  `LITOPENCODE_BLENDER` and `LITOPENCODE_MOTION_MIRROR` (lit-typographic-motion); `litopencode doctor` and
+  `install --root` (frontend-ui-ux and visual-qa contracts). Some files reach sibling folders a one-folder copy does
+  not bring: `../lit-pptx` fonts (lit-typographic-motion), `lit-humanizer` and `browser-drive` (lit-diagram-drawer),
+  the lit-diagram-drawer and lit-typographic-motion fonts and `browser-drive` (frontend-ui-ux), and
+  `../../vendor/scientific-visualization` (the scientific-visualization adapter).
+- LitGrok: `litgrok motion-runtime`; the lit-pptx process helper and Pretendard fonts that lit-docx,
+  lit-diagram-drawer and lit-typographic-motion reach in `../lit-pptx`; and the `vendor/scientific-visualization/`
+  source the adapter reaches as `../../vendor`.
+- LitGravity: `litgravity runtime` and its engines under `$XDG_DATA_HOME/litgravity/runtime`, the motion done gate,
+  and LitGravity's `plugin/lib/` reached as `../../../lib`. The lit-pptx edition is longer than the 24,000 B of a
+  SKILL.md that agy loads.
+- LitMuse: `npx @litfamily/litmuse runtime install <engine>`, the Muse Stop-hook done gate, and LitMuse's
+  `plugin/lib/` reached as `../../lib`.
+
+Fixes to make an edition run on its own go into later, separate commits, as the rules below say.
+
 ## Layout
 
 ```
@@ -48,7 +116,9 @@ plugins/<family>/lib/               the shared runtime files the skill reaches a
 plugins/<family>/bin/, vendor/      (figures) the doctor and the canonical source the adapter reaches as ../../bin and ../../vendor
 plugins/<family>/LICENSE            the licence the files came under
 receipts/<family>.sha256            sha256, source path, destination path for every copied file
-test/                               node --test checks for manifests and receipts
+variants/<product>/<id>/            another product's own edition of a moved skill, copied unchanged
+receipts/variants-<product>.sha256  sha256, source path at that product's commit, destination path
+test/                               node --test checks for manifests, receipts and the pick-one table
 ```
 
 `decks` carries 16 files of LitClaude's office runtime under `lib/`: the first-use installer
@@ -111,6 +181,9 @@ place, `lit-pptx/fonts/`, is not copied.
 ## Rules for this repository
 
 - A moved skill is copied byte for byte. Its receipt must match, and `npm test` checks that.
+- A harness edition under `variants/` is copied byte for byte from the product commit that last shipped it, with a
+  receipt row per file.
+- When a product stub's install line changes, the pick-one table changes in the same commit.
 - A family moves in one release of its product, together with the product's stub.
 - Each family plugin works without any LitFamily product installed.
 

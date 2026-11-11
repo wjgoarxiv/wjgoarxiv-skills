@@ -2,6 +2,15 @@
 
 ## Unreleased
 
+- `variants/`: the LitHermes (`a2466f2`) edition of the nine moved skills, copied unchanged with
+  `receipts/variants-lithermes.sha256`. Then, one commit per product, the Codex CLI, OpenCode, Grok Build, Antigravity
+  CLI, Muse Code and Hermes Agent editions were made to run on their own: each folder carries the files it reads,
+  product commands became scripts inside the folder, and no path leaves the folder. `variants/<product>/CHANGES.md`
+  lists each change.
+- README: every column of the pick-one table now gives the install lines of that product's current stub. Claude Code
+  installs the family plugin; the six other harnesses install their own edition of the one skill from
+  `variants/<product>/<id>/`. The Hermes Agent column is filled in. `npm test` checks receipts against the unchanged copy
+  committed with them.
 - README: a pick-one install table, one row per moved skill and one column per harness (Claude Code, Codex CLI,
   OpenCode, Grok Build, Muse Code, Antigravity CLI; Hermes Agent coming), each cell the install lines that harness's
   stub gives. `npm test` checks the table against the marketplace and the folders its lines name.

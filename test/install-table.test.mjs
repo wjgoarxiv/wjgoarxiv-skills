@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
@@ -11,7 +12,7 @@ const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((d) => (
 
 const CLONE = '<path to your wjgoarxiv-skills clone>';
 const HARNESSES = ['Claude Code', 'Codex CLI', 'OpenCode', 'Grok Build', 'Muse Code', 'Antigravity CLI', 'Hermes Agent'];
-const VARIANT_PRODUCTS = ['litcodex', 'litopencode', 'litgrok', 'litgravity', 'litmuse'];
+const VARIANT_PRODUCTS = ['litcodex', 'litopencode', 'litgrok', 'litgravity', 'litmuse', 'lithermes'];
 
 // Every skill the marketplace ships, as [family, id]. A skills/ folder without SKILL.md is a support folder.
 const market = json('.claude-plugin/marketplace.json');
@@ -22,24 +23,19 @@ const moved = market.plugins.flatMap((p) => {
     .map((id) => [p.name, id]);
 });
 
-// The install lines each product's same-name stub gives, word for word. The scientific-visualization adapter reads
-// the source under plugins/figures/vendor/, so the Codex stub copies that too and the Muse stub installs the source.
+// The install lines each product's same-name stub gives, word for word. Claude Code installs the family plugin;
+// every other harness installs that product's own edition of the one skill from variants/<product>/<id>.
 const expected = (family, id) => {
-  const vendor = `${CLONE}/plugins/figures/vendor/scientific-visualization`;
-  const sciVis = id === 'lit-scientific-visualization';
   const codexHome = '"${CODEX_HOME:-$HOME/.codex}';
+  const hermesHome = '"${HERMES_HOME:-$HOME/.hermes}';
   return {
     'Claude Code': [`claude plugin marketplace add ${CLONE}`, `claude plugin install ${family}@wjgoarxiv-skills`],
-    'Codex CLI': [
-      `mkdir -p ${codexHome}/skills"`,
-      `cp -R "${CLONE}/plugins/${family}/skills/${id}" ${codexHome}/skills/${id}"`,
-      ...(sciVis ? [`mkdir -p ${codexHome}/vendor"`, `cp -R "${vendor}" ${codexHome}/vendor/scientific-visualization"`] : []),
-    ],
+    'Codex CLI': [`mkdir -p ${codexHome}/skills"`, `cp -R "${CLONE}/variants/litcodex/${id}" ${codexHome}/skills/${id}"`],
     OpenCode: [`rm -r ~/.config/opencode/skills/${id}`, `cp -R "${CLONE}/variants/litopencode/${id}" ~/.config/opencode/skills/${id}`],
-    'Grok Build': [`grok plugin install "${CLONE}#plugins/${family}" --trust`],
-    'Muse Code': [`muse skills install ${sciVis ? vendor : `${CLONE}/plugins/${family}/skills/${id}`} --scope user`],
-    'Antigravity CLI': [`agy plugin install ${CLONE}/plugins/${family}`],
-    'Hermes Agent': [],
+    'Grok Build': [`grok plugin install "${CLONE}#variants/litgrok/${id}" --trust`],
+    'Muse Code': [`muse skills install ${CLONE}/variants/litmuse/${id} --scope user`],
+    'Antigravity CLI': [`mkdir -p ~/.gemini/config/skills && cp -R "${CLONE}/variants/litgravity/${id}" ~/.gemini/config/skills/`],
+    'Hermes Agent': [`mkdir -p ${hermesHome}/skills"`, `cp -R "${CLONE}/variants/lithermes/${id}" ${hermesHome}/skills/"`],
   };
 };
 
@@ -76,8 +72,7 @@ test('every cell carries the install lines its product stub gives, and every pat
     const want = expected(family, id);
     HARNESSES.forEach((h, i) => {
       const cell = row[i + 2];
-      if (h === 'Hermes Agent') assert.equal(cell, 'coming', `${id} × ${h}`);
-      else assert.deepEqual(codeSpans(cell), want[h], `${id} × ${h}`);
+      assert.deepEqual(codeSpans(cell), want[h], `${id} × ${h}`);
     });
     for (const line of Object.values(want).flat()) {
       for (const m of line.matchAll(/<path to your wjgoarxiv-skills clone>[/#]([^"\s]+)/gu)) {
@@ -87,25 +82,52 @@ test('every cell carries the install lines its product stub gives, and every pat
   }
 });
 
-test('every variant is a moved skill id, and its receipt matches the bytes', () => {
+// A receipt describes the unchanged copy, as it was committed together with the receipt. Later commits adapt the
+// edition to run on its own and record each change in variants/<product>/CHANGES.md.
+const git = (args, input) => execFileSync('git', ['-C', root, ...args], { input, maxBuffer: 1 << 30 });
+const blobs = (rev, paths) => {
+  const out = git(['cat-file', '--batch'], paths.map((p) => `${rev}:${p}\n`).join(''));
+  const got = new Map();
+  let at = 0;
+  for (const p of paths) {
+    const nl = out.indexOf(10, at);
+    const head = out.subarray(at, nl).toString('utf8').split(' ');
+    if (head[1] !== 'blob') { got.set(p, null); at = nl + 1; continue; }
+    const size = Number(head[2]);
+    got.set(p, out.subarray(nl + 1, nl + 1 + size));
+    at = nl + 1 + size + 1;
+  }
+  return got;
+};
+
+test('every variant is a moved skill id, and its receipt matches the unchanged copy committed with it', () => {
   const ids = new Set(moved.map(([, id]) => id));
   for (const product of VARIANT_PRODUCTS) {
     const dir = `variants/${product}`;
     assert.ok(existsSync(join(root, dir)), `${dir} exists`);
     for (const id of readdirSync(join(root, dir))) {
+      if (!statSync(join(root, dir, id)).isDirectory()) continue;
       assert.ok(ids.has(id), `${dir}/${id} is a moved skill`);
       const md = read(`${dir}/${id}/SKILL.md`).toString('utf8');
       assert.match(md, new RegExp(`^---\\nname: "?${id}"?\\n`), `${dir}/${id} frontmatter names it`);
     }
-    const rows = read(`receipts/variants-${product}.sha256`).toString('utf8').trim().split('\n').map((l) => l.split('  '));
+    const receipt = `receipts/variants-${product}.sha256`;
+    const rev = git(['log', '--format=%H', '-1', '--', receipt]).toString('utf8').trim();
+    assert.match(rev, /^[0-9a-f]{40}$/u, `${receipt} is committed`);
+    const rows = read(receipt).toString('utf8').trim().split('\n').map((l) => l.split('  '));
+    const copy = blobs(rev, rows.map(([, , dest]) => dest));
     const covered = new Set();
     for (const [sha, source, dest] of rows) {
       assert.ok(source && dest, `${product} receipt row has three fields`);
-      assert.equal(createHash('sha256').update(read(dest)).digest('hex'), sha, dest);
+      assert.ok(copy.get(dest), `${dest} is in ${rev.slice(0, 7)}`);
+      assert.equal(createHash('sha256').update(copy.get(dest)).digest('hex'), sha, dest);
       covered.add(dest);
     }
-    const files = walk(join(root, dir)).map((f) => relative(root, f));
-    assert.deepEqual(files.filter((f) => !covered.has(f)), [], `${product} files without a receipt`);
+    const files = git(['ls-tree', '-r', '--name-only', rev, '--', dir]).toString('utf8').trim().split('\n');
+    assert.deepEqual(files.filter((f) => !covered.has(f)), [], `${product} files without a receipt at ${rev.slice(0, 7)}`);
+    const now = walk(join(root, dir)).map((f) => relative(root, f));
+    const same = now.length === covered.size && now.every((f) => covered.has(f) && createHash('sha256').update(read(f)).digest('hex') === rows.find((r) => r[2] === f)[0]);
+    if (!same) assert.ok(existsSync(join(root, dir, 'CHANGES.md')), `${dir} differs from its receipt, so CHANGES.md says why`);
   }
 });
 

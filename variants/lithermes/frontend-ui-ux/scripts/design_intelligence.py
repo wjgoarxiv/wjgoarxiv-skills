@@ -5,8 +5,8 @@ import argparse
 import sys
 from pathlib import Path
 
-PLUGIN_ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(PLUGIN_ROOT))
+# uiux_runtime_common.py ships beside this script inside the skill folder.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from uiux_runtime_common import ContractError, emit_error, emit_json
 
@@ -38,7 +38,7 @@ DEFAULT_DATASET = Path(__file__).resolve().parents[1] / "resources" / "design-in
 
 
 def parser() -> argparse.ArgumentParser:
-    root = argparse.ArgumentParser(description="LitHermes offline design intelligence")
+    root = argparse.ArgumentParser(description="frontend-ui-ux offline design intelligence")
     commands = root.add_subparsers(dest="command", required=True)
     validate = commands.add_parser(
         "validate-design-contract",

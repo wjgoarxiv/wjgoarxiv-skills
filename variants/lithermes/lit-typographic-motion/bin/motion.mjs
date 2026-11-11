@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// lit-typographic-motion render CLI for LitHermes. The mode set and flags
+// lit-typographic-motion render CLI for Hermes Agent. The mode set and flags
 // follow pdoom's scripts/render.ts (stills, sheet, perf, video; --samples,
 // --shutter, --scale), MIT, see NOTICE; `run` is the one end-to-end command
 // and `gate`/`complete` re-check an existing output directory. The render only
@@ -31,7 +31,7 @@ import { stampStills, stillsPlan, writeStillsSet } from '../engine/stills.mjs';
 import { produceSound, soundCommand, soundGate } from '../engine/sound.mjs';
 import { viewedFiles } from '../engine/director.mjs';
 
-const USAGE = `LitHermes lit-typographic-motion
+const USAGE = `lit-typographic-motion (Hermes Agent)
 usage: node motion.mjs <subcommand> --out DIR [options]   (write DIR/treatment.json first)
   stage    --out DIR [--stills-only] [--round 1-3]                stage path: capture DIR/stage/index.html frame by frame; stills, film, sound, gate
   cover    --out DIR [--round 1-3] [--window t0,t1] [--detach]    cover mode (treatment mode: cover): the silent README loop DIR/cover/index.html,

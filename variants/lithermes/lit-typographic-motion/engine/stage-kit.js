@@ -1,4 +1,4 @@
-// LitHermes stage kit, served to stage pages at /lit/stage-kit.js.
+// lit-typographic-motion stage kit, served to stage pages at /lit/stage-kit.js.
 // Motion primitives only: easing, springs, keyframes, timing, seeded
 // randomness, text splitting, path drawing and morphing, masks, colour mixing,
 // text registration and declared keyed clips. It ships no scene, object, layout or copy; the page

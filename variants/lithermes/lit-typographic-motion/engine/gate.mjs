@@ -295,7 +295,7 @@ export function runGate({ manifest, records, preview = [], exports = {}, contras
     for (const run of box.runs || []) if (run.script === 'hangul' && (!HANGUL_FONTS.has(run.fontFile) || run.widthStep)) fakeHangul.push(`${box.elementId}: ${run.fontFile} width ${run.widthStep}`);
     if ((box.script !== 'latin') && Math.abs((box.scaleX ?? 1) - (box.scaleY ?? 1)) > EPS) fakeHangul.push(`${box.elementId}: scaleX ${box.scaleX} != scaleY ${box.scaleY}`);
   }
-  add('MO-A-33', fakeHangul.length ? fail(fakeHangul[0]) : pass('Hangul only from the lit-pptx pair or Galmuri, no synthetic scale'));
+  add('MO-A-33', fakeHangul.length ? fail(fakeHangul[0]) : pass('Hangul only from the bundled Pretendard pair or Galmuri, no synthetic scale'));
   const haloed = frames.flatMap((row) => (row.textBoxes || []).filter((b) => b.outline || b.halo));
   add('MO-A-35', haloed.length ? fail(`${haloed[0].elementId} is outlined or haloed`) : pass('no outlined or haloed type'));
   if (notice !== null) add('MO-A-36', notice ? pass('NOTICE present, byte-identical') : fail('NOTICE missing or altered'));

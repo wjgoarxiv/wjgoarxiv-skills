@@ -328,7 +328,7 @@ export function scanStage(stageDir, { clips: allowClips = true } = {}) {
 
 // ---------------------------------------------------------------------------
 // Fonts: the verified faces, served from the pre-warmed cache (and the reused
-// lit-pptx Pretendard pair), never shipped under this skill.
+// Pretendard pair bundled in fonts/pretendard/); every other face stays in the cache.
 
 const FACE_ROUTES = [
   ['Pretendard', 400, '100%', 'pretendard-400'], ['Pretendard', 700, '100%', 'pretendard-700'],

@@ -1,4 +1,4 @@
-"""Hermes-local verifier API backed by Python stdlib and LitHumanizer."""
+"""Hermes-local verifier API backed by the Python stdlib and the bundled visible-text detector."""
 
 from __future__ import annotations
 
@@ -7,9 +7,9 @@ from pathlib import Path
 import sys
 from typing import TypedDict
 
-_PLUGIN_ROOT = Path(__file__).resolve().parents[3]
-if str(_PLUGIN_ROOT) not in sys.path:
-    sys.path.insert(0, str(_PLUGIN_ROOT))
+_SCRIPTS = Path(__file__).resolve().parent
+if str(_SCRIPTS) not in sys.path:
+    sys.path.insert(0, str(_SCRIPTS))
 
 import humanizer_detector
 from diagram_brief import BriefReport, check_brief
@@ -51,7 +51,7 @@ class CorpusReport(TypedDict):
 
 
 def check_visible_text(text: str) -> VisibleTextReport:
-    """Run the installed plugin's exact LitHumanizer rules on diagram text."""
+    """Run the bundled visible-text rules on diagram text."""
     raw = humanizer_detector.scan_text(text, rules=humanizer_detector.load_rules(), file="<stdin>")
     findings: list[HumanizerFinding] = [
         {
@@ -75,7 +75,7 @@ def check_visible_text(text: str) -> VisibleTextReport:
 
 
 def verify_diagram(source: str, source_path: str = "<stdin>", *, enforce_canvas: bool = False) -> DiagramReport:
-    """Run geometry, accessibility, and direct LitHumanizer checks for one source."""
+    """Run geometry, accessibility, and visible-text checks for one source."""
     metrics = source_metrics(source, source_path)
     visible = check_visible_text(metrics["visibleText"])
     issues = quality_issues(source, enforce_canvas=enforce_canvas)

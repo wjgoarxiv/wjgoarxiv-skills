@@ -293,7 +293,7 @@ def canonical_design_contract(value: JsonValue) -> str:
 
     Object keys are sorted at every depth, array order is preserved, and the text ends
     with exactly one newline. That newline is part of the canonical form: every design
-    contract digest in this plugin is taken over this exact text, so dropping it changes
+    contract digest in this skill is taken over this exact text, so dropping it changes
     every hash the evidence trail pins.
     """
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":")) + "\n"
@@ -459,7 +459,7 @@ def _accessibility(issues: list, value: JsonValue) -> None:
     accessibility = _mapping(issues, value, ACCESSIBILITY_KEYS, "accessibility")
     if accessibility is None:
         return
-    # Strict equality, not a pattern and not an enum: this plugin ships one target.
+    # Strict equality, not a pattern and not an enum: this skill ships one target.
     if accessibility.get("target") != ACCESSIBILITY_TARGET:
         issues.append("accessibility.target must equal '{0}'".format(ACCESSIBILITY_TARGET))
     for key in ("keyboard", "screen_reader", "reduced_motion", "forced_colors"):

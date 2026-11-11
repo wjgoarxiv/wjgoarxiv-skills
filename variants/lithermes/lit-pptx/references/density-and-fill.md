@@ -53,7 +53,7 @@ Fill also steers title choice (`title-treatments.md`). No decoration or card pad
 ## Readouts
 
 ```sh
-node <installed-plugin>/skills/lit-pptx/bin/office.mjs qa deck.pptx
+node <skill dir>/bin/office.mjs qa deck.pptx
 ```
 
 - Bottom band: the fraction of the body (under the title, or the top margin for a low title, to

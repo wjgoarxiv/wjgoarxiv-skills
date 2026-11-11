@@ -6,13 +6,15 @@ description: Create a repository-grounded README and local cover with shaped vec
 ## #contract.activation
 
 ```yaml
-schema_version: lithermes_llm_contract/v1
+schema_version: hermes_skill_contract/v1
 skill_id: readme-studio
-surface: Hermes register(ctx) skill, explicit named natural route
+invocation: skill_view("readme-studio")
+install_path: ${HERMES_HOME:-~/.hermes}/skills/readme-studio
+surface: Hermes local skill; slash command /readme-studio
 reader_projection: shared_rule
 ```
 
-Hermes exposes this skill through `skills_list` and `skill_view`; the plugin registers its installed path. Select `lithermes:readme-studio`, or begin a request with `readme-studio` or `lit readme-studio`. No slash command or incidental README keyword activation is claimed. If this is the main workflow, emit one `▲ LIT · readme-studio` line. Loading guidance is not permission to write or proof that a tool ran.
+Hermes exposes this skill through `skills_list` and `skill_view` once this folder sits in `${HERMES_HOME:-~/.hermes}/skills/`, and gives it the slash command `/readme-studio`. Select it for a request to create or improve a README and its cover; incidental README mentions inside other work do not call for it. Every helper, template and reference sits in `${HERMES_SKILL_DIR}` (Hermes fills that token in when it loads this file); no plugin is needed. Loading guidance is not permission to write or proof that a tool ran.
 
 ## #contract.inputs
 
@@ -30,11 +32,10 @@ Use the authorized repository, applicable instructions, current README, real pac
 ## #contract.procedure
 
 1. Inspect repository instructions and status, package metadata, executable install commands, license and relevant docs. Follow `references/facts.md`. For a production request, apply `references/production-interview.md` only if a material choice remains unresolved; otherwise state the supported default and proceed. Keep claims with repository-relative evidence in a task-local facts file, starting from `templates/facts.json`. Compare each claim to its source yourself; the helper checks structure and path safety only.
-2. Bind every helper to the exact SKILL.md path returned for this selection. An installed plugin directory and the current project directory are different roots; quote both, including spaces. From the authorized project, use:
+2. Bind every helper to this skill's own folder. The installed skill directory and the current project directory are different roots; quote both, including spaces. From the authorized project, use the `terminal` tool:
 
    ```sh
-   HERMES_README_SKILL_FILE="<absolute selected SKILL.md>"
-   HERMES_README_SKILL_ROOT="$(cd "$(dirname "$HERMES_README_SKILL_FILE")" && pwd -P)"
+   HERMES_README_SKILL_ROOT="$(cd "${HERMES_SKILL_DIR}" && pwd -P)"
    HERMES_README_PROJECT_ROOT="$(pwd -P)"
    python3 "$HERMES_README_SKILL_ROOT/scripts/check_facts.py" --project-root "$HERMES_README_PROJECT_ROOT" --facts "$HERMES_README_PROJECT_ROOT/readme-facts.json"
    ```
@@ -48,7 +49,7 @@ Use the authorized repository, applicable instructions, current README, real pac
 ## #contract.outputs
 
 ```json
-{"schema_version":"lithermes_llm_contract/v1","skill_id":"readme-studio","delivery":["README","facts and font provenance","inspected background","outlined title","editable composition","static poster","motion master and inline preview when available"],"status":"candidate until rendered and reviewed"}
+{"schema_version":"hermes_skill_contract/v1","skill_id":"readme-studio","delivery":["README","facts and font provenance","inspected background","outlined title","editable composition","static poster","motion master and inline preview when available"],"status":"candidate until rendered and reviewed"}
 ```
 
 Explain the result and material gap in the reply. Retain exact versions, commands, sizes, hashes, image provenance, inspection and cleanup in task evidence. A background-free draft, an unrendered template or a registration test is partial; it cannot establish completed asset production or model behavior.

@@ -13,7 +13,7 @@ import { clamp } from './util.mjs';
 
 // Font ids -> files. Archivo comes as pdoom's pre-built width x weight instances
 // (weights 500/700/900; 500 stands in for 400, MO-A-59); Hangul reuses this
-// product's own lit-pptx Pretendard pair (400 <-> 700 only, MO-A-33).
+// Pretendard pair bundled in this skill's fonts/pretendard/ (400 <-> 700 only, MO-A-33).
 export const FONT_FILES = Object.freeze({
   ...Object.fromEntries([75, 100, 125].flatMap((w) => [500, 700, 900].map((wt) => [`archivo-w${w}-${wt}`, `fonts/Archivo-w${w * 10}-${wt}.ttf`]))),
   'pretendard-400': 'lit-pptx:Pretendard-Regular.otf',

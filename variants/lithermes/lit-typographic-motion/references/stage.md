@@ -68,9 +68,9 @@ or prefetch link, anywhere in the stage files.
 
 ### Fonts
 
-`/lit/fonts.css` declares this product's verified faces with
-`font-display: block`, served from the pre-warmed cache and the reused lit-pptx
-Pretendard pair: `Pretendard` (400, 700), `Archivo` (500, 700, 900 at
+`/lit/fonts.css` declares this skill's verified faces with
+`font-display: block`, served from the pre-warmed cache and the bundled
+Pretendard pair (`fonts/pretendard/`): `Pretendard` (400, 700), `Archivo` (500, 700, 900 at
 `font-stretch` 75 %, 100 %, 125 %), `Galmuri9`, `VT323`, `Silkscreen` (400,
 700) and `MesloLGS NF`, plus `JetBrains Mono` (a variable `wght` axis from 100
 to 800 with a fixed advance, pinned in the same pre-warmed cache, so weight

@@ -1,4 +1,4 @@
-LitHermes lit-typographic-motion: third-party notices
+lit-typographic-motion (Hermes Agent skill): third-party notices
 
 Engine: portions adapted from mexicat/pdoom-video, commit
 ca251e3dddda422b364385eb484b5a3593a0990d (MIT, Giacomo Magnanini). The full
@@ -13,10 +13,10 @@ Vendored library (bundled, unmodified, served to stage pages at /lit/three/)
       addons/environments/RoomEnvironment.js    85869bdd22f7cf0b22e68dcefe6cb710480af0f5c901a76f7a7764fd07fc8014
       addons/geometries/RoundedBoxGeometry.js   d20aeaf7077c459a8d952d215738d7b44fba028440bb862d84b622a34f0c80bb
 
-Fonts. Nothing below is bundled in this package. `lithermes motion-runtime
-install` fetches each file from its pinned URL, verifies its sha256 against
-runtime/fonts.json, and stores it with its licence file in the product cache.
-<cache> means that cache directory (printed by `lithermes motion-runtime status`).
+Fonts. Only the Pretendard pair below is bundled (fonts/pretendard/). `node
+bin/runtime.mjs install` fetches every other file from its pinned URL, verifies its
+sha256 against runtime/fonts.json, and stores it with its licence file in the
+private cache. <cache> means that cache directory (printed by `node bin/runtime.mjs status`).
 
 font: <cache>/assets/fonts/Galmuri9.ttf
   licence: <cache>/assets/licenses/Galmuri-OFL.md (SIL OFL 1.1, Reserved Font Name; used unmodified)
@@ -60,7 +60,7 @@ font: <cache>/assets/fonts/stroke/EMSTech.svg
   licence: runtime/licenses/EMS-OFL.txt and runtime/licenses/CREDITS (in this package)
 font: <cache>/assets/fonts/JetBrainsMono-wght-latin.woff2 (variable wght 100-800, latin subset, from @fontsource-variable/jetbrains-mono 5.3.0; unmodified)
   licence: <cache>/assets/licenses/JetBrainsMono-OFL.txt (SIL OFL 1.1, no Reserved Font Name)
-font: ../lit-pptx/pretendard-font/public/static/Pretendard-Regular.otf (reused by path, unmodified)
-  licence: ../lit-pptx/fonts/PRETENDARD-OFL.txt (SIL OFL 1.1)
-font: ../lit-pptx/pretendard-font/public/static/Pretendard-Bold.otf (reused by path, unmodified)
-  licence: ../lit-pptx/fonts/PRETENDARD-OFL.txt (SIL OFL 1.1)
+font: fonts/pretendard/Pretendard-Regular.otf (bundled, unmodified official file)
+  licence: fonts/PRETENDARD-OFL.txt (SIL OFL 1.1)
+font: fonts/pretendard/Pretendard-Bold.otf (bundled, unmodified official file)
+  licence: fonts/PRETENDARD-OFL.txt (SIL OFL 1.1)

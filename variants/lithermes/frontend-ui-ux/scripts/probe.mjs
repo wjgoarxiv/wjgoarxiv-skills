@@ -8,7 +8,7 @@ import { dirname, extname, join, resolve, sep as separator } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const scriptDir = dirname(fileURLToPath(import.meta.url));
-const pluginDir = resolve(scriptDir, '../../..');
+const driveDir = join(scriptDir, 'browser-drive');
 const argv = process.argv.slice(2);
 const option = (name) => {
   const index = argv.indexOf(name);
@@ -173,7 +173,7 @@ if (!url) {
     screenshots: [], exit_code: 2, blocked_reason: 'browser unavailable' }, findings: fallback.findings, status: 'BLOCKED: browser unavailable', not_verified: fallback.not_verified });
   process.exit(2);
 }
-const origin = JSON.parse(readFileSync(resolve(pluginDir, 'skills/browser-drive/ORIGIN.json'), 'utf8'));
+const origin = JSON.parse(readFileSync(join(driveDir, 'ORIGIN.json'), 'utf8'));
 if (origin.schema !== 'lithermes.browser-drive-origin/v1' || origin.package?.name !== 'agent-browser' ||
     !origin.package.dist?.integrity || !origin.verifiedVersionFloor) {
   save({ status: 'BLOCKED: browser identity unverified', findings: fallback.findings, not_verified: fallback.not_verified,
@@ -182,7 +182,7 @@ if (origin.schema !== 'lithermes.browser-drive-origin/v1' || origin.package?.nam
 }
 let capability;
 try {
-  capability = JSON.parse(execFileSync(process.platform === 'win32' ? 'python' : 'python3', [resolve(pluginDir, 'skills/browser-drive/scripts/capability_probe.py')],
+  capability = JSON.parse(execFileSync(process.platform === 'win32' ? 'python' : 'python3', [join(driveDir, 'capability_probe.py')],
     { encoding: 'utf8', timeout: 15000, env: { ...process.env, PYTHONDONTWRITEBYTECODE: '1' } }));
 } catch {
   save({ status: 'BLOCKED: browser unavailable', findings: fallback.findings, not_verified: fallback.not_verified,

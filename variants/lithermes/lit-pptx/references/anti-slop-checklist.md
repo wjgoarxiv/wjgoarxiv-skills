@@ -39,7 +39,7 @@ widens the named limit and is range-checked when the pack loads; content stays h
 - Review-only findings must be recorded and rewritten where warranted, but they do not become brittle automated failures. Prefer “검토한 데이터베이스 범위에서는 확인되지 않았다” and expand specialist terms on first use.
 
 ## Visual review rules
-LitHermes judges every rendered deck against these rules by eye, once the automated checks are clean. They assume a static export: nothing moves, no gradient or border or shadow sits on text.
+Hermes judges every rendered deck against these rules by eye, once the automated checks are clean. They assume a static export: nothing moves, no gradient or border or shadow sits on text.
 
 ### Anti-slop visual bans (absolute)
 - [ ] No side-stripe accents (colored `border-left/right` > 1px) — use a 1px hairline, a flat tint, a leading numeral, or an icon on a wrapper `<div>`.

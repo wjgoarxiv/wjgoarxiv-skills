@@ -2,9 +2,9 @@
 
 ## What is installed, and when
 
-The skill package ships engine code, a lockfile, font pins and licence files;
-no font and no dependency is bundled. `lithermes motion-runtime install` (and
-`lithermes install`, which attempts it) fills a product cache once:
+The skill folder ships engine code, a lockfile, font pins, licence files and
+the Pretendard pair; no other font and no dependency is bundled. `node <skill dir>/bin/runtime.mjs install`,
+run once by the user in a normal shell, fills a private cache:
 
 - `npm ci --omit=dev --ignore-scripts` of `runtime/package-lock.json`
   (playwright-core as the Chrome driver, ws for frame egress, opentype.js for
@@ -12,14 +12,15 @@ no font and no dependency is bundled. `lithermes motion-runtime install` (and
   renamed into place when complete;
 - every font and licence file in `runtime/fonts.json`, each downloaded from its
   pinned URL and rejected unless its sha256 matches;
-- a check that this product's Pretendard Regular and Bold still match their
-  recorded hashes.
+- a check that the bundled Pretendard Regular and Bold (`fonts/pretendard/`)
+  still match their recorded hashes.
 
-The cache is `${XDG_CACHE_HOME:-$HERMES_HOME/.cache}/lithermes/motion/<digest>`,
-where the digest covers the lockfile and the font pins; the installed plugin also
-finds a cache under the Hermes home it is installed in. A failed or skipped
-pre-warm never fails `lithermes install`; it prints one receipt line naming the
-command. With `--offline` the installer skips the pre-warm and says so.
+The cache is `${XDG_CACHE_HOME:-$HERMES_HOME/.cache}/lit-typographic-motion/<digest>`
+(or `~/.cache/lit-typographic-motion/<digest>`), where the digest covers the
+lockfile and the font pins; a skill folder installed as
+`<hermes home>/skills/lit-typographic-motion` also finds a cache under that
+Hermes home. Copying the skill folder never runs the pre-warm: the first render
+stops with exit 14 and names the command until the user has run it.
 
 Renders only read the cache and write inside `--out`. Nothing in a render or a
 Hermes session runs npm, pip or a download. Run the pre-warm in a normal shell,
@@ -28,7 +29,7 @@ outside any sandboxed session, with the same `HOME`, `HERMES_HOME` and
 
 ## Status (six probes)
 
-`lithermes motion-runtime status` and `lithermes doctor` report, every time:
+`node <skill dir>/bin/runtime.mjs status` reports, every time:
 
 1. **Chrome**: the executable and version, or not found (set `CHROME_PATH`).
 2. **ffmpeg**: the version line and the preview encoder rung available
@@ -43,7 +44,7 @@ outside any sandboxed session, with the same `HOME`, `HERMES_HOME` and
    the state of the optional audio venv.
 6. **Cover encoder**: img2webp and dwebp (libwebp) with their version, the
    gifski fallback, or not found (cover renders then stop with exit 21). These
-   are host tools, never bundled or installed by this product.
+   are host tools, never bundled or installed by this skill.
 
 ## Chrome launch
 
@@ -72,8 +73,8 @@ the render with exit 10 and that line. The engine never adds `--no-sandbox`.
 | 11 | BLOCKED_NO_WEBGL2 | Chrome runs but has no WebGL2 (or frames could not leave the page); quote the renderer or error; check GPU drivers or SwiftShader |
 | 12 | BLOCKED_NO_FFMPEG_FOR_VIDEO | ffmpeg is not on PATH; `run` still leaves stills and the cut sheet; install ffmpeg for the film |
 | 13 | GATE_FAIL_QA | the gate or the pre-flight failed; the report names the rules; fix and rerun the next round |
-| 14 | BLOCKED_DEPS_NOT_PREWARMED | the cache is not warm (or word-timing models are absent): run `lithermes motion-runtime install` outside this session |
-| 15 | BLOCKED_FONT_FETCH | a pinned font or licence is missing or its sha256 differs: rerun `lithermes motion-runtime install`; never accept or re-fetch it inside a session |
+| 14 | BLOCKED_DEPS_NOT_PREWARMED | the cache is not warm (or word-timing models are absent): run `node <skill dir>/bin/runtime.mjs install` outside this session |
+| 15 | BLOCKED_FONT_FETCH | a pinned font or licence is missing or its sha256 differs: rerun `node <skill dir>/bin/runtime.mjs install`; never accept or re-fetch it inside a session |
 | 21 | BLOCKED_NO_COVER_ENCODER | cover mode found neither img2webp with dwebp nor gifski; install libwebp (or gifski) on the host |
 | 22 | BLOCKED_ASSET_MISSING | cover mode: an asset listed in `assets.json` is missing; supply or generate it, never a stand-in |
 | 2 | usage | a missing or invalid brief or flag |
@@ -84,13 +85,13 @@ glyph coverage and timeline floors (13, nothing rendered), ffmpeg for `video`
 
 ## Audio (Tier 2)
 
-`lithermes motion-runtime install --audio` creates a Python venv in the cache
+`node <skill dir>/bin/runtime.mjs install --audio` creates a Python venv in the cache
 from `runtime/requirements.lock` with
 `pip install --require-hashes --only-binary=:all:` (librosa and its pinned
 dependencies; the newest Python from 3.14 down to 3.11 on PATH, picked the way the
 Office runtime picks, so a python3 that is 3.15 is passed over; the lock pins
 numpy 2.4, which starts at 3.11, and carries audioread's extra dependencies
-for 3.13 and newer; set `LITHERMES_MOTION_PYTHON` to choose
+for 3.13 and newer; set `LIT_MOTION_PYTHON` to choose
 the interpreter). When a brief names an
 `audio` file and the venv is ready and still matches its pins, `bin/audio.py`
 analyses that file once into `<out>/audio-grid.json` and the beats replace the fixed grid. If the venv is
@@ -117,14 +118,14 @@ MMS_FA weights are never used.
 
 ## Word timing (Tier 3)
 
-Opt-in only (`--word-timing` or `"wordTiming": true`), never from bare `lit`.
-`lithermes motion-runtime install --word-timing` prints the model pins and the
+Opt-in only (`--word-timing` or `"wordTiming": true`), never by default.
+`node <skill dir>/bin/runtime.mjs install --word-timing` prints the model pins and the
 download size before doing anything. No licence-clean, Korean-capable alignment
 model with a recorded revision is pinned yet, so the install refuses and a
 render that asks for word timing exits 14 naming that command.
 
 ## Diagnostics
 
-`LITHERMES_MOTION_FAULT_LISTEN=EPERM` makes the frame server refuse `listen`,
+`LIT_MOTION_FAULT_LISTEN=EPERM` makes the frame server refuse `listen`,
 to exercise the CDP-pull path. `--force-software` renders on the SwiftShader
 rung only, which the determinism re-check uses.

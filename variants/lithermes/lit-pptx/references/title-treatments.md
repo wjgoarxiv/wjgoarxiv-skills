@@ -90,7 +90,7 @@ Never reposition a title with a free box; that is a ninth, broken treatment.
 ## What the gate checks
 
 ```sh
-node <installed-plugin>/skills/lit-pptx/bin/office.mjs qa deck.pptx
+node <skill dir>/bin/office.mjs qa deck.pptx
 ```
 
 QA classifies titles by geometry, first match wins: `overlay`, `band`, `statement`, `bottom-anchor`, `side-rail`, `kicker-numeral`,

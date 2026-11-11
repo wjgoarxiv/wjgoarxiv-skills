@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""docx_gate.py — the LitHermes pass/fail gate for one generated Word document.
+"""docx_gate.py — the lit-docx pass/fail gate for one generated Word document.
 
-Run it through the shared Office runner so the pinned runtime is used:
+Run it through this skill's Office runner so the pinned runtime is used:
 
-    node <installed-plugin>/skills/lit-pptx/bin/office.mjs gate report.docx --source report.md --layout
-    node <installed-plugin>/skills/lit-pptx/bin/office.mjs gate report.docx --source report.md --compare other.docx
-    node <installed-plugin>/skills/lit-pptx/bin/office.mjs gate paper.docx --source paper.md --publisher elsevier --kind manuscript
+    node <skill dir>/bin/office.mjs gate report.docx --source report.md --layout
+    node <skill dir>/bin/office.mjs gate report.docx --source report.md --compare other.docx
+    node <skill dir>/bin/office.mjs gate paper.docx --source paper.md --publisher elsevier --kind manuscript
 
 It reads, in order:
 
@@ -125,7 +125,7 @@ def render_pdf(path: Path, out_dir: Path) -> Path | None:
     soffice = shutil.which("soffice") or shutil.which("libreoffice")
     if not soffice:
         return None
-    with tempfile.TemporaryDirectory(prefix="lithermes-soffice-") as profile:
+    with tempfile.TemporaryDirectory(prefix="lit-docx-soffice-") as profile:
         subprocess.run([soffice, f"-env:UserInstallation={Path(profile).as_uri()}", "--headless", "--convert-to", "pdf",
                         "--outdir", str(out_dir), str(path)], capture_output=True, text=True, timeout=300)
     pdf = out_dir / f"{path.stem}.pdf"
@@ -147,7 +147,7 @@ def output_report(path: Path, source: Path | None, args) -> dict:
                                              f"the two builds differ in {len(differ)} structural feature(s): {', '.join(differ) or 'none'}",
                                              "Make the tonalities differ in structure: title block, summary form, numbering, components, running head, contents."))
     if args.layout:
-        with tempfile.TemporaryDirectory(prefix="lithermes-docx-pages-") as tmp:
+        with tempfile.TemporaryDirectory(prefix="lit-docx-pages-") as tmp:
             try:
                 pdf = render_pdf(path, Path(tmp))
             except subprocess.TimeoutExpired:
@@ -164,7 +164,7 @@ def output_report(path: Path, source: Path | None, args) -> dict:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Pass/fail gate for a generated DOCX (LitHermes).")
+    parser = argparse.ArgumentParser(description="Pass/fail gate for a generated DOCX (lit-docx).")
     parser.add_argument("docx", type=Path)
     parser.add_argument("--source", type=Path, help="the Markdown the document was built from")
     parser.add_argument("--publisher", help="korean-generic, elsevier, acs, ieee or nature; omit for a tonality or the plain build")

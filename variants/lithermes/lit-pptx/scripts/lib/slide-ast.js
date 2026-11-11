@@ -477,7 +477,7 @@ const CHART_TYPES = new Set(["bar", "column", "line", "area", "pie", "doughnut",
  *   :::
  */
 function buildChartBlocks(value, attrs, positional) {
-  // `kind=bar|line` is this product's older native-chart dialect.
+  // `kind=bar|line` is this skill's older native-chart dialect.
   if (attrs.kind != null && attrs.type == null) return buildNativeChart(value, attrs);
   const table = parseTable(value);
   if (!table || table.headers.length < 2 || table.rows.length === 0) {

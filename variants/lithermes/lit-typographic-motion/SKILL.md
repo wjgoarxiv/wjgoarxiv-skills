@@ -3,23 +3,27 @@ name: lit-typographic-motion
 description: Direct an original film in Hermes Agent: a treatment first, then a drawn stage page, the WebGL2 type engine, or a README cover loop.
 ---
 
-# LitHermes film director
+# Film director for Hermes Agent
 
 ## #contract.activation
 
 ```yaml
-schema_version: lithermes_llm_contract/v1
+schema_version: hermes_skill_contract/v1
+artifact_kind: hermes_local_skill
 host: Hermes Agent
 skill_id: lit-typographic-motion
-invocation: lithermes:lit-typographic-motion
+invocation: skill_view("lit-typographic-motion")
+install_path: ${HERMES_HOME:-~/.hermes}/skills/lit-typographic-motion
 command: /lit-typographic-motion
+cli: node ${HERMES_SKILL_DIR}/bin/motion.mjs
+runtime: node ${HERMES_SKILL_DIR}/bin/runtime.mjs install|status
 ```
 
 ```json
-{"schema_version":"lithermes_llm_contract/v1","artifact_kind":"film"}
+{"schema_version":"hermes_skill_contract/v1","artifact_kind":"film"}
 ```
 
-Reached by `/lit-typographic-motion <request>`, the skill id, or bare `lit` with a film request; the CLI below is `M`.
+Reached by `/lit-typographic-motion <request>` or `skill_view("lit-typographic-motion")` when a film request matches the description. Everything sits in this folder (`${HERMES_SKILL_DIR}`, which Hermes fills in when it loads this file); no plugin is needed. In the `terminal` tool set `M="node ${HERMES_SKILL_DIR}/bin/motion.mjs"`; the CLI below is `$M`. Before the first render, have the user run `node ${HERMES_SKILL_DIR}/bin/runtime.mjs install` once in a normal shell (it fetches the pinned packages and fonts into a private cache); `node ${HERMES_SKILL_DIR}/bin/runtime.mjs status` is read-only and prints the six probes in `references/runtime.md`.
 
 ## #contract.inputs
 
@@ -60,7 +64,7 @@ limitations_channel: reply
 
 ## #contract.evidence
 
-Done only when `$M complete --out DIR` exits 0: valid treatment, passing gate (a cover: TARGET), two look rounds, the last on the final render. Reply: defaults, labels on inventions and generated sound/assets, checks, copy location, re-render command, open items.
+Done only when `$M complete --out DIR` exits 0: valid treatment, passing gate (a cover: TARGET), two look rounds, the last on the final render. Nothing outside this folder runs that check for you: run it yourself before saying the film is done. Reply: defaults, labels on inventions and generated sound/assets, checks, copy location, re-render command, open items.
 
 ## #contract.hard_stops
 

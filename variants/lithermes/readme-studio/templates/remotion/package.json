@@ -1,5 +1,5 @@
 {
-  "name": "lithermes-readme-motion",
+  "name": "readme-studio-motion",
   "private": true,
   "type": "module",
   "scripts": {"render": "remotion render", "still": "remotion still"},

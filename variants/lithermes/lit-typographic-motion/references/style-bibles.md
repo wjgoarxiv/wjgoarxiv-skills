@@ -3,7 +3,7 @@
 On the type path the treatment (`treatment.md`) already fixes the idea, the
 audience, the arc, the palette and the sound. The style bible adds the look
 decisions the type engine will not make by itself. Write it in your own words
-for this film. Under bare `lit` do not ask the user; choose, then label each
+for this film. In a non-interactive run do not ask the user; choose, then label each
 choice as a default in the final reply.
 
 ## The style-bible template

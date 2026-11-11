@@ -6,8 +6,8 @@ import hashlib
 import sys
 from pathlib import Path
 
-PLUGIN_ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(PLUGIN_ROOT))
+# uiux_runtime_common.py ships beside this script inside the skill folder.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from uiux_runtime_common import ContractError, emit_error, emit_json
 

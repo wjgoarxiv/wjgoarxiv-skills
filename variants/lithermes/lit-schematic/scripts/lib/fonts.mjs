@@ -1,5 +1,5 @@
-// Locates fonts for rendering. Pretendard ships with the diagram skill (unmodified official
-// file under the OFL); lit-schematic reads it from there instead of carrying a second copy.
+// Locates fonts for rendering. Pretendard ships inside this skill folder (assets/fonts/, the
+// unmodified official variable file under the OFL), so a one-skill install renders Hangul.
 
 import { existsSync, readdirSync } from "node:fs";
 import { homedir } from "node:os";
@@ -9,11 +9,8 @@ import { fileURLToPath } from "node:url";
 export const SKILL_ROOT = resolve(fileURLToPath(new URL("../..", import.meta.url)));
 
 export function findPretendard() {
-  const inPlugin = [
-    join(SKILL_ROOT, "..", "lit-diagram-drawer", "assets", "fonts", "PretendardVariable.woff2"),
-    join(SKILL_ROOT, "..", "lit-pptx", "pretendard-font", "public", "static", "Pretendard-Regular.otf"),
-  ];
-  for (const file of inPlugin) if (existsSync(file)) return { file, source: "plugin" };
+  const bundled = [join(SKILL_ROOT, "assets", "fonts", "PretendardVariable.woff2")];
+  for (const file of bundled) if (existsSync(file)) return { file, source: "skill" };
   const dirs = [join(homedir(), "Library", "Fonts"), "/Library/Fonts", join(homedir(), ".local", "share", "fonts"), "/usr/share/fonts", "C:\\Windows\\Fonts"];
   for (const dir of dirs) {
     try {

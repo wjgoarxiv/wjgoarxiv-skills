@@ -73,7 +73,7 @@ def verify_motion_main(argv: list[str] | None = None) -> int:
 
 
 def check_visible_text_main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Run the product-local LitHumanizer detector on text or diagram HTML.")
+    parser = argparse.ArgumentParser(description="Run the bundled visible-text detector on text or diagram HTML.")
     parser.add_argument("source", help="text, diagram HTML, or SVG")
     args = parser.parse_args(argv)
     try:

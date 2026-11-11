@@ -330,7 +330,7 @@ export async function runTextQa(session) {
 
 export const QA_ROW_IDS = ['text-contrast', 'text-title-safe', 'text-reading-floor', 'copy-found', 'decor-copy', 'decor-area', 'meta-label', 'fonts', 'canvas-text', 'qa-samples', 'non-text-presence', 'text-overlap'];
 
-// The platform names of this product's verified faces, read from probe spans.
+// The platform names of this skill's verified faces, read from probe spans.
 async function faceNames(stage) {
   await stage.page.evaluate(() => {
     const holder = document.createElement('div');

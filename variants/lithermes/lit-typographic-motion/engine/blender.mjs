@@ -29,10 +29,10 @@ export const BLENDER = Object.freeze({
   plateFps: 30,
 });
 
-// Where Blender lives: a LITHERMES_BLENDER override first (pinned and never second-guessed), then
+// Where Blender lives: a LIT_MOTION_BLENDER override first (pinned and never second-guessed), then
 // the macOS app, then `blender` on PATH. Returns { path, source } or null.
 export function findBlender({ env = process.env, exists = existsSync, platform = process.platform } = {}) {
-  if (env.LITHERMES_BLENDER) return exists(env.LITHERMES_BLENDER) ? { path: env.LITHERMES_BLENDER, source: 'LITHERMES_BLENDER' } : null;
+  if (env.LIT_MOTION_BLENDER) return exists(env.LIT_MOTION_BLENDER) ? { path: env.LIT_MOTION_BLENDER, source: 'LIT_MOTION_BLENDER' } : null;
   if (platform === 'darwin' && exists(BLENDER.macApp)) return { path: BLENDER.macApp, source: 'app' };
   for (const dir of String(env.PATH ?? '').split(delimiter).filter(Boolean)) {
     const file = join(dir, 'blender');
@@ -60,7 +60,7 @@ export function blenderArgs({ treatment, scene, out, quality }) {
 }
 
 const FALLBACK = (out) => [
-  'FALLBACK: no Blender found (LITHERMES_BLENDER, /Applications/Blender.app, blender on PATH), so nothing was rendered.',
+  'FALLBACK: no Blender found (LIT_MOTION_BLENDER, /Applications/Blender.app, blender on PATH), so nothing was rendered.',
   `Set render3d to "three" in ${join(out, 'treatment.json')} and build the world in three.js on the GPU rung (references/depth.md),`,
   'and say in the reply that the film used the GPU rung because Blender is not installed.',
 ].join('\n');

@@ -1,4 +1,4 @@
-// Every number the LitHermes motion engine and its gate use, in one place.
+// Every number the lit-typographic-motion engine and its gate use, in one place.
 // Source: the family motion spec (FINAL + Delta 1). Rows the spec marks [NEW]
 // are PROVISIONAL: implemented exactly as written, pending a user decision, and
 // labelled "provisional" here and in every gate report.

@@ -2,7 +2,7 @@
 // look.json; each round is stamped with the SHA-256 of the render's manifest
 // and of every frame it lists, and only frames from the latest stills set are
 // accepted. `complete` then decides done from the gate, the treatment, the
-// rounds and (when the Hermes tool hook is live) the vision_analyze receipts.
+// rounds and (when a host tool hook wrote .run/host-events.jsonl) the vision_analyze receipts.
 import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -268,7 +268,7 @@ export function checkDone(out) {
 // Cover done (references/cover.md): a valid cover treatment unchanged since the last render, that
 // render's decoded cover at every TARGET gate (exit 0), at least two look rounds (round 1 naming its
 // change) and a last round on the final render that viewed the sheet, the poster and the seam pair,
-// with vision_analyze receipts when the Hermes tool hook recorded them.
+// with vision_analyze receipts when a host tool hook recorded them.
 function checkCoverDone(out, state, no) {
   const labels = generatedLabels(out);
   const extra = { downgraded: [], labels };

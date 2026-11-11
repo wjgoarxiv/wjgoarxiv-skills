@@ -5,8 +5,8 @@ import argparse
 import sys
 from pathlib import Path
 
-PLUGIN_ROOT = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(PLUGIN_ROOT))
+# uiux_runtime_common.py ships beside this script inside the skill folder.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from uiux_runtime_common import ContractError, emit_error, emit_json, read_stdin_json, read_stdin_text
 
@@ -16,7 +16,7 @@ from visual_contracts import evaluate_capabilities, evaluate_tier, validate_evid
 
 
 def parser() -> argparse.ArgumentParser:
-    root = argparse.ArgumentParser(description="LitHermes dependency-free visual QA")
+    root = argparse.ArgumentParser(description="visual-qa dependency-free visual QA")
     commands = root.add_subparsers(dest="command", required=True)
     evidence = commands.add_parser("validate-evidence")
     evidence.add_argument("--now", required=True)

@@ -235,7 +235,7 @@ def preflight_pdf_compile(publisher_name: str, publisher: dict, detected_locale:
     if missing:
         raise SystemExit(
             f"BLOCKED: PDF font not installed: {', '.join(missing)} (publisher '{publisher_name}', fontspec would stop XeLaTeX). "
-            "Install the font system-wide (Pretendard ships in skills/lit-pptx/pretendard-font/public/static) "
+            "Install the font system-wide (Pretendard ships in this skill folder, fonts/pretendard/) "
             "or change latex.cjk.main_font / the docx body font in templates/registry.yaml to one you have."
         )
 

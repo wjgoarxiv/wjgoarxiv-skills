@@ -1,6 +1,6 @@
 # Product-local diagram verification
 
-All authoring checks use Python standard-library modules plus the LitHermes plugin's installed `humanizer_detector`. Run them from the installed skill directory; no package installation or network access is needed.
+All authoring checks use Python standard-library modules plus the bundled `scripts/humanizer_detector.py` (rules in `references/humanizer-rules.json`). Run them from the installed skill directory (`${HERMES_HOME:-~/.hermes}/skills/lit-diagram-drawer`); no package installation or network access is needed.
 
 ## Per-document checks
 
@@ -14,7 +14,7 @@ python3 scripts/check-visible-text.py path/to/diagram.html
 
 The commands emit JSON with issue codes and return nonzero when a check fails. `verify-diagram.py` checks SVG structure, finite geometry, text and node overlap, clipping, routes, contrast, accessibility metadata, and visible-text findings. `--canvas` also enforces the complete-artifact title, font, and content-fill floors. Run `verify-type.py` with the exact catalog ID and `verify-brief.py` against the brief that defines required content and boundary membership.
 
-`verify-motion.py` detects source patterns such as SMIL animation, unbounded CSS/JavaScript motion, and missing reduced-motion markers. It cannot prove that the static composition is complete or that controls are accessible, so review those properties separately. `check-visible-text.py` extracts visible SVG/document text before applying the exact installed LitHumanizer rules; it does not treat CSS or markup as prose.
+`verify-motion.py` detects source patterns such as SMIL animation, unbounded CSS/JavaScript motion, and missing reduced-motion markers. It cannot prove that the static composition is complete or that controls are accessible, so review those properties separately. `check-visible-text.py` extracts visible SVG/document text before applying the bundled visible-text rules (`references/humanizer-rules.json`); it does not treat CSS or markup as prose.
 
 ## Craft-floor notes
 

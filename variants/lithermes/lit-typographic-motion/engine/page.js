@@ -1,4 +1,4 @@
-/* LitHermes typographic-motion renderer, browser half.
+/* lit-typographic-motion renderer, browser half.
  * Raw WebGL2 re-expression of mexicat/pdoom-video's gl.ts (fullscreen passes,
  * half-float targets, Canvas2D layers as textures), lines.ts (instanced capsule
  * hairlines), post.ts (bloom pyramid, halation, CA, shoulder, grain, vignette,

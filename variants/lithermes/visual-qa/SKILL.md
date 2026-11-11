@@ -1,18 +1,23 @@
 ---
 name: visual-qa
-description: Hermes-native visual evidence gate.
+description: Verify a built web or TUI surface in Hermes with bounded capture evidence and exact blockers.
 ---
 
 ## #contract.activation
 
 ```yaml
-schema_version: lithermes_llm_contract/v1
+schema_version: hermes_skill_contract/v1
 skill_id: visual-qa
-surface: Hermes-native skill and UI-shaped context hook
+invocation: skill_view("visual-qa")
+install_path: ${HERMES_HOME:-~/.hermes}/skills/visual-qa
+surface: Hermes local skill; slash command /visual-qa
+runtime: python3 ${HERMES_SKILL_DIR}/scripts/visual_qa.py
 ```
 
+Self-contained: the runtime, schemas and references sit in `${HERMES_SKILL_DIR}`; no plugin needed.
+
 ```json
-{"schema_version":"lithermes_llm_contract/v1","skill_id":"visual-qa"}
+{"schema_version":"hermes_skill_contract/v1","skill_id":"visual-qa"}
 ```
 
 ## #contract.inputs

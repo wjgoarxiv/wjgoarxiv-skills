@@ -1,6 +1,6 @@
 # Direction step
 
-On every route (`/lit-pptx`, bare `lit`, office brief) `lithermes:lit-pptx` picks a tonality
+On every entry (`/lit-pptx`, `skill_view("lit-pptx")`, an office brief) `lit-pptx` picks a tonality
 (`ledger`, `signal`, `atlas`, `chalk`, `paper`, `gazette`, `studio`, `night`,
 `computational-brutalism`, `neo-brutalism`, `bauhaus`, `riso`, `newsroom`), two alternatives and a
 reason before any slide. No house look. A bare request gets the style question first (SKILL.md: recommended tonality plus two alternatives, recommended first); pause only for a
@@ -56,8 +56,8 @@ Last row: `atlas`, `ledger`, `gazette` lack a `statement` title; `atlas` a table
 `ledger-table` and `dashboard-grid`. Confirm:
 
 ```sh
-node <installed-plugin>/skills/lit-pptx/bin/office.mjs pptx --list-tonalities
-node <installed-plugin>/skills/lit-pptx/bin/office.mjs pptx --list-layouts paper
+node <skill dir>/bin/office.mjs pptx --list-tonalities
+node <skill dir>/bin/office.mjs pptx --list-layouts paper
 ```
 
 ## The card (sample, figures invented)
@@ -108,7 +108,7 @@ under the choice and both alternatives as labelled rows before writing the rest.
 
 ```sh
 # strip.md: the deck frontmatter plus its first three slides
-OFFICE=<installed-plugin>/skills/lit-pptx/bin/office.mjs
+OFFICE=<skill dir>/bin/office.mjs
 for t in paper chalk night; do
   node "$OFFICE" pptx strip.md --pptx "strip-$t.pptx" --tonality "$t"
   soffice --headless --convert-to pdf --outdir "strip-$t" "strip-$t.pptx"

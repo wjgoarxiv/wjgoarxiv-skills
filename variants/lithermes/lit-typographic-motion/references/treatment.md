@@ -64,7 +64,7 @@ span is removed from it.
 | `world` | Stage path, rich register only: `{layers[], labels[], camera[]}`. At least 3 depth layers back to front, at least 6 labelled parts the viewer reads (4 words each at most), and camera moves covering at least half the shots. |
 | `subject` | `{name, source: user or invented, specifics[]}`. When the request names no specific subject, invent one: a name plus at least 2 concrete specifics (what it is or does, for whom, one distinctive detail). |
 | `visualDevices[]` | `{kind, role: subject, support or texture, beats[]}`, where `beats` lists beat indexes from 0. Kinds: `illustration`, `diagram`, `chart`, `icon`, `shape`, `path`, `mask`, `depth3d`, `particles`, `grid`, `gradient`, `photo-texture`. |
-| `typePlan` | `{faces[], hierarchy, maxWordsOnScreen}`. Faces come from this product's verified set: Pretendard, Archivo, Galmuri9, VT323, Silkscreen, MesloLGS NF. |
+| `typePlan` | `{faces[], hierarchy, maxWordsOnScreen}`. Faces come from this skill's verified set: Pretendard, Archivo, Galmuri9, VT323, Silkscreen, MesloLGS NF. |
 | `palette[]` | 3 to 6 `{color: "#rrggbb", role}` entries. |
 | `sound` | `{mode, plan, palette}`; `file` for `supplied` and `authored`. |
 | `copy` | `{source: user or invented, lines[]}`. |

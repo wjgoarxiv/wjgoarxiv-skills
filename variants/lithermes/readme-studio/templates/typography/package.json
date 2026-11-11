@@ -1,5 +1,5 @@
 {
-  "name": "lithermes-readme-type",
+  "name": "readme-studio-type",
   "private": true,
   "type": "module",
   "dependencies": {"fontkit": "2.0.4"}

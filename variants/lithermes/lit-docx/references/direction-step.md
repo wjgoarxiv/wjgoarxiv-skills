@@ -1,13 +1,13 @@
 # Document direction before the first heading
 
-`lithermes:lit-docx` picks one of six tonality packs (Report, Brief, Manual, Proposal, Memo,
+`lit-docx` picks one of six tonality packs (Report, Brief, Manual, Proposal, Memo,
 Journal) before writing. Packs differ in structure only; no colour is chosen here.
 
 ## Questions: when and when not
 
 | Situation | Action |
 |---|---|
-| Bare `lit`, or `/lit-docx` with no look named | decide and build; name choice and two alternatives; ask nothing |
+| A request, or `/lit-docx`, with no look named | decide and build; name choice and two alternatives; ask nothing |
 | Tonality named now, earlier, or in frontmatter `tonality:` | it wins; card and alternatives still written |
 | Publisher named (elsevier, acs, ieee, nature, korean-generic), a submission, or a user `.docx` template | publisher/template path; `--tonality` with `--publisher` is refused |
 | Look left open on purpose | build the direction strip, no question first |
@@ -51,7 +51,7 @@ never a submission (see the sheets).
 Two tonalities of one source differ in three or more features (`tonality.structure`):
 
 ```sh
-node <installed-plugin>/skills/lit-pptx/bin/office.mjs gate a.docx --source a.md --layout --compare b.docx
+node <skill dir>/bin/office.mjs gate a.docx --source a.md --layout --compare b.docx
 ```
 
 ## Content signals
@@ -125,10 +125,10 @@ pick becomes the card's reason.
 
 ```sh
 for t in Report Brief Manual; do
-  node <installed-plugin>/skills/lit-pptx/bin/office.mjs docx strip.md "strip-$t.docx" --tonality "$t"
-  node <installed-plugin>/skills/lit-pptx/bin/office.mjs audit "strip-$t.docx"
+  node <skill dir>/bin/office.mjs docx strip.md "strip-$t.docx" --tonality "$t"
+  node <skill dir>/bin/office.mjs audit "strip-$t.docx"
 done
-node <installed-plugin>/skills/lit-pptx/bin/office.mjs gate strip-Report.docx --source strip.md --layout --compare strip-Brief.docx
+node <skill dir>/bin/office.mjs gate strip-Report.docx --source strip.md --layout --compare strip-Brief.docx
 ```
 
 Rows differing only in colour fail `tonality.structure`; do not show them.

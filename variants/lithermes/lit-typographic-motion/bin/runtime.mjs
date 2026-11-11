@@ -1,10 +1,9 @@
 #!/usr/bin/env node
-// LitHermes motion runtime: install-time pre-warm and read-only status.
-// Cache mechanics follow this product's office runtime (lockfile-digest cache
-// under ${XDG_CACHE_HOME:-$HERMES_HOME/.cache}, an exclusive install lock,
-// `npm ci --omit=dev --ignore-scripts` into a staging dir, atomic rename), but
-// nothing here ever runs on first render: `lithermes motion-runtime install`
-// and the product installer are the only callers of install() (MO-A-42/43).
+// lit-typographic-motion runtime for Hermes Agent: one-time pre-warm and read-only status.
+// A lockfile-digest cache under ${XDG_CACHE_HOME:-$HERMES_HOME/.cache}, an exclusive install
+// lock, `npm ci --omit=dev --ignore-scripts` into a staging dir, atomic rename; nothing here
+// ever runs on first render: `node <skill dir>/bin/runtime.mjs install`, run by the user in a
+// normal shell, is the only caller of install() (MO-A-42/43).
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { lookup } from 'node:dns/promises';
@@ -28,25 +27,25 @@ const audioLockBytes = readFileSync(join(runtimeRoot, 'requirements.lock'));
 const sha = (data) => createHash('sha256').update(data).digest('hex');
 export const digest = createHash('sha256').update(lockBytes).update(readFileSync(join(runtimeRoot, 'fonts.json'))).digest('hex').slice(0, 16);
 export const audioDigest = sha(audioLockBytes).slice(0, 16);
-export const WARM = 'lithermes motion-runtime install';
+export const WARM = 'node ' + join(skillRoot, 'bin', 'runtime.mjs') + ' install';
 export const FONT_PINS = pins.entries;
 
-// This product's own lit-pptx Hangul pair, checked against its recorded hashes (MO-A-55).
+// The Hangul pair bundled in this skill folder (fonts/pretendard/), checked against its recorded hashes (MO-A-55).
 export const HANGUL_PAIR = Object.freeze([
   { id: 'pretendard-400', file: 'Pretendard-Regular.otf', sha256: '3ffbacde6ab8411f1d2db54bb9b1f0b3ee2a738932033722cf0388c06aed1c93' },
   { id: 'pretendard-700', file: 'Pretendard-Bold.otf', sha256: '2e91915fab54df71cc9598ebf608b2bdb54c6fe3c066ac61dff0bc44fca71cc7' },
 ]);
-export const hangulPath = (file) => join(skillRoot, '..', 'lit-pptx', 'pretendard-font', 'public', 'static', file);
+export const hangulPath = (file) => join(skillRoot, 'fonts', 'pretendard', file);
 
 // Cache roots, first match wins for reads; the first entry receives installs.
 export function cacheRoots(env = process.env) {
   const roots = [];
   if (env.XDG_CACHE_HOME) roots.push(env.XDG_CACHE_HOME);
   if (env.HERMES_HOME) roots.push(join(env.HERMES_HOME, '.cache'));
-  const marker = `${sep}plugins${sep}lithermes${sep}skills${sep}`;
-  if (skillRoot.includes(marker)) roots.push(join(skillRoot.slice(0, skillRoot.indexOf(marker)), '.cache'));
+  const marker = `${sep}skills${sep}lit-typographic-motion`;
+  if (skillRoot.endsWith(marker)) roots.push(join(skillRoot.slice(0, skillRoot.length - marker.length), '.cache'));
   roots.push(join(env.HOME || homedir(), '.cache'));
-  return [...new Set(roots)].map((root) => join(root, 'lithermes', 'motion', digest));
+  return [...new Set(roots)].map((root) => join(root, 'lit-typographic-motion', digest));
 }
 
 const readyAt = (cache) => existsSync(join(cache, 'READY')) && readFileSync(join(cache, 'READY'), 'utf8') === `${digest}\n`
@@ -63,7 +62,7 @@ export function depState(env = process.env) {
 
 export function runtimeRequire(env = process.env) {
   const cache = findCache(env);
-  if (!cache) throw Object.assign(new Error(`BLOCKED_DEPS_NOT_PREWARMED: pinned engine dependencies are not in the product cache; run \`${WARM}\` outside this session`), { exitCode: 14 });
+  if (!cache) throw Object.assign(new Error(`BLOCKED_DEPS_NOT_PREWARMED: pinned engine dependencies are not in the private cache; run \`${WARM}\` outside this session`), { exitCode: 14 });
   const require = createRequire(join(cache, 'node', 'package.json'));
   return (name) => require(name);
 }
@@ -73,7 +72,7 @@ export function fontFile(cache, entryPath) {
 }
 
 // MO-A-55: every pinned font and licence present with its recorded sha256, plus
-// the reused lit-pptx pair against this product's own hashes.
+// the bundled Pretendard pair (fonts/pretendard/) against its recorded hashes.
 export function fontState(env = process.env) {
   const cache = findCache(env) || cacheRoots(env)[0];
   const missing = [], mismatched = [];
@@ -84,8 +83,8 @@ export function fontState(env = process.env) {
   }
   for (const pair of HANGUL_PAIR) {
     const file = hangulPath(pair.file);
-    if (!existsSync(file)) missing.push(`lit-pptx/${pair.file}`);
-    else if (sha(readFileSync(file)) !== pair.sha256) mismatched.push(`lit-pptx/${pair.file}`);
+    if (!existsSync(file)) missing.push(`fonts/pretendard/${pair.file}`);
+    else if (sha(readFileSync(file)) !== pair.sha256) mismatched.push(`fonts/pretendard/${pair.file}`);
   }
   for (const name of ['EMS-OFL.txt', 'CREDITS']) if (!existsSync(join(runtimeRoot, 'licenses', name))) missing.push(`licenses/${name}`);
   return { cache, missing, mismatched, ok: !missing.length && !mismatched.length };
@@ -170,7 +169,7 @@ const pinnedSend = (requestImpl) => (href, init, pin) => new Promise((resolveRes
 
 const PINNED_REQUESTS = { 'http:': httpRequest, 'https:': httpsRequest };
 
-export async function fetchPinned(entry, targetFile, { mirror = process.env.LITHERMES_MOTION_FONT_MIRROR, fetchImpl = null, requestImpls = PINNED_REQUESTS, lookupImpl = lookup } = {}) {
+export async function fetchPinned(entry, targetFile, { mirror = process.env.LIT_MOTION_FONT_MIRROR, fetchImpl = null, requestImpls = PINNED_REQUESTS, lookupImpl = lookup } = {}) {
   const url = mirror ? `${mirror.replace(/\/$/, '')}/${entry.path}` : entry.url;
   let bytes;
   if (url.startsWith('file://')) bytes = readFileSync(fileURLToPath(url));
@@ -239,7 +238,7 @@ export async function fetchPinned(entry, targetFile, { mirror = process.env.LITH
 
 // The audio venv takes the office runtime's supported-python pick, with a 3.11 floor: the lock pins
 // numpy 2.4 and scipy 1.17, which start at Python 3.11.
-export const pickAudioPython = (env = process.env) => pickPython({ env, override: 'LITHERMES_MOTION_PYTHON', min: [3, 11] });
+export const pickAudioPython = (env = process.env) => pickPython({ env, override: 'LIT_MOTION_PYTHON', min: [3, 11] });
 
 export const audioDir = (cache) => join(cache, `audio-${audioDigest}`);
 
@@ -267,7 +266,7 @@ export function audioState(env = process.env) {
 
 async function installAudio(cache, env) {
   const py = pickAudioPython(env);
-  if (!py.python) throw new Error(`${py.detail}; the --audio venv needs one (install Python 3.14 or set LITHERMES_MOTION_PYTHON)`);
+  if (!py.python) throw new Error(`${py.detail}; the --audio venv needs one (install Python 3.14 or set LIT_MOTION_PYTHON)`);
   const dir = audioDir(cache);
   const stage = `${dir}.stage-${process.pid}`;
   rmSync(stage, { recursive: true, force: true });
@@ -308,7 +307,7 @@ export async function install({ audio = false, wordTiming: wantWords = false, en
     const lockPath = `${cache}.lock`;
     let fd;
     try { fd = openSync(lockPath, 'wx'); } catch (error) {
-      if (error.code === 'EEXIST') throw new Error(`another motion-runtime install holds ${lockPath}`);
+      if (error.code === 'EEXIST') throw new Error(`another runtime install holds ${lockPath}`);
       throw error;
     }
     const stage = `${cache}.stage-${process.pid}`;
@@ -316,24 +315,24 @@ export async function install({ audio = false, wordTiming: wantWords = false, en
       rmSync(stage, { recursive: true, force: true });
       mkdirSync(join(stage, 'node'), { recursive: true });
       for (const name of ['package.json', 'package-lock.json']) writeFileSync(join(stage, 'node', name), readFileSync(join(runtimeRoot, name)));
-      run(env.LITHERMES_MOTION_NPM || 'npm', ['ci', '--prefix', join(stage, 'node'), '--omit=dev', '--ignore-scripts', '--no-audit', '--no-fund'],
+      run(env.LIT_MOTION_NPM || 'npm', ['ci', '--prefix', join(stage, 'node'), '--omit=dev', '--ignore-scripts', '--no-audit', '--no-fund'],
         { env: { ...env, npm_config_cache: join(dirname(cache), 'npm-cache') }, timeout: 600000 });
-      for (const entry of pins.entries) await fetchPinned(entry, join(stage, 'assets', entry.path), { mirror: env.LITHERMES_MOTION_FONT_MIRROR });
+      for (const entry of pins.entries) await fetchPinned(entry, join(stage, 'assets', entry.path), { mirror: env.LIT_MOTION_FONT_MIRROR });
       for (const pair of HANGUL_PAIR) {
         const file = hangulPath(pair.file);
-        if (!existsSync(file) || sha(readFileSync(file)) !== pair.sha256) throw new Error(`reused Hangul font missing or changed: lit-pptx/${pair.file}`);
+        if (!existsSync(file) || sha(readFileSync(file)) !== pair.sha256) throw new Error(`bundled Hangul font missing or changed: fonts/pretendard/${pair.file}`);
       }
       writeFileSync(join(stage, 'READY'), `${digest}\n`);
       if (existing) rmSync(existing, { recursive: true, force: true });
       rmSync(cache, { recursive: true, force: true });
       renameSync(stage, cache);
-      receipts.push(`motion-runtime READY cache=${cache}`);
+      receipts.push(`runtime READY cache=${cache}`);
     } finally {
       rmSync(stage, { recursive: true, force: true });
       closeSync(fd);
       rmSync(lockPath, { force: true });
     }
-  } else receipts.push(`motion-runtime READY cache=${cache} (already warm)`);
+  } else receipts.push(`runtime READY cache=${cache} (already warm)`);
   if (audio) receipts.push(audioState(env).state === 'ready' ? 'audio venv READY (already warm)' : await installAudio(findCache(env), env));
   return receipts.join('\n');
 }
@@ -353,7 +352,7 @@ const chromeProbeScript = () => {
   return ext ? gl.getParameter(ext.UNMASKED_RENDERER_WEBGL) : 'unknown (debug-info extension unavailable)';
 };
 
-// MO-A-44: five probes on every run, in this product's "name: value" status style, plus the
+// MO-A-44: five probes on every run, in this skill's "name: value" status style, plus the
 // cover encoder that cover mode needs (img2webp and dwebp, or the gifski fallback).
 export async function status(env = process.env) {
   const { chromeExecutable, launchChrome } = await import('../engine/browser.mjs');
@@ -411,7 +410,7 @@ function isMain() {
   try { return realpathSync(process.argv[1]) === realpathSync(fileURLToPath(import.meta.url)); } catch { return false; }
 }
 
-const USAGE = 'LitHermes motion-runtime usage: install|status [--audio] [--word-timing]';
+const USAGE = 'lit-typographic-motion runtime usage: node runtime.mjs install|status [--audio] [--word-timing]';
 if (isMain()) {
   const [action, ...rest] = process.argv.slice(2);
   const flags = new Set(rest);

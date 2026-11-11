@@ -1,4 +1,4 @@
-"""Small OOXML package integrity check owned by the LitHermes deck engine."""
+"""Small OOXML package integrity check owned by the lit-pptx deck engine."""
 
 from pathlib import Path, PurePosixPath
 from xml.etree import ElementTree as ET

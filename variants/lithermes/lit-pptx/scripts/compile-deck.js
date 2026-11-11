@@ -432,7 +432,7 @@ if (require.main === module) {
           }
           const { execFile } = require("child_process");
           await new Promise((resolve, reject) => {
-            execFile(process.env.LITHERMES_OFFICE_PYTHON || "python3",
+            execFile(process.env.LIT_OFFICE_PYTHON || "python3",
               [path.join(__dirname, "compile_boilerplate.py"), tmpAstPath, "--output", pptxPath],
               { cwd: __dirname }, (error, stdout, stderr) => {
                 try { fs.unlinkSync(tmpAstPath); } catch (_) {}
@@ -453,7 +453,7 @@ if (require.main === module) {
         // Optional: embed bundled fonts into the PPTX for a self-contained deck.
         if (embedFonts && pptxPath) {
           const { execFileSync } = require("child_process");
-          execFileSync(process.env.LITHERMES_OFFICE_PYTHON || "python3", [path.join(__dirname, "embed_fonts.py"), pptxPath], {
+          execFileSync(process.env.LIT_OFFICE_PYTHON || "python3", [path.join(__dirname, "embed_fonts.py"), pptxPath], {
             stdio: "inherit",
           });
         }

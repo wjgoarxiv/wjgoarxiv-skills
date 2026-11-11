@@ -14,8 +14,8 @@ when you write the brief and read the stills.
 | chrome label (terminalcore) | Silkscreen | Galmuri9 |
 | stroke | EMS single-stroke SVG (Allure for signatures) | none; stroke text is Latin only |
 
-Pretendard Regular and Bold are this product's own lit-pptx pair, reused by
-path and checked against its recorded hashes. Hangul weight moves only between
+Pretendard Regular and Bold ship in this skill folder (`fonts/pretendard/`,
+unmodified official files) and are checked against their recorded hashes. Hangul weight moves only between
 those two files. Every other font is fetched by the pre-warm from a pinned URL
 and checked by sha256 before a render may use it. Galmuri and Pretendard carry
 reserved names, so they are only ever used unmodified, never subset.

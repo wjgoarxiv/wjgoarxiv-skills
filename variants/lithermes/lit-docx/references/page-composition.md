@@ -94,7 +94,7 @@ never the section name.
 ## The gate
 
 ```sh
-node <installed-plugin>/skills/lit-pptx/bin/office.mjs gate report.docx --source report.md --layout
+node <skill dir>/bin/office.mjs gate report.docx --source report.md --layout
 ```
 
 `--layout` adds page checks; each fails a tonality document.

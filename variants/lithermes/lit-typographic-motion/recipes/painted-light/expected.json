@@ -23,7 +23,7 @@
       "method": 4
     }
   },
-  "base": "docs/assets/recipes/painted-light-base.png in the LitHermes repository (1536x1024, the five-robot line-up this recipe was measured on); any other painting needs its own PAINTING block",
+  "base": "the 1536x1024 base painting this recipe was measured on (a five-robot line-up; not shipped in this skill folder); any other painting needs its own PAINTING block",
   "assets": [
     {
       "path": "cover/assets/base.png",

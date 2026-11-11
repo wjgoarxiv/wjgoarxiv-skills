@@ -87,7 +87,7 @@ export function decodeWebp(file, { env = process.env, onFrame = () => {} } = {})
   const bytes = readFileSync(file);
   const info = parseWebp(bytes);
   if (!info.frames.length) throw new Error(`${file} holds no frames`);
-  const work = mkdtempSync(join(tmpdir(), 'lithermes-webp-'));
+  const work = mkdtempSync(join(tmpdir(), 'lit-motion-webp-'));
   try {
     let W = info.width, H = info.height, canvas = null, previous = null;
     const durations = [];

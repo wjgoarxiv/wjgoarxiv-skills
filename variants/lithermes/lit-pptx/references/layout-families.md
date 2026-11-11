@@ -3,8 +3,8 @@
 Named on the `layout:` line, drawn by the tonality; no pack carries all 28, so list first:
 
 ```sh
-node <installed-plugin>/skills/lit-pptx/bin/office.mjs pptx --list-tonalities
-node <installed-plugin>/skills/lit-pptx/bin/office.mjs pptx --list-layouts gazette
+node <skill dir>/bin/office.mjs pptx --list-tonalities
+node <skill dir>/bin/office.mjs pptx --list-layouts gazette
 ```
 
 Pick by job, not by the previous slide. Blocks are named `family@<id>`.

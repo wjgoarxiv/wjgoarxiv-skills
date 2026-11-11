@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// LitHermes Office runtime. All dependencies live outside the installed plugin.
+// lit-pptx Office runtime for Hermes Agent. All dependencies live in a private cache outside this skill folder.
 import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, cpSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { homedir } from 'node:os';
@@ -8,11 +8,10 @@ import { fileURLToPath } from 'node:url';
 import { describeSpawnFailure, pickPython, spawnTool, venvPython, whichSync } from './hostexec.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const plugin = resolve(root, '..', '..');
 const runtime = join(root, 'runtime');
 const digest = createHash('sha256').update(readFileSync(join(runtime, 'package-lock.json'))).update(readFileSync(join(runtime, 'requirements.lock'))).digest('hex').slice(0, 16);
 const cacheBase = process.env.XDG_CACHE_HOME || join(process.env.HERMES_HOME || process.env.HOME || homedir(), '.cache');
-const cache = join(cacheBase, 'lithermes', 'office', digest);
+const cache = join(cacheBase, 'lit-office', digest);
 const nodeCache = join(cache, 'node');
 const pythonCache = join(cache, 'python');
 const python = venvPython(pythonCache);
@@ -26,13 +25,13 @@ const run = (command, args, options = {}) => {
 
 function install() {
   if (ready()) return;
-  const host = pickPython({ env: process.env, override: 'LITHERMES_OFFICE_BOOTSTRAP_PYTHON', min: [3, 10] });
-  if (!host.python) throw new Error(`OFFICE_RUNTIME_PYTHON_UNAVAILABLE: ${host.detail}. Fix: install Python 3.14 (any 3.10 to 3.14 works) or set LITHERMES_OFFICE_BOOTSTRAP_PYTHON to one.`);
+  const host = pickPython({ env: process.env, override: 'LIT_OFFICE_BOOTSTRAP_PYTHON', min: [3, 10] });
+  if (!host.python) throw new Error(`OFFICE_RUNTIME_PYTHON_UNAVAILABLE: ${host.detail}. Fix: install Python 3.14 (any 3.10 to 3.14 works) or set LIT_OFFICE_BOOTSTRAP_PYTHON to one.`);
   mkdirSync(cache, { recursive: true });
   const staging = join(cache, `staging-${process.pid}`);
   rmSync(staging, { recursive: true, force: true });
   mkdirSync(staging, { recursive: true });
-  console.error('LitHermes Office: installing pinned dependencies in the product cache (first use).');
+  console.error('lit-pptx Office: installing pinned dependencies in the private runtime cache (first use).');
   try {
     const nodeStage = join(staging, 'node');
     mkdirSync(nodeStage);
@@ -61,21 +60,19 @@ const target = {
   pptx: ['node', join(root, 'scripts', 'compile-deck.js')],
   qa: [python, join(root, 'scripts', 'qa_deck.py')],
   integrity: [python, join(root, 'scripts', 'integrity.py')],
-  docx: [python, join(plugin, 'skills', 'lit-docx', 'scripts', 'convert_md_to_docx.py')],
-  edit: [python, join(plugin, 'skills', 'lit-docx', 'scripts', 'edit_docx.py')],
-  pdf: [python, join(plugin, 'skills', 'lit-docx', 'scripts', 'convert_md_to_pdf.py')],
-  audit: [python, join(plugin, 'skills', 'lit-docx', 'scripts', 'visual_audit.py')],
-  gate: [python, join(plugin, 'skills', 'lit-docx', 'scripts', 'docx_gate.py')],
-  lint: [python, join(plugin, 'skills', 'lit-docx', 'scripts', 'slop_lint.py')],
   learn: [python, join(root, 'scripts', 'learn_template.py')],
 }[action];
-if (!target) {
-  console.error('usage: node office.mjs doctor|pptx|qa|integrity|docx|edit|pdf|audit|gate|lint|learn [arguments]');
+if (!target && ['docx', 'edit', 'pdf', 'audit', 'gate', 'lint'].includes(action)) {
+  console.error(`office.mjs ${action}: Word documents are built by the lit-docx skill; run its own bin/office.mjs (install that skill folder beside this one).`);
   process.exit(2);
 }
-if (!nodeSupported) throw new Error('LitHermes Office requires Node.js 20.9 or newer for its pinned image runtime');
+if (!target) {
+  console.error('usage: node office.mjs doctor|pptx|qa|integrity|learn [arguments]');
+  process.exit(2);
+}
+if (!nodeSupported) throw new Error('lit-pptx Office requires Node.js 20.9 or newer for its pinned image runtime');
 install();
-const env = { ...process.env, NODE_PATH: join(nodeCache, 'node_modules'), LITHERMES_OFFICE_PYTHON: python };
+const env = { ...process.env, NODE_PATH: join(nodeCache, 'node_modules'), LIT_OFFICE_PYTHON: python };
 // The tool's own exit code is the command's exit code: a failed gate must not read as success.
 const child = spawnTool(target[0], [target[1], ...args], { stdio: 'inherit', env });
 if (child.error) {

@@ -2111,7 +2111,7 @@ async function render(resolved, templateObj, outputPath) {
 
   const title = (resolved.deck && resolved.deck.title) || "Presentation";
   pptx.title = title;
-  pptx.subject = `LitHermes template:${resolved.deck?.template || "unknown"}`;
+  pptx.subject = `lit-pptx template:${resolved.deck?.template || "unknown"}`;
   const sourceDir = resolved.sourceDir;
   const cramStress = isCramStressDeck(resolved);
   const deckMeta = (resolved.deck && resolved.deck.metadata) || {};

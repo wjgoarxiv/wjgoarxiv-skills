@@ -42,7 +42,7 @@ export const normalizeText = (value) => String(value ?? '').normalize('NFC').toL
 const QUOTED = /"[^"\n]*"|“[^”\n]*”|(?<![A-Za-z])'[^'\n]*'(?![A-Za-z])|「[^」\n]*」/gu;
 export const withoutQuoted = (value) => String(value ?? '').replace(QUOTED, ' ');
 
-// Port of this product's router cue (core_routing.motion_cue): a type compound,
+// The type-led cue this skill checks in the request: a type compound,
 // an explicit kinetic-type or lyric ask, or a quoted span of two or more words.
 const TYPE_CUE = /타이포\s*모션|키네틱\s*타이포(?:그래피)?|타이포(?:그래피)?\s*영상|가사\s*영상|리릭\s*(?:비디오|영상)|타이틀\s*시퀀스|오프닝\s*타이틀|(?<![A-Za-z])(?:kinetic\s+type(?:graphy)?|typographic\s+motion|typography\s+videos?|lyric\s+videos?|title\s+sequences?|opening\s+titles?)(?![A-Za-z])/iu;
 export function typeCue(request) {

@@ -120,8 +120,8 @@ export async function openRenderer({ runtime, pageScript, profileRoot, scale = 1
   let server = null, egress = 'websocket', listenError = null, pending = null;
   try {
     const { WebSocketServer } = runtime('ws');
-    if (env.LITHERMES_MOTION_FAULT_LISTEN) {
-      throw Object.assign(new Error(`listen ${env.LITHERMES_MOTION_FAULT_LISTEN}: operation not permitted 127.0.0.1:0 (injected)`), { code: env.LITHERMES_MOTION_FAULT_LISTEN });
+    if (env.LIT_MOTION_FAULT_LISTEN) {
+      throw Object.assign(new Error(`listen ${env.LIT_MOTION_FAULT_LISTEN}: operation not permitted 127.0.0.1:0 (injected)`), { code: env.LIT_MOTION_FAULT_LISTEN });
     }
     server = new WebSocketServer({ host: '127.0.0.1', port: 0, maxPayload: 1920 * 1080 * 4 * scale * scale + 1024 });
     await new Promise((resolve, reject) => { server.once('listening', resolve); server.once('error', reject); });

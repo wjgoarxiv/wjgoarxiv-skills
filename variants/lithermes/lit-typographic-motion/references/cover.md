@@ -75,7 +75,7 @@ no animated raster and no flipbook.
 - Faces: the stage faces (`stage.md`), including `"JetBrains Mono"`: a variable
   face with a real `wght` axis from 100 to 800 and a fixed advance, so weight
   motion never reflows a line. Like every motion font it is pinned and fetched by
-  `lithermes motion-runtime install`, never bundled. Load the weights you use
+  `node <skill dir>/bin/runtime.mjs install`, never bundled. Load the weights you use
   with `document.fonts.load` before you set `ready`.
 
 ## The cover treatment
@@ -252,9 +252,12 @@ breathing glow (G2, G3), and a progress sweep that resets at the seam (G4). They
 are never recipes. Read them to see what cover mode exists to prevent, and never
 change a threshold so one of them passes.
 
-`npm run qa:cover-recipes` in a LitHermes checkout re-renders every recipe
-through this renderer and fails when median d or the moving share leaves
-+-15 % of its row, seamLocal leaves TARGET or a file passes 2 MiB.
+Each recipe's `expected.json` row was measured by the maintainers' recipe QA,
+which re-rendered every recipe and failed when median d or the moving share left
++-15 % of its row, seamLocal left TARGET or a file passed 2 MiB. That runner is
+not part of this skill folder, so re-measuring a recipe is a manual step: render
+it as a cover round with `$M cover`, then compare the gate row in its report with
+`expected.json` by hand (`painted-light` also needs its own base painting).
 
 Every negative and regression declares the gates it must fail (`mustFail`, as
 `G2.floor` or `G1.target`). `--negatives` runs them all, and one counts as
@@ -353,8 +356,9 @@ The gate cannot see damage. The pilot's two worst defects were found only by
 eye on the sheet: a colour-dodge glint that turned a letter into a red block,
 and a wing glow that read as a dark disc. View `sheet.png`, `poster.png` and
 `seam.png` with `vision_analyze`, one call per file (and any `frame-NN.png` you
-need closer). The plugin's tool hook records each call, and `complete` requires
-a receipt for each of the three. A second opinion can come from a fresh
+need closer). When a host tool hook writes `.run/host-events.jsonl`, `complete`
+requires a receipt for each of the three; this skill folder installs no hook, so
+the viewing is on you: make the three calls before you record the round. A second opinion can come from a fresh
 `delegate_task` subagent given only the sheet; record what it says as an aid.
 
 Answer all eight every round, each naming a frame of the stills set and what is
@@ -418,7 +422,7 @@ cover render followed by a look. `$M complete --out DIR` exits 0 only when:
 - at least two look rounds are recorded, round 1 naming its change;
 - the last round was recorded on the final render and viewed `stills/sheet.png`,
   `stills/poster.png` and `stills/seam.png` (with `vision_analyze` receipts when
-  the tool hook is live);
+  a host tool hook recorded them);
 - the last round asks for no further round, or it is round 3 (then the open
   items are stated plainly in the reply).
 
@@ -438,7 +442,7 @@ re-renders it; any open look item.
 | Code | State | Fix |
 | --- | --- | --- |
 | 13 | GATE_FAIL_QA | A gate misses TARGET or the flash audit failed; the report names the gates |
-| 14, 15 | not pre-warmed, font missing | `lithermes motion-runtime install` outside the session |
+| 14, 15 | not pre-warmed, font missing | `node <skill dir>/bin/runtime.mjs install` outside the session |
 | 16 | BLOCKED_TREATMENT_INVALID | Fix the named field of `treatment.json` or `assets.json` |
 | 17 | STAGE_CONTRACT_ERROR | The page, its static scan or the asset list (an unlisted raster, a changed hash) |
 | 18 | STAGE_NONDETERMINISTIC | A clock or entropy call, a frame that differs in a fresh browser, or a frame that differs when sought out of order |

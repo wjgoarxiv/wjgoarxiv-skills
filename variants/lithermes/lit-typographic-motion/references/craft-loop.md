@@ -45,9 +45,11 @@ The type path also keeps `sheet/cuts.png` (four frames around every cut).
 
 Look with `vision_analyze` (the `vision` toolset), one call per PNG you name.
 Only files passed to it count as viewed. OCR output or pixel statistics may be
-recorded under `aids`; they never count as viewed. When the plugin's tool hook
-is live it records each `vision_analyze` call on a stills file; the done-check
-then requires every frame your last round lists to appear there.
+recorded under `aids`; they never count as viewed. When a host tool hook
+writes `.run/host-events.jsonl` with each `vision_analyze` call on a stills file,
+the done-check also requires every frame your last round lists to appear there.
+This skill folder installs no hook, so without one the check trusts your record:
+view every listed frame before you record the round.
 
 If no image tool is reachable in this session, record the round with
 `"blocked": "no-vision-tool"`. The done-check then ends with `DONE_UNVIEWED`,
@@ -107,7 +109,7 @@ Another round is required after a "no" on 1, 2, 3, 5 or 6, a "yes" on 4, 8 or
 - the last round's manifest SHA-256 equals the final render's;
 - the last round viewed the poster, the contact sheet, every beat midpoint and
   every transition strip of that render;
-- when the tool hook is live, each of those frames appears in a
+- when a host tool hook recorded calls, each of those frames appears in a
   `vision_analyze` call.
 
 It also compares the final treatment with the first valid one and records

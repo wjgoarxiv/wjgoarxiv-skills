@@ -218,7 +218,7 @@ export function rungNote(out, treatment) {
     const version = blenderVersion();
     const lines = version
       ? [`Blender is here (${version}). Write stage/scene.py with the \`lit\` helpers in scope (the base plate renders in stage/plate-preview), then blender --out ${out}, then blender --out ${out} --final.`]
-      : [`Blender is not installed here (${findBlender() ? 'unreachable' : 'LITHERMES_BLENDER, /Applications/Blender.app, blender on PATH'}). Write stage/scene.py anyway so the film is ready, but set "render3d": "three" to render with three.js on the GPU rung (engine/blender/runner.py needs Blender 4.2+).`];
+      : [`Blender is not installed here (${findBlender() ? 'unreachable' : 'LIT_MOTION_BLENDER, /Applications/Blender.app, blender on PATH'}). Write stage/scene.py anyway so the film is ready, but set "render3d": "three" to render with three.js on the GPU rung (engine/blender/runner.py needs Blender 4.2+).`];
     if (treatment.seed !== undefined) lines.push(`Seed ${treatment.seed >>> 0}: the plate renders the same bytes again.`);
     return lines.join('\n');
   }

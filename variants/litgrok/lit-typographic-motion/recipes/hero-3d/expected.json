@@ -1,6 +1,6 @@
 {
   "schema": "litgrok.motion-cover-recipe/v1",
-  "note": "The decoded gate row this recipe reached when it shipped. npm run qa:cover-recipes re-renders it through motion.mjs cover and fails when median d or the moving share leaves +-15 % of this row, seamLocal leaves TARGET, the file passes 2 MiB or the render exits non-zero. Measured on the GPU rung (Apple ANGLE Metal on Apple silicon; the software rung fallback renders the same frames more slowly) and libwebp 1.6.0.",
+  "note": "The decoded gate row this recipe reached when it shipped. Re-check it by hand: render it with node scripts/motion.mjs cover and compare; it fails when median d or the moving share leaves +-15 % of this row, seamLocal leaves TARGET, the file passes 2 MiB or the render exits non-zero. Measured on the GPU rung (Apple ANGLE Metal on Apple silicon; the software rung fallback renders the same frames more slowly) and libwebp 1.6.0.",
   "row": {
     "medianD": 0.002038,
     "movingFrac": 1,

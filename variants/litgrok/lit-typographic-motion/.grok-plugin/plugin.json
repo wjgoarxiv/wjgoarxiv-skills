@@ -1,0 +1,12 @@
+{
+  "name": "lit-typographic-motion",
+  "version": "0.1.0",
+  "description": "lit-typographic-motion for Grok Build, one skill: a finished short film or a silent README cover loop from a treatment, with its own engine, pre-warm and QA gate.",
+  "author": {
+    "name": "wjgoarxiv"
+  },
+  "license": "MIT",
+  "skills": [
+    "./"
+  ]
+}

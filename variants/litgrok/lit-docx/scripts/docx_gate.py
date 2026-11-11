@@ -18,8 +18,8 @@ It reads five things and prints one JSON report (exit 0 = PASS, 1 = FAIL):
              structural features
 
 Usage:
-  node .grok/skills/lit-docx/scripts/run.mjs docx_gate.py report.docx --source report.md --layout
-  node .grok/skills/lit-docx/scripts/run.mjs docx_gate.py paper.docx --source paper.md --publisher elsevier --kind manuscript
+  node <skill dir>/scripts/run.mjs docx_gate.py report.docx --source report.md --layout
+  node <skill dir>/scripts/run.mjs docx_gate.py paper.docx --source paper.md --publisher elsevier --kind manuscript
 
 A PASS means no defect was found. Whether the pages read well is decided by looking at them.
 """
@@ -146,7 +146,7 @@ def output_checks(path: Path, source: Path | None, args) -> dict:
                                              f"{len(differ)} structural difference(s): {', '.join(differ) or 'none'}",
                                              "Tonalities differ in structure: title block, summary, numbering, components, running head, contents."))
     if args.layout:
-        with tempfile.TemporaryDirectory(prefix="litgrok-docx-gate-") as tmp:
+        with tempfile.TemporaryDirectory(prefix="lit-docx-gate-") as tmp:
             try:
                 pdf = render(path, Path(tmp))
             except subprocess.TimeoutExpired:

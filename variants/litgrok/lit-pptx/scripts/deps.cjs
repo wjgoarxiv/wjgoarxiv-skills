@@ -11,8 +11,8 @@ const skill = path.resolve(__dirname, '..');
 const pythonLock = path.join(skill, 'requirements.lock');
 const nodeLock = path.join(skill, 'package-lock.json');
 const digest = createHash('sha256').update(readFileSync(nodeLock)).update(readFileSync(pythonLock)).digest('hex').slice(0, 16);
-const base = process.env.LITGROK_OFFICE_CACHE || path.join(process.env.XDG_CACHE_HOME || path.join(os.homedir(), '.cache'), 'litgrok', 'office-docs');
-if (!path.isAbsolute(base)) throw new Error('LITGROK_OFFICE_CACHE must be absolute');
+const base = process.env.LIT_OFFICE_CACHE || path.join(process.env.XDG_CACHE_HOME || path.join(os.homedir(), '.cache'), 'lit-skills', 'office');
+if (!path.isAbsolute(base)) throw new Error('LIT_OFFICE_CACHE must be absolute');
 const root = path.join(base, digest);
 // The minors every pinned package in requirements.lock has wheels for, newest first.
 const OFFICE_PYTHON_MINORS = [14, 13, 12, 11, 10];
@@ -45,7 +45,7 @@ function install(kind) {
       command('npm', ['ci', '--prefix', staging, '--ignore-scripts', '--no-audit', '--no-fund']);
     } else {
       const system = proc.pickPython(OFFICE_PYTHON_MINORS);
-      if (!system.command) throw new Error(`LitGrok office needs Python 3.10 to 3.14 for its pinned packages; none found on PATH (tried ${system.tried.join(', ') || 'nothing'}). Install Python 3.14 or any of 3.10 to 3.13.`);
+      if (!system.command) throw new Error(`The office runtime needs Python 3.10 to 3.14 for its pinned packages; none found on PATH (tried ${system.tried.join(', ') || 'nothing'}). Install Python 3.14 or any of 3.10 to 3.13.`);
       command(system.command, [...system.args, '-m', 'venv', staging]);
       command(proc.venvPython(staging), ['-m', 'pip', 'install', '--disable-pip-version-check', '-r', pythonLock]);
     }
@@ -64,8 +64,8 @@ function install(kind) {
 function ready(kind) { return existsSync(path.join(root, kind, '.ready')); }
 
 function node() {
-  if (!supportsSlideNode()) throw new Error('LitGrok slide runtime requires Node.js 20.9 or newer (sharp 0.35.5)');
-  if (!ready('node')) process.stderr.write('LitGrok office: installing pinned Node dependencies in cache\n');
+  if (!supportsSlideNode()) throw new Error('The slide runtime requires Node.js 20.9 or newer (sharp 0.35.5)');
+  if (!ready('node')) process.stderr.write('office runtime: installing pinned Node dependencies in cache\n');
   const target = install('node');
   process.env.NODE_PATH = [path.join(target, 'node_modules'), process.env.NODE_PATH].filter(Boolean).join(path.delimiter);
   Module._initPaths();
@@ -73,7 +73,7 @@ function node() {
 }
 
 function python() {
-  if (!ready('python')) process.stderr.write('LitGrok office: installing pinned Python dependencies in cache\n');
+  if (!ready('python')) process.stderr.write('office runtime: installing pinned Python dependencies in cache\n');
   const target = install('python');
   const interpreter = proc.venvPython(target);
   process.env.PATH = [path.dirname(interpreter), process.env.PATH].join(path.delimiter);

@@ -4,7 +4,7 @@
 import { existsSync, readFileSync, statSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { join } from 'node:path';
-import hostProc from '../../../lit-pptx/scripts/proc.cjs';
+import hostProc from '../proc.cjs';
 import { COLOUR, FLASH, OUTPUT, PASS_CAPS, PERF, SAFE, TIMING, TYPE, DARK } from './constants.mjs';
 import { countUnits, eojeol, readingFloor } from './text.mjs';
 import { transitionsOf, worstWindowLinear, worstWindowLooping } from './flash.mjs';
@@ -252,7 +252,7 @@ export function checkTracking(frames) {
   }
   results.push(display || machine ? fail('MO-C-25', display ? `display tracking past -0.04em: ${display}` : `negative tracking on the machine voice: ${machine}`) : pass('MO-C-25', 'display >= -0.04em, machine >= 0'));
   results.push(hangul ? fail('MO-FT-04', `tracking or width motion on a Hangul run: ${hangul}`) : pass('MO-FT-04', 'Hangul runs untracked, no width axis'));
-  results.push(hangulFont ? fail('MO-A-33', `Hangul drawn outside the lit-pptx pair / Galmuri: ${hangulFont}`) : pass('MO-A-33', 'Hangul weight steps only between the two static files'));
+  results.push(hangulFont ? fail('MO-A-33', `Hangul drawn outside the bundled Pretendard pair / Galmuri: ${hangulFont}`) : pass('MO-A-33', 'Hangul weight steps only between the two static files'));
   return results;
 }
 

@@ -15,15 +15,15 @@ export const LOCKFILE = join(SKILL_ROOT, 'package-lock.json');
 export const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 export const lockHash = () => sha256(readFileSync(LOCKFILE));
 
-// ${XDG_CACHE_HOME:-~/.cache}/litgrok/motion-runtime for both install scopes (MO-A-53), keyed by the
-// lockfile digest the way the office cache is. LITGROK_MOTION_CACHE (absolute) overrides the base.
+// ${XDG_CACHE_HOME:-~/.cache}/lit-skills/motion-runtime wherever the skill is installed (MO-A-53), keyed
+// by the lockfile digest. LIT_MOTION_CACHE (absolute) overrides the base.
 export function cacheBase(env = process.env) {
-  if (env.LITGROK_MOTION_CACHE) {
-    if (!isAbsolute(env.LITGROK_MOTION_CACHE)) throw new Error('LITGROK_MOTION_CACHE must be an absolute path');
-    return env.LITGROK_MOTION_CACHE;
+  if (env.LIT_MOTION_CACHE) {
+    if (!isAbsolute(env.LIT_MOTION_CACHE)) throw new Error('LIT_MOTION_CACHE must be an absolute path');
+    return env.LIT_MOTION_CACHE;
   }
   const home = env.HOME || homedir();
-  return join(env.XDG_CACHE_HOME || join(home, '.cache'), 'litgrok', 'motion-runtime');
+  return join(env.XDG_CACHE_HOME || join(home, '.cache'), 'lit-skills', 'motion-runtime');
 }
 export const cacheRoot = (env = process.env) => join(cacheBase(env), lockHash().slice(0, 16));
 
@@ -37,8 +37,8 @@ export function licencePath(licence, pin, env = process.env) {
   return pin.source === 'fetched' ? join(cacheRoot(env), 'fonts', licence.file) : join(SKILL_ROOT, licence.file);
 }
 
-// Reused lit-pptx files are checked against LitGrok's own recorded hashes (MO-A-55); when they are
-// absent, the pinned official Pretendard fetched at pre-warm stands in for both weights.
+// Pretendard Regular and Bold ship in fonts/pretendard/ and are checked against their recorded hashes
+// (MO-A-55); a pin still marked reused falls back to the pinned official Pretendard fetched at pre-warm.
 export function resolveFontKey(key, env = process.env) {
   const pin = PINS.fonts[key];
   if (pin?.source === 'reused' && !existsSync(fontPath(key, env)) && pin.fallback) return pin.fallback;

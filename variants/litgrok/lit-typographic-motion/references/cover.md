@@ -95,7 +95,7 @@ list is checked before anything is captured:
   SSIM of `checkBox` (default: the whole box) in decoded frame 0 against the same region of the
   source scaled into the box reaches 0.90 (the ART line). A page that relights a painting dims most of
   it at frame 0 on purpose, so point `checkBox` at the part it leaves lit (the hero bay); it covers
-  at least 10 % of the box. The LitGrok line-up painting with the hero bay lit measured 0.946 there.
+  at least 10 % of the box. The five-bay robot line-up painting with the hero bay lit measured 0.946 there.
 - `title: true` on the base art declares the brand word painted into it; only then is the title
   exempt from the glyph-height floor, and G6 still measures and reports it as INFO.
 - The art is scaled into its box, never cropped.
@@ -161,7 +161,7 @@ transfers.
   comet laps the hero frame; motes rise one screen per loop. Beat: the hero's lenses light in turn,
   one fast skewed glint crosses the title in **overlay** blend (screen lights a visible box;
   colour-dodge turned a coloured letter into a red block), and the accent word pulses at `t = 0` and
-  `t = 0.5`. The LitGrok line-up reached TARGET at q 79 with frame 0 and the last 44 frames at 95 (seamLocal
+  `t = 0.5`. The robot line-up reached TARGET at q 79 with frame 0 and the last 44 frames at 95 (seamLocal
   1.83, 1.98 MB). At q 80 with the last 30 frames at 97 the seam sat at 1.92, and an earlier rerun
   reached 2.03-2.04, past the target; at q 83 with the last 18 frames at 97 it missed too.
   More frames at a high edge quality lower the seam and cost bytes, so a seam margin is bought with
@@ -330,10 +330,10 @@ and the reply carries that label.
 ## Recipe rows and negatives
 
 Each recipe keeps its gate row in `recipes/<name>/expected.json` (median d, moving share, longest
-still, spike, seamLocal, bytes, the settings and the treatment it shipped with). In a LitGrok
-checkout `npm run qa:cover-recipes` re-renders every recipe through `cover --out` and fails when it
-has no row, median d or the moving share leaves ±15 % of its row, seamLocal leaves TARGET, the file
-passes 2 MiB or the render exits non-zero.
+still, spike, seamLocal, bytes, the settings and the treatment it shipped with). This copy
+ships no recipe runner: to re-check a recipe, render it with `node scripts/motion.mjs cover --out
+<dir>` and compare the gate row by hand. It fails when it has no row, median d or the moving share
+leaves ±15 % of its row, seamLocal leaves TARGET, the file passes 2 MiB or the render exits non-zero.
 
 Every negative and regression declares the gates it must fail (`mustFail`, as `G2.floor` or
 `G1.target`). `--negatives` renders the four negatives and every regression a recipe declares, and

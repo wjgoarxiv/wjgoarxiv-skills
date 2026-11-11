@@ -1,6 +1,6 @@
 # Choosing a tonality
 
-A tonality is a page design chosen per document. LitGrok's `lit-docx` skill ships six of them as data packs in `.grok/skills/lit-docx/templates/tonalities/`: `report`, `brief`, `manual`, `proposal`, `memo` and `journal`. They share one restrained look (near-black ink, booktabs tables, Pretendard, A4) and differ in structure: what stands on page 1, how the summary is set, whether and how headings are numbered, which page components the document may use, and what the running head carries. This file explains how to pick one before writing the source, how to state the choice, and when not to pick a tonality at all.
+A tonality is a page design chosen per document. The `lit-docx` skill ships six of them as data packs in `<skill dir>/templates/tonalities/`: `report`, `brief`, `manual`, `proposal`, `memo` and `journal`. They share one restrained look (near-black ink, booktabs tables, Pretendard, A4) and differ in structure: what stands on page 1, how the summary is set, whether and how headings are numbered, which page components the document may use, and what the running head carries. This file explains how to pick one before writing the source, how to state the choice, and when not to pick a tonality at all.
 
 The choice is made once per document, before the Markdown is written, because each tonality expects a different source shape. A Brief needs a first section of short paragraphs that open with their conclusion; a Manual needs numbered steps; a Memo needs a To / From / Subject line. Converting a Report source with `tonality: Memo` produces a valid file, but not a memo.
 
@@ -93,8 +93,8 @@ Each pack has two dials, `density` and `variance`, from 1 to 10. Density sets ma
 ## Build and check
 
 ```bash
-node .grok/skills/lit-docx/scripts/run.mjs convert_md_to_docx.py brief.md brief.docx
-node .grok/skills/lit-docx/scripts/run.mjs docx_gate.py brief.docx --source brief.md --layout
+node <skill dir>/scripts/run.mjs convert_md_to_docx.py brief.md brief.docx
+node <skill dir>/scripts/run.mjs docx_gate.py brief.docx --source brief.md --layout
 ```
 
 The converter reads `tonality:` from frontmatter, or `--tonality brief` (any case). Its last line names the tonality, the dials and the detected locale; check that line before anything else. The gate exits 0 only when the package, content, prose lint and page checks all pass; `--layout` renders through LibreOffice and adds the page checks. Fix a finding in the source, never by switching tonality to dodge it.
@@ -104,9 +104,9 @@ The converter reads `tonality:` from frontmatter, or `--tonality brief` (any cas
 When the user asks to see options ("두세 가지 스타일로 보여 줘", "compare a report and a brief version"), build the same source in two or three tonalities from the same row. Keep one source where you can: a directive the tonality does not use falls back to plain text, so a Report source converts as a Brief without edits. Then check that the versions really differ:
 
 ```bash
-node .grok/skills/lit-docx/scripts/run.mjs convert_md_to_docx.py plan.md plan-report.docx --tonality report
-node .grok/skills/lit-docx/scripts/run.mjs convert_md_to_docx.py plan.md plan-brief.docx --tonality brief
-node .grok/skills/lit-docx/scripts/run.mjs docx_gate.py plan-report.docx --source plan.md --layout --compare plan-brief.docx
+node <skill dir>/scripts/run.mjs convert_md_to_docx.py plan.md plan-report.docx --tonality report
+node <skill dir>/scripts/run.mjs convert_md_to_docx.py plan.md plan-brief.docx --tonality brief
+node <skill dir>/scripts/run.mjs docx_gate.py plan-report.docx --source plan.md --layout --compare plan-brief.docx
 ```
 
 `--compare` fails `tonality.structure` when two files differ in fewer than three of six features: title block, summary form, heading numbering, component set, running head, contents list. Show the first pages side by side, name what each version is good for, and let the user pick. Never compare more than three; the fourth option is always noise.

@@ -1,12 +1,13 @@
 #!/usr/bin/env node
-// lit-typographic-motion render CLI for LitGrok. Run from the installed skill root
-// (.grok/skills/lit-typographic-motion/ in a project, or ~/.grok/skills/... for a user install).
+// lit-typographic-motion render CLI for Grok Build. Run from the installed skill root, the folder
+// that holds this skill's SKILL.md (Grok Build lists that path; a plugin install puts it under
+// ~/.grok/installed-plugins/).
 import { realpathSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { BlockedError, EXIT, EXIT_NAMES, ONE_LINE_CREDIT } from './lib/constants.mjs';
 
-export const USAGE = `lit-typographic-motion (LitGrok) — film director: treatment first, then the type or stage path
+export const USAGE = `lit-typographic-motion — film director: treatment first, then the type or stage path
 Usage: node scripts/motion.mjs <mode> --out <dir> [options]
   Every render reads <dir>/treatment.json first; exit 16 names the first invalid field.
   stage  --out <dir> [--round 1..3] [--stills-only]
@@ -47,7 +48,7 @@ Presets: swiss-signal | terminalcore | tidal. Exit codes: 0 OK, 10 no Chrome, 11
 16 treatment invalid, 17 stage contract, 18 stage nondeterministic, 19 stage network request, 20 sound invalid,
 21 no cover encoder (libwebp img2webp + dwebp, or gifski), 22 a listed asset is missing (cover base art, product files, or fetched assets).
 --swiftshader forces the SwiftShader rung (the CI determinism setting). Pre-warm outside the session:
-npm exec --yes --package @litfamily/litgrok@<installed version> -- litgrok motion-runtime install
+node scripts/prewarm.mjs install   (from this skill root; status shows the probes)
 ${ONE_LINE_CREDIT}
 `;
 

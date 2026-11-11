@@ -19,7 +19,7 @@ node "$FRONTEND_UIUX_SKILL_ROOT/scripts/interface-probe.mjs" "<page.html | proje
 
 What it does, in order:
 
-1. Asks the `browser-drive` capability probe for a verified `agent-browser`. It never installs,
+1. Asks the bundled browser capability probe (`scripts/browser-capability-probe.mjs`) for a verified `agent-browser`. It never installs,
    downloads or updates a browser. A missing, unidentified or uncleaned driver is a `BLOCKED`
    run, not a pass.
 2. Serves a local page from `127.0.0.1` on a free port (never `file://`), then opens it once per
@@ -100,7 +100,7 @@ kind of the read-only review row.
 | `audit` | None, not even a "quick" fix | The probe run is the deliverable | The review table, the Not verified list and the Block or Approve line |
 | `harden` | Only to repair a break the stress pass found; three rounds at most | At every harden axis that applies | A table per axis with the columns Scenario, Observed and Owner, plus the fixes |
 
-Mode words (the hook names the mode it detected; the wording and the boundary decide together):
+Mode words (the wording and the boundary decide together):
 
 - `polish`: *polish*, *clean up the styling*, *tighten up*, *다듬어*, or an explicit "keep the
   layout / 구조는 그대로" scope, when the object is an interface surface. A request that asks for

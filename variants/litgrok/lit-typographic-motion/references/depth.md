@@ -110,7 +110,7 @@ page's panels while it renders.
    `render(t)`. The page renders on the software rung, and the stage refuses to start (exit 17) when the
    plate is missing or does not cover the film.
 
-Blender is found from `LITGROK_BLENDER` (used only if it exists), the macOS app
+Blender is found from `LIT_BLENDER` (used only if it exists), the macOS app
 (`/Applications/Blender.app/Contents/MacOS/Blender`) or `blender` on PATH, and always runs headless as
 `blender -b --factory-startup --python-exit-code 1 -P runner.py -- ...` (so a scene exception fails
 the command instead of exiting 0), on Metal on Apple silicon, another GPU backend next, the CPU

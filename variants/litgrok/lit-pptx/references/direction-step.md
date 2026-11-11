@@ -167,8 +167,8 @@ deck.pptx        compiled deck
 Compile and gate from the project root:
 
 ```bash
-node .grok/skills/lit-pptx/scripts/compile-deck.js deck.md --pptx deck.pptx
-node .grok/skills/lit-pptx/scripts/run.mjs qa_deck.py deck.pptx
+node <skill dir>/scripts/compile-deck.js deck.md --pptx deck.pptx
+node <skill dir>/scripts/run.mjs qa_deck.py deck.pptx
 ```
 
 The first line of the compile output repeats the direction (`Tonality gazette · density 10 ·
@@ -183,7 +183,7 @@ the two alternatives. Keep content and order identical; change only the `tonalit
 ```bash
 for t in gazette ledger night; do
   sed "s/^tonality: .*/tonality: $t/" strip.md > "strip-$t.md"
-  node .grok/skills/lit-pptx/scripts/compile-deck.js "strip-$t.md" --pptx "strip-$t.pptx"
+  node <skill dir>/scripts/compile-deck.js "strip-$t.md" --pptx "strip-$t.pptx"
 done
 ```
 

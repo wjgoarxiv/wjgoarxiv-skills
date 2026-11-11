@@ -1,10 +1,10 @@
 #!/usr/bin/env node
-// `litgrok motion-runtime install|status [--audio] [--word-timing]` (MO-A-42/44/53/54/55).
+// `node <skill dir>/scripts/prewarm.mjs install|status [--audio] [--word-timing]` (MO-A-42/44/53/54/55).
 // install is the only step that touches the network: pinned npm deps via `npm ci`, pinned fonts and
-// licence files by URL + sha256, and (opt-in) the hash-pinned librosa venv. `litgrok install`
+// licence files by URL + sha256, and (opt-in) the hash-pinned librosa venv. Installing the skill
 // stays copy-only; a render never installs, fetches or repairs anything.
 import { spawnSync } from 'node:child_process';
-import hostProc from '../../lit-pptx/scripts/proc.cjs';
+import hostProc from './proc.cjs';
 import { closeSync, copyFileSync, existsSync, mkdirSync, mkdtempSync, openSync, readFileSync, realpathSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
@@ -14,19 +14,19 @@ import { AUDIO_REQUIREMENTS, audioPython, audioState, audioVenvDir, depsDir, dep
 import { isSoftwareRenderer, openRenderer, resolveChrome, UNKNOWN_RENDERER } from './lib/chrome.mjs';
 import { findTool, previewRung } from './lib/render.mjs';
 
-export const RUNTIME_USAGE = `Usage: litgrok motion-runtime install|status [--audio] [--word-timing]
+export const RUNTIME_USAGE = `Usage: node <skill dir>/scripts/prewarm.mjs install|status [--audio] [--word-timing]
   install        npm ci the pinned engine deps and fetch the pinned fonts into the motion cache
   install --audio        also build the hash-pinned librosa venv (Tier 2 beat grid)
   install --word-timing  state the model sizes and pins; fails closed while a pin is unverified
   status         print the six pre-render probes (Chrome, ffmpeg, WebGL2, software GL, pre-warm,
                  and the cover encoder that cover mode needs)
-Cache: \${XDG_CACHE_HOME:-~/.cache}/litgrok/motion-runtime (LITGROK_MOTION_CACHE overrides)
+Cache: \${XDG_CACHE_HOME:-~/.cache}/lit-skills/motion-runtime (LIT_MOTION_CACHE overrides)
 `;
 
-// Fetch source: the pinned URL, or a local mirror directory/URL (LITGROK_MOTION_FONT_MIRROR) that
+// Fetch source: the pinned URL, or a local mirror directory/URL (LIT_MOTION_FONT_MIRROR) that
 // serves the same files by name. The sha256 pin is checked either way before anything is kept.
 async function fetchPinned(url, name, expected, env) {
-  const mirror = env.LITGROK_MOTION_FONT_MIRROR;
+  const mirror = env.LIT_MOTION_FONT_MIRROR;
   const source = mirror ? (/^[a-z]+:\/\//i.test(mirror) ? `${mirror.replace(/\/$/, '')}/${name}` : pathToFileURL(join(mirror, name)).href) : url;
   let bytes;
   if (source.startsWith('file:')) {
@@ -53,7 +53,7 @@ function withLock(root, action) {
   const lock = join(root, 'install.lock');
   let fd;
   try { fd = openSync(lock, 'wx'); } catch (error) {
-    if (error.code === 'EEXIST') throw new Error(`another motion-runtime install holds ${lock}; wait for it, or remove the lock if no install is running`);
+    if (error.code === 'EEXIST') throw new Error(`another pre-warm install holds ${lock}; wait for it, or remove the lock if no install is running`);
     throw error;
   }
   const release = () => { closeSync(fd); rmSync(lock, { force: true }); };
@@ -172,7 +172,7 @@ export async function status(args, env = process.env, stdout = process.stdout) {
   let renderer = null;
   let probeError = null;
   if (chrome) {
-    const profileDir = mkdtempSync(join(tmpdir(), 'litgrok-motion-probe-'));
+    const profileDir = mkdtempSync(join(tmpdir(), 'lit-motion-probe-'));
     try {
       const probe = await openRenderer({ executable: chrome, profileDir });
       renderer = probe.renderer;

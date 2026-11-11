@@ -1,0 +1,12 @@
+{
+  "name": "lit-diagram-drawer",
+  "version": "0.1.0",
+  "description": "lit-diagram-drawer for Grok Build, one skill: accessible, Korean-ready diagrams with verifiers, a bundled prose detector and PNG/SVG export.",
+  "author": {
+    "name": "wjgoarxiv"
+  },
+  "license": "MIT",
+  "skills": [
+    "./"
+  ]
+}

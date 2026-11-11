@@ -1,4 +1,4 @@
-# Motion guide for LitGrok frontend work
+# Motion guide for Grok Build frontend work
 
 Use this guide with the active frontend Design Contract and `references/interaction-motion.md`. Motion decisions belong to named components and states; they do not grant implementation scope. Start with the target page, components, and exclusions. Specify the stack, visual tokens, layers, timing, viewport behavior, reduced-motion path, assets, and performance limits before implementation. Name exact files or components so the work does not invent unrelated sections.
 
@@ -125,6 +125,6 @@ Give cursor tracking its own interaction scope and budget. For a 3D scene or car
 ## Phase 3 README A/B example slot
 
 Keep `examples/phase-3-readme-motion-ab.md` as the verified A/B format (evidence path, README and motion context, verbatim excerpts, observed change). Add examples only after the Phase 3 README motion runs exist. Store each case at
-`.grok/skills/frontend-ui-ux/examples/phase-3-readme-ab/<case>/` with
+`<skill dir>/examples/phase-3-readme-ab/<case>/` with
 `before.md`, `after.md`, `before.png`, and `after.png`. The Markdown files hold the
 README excerpts; the PNGs show the matching rendered states and viewport size.

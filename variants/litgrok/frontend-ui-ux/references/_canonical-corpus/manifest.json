@@ -1,23 +1,23 @@
 {
-  "schema_version": "litclaude.canonical-frontend-corpus/v1",
+  "schema_version": "litgrok.canonical-frontend-corpus/v1",
   "source": {
     "commit": "8ec16c5129df7b9778959e8367657d0e79c2c3bb",
     "reference_tree": "9188410be0af35f2421ba300d91a0d7a7341caf0",
     "reference_subtree": "frontend/references"
   },
   "file_count": 167,
-  "byte_count": 2596349,
-  "aggregate_sha256": "f6959eeae02685102df9fbedafb2c437be4d51df8e102f9fcf32298f7674e7d7",
+  "byte_count": 2597205,
+  "aggregate_sha256": "5a88d0430aab73a617bb7cf1e1ae549c82922126fd7d4272927343bd4d6c1534",
   "files": [
     {
       "path": "design/README.md",
-      "size": 24662,
-      "sha256": "e9550b081ded238021f6021a79caa79be4d5bdec0eaff99717cf71ffe55c9571"
+      "size": 24767,
+      "sha256": "e97a7c2f94cc820670a5b2a58fd146878155d315984fa11f174120fda0fe5b35"
     },
     {
       "path": "design/_INDEX.md",
-      "size": 14650,
-      "sha256": "a9916b8642972e087e57e2f64ea7dd61737914e61931853a1d3ea2624f2cd023"
+      "size": 14658,
+      "sha256": "daf237dccce036ef4ec6d5e4ec44a124890d99c4fecc292732ed2746b9bfc69b"
     },
     {
       "path": "design/airbnb.md",
@@ -36,8 +36,8 @@
     },
     {
       "path": "design/aside.md",
-      "size": 12819,
-      "sha256": "430c29884f7cddf2dee1ee8722c71d5f8a8bdf49218dbbc7cbbfba612ba37081"
+      "size": 12818,
+      "sha256": "7b4f3667cf9b78810b06d59872675769d45dfb88d898f66f51e51f9d9d4480af"
     },
     {
       "path": "design/binance.md",
@@ -81,8 +81,8 @@
     },
     {
       "path": "design/clone-from-url.md",
-      "size": 5178,
-      "sha256": "1ebd9bc28f59d1944c7e6e9e9af39b728936725bf774d50b806116257e824dd1"
+      "size": 5126,
+      "sha256": "d1b0ae92e5f54797df51f97fc64b2f28f3021f2fe247c09d0df90ae21bb6bf83"
     },
     {
       "path": "design/cohere.md",
@@ -151,8 +151,8 @@
     },
     {
       "path": "design/image-to-code-skill.md",
-      "size": 36442,
-      "sha256": "4c060a8064a8b13380bc2ef3d6e6a1d0b1e316aa093cd9807d0ce9e4eeb037fa"
+      "size": 36536,
+      "sha256": "42649d0c962b573512fdbdb8a9e7a7189a0e058c9b488857fb9ecc34a9bc4f29"
     },
     {
       "path": "design/imagegen-brandkit.md",
@@ -296,8 +296,8 @@
     },
     {
       "path": "design/react-dev-tooling-skill.md",
-      "size": 8603,
-      "sha256": "26f648a70311d870ffce17798f9ed17501911e483898ee04aed8b08686c36e20"
+      "size": 8569,
+      "sha256": "6ca107df6df2f163d910df1d250d98ac6ae6834c63dbd1a06782178690054108"
     },
     {
       "path": "design/redesign-skill.md",
@@ -366,13 +366,13 @@
     },
     {
       "path": "design/stitch-design-example.md",
-      "size": 12053,
-      "sha256": "0ab6740c4ebb1966dbceddb823a66d4bf027e960efbd73faca56cbf8370ae2ad"
+      "size": 12051,
+      "sha256": "a725c0ae1e86f72a258b97001242d6031f7619e2725bd1598263abfbe5ba3753"
     },
     {
       "path": "design/stitch-skill.md",
-      "size": 11851,
-      "sha256": "46bdb08fee2dded38b6ba0a051230a502d6ac6e4044afd47592cb40c256028b5"
+      "size": 11850,
+      "sha256": "5c3eb9b92b82d9989f65b5b0fa5f5060daa652c6ae1a69b3e637c333717c910f"
     },
     {
       "path": "design/stripe.md",
@@ -466,43 +466,43 @@
     },
     {
       "path": "designpowers/README.md",
-      "size": 3762,
-      "sha256": "279635a5695f4dc4e7f342038074402bc4ed38f900b15623a88f988dd3b98640"
+      "size": 4124,
+      "sha256": "39c2ea82e298b422d300ce5712c7bf5c1dc10098f73e6cab5d79a6cfe8e1ce6d"
     },
     {
       "path": "designpowers/UPSTREAM.md",
-      "size": 2234,
-      "sha256": "ea8c049856a3a6b71b5122bb590214c509ae445fa67412b1775b8e9bed0141b8"
+      "size": 2235,
+      "sha256": "e2e593d93fb79973babda5437943f069911bc802e432107e966adce692d73a70"
     },
     {
       "path": "designpowers/lane-a-direction.md",
-      "size": 5357,
-      "sha256": "56f982df6cdef6ae6b821e3b16395c6f4908103eda8fae3c75ec22f615b718f9"
+      "size": 5421,
+      "sha256": "15adddb98753c112f642cce306239e612d57d3163933195d1d0d310c7c2aae7d"
     },
     {
       "path": "designpowers/lane-b-execution.md",
-      "size": 5742,
-      "sha256": "591d7406e2836c0531e08d016073db6c77dd6c5ec69ee013f7fa1fe8a4283579"
+      "size": 5868,
+      "sha256": "aedc4e559437db5ec701f0d311f8849c0143404838c10c08f795b32a49c79fae"
     },
     {
       "path": "designpowers/lane-c-review.md",
-      "size": 5513,
-      "sha256": "23caaf59307351026b34dc2cdb60bc5b1656803b5326bfdb46671cee00bbc286"
+      "size": 5617,
+      "sha256": "a66e447fcc760ffad661dd6e02b94294f10b603892c839d86f26a86e16014290"
     },
     {
       "path": "designpowers/lane-d-memory.md",
-      "size": 5108,
-      "sha256": "394da780de7ec826e238017b9a3d42b1195976a3c971e7dd1f7cd734cdc15336"
+      "size": 5172,
+      "sha256": "13ce2acd5b9d6f333ae792905da6ab5a63768d2fa7b260258d719e7836b15176"
     },
     {
       "path": "designpowers/orchestration.md",
-      "size": 5462,
-      "sha256": "6c6de38691d0ac6e21ec43d79d9fdd37a894347e95999d6f39c7b012eca5c67d"
+      "size": 5517,
+      "sha256": "2787e725b177662b6ae3efb07a5529f079ca74258fbb1c78b270476c320f56c1"
     },
     {
       "path": "designpowers/routing.md",
-      "size": 5353,
-      "sha256": "356b920ce02c632366f17b2cfe29ca62c544d99d4181e7e0128dd175c0bf8268"
+      "size": 5431,
+      "sha256": "df914b631654d851cce7993bab59cffb10170c0e3eb322e634ee3f1d1c0357a6"
     },
     {
       "path": "designpowers/vendor/LICENSE",
@@ -841,8 +841,8 @@
     },
     {
       "path": "ui-ux-db/scripts/search.py",
-      "size": 5607,
-      "sha256": "6a565f960a672e16dd064ccadd3406db999bfd1a4bff4d609b36a8d4c6450b86"
+      "size": 5492,
+      "sha256": "a258409678d0e03df8cb1c03569b267a1a973e397040eeb602ff7298a07dfc11"
     }
   ],
   "legal": [

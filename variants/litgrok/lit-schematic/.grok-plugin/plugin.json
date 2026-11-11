@@ -1,0 +1,12 @@
+{
+  "name": "lit-schematic",
+  "version": "0.1.0",
+  "description": "lit-schematic for Grok Build, one skill: P&IDs, PFDs, isometric cutaways and apparatus figures as editable SVG with PDF and 600 dpi PNG.",
+  "author": {
+    "name": "wjgoarxiv"
+  },
+  "license": "MIT",
+  "skills": [
+    "./"
+  ]
+}

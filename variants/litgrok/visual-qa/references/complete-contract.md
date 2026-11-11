@@ -21,11 +21,10 @@ preconditions:
 ```
 
 This skill is reached through Grok Build skill discovery: its description and user-invocable
-route identify the entry point, while this file is loaded lazily for the complete contract. A
-matching `UserPromptSubmit` event may record that the turn began, but it does not inject this
-reference automatically. `PostToolUse` records only; its stdout is not a model-visible finding
-and it cannot establish that a skill route ran. There is no separate command namespace and no
-hook that captures a browser for you. Probe which browser, terminal, image, authentication, and
+route identify the entry point, while this file is loaded lazily for the complete contract. The
+skill ships no hooks, so nothing injects this reference automatically and nothing records that
+a skill route ran. There is no separate command namespace and no hook that captures a browser
+for you. Probe which browser, terminal, image, authentication, and
 reviewer capabilities are callable in the current session before promising any tier.
 
 Select this skill to prove a claim about an interface that already exists. Do not select it to
@@ -141,7 +140,7 @@ something looks correct is not an evidence artifact.
 
 ## Evidence packet
 
-For mechanical verification, serialize the packet as JSON and run `scripts/verify-evidence-manifest.mjs <manifest.json>` from the `visual-qa` directory. This is a LitGrok-owned evidence record, not a Grok Build configuration schema. Its top level contains `artifact` (`id`, `revision`), `methodology`, `evidence`, `findings`, and `verdict`. Every evidence item contains `id`, `target`, `dimensions`, `state`, `fixture`, `capture_method`, `captured_at`, a manifest-relative `path`, `criterion`, `observation`, `automated_checks`, and `visual_judgments`. The verifier requires each referenced path to remain below the manifest directory and resolve to a file.
+For mechanical verification, serialize the packet as JSON and run `scripts/verify-evidence-manifest.mjs <manifest.json>` from the `visual-qa` directory. This is a skill-owned evidence record, not a Grok Build configuration schema. Its top level contains `artifact` (`id`, `revision`), `methodology`, `evidence`, `findings`, and `verdict`. Every evidence item contains `id`, `target`, `dimensions`, `state`, `fixture`, `capture_method`, `captured_at`, a manifest-relative `path`, `criterion`, `observation`, `automated_checks`, and `visual_judgments`. The verifier requires each referenced path to remain below the manifest directory and resolve to a file.
 
 Every reviewed state needs an evidence record containing:
 
@@ -288,8 +287,9 @@ not receive a similarity score.
 
 The evidence-eligible schema is `litfamily.evidence-manifest/v1beta1`;
 `litfamily.evidence-manifest/v1alpha1` is retained only for migration diagnostics and is never
-evidence-eligible. The bundled JSON schema is the
-machine-readable authority and `scripts/cli.mjs validate-evidence` is the local entry point.
+evidence-eligible. This copy bundles no JSON schema and no `cli.mjs`: the rules in this section are
+the authority, `scripts/verify-evidence-manifest.mjs` checks the packet structure and path
+containment, and the schema-level checks below are applied by hand.
 
 Required concepts:
 
@@ -357,18 +357,10 @@ invalidates the proof taken against it.
 Only a contract-recorded accepted exception with a dated `expires_at` can back an evidence
 exception; an undated standing decision fails closed here.
 
-Validate:
-
-```bash
-node skills/visual-qa/scripts/cli.mjs validate-evidence \
-  path/to/evidence-manifest.json \
-  --tier smoke \
-  --now 2026-07-24T12:00:00.000Z \
-  --current-source-hash <sha256> \
-  --current-source-revision revision:<current-id> --json
-```
-
-Real output for a structurally valid public beta smoke manifest without trusted host provenance:
+Validate by hand against the rules above (there is no bundled `validate-evidence` command): the
+tier, the freshness time, the current source hash and the current source revision are each
+compared with the manifest, and every failed or unprovable rule becomes a code. A structurally
+valid public beta smoke manifest without trusted host provenance comes out as:
 
 ```json
 {
@@ -391,18 +383,17 @@ Real output for a structurally valid public beta smoke manifest without trusted 
 }
 ```
 
-A non-pass result exits non-zero and carries stable codes in `blocked_codes` and
-`failure_codes`. Do not edit a failing manifest until it passes by deleting required checks.
+A non-pass result carries stable codes in `blocked_codes` and `failure_codes`. Do not edit a failing manifest until it passes by deleting required checks.
 
-Source-checkout-only regression replay is not available from an installed package payload.
-From the product root, run the package-owned evidence verifier against a caller-owned manifest:
+Regression replay is not available from an installed skill. Run the bundled evidence verifier
+against a caller-owned manifest:
 
 ```bash
-node .grok/skills/visual-qa/scripts/verify-evidence-manifest.mjs \
+node <skill dir>/scripts/verify-evidence-manifest.mjs \
   path/to/evidence.json
 ```
 
-The verifier consumes the manifest and package-owned evidence paths, then reports whether each
+The verifier consumes the manifest and the evidence paths it lists, then reports whether each
 referenced file is reachable, contained, and structurally complete. It does not create captures,
 invent findings, or establish a live browser capability.
 
@@ -410,7 +401,7 @@ For a terminal capture, use the same verifier with a manifest that records the c
 capture and its dimensions:
 
 ```bash
-node .grok/skills/visual-qa/scripts/verify-evidence-manifest.mjs \
+node <skill dir>/scripts/verify-evidence-manifest.mjs \
   path/to/terminal-evidence.json
 ```
 
@@ -429,10 +420,7 @@ full and reference-fidelity therefore return `BLOCKED_INDEPENDENT_REVIEW_UNAVAIL
 both files validate; they cannot emit evidence-eligible `PASS` until a host-owned provenance
 adapter exists.
 
-```bash
-node skills/visual-qa/scripts/cli.mjs validate-review \
-  path/to/review-receipt.json
-```
+Check each receipt by hand against the fields above; this copy ships no `validate-review` command.
 
 Required operational contract:
 
@@ -535,13 +523,8 @@ greater than 256 MiB; the compressed stream must inflate to the exact bounded sc
 Trailing bytes, malformed chunks, invalid CRC, unsupported formats, and oversized payloads fail
 closed.
 
-```bash
-node skills/visual-qa/scripts/cli.mjs image-diff \
-  path/to/reference.png \
-  path/to/actual.png
-```
-
-Equal dimensions produce changed-pixel and alpha-changed-pixel counts, exact-match ratio, mean
+This copy ships no image-diff command; compute the comparison with a tool the session already has
+(or report it as not run), and record it in the shape below. Equal dimensions produce changed-pixel and alpha-changed-pixel counts, exact-match ratio, mean
 absolute RGBA difference, maximum channel delta, similarity score, alpha-integrity status, and
 deterministic hotspot boxes. A dimension mismatch emits `dimensionsMatch: false` with explicit
 `null` values for the non-computable similarity, exact-match, mean-difference, and maximum-delta
@@ -559,13 +542,8 @@ sequences, and disallowed control bytes, then segments visible text into graphem
 accounting for combining marks, zero-width joiners, variation selectors, emoji sequences, and
 wide CJK characters before computing display cells.
 
-```bash
-node skills/visual-qa/scripts/cli.mjs tui-check \
-  path/to/captured-terminal.txt \
-  --cols 100
-```
-
-Real output for a small bordered CJK capture at four columns:
+This copy ships no `tui-check` command; apply the rules above by hand (or with a tool the session
+already has) and record the result in this shape. A small bordered CJK capture at four columns:
 
 ```json
 {
@@ -677,20 +655,18 @@ evidence lane and feed its severity and blocker model without overwriting nonvis
 
 ## Install verification
 
-Run these from a temporary project to confirm the package-owned payload is installed at the
-documented project path. The command is a local installation probe, not a claim about a live host
-session.
+Run these to confirm the skill is installed as Grok Build sees it. The commands are a local
+installation probe, not a claim about a live host session.
 
 ```bash
-LITGROK_REPO="/absolute/path/to/litgrok"
-node "$LITGROK_REPO/bin/litgrok.mjs" install --project
-find .grok/skills/visual-qa -maxdepth 2 -type f -print
-npm --prefix "$LITGROK_REPO" test
+grok plugin install "<path to your wjgoarxiv-skills clone>#variants/litgrok/visual-qa" --trust
+grok inspect --json   # the skills list names visual-qa with its SKILL.md path
+find <skill dir> -maxdepth 2 -type f -print
 ```
 
 The listing must contain this entry point, `references/complete-contract.md`, the capture and
-verdict references, and the evidence-manifest verifier. `npm --prefix "$LITGROK_REPO" test`
-validates the static package contract; it does not fabricate a browser capture or trust grant.
+verdict references, and the evidence-manifest verifier. An install listing does not fabricate a
+browser capture or trust grant.
 Keep the install directory and its cleanup receipt separate from the reviewed artifact.
 
 ## Completion checklist

@@ -1,9 +1,8 @@
-// Driver adapter: the interface probe speaks the LitClaude browser-drive contract
-// (probeBrowserDriver/runBrowserCommand), while this package's browser-drive skill exposes
-// the older probe() shape. This module translates between them; it changes no behavior
-// of the browser-drive skill itself.
+// Driver adapter: the interface probe speaks the probeBrowserDriver/runBrowserCommand contract,
+// while the bundled browser-capability-probe.mjs exposes the older probe() shape. This module
+// translates between them; it changes no behavior of the probe itself.
 import { spawnSync } from "node:child_process";
-import { probe } from "../../browser-drive/scripts/capability-probe.mjs";
+import { probe } from "./browser-capability-probe.mjs";
 
 export const DRIVER_COMMAND = "agent-browser";
 

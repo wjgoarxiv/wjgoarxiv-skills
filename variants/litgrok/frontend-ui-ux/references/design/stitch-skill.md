@@ -12,7 +12,7 @@ The generated `DESIGN.md` serves as the **single source of truth** for prompting
 
 ## Prerequisites
 - Access to Google Stitch via [labs.google/stitch](https://labs.google/stitch)
-- Optionally: Stitch MCP Server for programmatic integration with Cursor, Antigravity, or Gemini CLI
+- Optionally: Stitch MCP Server for programmatic integration with a coding agent such as Grok Build
 
 ## The Goal
 Generate a `DESIGN.md` file that encodes:

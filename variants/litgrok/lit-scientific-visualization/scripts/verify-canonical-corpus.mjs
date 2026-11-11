@@ -5,7 +5,7 @@ import { existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const SKILL_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../../../vendor/scientific-visualization');
+const SKILL_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../vendor/scientific-visualization');
 const MANIFEST_RELATIVE = 'references/_canonical-corpus/manifest.json';
 const EXPECTED = Object.freeze({
   schemaVersion: 'litgrok.scientific-visualization-corpus/v1',

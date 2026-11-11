@@ -22,11 +22,11 @@ reader_projection: shared_rule
 ```yaml
 contract_schema_version: litgrok.diagram-drawer/v1
 artifact_type: grok_build_skill
-surface: .grok/skills/lit-diagram-drawer/SKILL.md
-discovery: project skill listed by Grok Build at /skills
+surface: <skill dir>/SKILL.md
+discovery: skill listed by Grok Build at /skills (one-skill plugin install: grok plugin install "<path to your wjgoarxiv-skills clone>#variants/litgrok/lit-diagram-drawer" --trust)
 route_candidate: /lit-diagram-drawer <brief>
 live_route_status: unverified; Grok Build slash parsing and reload behavior are host-dependent
-resource_root: .grok/skills/lit-diagram-drawer
+resource_root: <skill dir> (the folder that holds this SKILL.md)
 tools: Node.js standard library; optional external agent-browser 0.38.1 or newer
 limitations_channel: reply
 ```
@@ -35,14 +35,14 @@ If this skill is active, request one model-emitted line before other response co
 
 🔥 **LIT IGNITED · lit-diagram-drawer** 🔥
 
-The line is advisory prompt guidance. It does not prove that Grok Build selected or displayed this skill. Check /skills; /lit-diagram-drawer <brief> is a route candidate until the live host accepts it. A plain project folder can load skills and rules without trusted hooks.
+The line is advisory prompt guidance. It does not prove that Grok Build selected or displayed this skill. Check /skills; /lit-diagram-drawer <brief> is a route candidate until the live host accepts it. This skill ships no hook or rule; its description is the route.
 
 ## Route
 
 - Use this skill for system maps, process diagrams, schemas, decision paths, schedules, ownership maps, and conceptual charts in the catalog.
-- Route pages, dashboards, responsive application screens, and interaction design to [frontend-ui-ux](../frontend-ui-ux/SKILL.md).
-- Route measured scientific data, statistical inference, uncertainty, and instrument output to [lit-scientific-visualization](../lit-scientific-visualization/SKILL.md).
-- Route drawings of physical equipment to [lit-schematic](../lit-schematic/SKILL.md): a P&ID, PFD or BFD, an equipment layout, a journal figure of an experimental apparatus, or an isometric or cutaway view of a vessel, exchanger or machine. A box-and-arrow sketch of a process stays here.
+- Route pages, dashboards, responsive application screens, and interaction design to the `frontend-ui-ux` skill.
+- Route measured scientific data, statistical inference, uncertainty, and instrument output to the `lit-scientific-visualization` skill.
+- Route drawings of physical equipment to the `lit-schematic` skill: a P&ID, PFD or BFD, an equipment layout, a journal figure of an experimental apparatus, or an isometric or cutaway view of a vessel, exchanger or machine. A box-and-arrow sketch of a process stays here.
 - Use prose, a table, or a short list when it carries the same meaning more plainly.
 
 ## Fixed procedure
@@ -67,7 +67,7 @@ Skip a question when the prompt already names its answer (a type, a canvas prese
 4. **Read the route.** Load the matching references/type-<id>.md and only the common guides it links to. Start with references/style-guide.md and references/output-spec.md. Use the matching assets/examples/ template as a scaffold for geometry and tokens, not as a fixed composition or a density target. Do not load every type guide at once.
 5. **Draft HTML/SVG.** Use semantic order, a 4px layout grid, live text, the selected theme, and 3–5 accent families each bound to a role and named in a legend (fewer only on a minimal request). Keep a complete static state available.
 6. **Verify.** Run scripts/verify-diagram.mjs, scripts/verify-type.mjs --type=<id>, scripts/verify-brief.mjs, and scripts/check-visible-text.mjs. Run scripts/verify-all.mjs for the complete example set and scripts/verify-coverage.mjs after changing catalog resources. When a brief has a trust boundary, declare every node exactly once in semicolon-separated `Trust boundary internal nodes:` and `Trust boundary external nodes:` lists; the brief verifier checks that internal boxes lie fully inside the boundary rectangle and external boxes fully outside. These checks reject process or generator copy, undersized role labels, sparse content, detached or ambiguous edge labels, edge labels on node boxes, text crossing boundaries, routes through unrelated nodes or along outlines, route crossings (including opposite directions between the same two nodes), arrowheads that miss or cover their targets, undersized heads, incomplete decision outcomes, node gaps under 12px, and incomplete sequences. Correct every block, geometry, contrast, accessibility, language, and type-specific failure before exporting.
-7. **Check visible text with lit-humanizer.** The checker calls the detector shipped in this same project at ../lit-humanizer/scripts/detect.mjs. A block-tier hit or detector error fails the check. If that installed detector is missing or fails, stop and report it; do not skip the text check or use another checkout.
+7. **Check visible text with the prose detector.** The checker calls the detector bundled in this skill at prose-detector/scripts/detect.mjs (its rules in prose-detector/rules.json). A block-tier hit or detector error fails the check. If that detector is missing or fails, stop and report it; do not skip the text check or use another checkout.
 8. **Export.** Run scripts/export.mjs for requested PNG scales or Office-safe SVG. It never installs a browser or font. scripts/doctor.mjs reports tool availability. If the renderer is missing, use the printed user-run setup steps; authoring and non-rendering checks remain available.
 9. **Inspect the image.** Open the exported PNG at its intended use size. Check Korean glyphs, label-to-route association, boundary labels, arrowheads, contrast, clipping, and safe margins. A passing source check does not replace this look.
 
@@ -88,7 +88,7 @@ Use the shared references/import-schema.md output to make a fresh content brief.
 - Run `scripts/verify-coverage.mjs` after changing catalog resources to check type-reference and template coverage.
 - Run `scripts/verify-motion.mjs` before export when the diagram has an animated state.
 - Run `scripts/visual-quality.mjs` before review to check visible-label scale, route detours, lifelines, and other visual-quality rules. Its OF-201 through OF-204 findings cover declared-group gap ratios, node-fill accent families (3–5 pass, 6 or more fail), Latin label casing, and node/boundary label fit. OF-203 is advisory; an edge label has no rectangular box and is outside OF-204's scope.
-- Run `scripts/check-visible-text.mjs` before accepting copy to apply the installed LitGrok detector.
+- Run `scripts/check-visible-text.mjs` before accepting copy to apply the bundled prose detector.
 - Run `scripts/doctor.mjs` before export to see renderer, font, and write-access status.
 - Run `scripts/export.mjs` after verification to export the requested PNG scales or Office-safe SVG.
 - Run `scripts/drawio-extract.mjs` when importing a saved draw.io XML, SVG, or PNG source.

@@ -1,5 +1,5 @@
-// Locates fonts for rendering. Pretendard ships beside this skill in the same .grok/skills tree
-// (unmodified official files under the OFL); lit-schematic reads it from there instead of carrying a second copy.
+// Locates fonts for rendering. Pretendard ships inside this skill at assets/fonts/ (the unmodified
+// official variable WOFF2 with its OFL text); an installed system copy is the fallback.
 
 import { existsSync, readdirSync } from "node:fs";
 import { homedir } from "node:os";
@@ -10,8 +10,7 @@ export const SKILL_ROOT = resolve(fileURLToPath(new URL("../..", import.meta.url
 
 export function findPretendard() {
   const inTree = [
-    join(SKILL_ROOT, "..", "lit-diagram-drawer", "assets", "fonts", "PretendardVariable.woff2"),
-    join(SKILL_ROOT, "..", "lit-pptx", "pretendard-font", "public", "static", "Pretendard-Regular.otf"),
+    join(SKILL_ROOT, "assets", "fonts", "PretendardVariable.woff2"),
   ];
   for (const file of inTree) if (existsSync(file)) return { file, source: "skills" };
   const dirs = [join(homedir(), "Library", "Fonts"), "/Library/Fonts", join(homedir(), ".local", "share", "fonts"), "/usr/share/fonts", "C:\\Windows\\Fonts"];

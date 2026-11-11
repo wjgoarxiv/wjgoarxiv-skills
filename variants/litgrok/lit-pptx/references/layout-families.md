@@ -14,8 +14,8 @@ fails a deck whose content slides share one composition too often.
 List what a pack offers before writing:
 
 ```bash
-node .grok/skills/lit-pptx/scripts/compile-deck.js --list-tonalities
-node .grok/skills/lit-pptx/scripts/compile-deck.js --list-layouts gazette
+node <skill dir>/scripts/compile-deck.js --list-tonalities
+node <skill dir>/scripts/compile-deck.js --list-layouts gazette
 ```
 
 The second command prints each family with the titles it may take under that pack, then the cover,

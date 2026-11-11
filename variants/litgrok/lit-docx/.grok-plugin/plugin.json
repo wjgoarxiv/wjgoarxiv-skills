@@ -1,0 +1,12 @@
+{
+  "name": "lit-docx",
+  "version": "0.1.0",
+  "description": "lit-docx for Grok Build, one skill: Word documents with a chosen tonality or publisher profile, DOCX/PDF to Markdown, in-place edits and a QA gate.",
+  "author": {
+    "name": "wjgoarxiv"
+  },
+  "license": "MIT",
+  "skills": [
+    "./"
+  ]
+}

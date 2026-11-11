@@ -7,7 +7,7 @@ version: "1.0.0"
 intent: "Image-led decks: products, portfolios, places, field work."
 canvas: ["16:9", "4:3"]
 
-# LitGrok bundles Pretendard Regular and Bold only: title range comes from size, colour and placement.
+# This skill bundles Pretendard Regular and Bold only: title range comes from size, colour and placement.
 faces:
   display: Pretendard Regular
   title: Pretendard Bold

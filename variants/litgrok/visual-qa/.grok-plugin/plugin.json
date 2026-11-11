@@ -1,0 +1,12 @@
+{
+  "name": "visual-qa",
+  "version": "0.1.0",
+  "description": "visual-qa for Grok Build, one skill: screenshot-backed review of a built interface or visual artifact, with an evidence-manifest verifier.",
+  "author": {
+    "name": "wjgoarxiv"
+  },
+  "license": "MIT",
+  "skills": [
+    "./"
+  ]
+}

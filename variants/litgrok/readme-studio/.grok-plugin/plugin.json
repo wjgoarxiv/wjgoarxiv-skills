@@ -1,0 +1,12 @@
+{
+  "name": "readme-studio",
+  "version": "0.1.0",
+  "description": "readme-studio for Grok Build, one skill: a factual README with an inspected cover, outlined type and local motion.",
+  "author": {
+    "name": "wjgoarxiv"
+  },
+  "license": "MIT",
+  "skills": [
+    "./"
+  ]
+}

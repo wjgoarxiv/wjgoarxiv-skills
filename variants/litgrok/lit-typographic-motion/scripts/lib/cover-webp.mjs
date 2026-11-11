@@ -108,7 +108,7 @@ export function decodeWebp(file, { env = process.env, onFrame = () => {} } = {})
   const bytes = readFileSync(file);
   const info = parseWebp(bytes);
   if (!info.frames.length) throw new Error(`${file} holds no frame`);
-  const work = mkdtempSync(join(tmpdir(), 'litgrok-webp-'));
+  const work = mkdtempSync(join(tmpdir(), 'lit-motion-webp-'));
   try {
     let width = info.width, height = info.height;
     let canvas = null;

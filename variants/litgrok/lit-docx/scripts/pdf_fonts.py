@@ -11,7 +11,7 @@ from typing import Callable
 
 DEFAULT_MAIN_FONT = "Times New Roman"
 DEFAULT_CJK_FONT = "Pretendard"
-MARKER = "LITGROK-MISSING-FONT:"
+MARKER = "LIT-DOCX-MISSING-FONT:"
 # A family name goes into a TeX argument, so only plain names are probed.
 SAFE_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9 ._+-]*$")
 

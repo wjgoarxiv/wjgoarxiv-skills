@@ -22,9 +22,9 @@ A combined directory of all 83 reference files is at `_INDEX.md`. **Read that in
 
 ## Open Design Library
 
-For broader brand/style coverage, load the `open-design` skill — the local `nexu-io/open-design` library (150+ design systems).
+For broader brand/style coverage, load an `open-design` skill when one is installed — the `nexu-io/open-design` library (150+ design systems). It is not part of this skill; without it, stay inside the curated set below and say so.
 
-Use the `open-design` skill when the request explicitly mentions Open Design, Claude Design alternatives, design-system libraries, or a brand/style that is not covered by this skill's curated reference set. Treat Open Design as the expanded reference library; keep this skill responsible for routing discipline, design-system gating, and frontend execution quality.
+Use that `open-design` skill when the request explicitly mentions Open Design, AI design-tool alternatives, design-system libraries, or a brand/style that is not covered by this skill's curated reference set. Treat Open Design as the expanded reference library; keep this skill responsible for routing discipline, design-system gating, and frontend execution quality.
 
 ## Phase 0 — Design System Gate (MANDATORY, runs before routing)
 

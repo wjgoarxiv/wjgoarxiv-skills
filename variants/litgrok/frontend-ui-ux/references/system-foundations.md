@@ -65,9 +65,9 @@ Alignment is ordered. Mixing a reference migration with a value change kills rev
 The system lives in the contract, not in tribal knowledge.
 
 - Write tokens, components, and inventory into the contract; keep `omissions` and `accepted_exceptions` filled.
-- Validate from the installed skill root: `node .grok/skills/frontend-ui-ux/scripts/validate-design-contract.mjs <path>`.
+- Validate from the installed skill root: `node <skill dir>/scripts/validate-design-contract.mjs <path>`.
 - Record the contract hash so the independent review pass binds its receipt to those bytes.
-- Shipping this package also requires `npm test` and the canonical-corpus verifier.
+- Shipping a change to this skill also requires the canonical-corpus verifier.
 
 ## Governance reject-list
 

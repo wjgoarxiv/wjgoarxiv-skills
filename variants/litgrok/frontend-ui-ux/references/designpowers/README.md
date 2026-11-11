@@ -1,6 +1,6 @@
 # designpowers Frontend Reference
 
-This is an internal frontend ruleset, not a standalone skill. `/frontend` remains the only public activation point for web UI, UX, visual design, accessibility, design QA, and frontend implementation routing.
+This is an internal frontend ruleset, not a standalone skill. `/frontend-ui-ux` remains the only public activation point for web UI, UX, visual design, accessibility, design QA, and frontend implementation routing.
 
 Load this reference from the frontend router for EVERY implementation or redesign that creates or updates `DESIGN.md`, and whenever a task needs design operating-layer guidance: personas, cognitive accessibility, critique, design debt, handoff, synthetic user testing, motion guidance, or designpowers-style role references.
 
@@ -8,10 +8,12 @@ The purpose of this ruleset is to enrich the existing frontend workflow while pr
 
 - `references/design/README.md` still owns the `DESIGN.md` contract, taste routing, brand references, React dev tooling, and browser-based design QA expectations.
 - `references/perfection/README.md` still owns Lighthouse, performance, SEO, accessibility audit mechanics, and real-browser verification.
-- `/visual-qa` still owns objective rendered evidence for visual claims.
-- `/ulw-plan`, `/start-work`, and `/review-work` still own planning, execution, and final implementation review when those phases apply.
+- `visual-qa` still owns objective rendered evidence for visual claims.
+- The planning pass, the execution pass and the final review pass still own planning, execution, and final implementation review when those phases apply.
 
 ## Load Order
+
+In Grok Build, the planning pass is whatever writes the plan for this task (an installed planning skill or a plan written with the user), the execution pass carries that plan out, and the final review pass is an independent review of the finished change. Design state lives at `.grok/frontend-design/state.md` in the project.
 
 Read these files before applying designpowers guidance:
 
@@ -34,7 +36,7 @@ The raw upstream bridge/state strategy skills are intentionally excluded from th
 
 Do not introduce scripts, hooks, tool APIs, schedulers, fake direct calls, Figma bridge tooling, `figma-bridge`, framesmith, canvas adapters, or `canvas_evaluate`. Those names are prohibited integration paths, not available options.
 
-Do not load this reference instead of the frontend skill. It only supplies design routing and state language inside `/frontend`.
+Do not load this reference instead of the frontend skill. It only supplies design routing and state language inside `/frontend-ui-ux`.
 
 ## Completion Rule
 
@@ -45,4 +47,4 @@ Designpowers-enhanced frontend work is complete only when:
 - visual claims cite objective visual evidence;
 - the current design state, if used, names the brief, personas, taste constraints, accessibility constraints, and accepted debt;
 - remaining accessibility or persona debt is explicit, located, and user-accepted before closeout;
-- significant implementation work routes through `/review-work`.
+- significant implementation work routes through the final review pass.

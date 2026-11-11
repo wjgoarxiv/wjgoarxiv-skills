@@ -1,6 +1,6 @@
 # From a design request to a working screen
 
-Choose the output mode from the user's actual request. A critique or plan is read-only. A build with a clear target proceeds to source changes and inspection. A bare skill name with several frontends needs a target choice; naming a skill does not settle scope. PostToolUse guidance is a reminder to inspect the changed UI, never permission to redesign unrelated screens.
+Choose the output mode from the user's actual request. A critique or plan is read-only. A build with a clear target proceeds to source changes and inspection. A bare skill name with several frontends needs a target choice; naming a skill does not settle scope. Inspect the changed UI after each edit; that inspection is never permission to redesign unrelated screens.
 
 Before implementation, record a short direction and the finite routes, controls and states that matter. Read current components, brand tokens and dirty files. Preserve established identity in brownfield work. For new work with no visual direction in the brief, apply the authored default pixel profile without asking; absence of direction is not an unresolved choice. The profile is not a mandate to recolor an existing product.
 

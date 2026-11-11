@@ -7,7 +7,7 @@ version: "1.0.0"
 intent: "Dense, numbers-forward review decks that are read closely."
 canvas: ["16:9", "4:3"]
 
-# LitGrok bundles Pretendard Regular and Bold only: title range comes from size, colour and placement.
+# This skill bundles Pretendard Regular and Bold only: title range comes from size, colour and placement.
 faces:
   display: Pretendard Bold
   title: Pretendard Bold

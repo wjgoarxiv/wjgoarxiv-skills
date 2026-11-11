@@ -89,8 +89,8 @@ Verify the lane from the repository, not from the prompt and not from memory.
 3. Match an existing component that uses the API, and confirm that API exists in the installed
    version's own type definitions.
 4. Run the repository's build and its package-native validation checks.
-5. For a Grok skill surface, verify the `.grok/skills/` path and run the package's documented
-   integrity checks; do not infer a host route from an unrelated harness.
+5. For a Grok skill surface, verify the skill path that `grok inspect --json` lists and run the
+   skill's documented integrity checks; do not infer a host route from an unrelated harness.
 
 ## Failure patterns
 

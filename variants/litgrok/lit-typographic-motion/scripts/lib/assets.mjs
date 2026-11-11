@@ -8,7 +8,7 @@
 import { createHash } from 'node:crypto';
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { safeFetch } from '../../../lit-hijack/scripts/lib/safe-fetch.mjs';
+import { safeFetch } from './safe-fetch.mjs';
 import { BlockedError, EXIT } from './constants.mjs';
 import { rasterInfo } from './stage.mjs';
 
@@ -83,7 +83,7 @@ async function get(fetchImpl, dnsImpl, url, { accept, limit, timeoutMs }) {
   // Every hop is re-validated (https only, public addresses only) and the body streams under the
   // cap, so a page that names a LAN address or an endless body cannot stall the command.
   const { buffer } = await safeFetch(url, {
-    limit, timeoutMs, fetchImpl, dnsImpl, headers: { accept, 'user-agent': 'litgrok-motion-assets' },
+    limit, timeoutMs, fetchImpl, dnsImpl, headers: { accept, 'user-agent': 'lit-typographic-motion-assets' },
   });
   return buffer;
 }

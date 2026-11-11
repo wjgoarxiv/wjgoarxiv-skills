@@ -1,6 +1,6 @@
 ---
 name: lit-typographic-motion
-description: Complete activation, procedure, output and completion contract for LitGrok's film-director skill.
+description: Complete activation, procedure, output and completion contract for the Grok Build film-director skill.
 ---
 
 ## #contract.activation
@@ -10,22 +10,20 @@ contract_schema_version: litfamily.llm-contract.v1
 artifact_type: skill
 activation:
   primary: description selection by the Grok Build skill catalog
-  aliases: [lit-typographic-motion, /lit-typographic-motion, bare lit with a new-film request]
+  aliases: [lit-typographic-motion, /lit-typographic-motion, a new-film request]
   automatic_synthetic_pointer_injection: false
   automatic_complete_contract_injection: false
-  prompt_hook: none (the project rule's New film selection section is advisory text)
+  prompt_hook: none (the skill ships no hook and no project rule)
   command_route: /lit-typographic-motion
 preconditions:
   - the request asks to create a new video, clip, motion graphics, lyric video or title sequence
-  - the skill directory resolves from the installed .grok tree (project or user)
-  - the motion runtime was pre-warmed outside the session (npm exec --yes --package @litfamily/litgrok@<installed version> -- litgrok motion-runtime install)
+  - the skill directory resolves to the folder that holds this skill's SKILL.md
+  - the motion runtime was pre-warmed outside the session (node scripts/prewarm.mjs install from the skill root)
 ```
 
-The project rule `.grok/rules/00-litgrok.md` suggests this skill for a bare `lit` film request
-before its Office and Interface sections, with a neutral film context: it names the skill roots,
-`treatment.json` first, the path rule and the commands, and never decides the path for the model.
-Grok Build applies that rule text itself; no hook routes the prompt, and the reply never claims
-one did. Editing existing footage, a background video inside a page, a video inside slides or a
+Grok Build selects this skill from its description or the explicit `/lit-typographic-motion`
+route. No rule or hook routes the prompt, and the reply never claims one did; `treatment.json`
+comes first, and the model, not a router, decides the path. Editing existing footage, a background video inside a page, a video inside slides or a
 report, and a script, summary or thumbnail about a video are other skills' work.
 
 ## #contract.inputs

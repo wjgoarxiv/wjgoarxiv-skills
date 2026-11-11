@@ -1,0 +1,12 @@
+{
+  "name": "lit-pptx",
+  "version": "0.1.0",
+  "description": "lit-pptx for Grok Build, one skill: PowerPoint decks with thirteen tonalities, native charts, embedded Pretendard and a rendered QA loop.",
+  "author": {
+    "name": "wjgoarxiv"
+  },
+  "license": "MIT",
+  "skills": [
+    "./"
+  ]
+}

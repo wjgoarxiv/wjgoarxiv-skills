@@ -3,20 +3,20 @@
 ## One rule
 
 Everything the engine needs from the network is installed once, outside any Grok session, by
-`npm exec --yes --package @litfamily/litgrok@<installed version> -- litgrok motion-runtime install`. A render reads that cache and never installs, fetches, repairs
-or re-verifies against the network. `litgrok install` (the skill copy) stays copy-only and never
-touches the network either; it only prints where to pre-warm.
+this skill's own `node scripts/prewarm.mjs install`, run from the skill root. A render reads that
+cache and never installs, fetches, repairs or re-verifies against the network. Installing the skill
+(`grok plugin install`) stays copy-only and never touches the network either.
 
-`<installed version>` is the LitGrok release that installed this skill copy, because the pre-warm
-must use the same pinned lockfile. The install receipt, `status` and every BLOCKED message print the
-command with that version filled in; copy it from there.
+The pre-warm script reads the lockfile shipped beside it, so it always matches the copy that
+renders. `status` and every BLOCKED message print the command with the absolute script path filled
+in; copy it from there.
 
-Outside Grok Build (Grok Bot, Cursor): the skill root is wherever the host placed this folder; render there only when the host has Node.js and this pre-warmed cache, write films to a workspace path, and otherwise report the render as BLOCKED with the missing piece. The `litgrok` skill holds the full host mapping.
+Outside the Grok Build CLI (for example Grok Bot): the skill root is wherever the host placed this folder; render there only when the host has Node.js and this pre-warmed cache, write films to a workspace path, and otherwise report the render as BLOCKED with the missing piece.
 
 ## The cache
 
-`${XDG_CACHE_HOME:-~/.cache}/litgrok/motion-runtime/<lock digest>/` for both install scopes,
-never under `.grok/vendor/`. `LITGROK_MOTION_CACHE` (an absolute path) replaces the base. Inside:
+`${XDG_CACHE_HOME:-~/.cache}/lit-skills/motion-runtime/<lock digest>/` wherever the skill is
+installed, never inside the skill folder. `LIT_MOTION_CACHE` (an absolute path) replaces the base. Inside:
 
 - `node/` — the pinned engine dependencies (`opentype.js` for outlines, kerning and glyph bounds;
   `ws` for the frame socket), installed by `npm ci --omit=dev --ignore-scripts` from the lockfile
@@ -30,17 +30,17 @@ never under `.grok/vendor/`. `LITGROK_MOTION_CACHE` (an absolute path) replaces 
 
 Archivo instances, VT323, Silkscreen, JetBrains Mono (the variable face cover mode moves by weight)
 and the five EMS stroke fonts ship inside the skill; the
-Hangul body pair is the lit-pptx skill's own Pretendard Regular and Bold, checked against
-LitGrok's recorded hashes.
+Hangul body pair is Pretendard Regular and Bold, the unmodified official files in
+`fonts/pretendard/`, checked against the hashes recorded in `fonts/pins.json`.
 
 ## Commands
 
-- `npm exec --yes --package @litfamily/litgrok@<installed version> -- litgrok motion-runtime install` — deps and fonts; prints one line per item and the cache path.
-- `npm exec --yes --package @litfamily/litgrok@<installed version> -- litgrok motion-runtime install --audio` — also the Tier 2 venv (needs `uv`, or Python 3.12 or 3.13 on PATH; a newer `python3` such as 3.15 is passed over because the pinned wheels do not cover it).
-- `npm exec --yes --package @litfamily/litgrok@<installed version> -- litgrok motion-runtime install --word-timing` — prints the model table (id, revision,
+- `node scripts/prewarm.mjs install` — deps and fonts; prints one line per item and the cache path.
+- `node scripts/prewarm.mjs install --audio` — also the Tier 2 venv (needs `uv`, or Python 3.12 or 3.13 on PATH; a newer `python3` such as 3.15 is passed over because the pinned wheels do not cover it).
+- `node scripts/prewarm.mjs install --word-timing` — prints the model table (id, revision,
   licence, size) before any download. While any pin is unverified it fails closed and downloads
   nothing; Tier 3 then stays unavailable.
-- `npm exec --yes --package @litfamily/litgrok@<installed version> -- litgrok motion-runtime status` — the six probes, every time:
+- `node scripts/prewarm.mjs status` — the six probes, every time:
   1. Chrome path and version;
   2. ffmpeg path, version line and the preview encoder rung (`libwebp_anim`, `img2webp` or GIF);
   3. the WebGL2 renderer string from a real headless probe;
@@ -52,7 +52,7 @@ LitGrok's recorded hashes.
   plus the audio venv and word-timing model state.
 
 Cover mode (`cover.md`) needs no pre-warm at all: it uses Chrome, the bundled faces and the host's
-libwebp tools, which are never bundled and never installed by LitGrok. Install libwebp with the
+libwebp tools, which are never bundled and never installed by this skill. Install libwebp with the
 system package manager (`brew install webp`, `apt install webp`).
 
 ## Exit codes
@@ -64,7 +64,7 @@ system package manager (`brew install webp`, `apt install webp`).
 | 11 | BLOCKED_NO_WEBGL2 | Chrome ran but no WebGL2 context on any rung, not even SwiftShader. |
 | 12 | BLOCKED_NO_FFMPEG_FOR_VIDEO | ffmpeg missing for a film; `--stills-only` still works and exits 0. |
 | 13 | GATE_FAIL_QA | a pre-flight or full-gate rule failed; the report names it. |
-| 14 | BLOCKED_DEPS_NOT_PREWARMED | engine deps (or word-timing models) absent: run `npm exec --yes --package @litfamily/litgrok@<installed version> -- litgrok motion-runtime install` outside the session. |
+| 14 | BLOCKED_DEPS_NOT_PREWARMED | engine deps (or word-timing models) absent: run `node scripts/prewarm.mjs install` from the skill root outside the session. |
 | 15 | BLOCKED_FONT_FETCH | a required font or its licence is missing or its bytes do not match the pin: run the same install. A mismatch is treated as tampering and never repaired in session. |
 | 16 | BLOCKED_TREATMENT_INVALID | `treatment.json` is missing or a field fails; the message names the field. Fix the treatment, never the check. |
 | 17 | STAGE_CONTRACT_ERROR | the stage page broke its contract: no `LitStage.define`, a size that is not the format, a forbidden element or API, a flipbook or animated raster, a refused path, a missing copy line, or a capture of the wrong size. |
@@ -127,7 +127,7 @@ Timing tiers on the type path:
 - **Tier 2** runs when the treatment supplies an audio file and the venv is ready:
   `scripts/beat_grid.py` analyses the file once before rendering and the beat list replaces the
   fixed grid. An absent venv, or one whose installed packages no longer match the pins, falls back
-  to Tier 1 with the warning `audio analysis not prewarmed: run npm exec --yes --package @litfamily/litgrok@<installed version> -- litgrok motion-runtime install
+  to Tier 1 with the warning `audio analysis not prewarmed: run node <skill dir>/scripts/prewarm.mjs install
   --audio`, and the track is still muxed. Never aubio, essentia or madmom.
 - **Tier 3** is opt-in with `--word-timing` and never selected by bare `lit`; absent models exit 14.
 

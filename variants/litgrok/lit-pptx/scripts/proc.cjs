@@ -1,6 +1,6 @@
 "use strict";
 
-// The one place LitGrok skill scripts start child processes and look up executables, so Windows
+// The one place this skill's scripts start child processes and look up executables, so Windows
 // behaves like the other hosts. Three Windows facts it carries:
 //   - Node (18.20.2, 20.12.2, 21.7.3 and every 22+) refuses to spawn a .cmd or .bat without a shell
 //     (CVE-2024-27980), so `npm`, `npx` and every npm-installed CLI shim must go through here.

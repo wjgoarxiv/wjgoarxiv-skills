@@ -15,11 +15,11 @@ const PATH_TRACED = /(고퀄리티|고품질|시네마틱|실사|cinematic|photo
 export function asksPathTraced(request) { return PATH_TRACED.test(String(request ?? '')); }
 
 /**
- * Where Blender is: an explicit LITGROK_BLENDER path (used only if it exists), the macOS app,
+ * Where Blender is: an explicit LIT_BLENDER path (used only if it exists), the macOS app,
  * then `blender` on PATH. `{ env, exists }` are injectable for tests.
  */
 export function findBlender({ env = process.env, exists = existsSync } = {}) {
-  if (env.LITGROK_BLENDER) return exists(env.LITGROK_BLENDER) ? { path: env.LITGROK_BLENDER, source: 'LITGROK_BLENDER' } : null;
+  if (env.LIT_BLENDER) return exists(env.LIT_BLENDER) ? { path: env.LIT_BLENDER, source: 'LIT_BLENDER' } : null;
   if (exists('/Applications/Blender.app/Contents/MacOS/Blender')) return { path: '/Applications/Blender.app/Contents/MacOS/Blender', source: 'macOS app' };
   for (const dir of String(env.PATH ?? '').split(':')) {
     if (dir && exists(path.join(dir, 'blender'))) return { path: path.join(dir, 'blender'), source: 'PATH' };

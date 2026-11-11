@@ -46,7 +46,7 @@ export function blenderArgs({ treatment, scene, out, quality }) {
 }
 
 const FALLBACK = (out) => [
-  'FALLBACK: no Blender found (LITGROK_BLENDER, /Applications/Blender.app, blender on PATH), so nothing was rendered.',
+  'FALLBACK: no Blender found (LIT_BLENDER, /Applications/Blender.app, blender on PATH), so nothing was rendered.',
   `Set render3d to "three" in ${join(out, 'treatment.json')} and build the world in three.js on the GPU rung (references/depth.md),`,
   'and say in the reply that the film used the GPU rung because Blender is not installed.',
 ].join('\n');

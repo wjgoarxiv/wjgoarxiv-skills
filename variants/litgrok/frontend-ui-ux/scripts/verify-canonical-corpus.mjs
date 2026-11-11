@@ -9,15 +9,15 @@ const SKILL_ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const CORPUS_ROOTS = Object.freeze(['design', 'designpowers', 'perfection', 'ui-ux-db']);
 const MANIFEST_RELATIVE = '_canonical-corpus/manifest.json';
 const EXPECTED = Object.freeze({
-  schemaVersion: ['lit', 'claude'].join('') + '.canonical-frontend-corpus/v1',
+  schemaVersion: 'litgrok.canonical-frontend-corpus/v1',
   source: Object.freeze({
     commit: '8ec16c5129df7b9778959e8367657d0e79c2c3bb',
     reference_tree: '9188410be0af35f2421ba300d91a0d7a7341caf0',
     reference_subtree: 'frontend/references',
   }),
   fileCount: 167,
-  byteCount: 2_596_349,
-  aggregateSha256: 'f6959eeae02685102df9fbedafb2c437be4d51df8e102f9fcf32298f7674e7d7',
+  byteCount: 2_597_205,
+  aggregateSha256: '5a88d0430aab73a617bb7cf1e1ae549c82922126fd7d4272927343bd4d6c1534',
   legalTreeSha256: '2b7174f0662a5e41259b922fd1d94c24670df66894c7b9f81c9595ebd35fbc52',
   datasetBytes: 1_023_482,
   datasetSha256: 'a89011236a6ff14e12ec55fccbfab1bbd40ae34614cea5710c022121aa841bb8',

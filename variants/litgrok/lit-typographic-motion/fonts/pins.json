@@ -1,6 +1,6 @@
 {
   "schema": "litgrok.motion-font-pins/v1",
-  "note": "Every font the engine may draw with. bundled = shipped in this skill; reused = the product lit-pptx pair checked against LitGrok's own hashes; fetched = pinned URL + sha256, fetched only by npm exec --yes --package @litfamily/litgrok@<installed version> -- litgrok motion-runtime install.",
+  "note": "Every font the engine may draw with. bundled = shipped in this skill (the Pretendard Regular and Bold pair is the unmodified official files in fonts/pretendard/); fetched = pinned URL + sha256, fetched only by node <skill dir>/scripts/prewarm.mjs install.",
   "fonts": {
     "archivo-75-400": {
       "source": "bundled",
@@ -278,28 +278,28 @@
       "origin": "https://raw.githubusercontent.com/mexicat/pdoom-video/ca251e3dddda422b364385eb484b5a3593a0990d/app/public/fonts/stroke/EMSTech.svg"
     },
     "hangul-400": {
-      "source": "reused",
-      "file": "../lit-pptx/pretendard-font/public/static/Pretendard-Regular.otf",
+      "source": "bundled",
+      "file": "fonts/pretendard/Pretendard-Regular.otf",
       "sha256": "3ffbacde6ab8411f1d2db54bb9b1f0b3ee2a738932033722cf0388c06aed1c93",
       "weight": 400,
       "family": "Pretendard",
       "licence": [
         {
-          "file": "../lit-pptx/pretendard-font/OFL.txt",
+          "file": "fonts/pretendard/OFL.txt",
           "sha256": "3b8ac478fa32708ecd929cd7eae8cc32aba1710ca8ec95386d0db9db89ce57dd"
         }
       ],
       "fallback": "pretendard-fallback-400"
     },
     "hangul-700": {
-      "source": "reused",
-      "file": "../lit-pptx/pretendard-font/public/static/Pretendard-Bold.otf",
+      "source": "bundled",
+      "file": "fonts/pretendard/Pretendard-Bold.otf",
       "sha256": "2e91915fab54df71cc9598ebf608b2bdb54c6fe3c066ac61dff0bc44fca71cc7",
       "weight": 700,
       "family": "Pretendard",
       "licence": [
         {
-          "file": "../lit-pptx/pretendard-font/OFL.txt",
+          "file": "fonts/pretendard/OFL.txt",
           "sha256": "3b8ac478fa32708ecd929cd7eae8cc32aba1710ca8ec95386d0db9db89ce57dd"
         }
       ],

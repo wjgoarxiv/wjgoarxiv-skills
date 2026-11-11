@@ -1,0 +1,12 @@
+{
+  "name": "frontend-ui-ux",
+  "version": "0.1.0",
+  "description": "frontend-ui-ux for Grok Build, one skill: build and inspect interfaces with a design contract, house styles, a rendered probe loop and an evidence-ready handoff.",
+  "author": {
+    "name": "wjgoarxiv"
+  },
+  "license": "MIT",
+  "skills": [
+    "./"
+  ]
+}

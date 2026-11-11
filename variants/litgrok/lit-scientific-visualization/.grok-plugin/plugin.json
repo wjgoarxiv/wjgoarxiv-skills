@@ -1,0 +1,12 @@
+{
+  "name": "lit-scientific-visualization",
+  "version": "0.1.0",
+  "description": "lit-scientific-visualization for Grok Build, one skill: publication-ready figures of measured data, with the bundled scientific-visualization corpus.",
+  "author": {
+    "name": "wjgoarxiv"
+  },
+  "license": "MIT",
+  "skills": [
+    "./"
+  ]
+}

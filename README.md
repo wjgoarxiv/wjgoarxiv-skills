@@ -65,7 +65,7 @@ grid: which plugin, which skills, and what comes out.
 ## The five families
 
 Each skill makes one kind of file, and some of them hand their output on to another skill. Charts and diagrams flow into
-decks and documents, and a built interface flows into its check. I drew an arrow only where a skill's own `SKILL.md`
+decks and documents, and a built interface flows into its check. An arrow appears only where a skill's own `SKILL.md`
 names the handoff. The dashed one is the exception: it is just a pairing that happens to suit a README.
 
 <p align="center">
@@ -76,8 +76,8 @@ names the handoff. The dashed one is the exception: it is just a pairing that ha
 </p>
 
 The pictures on this page are samples too. The cover at the top is a silent, seamless README cover loop, exactly the
-kind of thing `video-covers` makes. I drew and exported the big picture, the skill map and the install paths with
-`lit-diagram-drawer`, and the plant and the manifold with `lit-schematic`.
+kind of thing `video-covers` makes. The big picture, the skill map and the install paths come from
+`lit-diagram-drawer`, and the plant and the manifold from `lit-schematic`.
 
 ### `decks`: slides people can still edit
 
@@ -241,7 +241,7 @@ interfaces, films and READMEs keeps working: when the moved skill is installed, 
 ### The six other harnesses (`variants/`)
 
 The family plugins hold LitClaude's copies, which were written for Claude Code. Before the move, the six other products
-each shipped their own edition of the same nine skills, written for their own harness. I find it easiest to picture the
+each shipped their own edition of the same nine skills, written for their own harness. It is easiest to picture the
 repository as a tank and each harness as a branch off one header. Claude Code draws the whole family, and every other
 branch draws one folder from its own edition.
 

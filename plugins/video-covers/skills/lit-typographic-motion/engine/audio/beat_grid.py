@@ -1,6 +1,6 @@
 """Tier 2 timing for lit-typographic-motion: a librosa beat grid for one audio file.
 
-Runs inside the LitClaude motion venv created by `litclaude-ai motion-runtime install --audio`
+Runs inside the motion venv created by `node <skill dir>/scripts/motion-runtime.mjs install --audio`
 (pinned, hash-checked wheels). It analyses the user's own audio once, before any frame is
 rendered, and writes a small JSON the engine reads through its beat interface. The JSON is a
 build artifact of this run only (MO-A-17): never cached across briefs, never checked in.

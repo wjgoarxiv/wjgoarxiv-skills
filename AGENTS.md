@@ -6,7 +6,10 @@ marketplace: one plugin per family under `plugins/<family>/`. Read `README.md` f
 ## Moving a family in
 
 1. Copy each skill folder, and any shared runtime file it reaches, byte for byte from the product commit that last
-   shipped it. Do not edit the copies; a fix goes into a later, separate commit with its own note.
+   shipped it. Do not edit the copies; a fix goes into a later, separate commit with its own note. The only edit a
+   family plugin takes is a line that runs a product command the product later removed: swap it for a command the
+   plugin runs by itself, keep the cache paths, mark the receipt row `edited-from:<sha256>` and list the file under
+   "Edited after the move" in README.md.
 2. Write `receipts/<family>.sha256`, one line per file: `sha256  <source path at commit>  <destination path>`.
 3. Add `plugins/<family>/.claude-plugin/plugin.json`, the family's `LICENSE`, and one entry in
    `.claude-plugin/marketplace.json`.

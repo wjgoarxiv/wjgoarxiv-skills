@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+- `video-covers` and `figures`: the runtimes run from the extension itself. LitClaude 1.0.50 removed
+  `litclaude-ai motion-runtime` and the motion and scientific-visualization lines of `litclaude doctor`, yet the
+  moved lit-typographic-motion still told you to run that command, so on a fresh machine a render stopped at BLOCKED 14
+  with a fix that no longer existed. Every BLOCKED 14 and 15 message, the status, the doctor and the skill text now
+  give `node "<skill dir>/scripts/motion-runtime.mjs" install` (the script was already in the plugin), and
+  lit-scientific-visualization runs only its bundled doctor. The cache is still
+  `${XDG_CACHE_HOME:-~/.cache}/litclaude/motion-runtime`, and the two files whose bytes key it are unchanged, so a
+  runtime that LitClaude 1.0.49 or earlier pre-warmed is reused. This is the one documented exception to "copied
+  unchanged": README "Edited after the move" lists the ten edited files, and their receipt rows carry
+  `edited-from:<sha256 of the unchanged copy>`. `npm test` checks the marker, the list, that no plugin file gives a
+  removed LitClaude command, and that the film runtime names its own script. `decks`, `documents` and the editions
+  under `variants/` already ran their runtimes from inside the folder and are unchanged.
 - README and `README_ko-KR.md`: the shelf is presented as LitFamily extensions (확장). The opening says LitFamily's core
   is complete on its own and that installing these skills alongside a LitFamily product gives the full LitFamily
   experience; the skills still work without one. The pick-one table intro names its rows extensions. The

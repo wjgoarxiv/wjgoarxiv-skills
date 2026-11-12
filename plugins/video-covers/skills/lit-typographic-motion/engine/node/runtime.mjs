@@ -1,8 +1,8 @@
 // The motion runtime: pinned engine dependencies, fetched fonts and the opt-in audio venv, all in a
 // LitClaude-owned cache (MO-A-42..55). This reuses the office runtime's cache mechanics (a cache
 // directory keyed by the lockfile, an mkdir lock, `npm ci --omit=dev --ignore-scripts`) but never
-// its first-use trigger: only `litclaude-ai motion-runtime install` and the installer's pre-warm
-// write here. A render only reads, and an unwarmed cache is BLOCKED 14, never a mid-session install.
+// its first-use trigger: only `node <skill dir>/scripts/motion-runtime.mjs install` writes here
+// (LitClaude 1.0.49 and earlier also reached it as `litclaude-ai motion-runtime install`). A render only reads, and an unwarmed cache is BLOCKED 14, never a mid-session install.
 //
 //   $LITCLAUDE_MOTION_RUNTIME                               when set
 //   ${XDG_CACHE_HOME:-~/.cache}/litclaude/motion-runtime     otherwise
@@ -19,7 +19,8 @@ export const ENGINE_ROOT = path.join(SKILL_ROOT, "engine");
 export const FONT_ROOT = path.join(SKILL_ROOT, "fonts");
 const READY = ".litclaude-ready";
 const STALE_LOCK_MS = 20 * 60 * 1000;
-export const INSTALL_COMMAND = "litclaude-ai motion-runtime install";
+// The pre-warm runs from this skill folder itself, so the fix line works with no product installed.
+export const INSTALL_COMMAND = `node "${path.join(SKILL_ROOT, "scripts", "motion-runtime.mjs")}" install`;
 
 const sha256 = (bytes) => createHash("sha256").update(bytes).digest("hex");
 const fileSha = (file) => sha256(readFileSync(file));

@@ -1,16 +1,16 @@
 #!/usr/bin/env node
-// `litclaude-ai motion-runtime install|status` lands here. install is the only step that writes the
+// `node <skill dir>/scripts/motion-runtime.mjs install|status` runs the pre-warm from this skill folder. install is the only step that writes the
 // motion cache: pinned engine deps (npm ci), pinned and hash-verified fonts with their licences,
 // and, when asked, the librosa venv (--audio) or the word-timing plan (--word-timing). status only
 // reads. A render never installs anything; an unwarmed cache is BLOCKED 14.
 import { realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
-export const USAGE = `lit-typographic-motion runtime (LitClaude)
+export const USAGE = `lit-typographic-motion runtime
 
 usage:
-  litclaude-ai motion-runtime install [--audio] [--word-timing]
-  litclaude-ai motion-runtime status [--json]
+  node <skill dir>/scripts/motion-runtime.mjs install [--audio] [--word-timing]
+  node <skill dir>/scripts/motion-runtime.mjs status [--json]
 
 install  pre-warms the pinned engine dependencies and fonts into the LitClaude motion cache
          (outside any sandboxed session). --audio adds the librosa beat-grid venv (Tier 2);

@@ -354,16 +354,49 @@ not come with this plugin:
 - `SKILL.md`, `references/look.md` and `references/cover.md` say a Stop hook checks the done list and holds the turn.
   That check was a LitClaude hook and does not run outside LitClaude. The skill's own `motion.mjs gate` and its done
   list still apply, and nothing ends the turn for you.
-- The text and the BLOCKED 14 message name `litclaude-ai motion-runtime install`. Outside LitClaude, and in LitClaude
-  releases after 1.0.49, run the same installer straight from the plugin:
-  `node <plugin>/skills/lit-typographic-motion/scripts/motion-runtime.mjs install` (or `status`). It installs into
+- The pre-warm used to be `litclaude-ai motion-runtime install`, which LitClaude 1.0.50 removed. The plugin now runs
+  it by itself: `node <plugin>/skills/lit-typographic-motion/scripts/motion-runtime.mjs install` (or `status`), and
+  `scripts/motion-doctor.mjs` prints the probes that `litclaude doctor` used to print. Every BLOCKED 14 and 15 message
+  gives that line with the absolute path of the installed script. It installs into
   `${XDG_CACHE_HOME:-~/.cache}/litclaude/motion-runtime`, the cache LitClaude used, so a machine that pre-warmed it with
-  LitClaude 1.0.49 or earlier needs nothing new.
+  LitClaude 1.0.49 or earlier needs nothing new. See "Edited after the move" below.
 - `recipes/painted-light/expected.json` names a test fixture from the LitClaude repository. That fixture did not come
   along, so the recipe's reference image is only a description.
 
 lit-schematic looks for Pretendard first in `lit-diagram-drawer/assets/fonts/`, which `figures` carries. Its second
 place, `lit-pptx/fonts/`, was not copied.
+
+### Edited after the move
+
+A moved file stays as it came, with one exception: a line that tells you (or the model) to run a LitFamily product
+command the product has since removed. Such a line is changed to a command the installed plugin runs by itself, and
+nothing else in the file changes. The edited files keep their receipt row, which then carries the current sha256 first
+and `edited-from:<sha256 of the unchanged copy>` as a fourth field; `npm test` checks both and checks that this list
+names every edited file. The cache paths stay the same, so a runtime an older product release installed is reused.
+
+`video-covers` (LitClaude 1.0.50 removed `litclaude-ai motion-runtime` and the motion doctor lines):
+- `skills/lit-typographic-motion/engine/node/runtime.mjs`: `INSTALL_COMMAND`, which every BLOCKED 14 and 15 message,
+  the status and the doctor print, is `node "<absolute skill dir>/scripts/motion-runtime.mjs" install`.
+- `skills/lit-typographic-motion/engine/node/stage-serve.mjs`: its two stage-font BLOCKED messages print that command.
+- `skills/lit-typographic-motion/scripts/motion-runtime.mjs`: the usage text names the script itself.
+- `skills/lit-typographic-motion/SKILL.md`: the exit 14 row.
+- `skills/lit-typographic-motion/references/runtime.md`: the install table, the pre-warm section (pre-warm, doctor and
+  status by script), the exit 14 row and the audio warning.
+- `skills/lit-typographic-motion/engine/audio/beat_grid.py`, `skills/lit-typographic-motion/fonts/manifest.json`,
+  `skills/lit-typographic-motion/engine/models/word-timing.json` and
+  `skills/lit-typographic-motion/engine/THIRD_PARTY_NOTICES`: the line that names the installer.
+
+Two files still name the old command on purpose: `engine/package.json` and `engine/audio/requirements.lock`. Their
+bytes are hashed into the cache folder names (`node-<lockdigest>-...` and `audio-<digest>`), so editing them would
+throw away every cache already on disk.
+
+`figures` (LitClaude 1.0.50 removed the scientific-visualization doctor from `litclaude doctor`):
+- `skills/lit-scientific-visualization/SKILL.md`: step 4 runs only the bundled doctor and no longer offers
+  `litclaude doctor`.
+
+`decks` and `documents` need no edit: the office runtime installs itself on first use from `lib/office-runtime.mjs`,
+and its `status` runs from the plugin. The editions under `variants/` were already made to run on their own (see each
+`CHANGES.md`); none of them names a command its product removed.
 
 ## Licences
 
@@ -384,7 +417,9 @@ The Pretendard and JetBrains Mono fonts travel unmodified, each with its OFL lic
 
 ## Rules for this repository
 
-- A moved skill is copied byte for byte. Its receipt must match, and `npm test` checks that.
+- A moved skill is copied byte for byte. Its receipt must match, and `npm test` checks that. The one exception is a line
+  that runs a product command the product later removed; it is listed under "Edited after the move" and its receipt row
+  carries `edited-from:<sha256>`.
 - A harness edition under `variants/` first goes in byte for byte from the product commit that last shipped it, with a
   receipt row per file, committed together with its receipt. Changes that make it run on its own come in later,
   separate commits and are listed in that product's `CHANGES.md`.

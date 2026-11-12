@@ -355,7 +355,7 @@ a8f8869a3f9b322ddedc8dc4104442aa064b34aaa249021032151940b871ee95  plugins/litcla
 2879e0cd9c8be69d048d36573343450ed5472bd1333d1c17b06a93ca9d4a8923  plugins/litclaude/skills/lit-schematic/scripts/render.mjs  plugins/figures/skills/lit-schematic/scripts/render.mjs
 0934eef6321c69ce06730343ebb48c84494d7e8e28bda3c2dd0cfa14f85088db  plugins/litclaude/skills/lit-schematic/scripts/scaffold.mjs  plugins/figures/skills/lit-schematic/scripts/scaffold.mjs
 353e72bde875bb3631331338ca33de3fc409d069c26e84ffa56e9e3eed1d226e  plugins/litclaude/skills/lit-schematic/SKILL.md  plugins/figures/skills/lit-schematic/SKILL.md
-a42a026b5cc9add0d7def10f8bb6025da0a8cf20d65fdad337434dcefadac6f3  plugins/litclaude/skills/lit-scientific-visualization/SKILL.md  plugins/figures/skills/lit-scientific-visualization/SKILL.md
+d00d17845f09cc94cd80541cfc0c95ebc5d1cfd6eb7a8d41e389b4e04fd5f194  plugins/litclaude/skills/lit-scientific-visualization/SKILL.md  plugins/figures/skills/lit-scientific-visualization/SKILL.md  edited-from:a42a026b5cc9add0d7def10f8bb6025da0a8cf20d65fdad337434dcefadac6f3
 0a70f0d149e59641100c7dcf8b9f2f1c0ceae57b98518e165f08088f2c2484da  plugins/litclaude/vendor/handoff/evals/evals.json  plugins/figures/vendor/handoff/evals/evals.json
 43c767e573ac8c8900832d2b7a92ee1e83fd2d3d794fe2c82ecef87e5737f2a3  plugins/litclaude/vendor/handoff/examples/HANDOFF-example-generic-auth-refactor.md  plugins/figures/vendor/handoff/examples/HANDOFF-example-generic-auth-refactor.md
 e5bbd253dfa5b5baa9739dfaebc458003daab43cb27c4a407423da1e7a31dec6  plugins/litclaude/vendor/handoff/SKILL.md  plugins/figures/vendor/handoff/SKILL.md

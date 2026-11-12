@@ -121,7 +121,7 @@ Done needs all of: a valid treatment; gate PASS; at least two look rounds, the f
 | 11 | BLOCKED_NO_WEBGL2 | No WebGL on any rung (type path; stage only when the page asks). |
 | 12 | BLOCKED_NO_FFMPEG_FOR_VIDEO | Stills exist; install ffmpeg for the film. |
 | 13 | GATE_FAIL_QA | Fix the named rule (a board check too); next round. A flash-audit FAIL withholds every export. |
-| 14 | BLOCKED_DEPS_NOT_PREWARMED | Tell the user to run `litclaude-ai motion-runtime install` outside this session. |
+| 14 | BLOCKED_DEPS_NOT_PREWARMED | Tell the user to run `node "$SKILL_ROOT/scripts/motion-runtime.mjs" install` outside this session, with `$SKILL_ROOT` written out as the absolute path. |
 | 15 | BLOCKED_FONT_FETCH | A cached font is missing or its sha256 differs; same fix. |
 | 16 | BLOCKED_TREATMENT_INVALID | Fix the named field. |
 | 17 | STAGE_CONTRACT_ERROR | Fix the named element, API, raster, clip, size or missing copy line. |

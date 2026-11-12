@@ -6,7 +6,7 @@ Engine code
   The required notice is in NOTICE next to this file.
 
 Engine dependency (installed into the LitClaude motion cache by
-`litclaude-ai motion-runtime install`, never bundled)
+`node <skill dir>/scripts/motion-runtime.mjs install`, never bundled)
   opentype.js 2.0.0 (MIT) — its LICENSE ships inside the installed package:
     <motion cache>/node-<lockdigest>-<platform>-<arch>/node_modules/opentype.js/LICENSE
 
@@ -23,7 +23,7 @@ Vendored library (bundled, unmodified, served to stage and cover pages at /lit/t
 
 Fonts. Paths starting with fonts/ are relative to the skill directory
 (skills/lit-typographic-motion/); paths starting with <motion cache>/fonts/ are written by
-`litclaude-ai motion-runtime install` (pinned URL, sha256-verified, licence fetched with the
+`node <skill dir>/scripts/motion-runtime.mjs install` (pinned URL, sha256-verified, licence fetched with the
 font). <motion cache> is $LITCLAUDE_MOTION_RUNTIME, or
 ${XDG_CACHE_HOME:-~/.cache}/litclaude/motion-runtime.
 

@@ -1,6 +1,6 @@
 {
   "schema": "litclaude.motion-fonts/v1",
-  "note": "source bundled = shipped in this directory; reuse = the product's own lit-pptx file, verified against the hash recorded here; fetch = downloaded only by `litclaude-ai motion-runtime install` from the pinned URL, sha256-verified with its licence files, never at render time.",
+  "note": "source bundled = shipped in this directory; reuse = the product's own lit-pptx file, verified against the hash recorded here; fetch = downloaded only by `node <skill dir>/scripts/motion-runtime.mjs install` from the pinned URL, sha256-verified with its licence files, never at render time.",
   "excluded": {
     "Hershey trio": "non-OFL use-restriction licence; neither shipped nor fetched (MO-FT-08)",
     "Galmuri *Bitmap-*": "empty glyf outlines; unusable by an outline renderer",

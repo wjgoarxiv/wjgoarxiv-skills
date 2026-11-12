@@ -345,16 +345,46 @@ LitClaude는 웹 화면 수정을 이 프로브로 확인하기 때문에, front
 - `SKILL.md`, `references/look.md`, `references/cover.md`에는 Stop 훅이 완료 목록을 확인하고 턴을 붙잡는다고 적혀
   있습니다. 이건 LitClaude 훅이라 LitClaude 밖에서는 돌지 않습니다. 스킬 자체의 `motion.mjs gate`와 완료 목록은 그대로
   적용되지만, 턴을 대신 끝내 주는 장치는 없습니다.
-- 본문과 BLOCKED 14 메시지에는 `litclaude-ai motion-runtime install`이 나옵니다. LitClaude 밖에서, 그리고 1.0.49 이후
-  LitClaude 릴리스에서는 같은 설치 프로그램을 플러그인에서 바로 실행하세요:
-  `node <plugin>/skills/lit-typographic-motion/scripts/motion-runtime.mjs install` (또는 `status`). 설치 위치는
-  LitClaude가 쓰던 캐시인 `${XDG_CACHE_HOME:-~/.cache}/litclaude/motion-runtime`이라서, LitClaude 1.0.49 이하로 미리
-  받아 둔 컴퓨터라면 새로 할 일이 없습니다.
+- 미리 받기 명령은 원래 `litclaude-ai motion-runtime install`이었는데, LitClaude 1.0.50에서 빠졌습니다. 이제는
+  플러그인이 직접 실행합니다: `node <plugin>/skills/lit-typographic-motion/scripts/motion-runtime.mjs install` (또는
+  `status`). `litclaude doctor`가 보여 주던 점검 항목은 `scripts/motion-doctor.mjs`가 보여 줍니다. BLOCKED 14와 15
+  메시지는 모두 설치된 스크립트의 절대 경로로 이 명령을 알려 줍니다. 설치 위치는 LitClaude가 쓰던 캐시인
+  `${XDG_CACHE_HOME:-~/.cache}/litclaude/motion-runtime`이라서, LitClaude 1.0.49 이하로 미리 받아 둔 컴퓨터라면 새로 할
+  일이 없습니다. 아래 "옮긴 뒤 고친 파일"을 보세요.
 - `recipes/painted-light/expected.json`은 LitClaude 저장소의 테스트 픽스처를 가리키는데, 그 픽스처는 가져오지
   않았습니다. 그래서 레시피의 참고 이미지는 설명으로만 남아 있습니다.
 
 lit-schematic은 Pretendard를 먼저 `lit-diagram-drawer/assets/fonts/`에서 찾고, 이 폴더는 `figures`에 들어 있습니다. 두
 번째로 찾는 `lit-pptx/fonts/`는 복사하지 않았습니다.
+
+### 옮긴 뒤 고친 파일
+
+옮겨 온 파일은 받은 그대로 둡니다. 예외는 하나입니다. 제품이 나중에 없앤 LitFamily 제품 명령을 실행하라고 사용자(또는
+모델)에게 말하는 줄입니다. 그런 줄은 설치된 플러그인이 혼자 실행할 수 있는 명령으로 바꾸고, 파일의 나머지는 건드리지
+않습니다. 고친 파일도 영수증 행을 그대로 두되, 첫 칸에 지금의 sha256을 적고 넷째 칸에
+`edited-from:<원래 복사본의 sha256>`을 붙입니다. `npm test`는 둘 다 확인하고, 고친 파일이 모두 영어 README의 같은 목록에
+올라 있는지도 확인합니다. 캐시 경로는 그대로라서, 예전 제품 릴리스가 설치해 둔 런타임을 다시 씁니다.
+
+`video-covers` (LitClaude 1.0.50에서 `litclaude-ai motion-runtime`과 모션 doctor 줄이 빠짐):
+- `skills/lit-typographic-motion/engine/node/runtime.mjs`: BLOCKED 14·15 메시지, status, doctor가 모두 출력하는
+  `INSTALL_COMMAND`가 `node "<스킬 폴더 절대 경로>/scripts/motion-runtime.mjs" install`입니다.
+- `skills/lit-typographic-motion/engine/node/stage-serve.mjs`: 스테이지 글꼴 BLOCKED 메시지 두 개가 이 명령을 출력합니다.
+- `skills/lit-typographic-motion/scripts/motion-runtime.mjs`: 사용법 안내가 스크립트 자신을 가리킵니다.
+- `skills/lit-typographic-motion/SKILL.md`: exit 14 행.
+- `skills/lit-typographic-motion/references/runtime.md`: 설치 표, 미리 받기 절(미리 받기, doctor, status를 스크립트로),
+  exit 14 행, 오디오 경고.
+- `engine/audio/beat_grid.py`, `fonts/manifest.json`, `engine/models/word-timing.json`, `engine/THIRD_PARTY_NOTICES`:
+  설치 프로그램을 가리키는 줄.
+
+`engine/package.json`과 `engine/audio/requirements.lock`에는 옛 명령이 일부러 남아 있습니다. 이 두 파일의 바이트가 캐시
+폴더 이름(`node-<lockdigest>-...`, `audio-<digest>`)에 해시로 들어가서, 고치면 이미 받아 둔 캐시를 모두 버리게 됩니다.
+
+`figures` (LitClaude 1.0.50에서 `litclaude doctor`의 scientific-visualization doctor가 빠짐):
+- `skills/lit-scientific-visualization/SKILL.md`: 4단계는 번들 doctor만 실행하고, 더는 `litclaude doctor`를 권하지 않습니다.
+
+`decks`와 `documents`는 고칠 게 없습니다. 오피스 런타임은 `lib/office-runtime.mjs`가 처음 쓸 때 스스로 설치하고, 그
+`status`도 플러그인에서 돌아갑니다. `variants/`의 에디션들은 이미 혼자 돌아가도록 손봤고(각 `CHANGES.md` 참고), 제품이 없앤
+명령을 가리키는 에디션은 없습니다.
 
 ## 라이선스
 
@@ -375,7 +405,9 @@ Pretendard와 JetBrains Mono 글꼴은 수정하지 않은 채 각자의 OFL 라
 
 ## 이 저장소의 규칙
 
-- 옮겨 오는 스킬은 바이트 단위로 그대로 복사합니다. 영수증과 일치해야 하며, `npm test`가 이를 확인합니다.
+- 옮겨 오는 스킬은 바이트 단위로 그대로 복사합니다. 영수증과 일치해야 하며, `npm test`가 이를 확인합니다. 예외는 제품이
+  나중에 없앤 제품 명령을 실행하라는 줄 하나뿐입니다. 그런 파일은 "옮긴 뒤 고친 파일"에 올리고, 영수증 행에
+  `edited-from:<sha256>`을 붙입니다.
 - `variants/`의 하네스 에디션은 처음에 그 제품이 마지막으로 배포한 커밋에서 바이트 단위로 그대로 들어오고, 파일마다
   영수증 행을 남겨 영수증과 같은 커밋에 넣습니다. 혼자 돌아가도록 손보는 변경은 그 뒤 별도 커밋으로 하고, 그 제품의
   `CHANGES.md`에 적습니다.

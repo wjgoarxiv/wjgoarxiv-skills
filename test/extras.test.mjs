@@ -1,7 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { existsSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, relative } from 'node:path';
 
 const root = new URL('..', import.meta.url).pathname;
@@ -33,14 +35,22 @@ test('every marketplace entry is a plugin folder with a manifest and at least on
   }
 });
 
+// The one exception to "copied unchanged": a file edited after the move keeps its row, with its current sha256 first
+// and `edited-from:<sha256 of the unchanged copy>` as a fourth field, and the README names it.
 test('every receipt matches the copied bytes, and every copied file has a receipt', () => {
+  const readme = read('README.md').toString('utf8');
   for (const p of market.plugins) {
     const dir = p.source.replace(/^\.\//, '');
     const rows = read(`receipts/${p.name}.sha256`).toString('utf8').trim().split('\n').map((l) => l.split('  '));
     const covered = new Set();
-    for (const [sha, , dest] of rows) {
+    for (const [sha, , dest, edited, ...rest] of rows) {
       const got = createHash('sha256').update(read(dest)).digest('hex');
       assert.equal(got, sha, dest);
+      assert.deepEqual(rest, [], `${dest} receipt row has at most four fields`);
+      if (edited !== undefined) {
+        assert.match(edited, /^edited-from:[0-9a-f]{64}$/u, `${dest} edited marker`);
+        assert.ok(readme.includes(dest.replace(`${dir}/`, '')), `README names the edited file ${dest}`);
+      }
       covered.add(dest);
     }
     const files = walk(join(root, dir)).map((f) => relative(root, f)).filter((f) => !f.includes('/.claude-plugin/'));
@@ -132,5 +142,37 @@ test('the video-covers plugin carries lit-typographic-motion, readme-studio and 
       const sha = createHash('sha256').update(readFileSync(join(fonts, f.path))).digest('hex');
       assert.equal(sha, f.sha256, f.path);
     }
+  }
+});
+
+// LitClaude 1.0.50 removed `litclaude-ai motion-runtime` and the motion and scientific-visualization doctor lines, so
+// no moved file may tell anyone to run them. Two places may still name the old command: a line that dates it
+// (`1.0.49 and earlier`), and the two lockfile-adjacent files whose bytes key the runtime cache, which stay unchanged
+// so an existing cache is reused.
+const CACHE_KEY_FILES = new Set(['plugins/video-covers/skills/lit-typographic-motion/engine/package.json',
+  'plugins/video-covers/skills/lit-typographic-motion/engine/audio/requirements.lock']);
+test('no family plugin tells anyone to run a command LitClaude removed', () => {
+  const hits = [];
+  for (const f of walk(join(root, 'plugins')).map((x) => relative(root, x))) {
+    if (CACHE_KEY_FILES.has(f) || /\.(png|otf|woff2?|ttf|docx|pptx|xlsx|jpg|webp|mp4|gif|pdf)$/u.test(f)) continue;
+    read(f).toString('utf8').split('\n').forEach((line, i) => {
+      if (/litclaude-ai (motion-runtime|doctor|install)|`litclaude doctor`/u.test(line) && !/1\.0\.49 and earlier/u.test(line)) hits.push(`${f}:${i + 1}`);
+    });
+  }
+  assert.deepEqual(hits, []);
+});
+
+test('the film runtime names its own script as the fix, from a plugin folder with no product installed', () => {
+  const skill = join(root, 'plugins/video-covers/skills/lit-typographic-motion');
+  const script = join(skill, 'scripts/motion-runtime.mjs');
+  const cache = mkdtempSync(join(tmpdir(), 'motion-cache-'));
+  try {
+    const run = spawnSync(process.execPath, [script, 'status', '--json'], { encoding: 'utf8', env: { ...process.env, LITCLAUDE_MOTION_RUNTIME: cache } });
+    assert.equal(run.status, 0, run.stderr);
+    const status = JSON.parse(run.stdout);
+    assert.equal(status.ready, false);
+    assert.equal(status.command, `node "${script}" install`);
+  } finally {
+    rmSync(cache, { recursive: true, force: true });
   }
 });

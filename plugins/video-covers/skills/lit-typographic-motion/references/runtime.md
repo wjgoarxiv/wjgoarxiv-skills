@@ -4,11 +4,11 @@
 
 | Piece | Where | Installed by |
 | --- | --- | --- |
-| Engine code, GLSL passes, scenes, bundled fonts | this skill directory (the plugin) | the LitClaude package |
-| opentype.js 2.0.0 (pinned in `engine/package-lock.json`) | `<cache>/node-<lockdigest>-<platform>-<arch>/` | `litclaude-ai motion-runtime install` (`npm ci --omit=dev --ignore-scripts`) |
+| Engine code, GLSL passes, scenes, bundled fonts | this skill directory (the plugin) | the plugin install |
+| opentype.js 2.0.0 (pinned in `engine/package-lock.json`) | `<cache>/node-<lockdigest>-<platform>-<arch>/` | `node <skill dir>/scripts/motion-runtime.mjs install` (`npm ci --omit=dev --ignore-scripts`) |
 | Galmuri9, MesloLGS NF and their licence files | `<cache>/fonts/` (pinned URL, sha256-verified) | same command |
-| Pretendard Regular / Bold | `../lit-pptx/fonts/pretendard/` (reused by path, hash-checked) | the package |
-| librosa venv (Tier 2, optional) | `<cache>/audio-<digest>/` from `engine/audio/requirements.lock` with `pip install --require-hashes --only-binary=:all:` | `litclaude-ai motion-runtime install --audio` |
+| Pretendard Regular / Bold | `../lit-pptx/fonts/pretendard/` (reused by path, hash-checked) | the plugin install |
+| librosa venv (Tier 2, optional) | `<cache>/audio-<digest>/` from `engine/audio/requirements.lock` with `pip install --require-hashes --only-binary=:all:` | `node <skill dir>/scripts/motion-runtime.mjs install --audio` |
 | Word-timing models (Tier 3, optional) | not in this release | `--word-timing` prints the size and pins, then stops |
 | Chrome, ffmpeg, img2webp and dwebp (libwebp), gifski (optional cover fallback) | host tools, never bundled | the user |
 
@@ -16,19 +16,21 @@
 
 ## Pre-warm, never first use
 
-The cache is written only by `litclaude-ai motion-runtime install`; `litclaude-ai install` (and the
-global npm postinstall, which runs it) attempts the same pre-warm and prints one receipt line if it
-fails, without failing the install. A Claude Code marketplace install runs no lifecycle step, so
-there the explicit command is the pre-warm. A render session only reads the cache: it never runs
-npm, pip or a download, because a sandboxed session usually has no network or no write access
-outside the workspace, and a half-finished install would look like a broken engine.
+`<skill dir>` is this skill's installed folder, the directory of its `SKILL.md`. The cache is written
+only by `node <skill dir>/scripts/motion-runtime.mjs install`, which needs nothing but Node and npm
+(and Python for `--audio`). Installing the plugin runs no lifecycle step, so this command is the
+pre-warm. LitClaude 1.0.49 and earlier ran the same installer as `litclaude-ai motion-runtime install`
+and from its `npm install -g` postinstall, into the same cache, so a machine warmed that way is
+already ready. A render session only reads the cache: it never runs npm, pip or a download, because
+a sandboxed session usually has no network or no write access outside the workspace, and a
+half-finished install would look like a broken engine.
 
-`litclaude-ai doctor` (and `npm run doctor` in a checkout) prints the seven probes: Chrome,
+`node <skill dir>/scripts/motion-doctor.mjs` prints the seven probes: Chrome,
 ffmpeg with the preview encoder rung, the WebGL2 renderer from a real headless probe, the software-GL
 or unknown-renderer warning, the pre-warm state naming anything missing and the fix command,
 the cover encoder (img2webp and dwebp, or the gifski fallback) that cover mode needs, and the
 house styles (each one valid, the default named).
-`litclaude-ai motion-runtime status` prints the pre-warm state alone.
+`node <skill dir>/scripts/motion-runtime.mjs status` prints the pre-warm state alone.
 
 ## Exit codes
 
@@ -39,7 +41,7 @@ house styles (each one valid, the default named).
 | 11 | BLOCKED_NO_WEBGL2 | Chrome runs but no flag rung gives a WebGL2 context, not even SwiftShader | GPU drivers; nothing can render without WebGL2 |
 | 12 | BLOCKED_NO_FFMPEG_FOR_VIDEO | ffmpeg missing; stills and sheet were still written | install ffmpeg |
 | 13 | GATE_FAIL_QA | the gate (or the pre-flight gate) failed; see `gate-report.txt` | fix the named rule; next round |
-| 14 | BLOCKED_DEPS_NOT_PREWARMED | engine dependencies (or Tier-3 models) missing from the cache | `litclaude-ai motion-runtime install` outside the session |
+| 14 | BLOCKED_DEPS_NOT_PREWARMED | engine dependencies (or Tier-3 models) missing from the cache | `node <skill dir>/scripts/motion-runtime.mjs install` outside the session |
 | 15 | BLOCKED_FONT_FETCH | a required font is missing or its sha256 differs | same command |
 
 Each state names its real cause. A sandbox that refuses `listen` is not a blocked state: frames are
@@ -61,7 +63,7 @@ safe-storage item (on macOS a fresh profile would otherwise raise a keychain dia
 - **Tier 1 (default):** text reading time on a 100 BPM grid (or the brief's `bpm`).
 - **Tier 2:** an audio file in the brief and a ready venv: librosa beat grid, cuts on detected
   beats, audio muxed into the MP4. A missing venv, a venv whose pins changed, or a failed analysis
-  falls back to Tier 1 with the warning "audio analysis not prewarmed: run litclaude-ai
-  motion-runtime install --audio" (or the analysis error). It is never repaired in the session.
+  falls back to Tier 1 with the warning "audio analysis not prewarmed: run node
+  "<skill dir>/scripts/motion-runtime.mjs" install --audio" (or the analysis error). It is never repaired in the session.
 - **Tier 3:** `--word-timing` only; exits 14 in this release. Never MMS_FA or madmom weights,
   never aubio or essentia, at any tier.

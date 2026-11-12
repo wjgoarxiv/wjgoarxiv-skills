@@ -25,18 +25,15 @@ LitFamily를 위한 콘텐츠 스킬 아홉 개입니다. LitFamily는 계획, �
 LitFamily 제품 없이도 하나씩 따로 쓸 수 있습니다.
 
 > [!TIP]
-> Claude Code라면 `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`와
-> `claude plugin install decks@wjgoarxiv-skills`를 실행한 뒤 에이전트에게 발표자료를 부탁해 보세요. 다른 하네스는 이
-> 저장소를 한 번 클론하고 폴더 하나만 복사합니다.
+> Claude Code라면 [빠른 시작](#빠른-시작)의 명령으로 패밀리 하나를 설치한 뒤 에이전트에게 발표자료를 부탁해 보세요.
+> 다른 하네스는 이 저장소를 한 번 클론하고 폴더 하나만 복사합니다.
 
 ## 어디서 시작할까
-
-대부분은 한 가지 일 때문에 이 페이지를 엽니다. 하려는 일부터 고르세요.
 
 | 하려는 일 | 할 일 | 바로 가기 |
 | --- | --- | --- |
 | 스킬마다 무엇을 만드는지 보기 | 스킬 표와 패밀리 그림 보기 | [만들 수 있는 것](#만들-수-있는-것) |
-| Claude Code에 설치 | 마켓플레이스 추가, 패밀리 하나 설치 | [Claude Code](#claude-code) |
+| Claude Code에 설치 | 마켓플레이스 추가, 패밀리 하나 설치 | [빠른 시작](#빠른-시작) |
 | 다른 하네스에 설치 | 한 번 클론, 폴더 하나 복사 | [하네스별로 스킬 하나 설치하기](#하네스별로-스킬-하나-설치하기) |
 | 복사본 업데이트·제거 | 같은 줄을 다시 돌리거나 옆으로 옮기기 | [업데이트와 제거](#업데이트와-제거) |
 | 에디션의 출처 알기 | 원본 커밋과 바뀐 점 보기 | [동작 방식](#동작-방식) |
@@ -44,19 +41,32 @@ LitFamily 제품 없이도 하나씩 따로 쓸 수 있습니다.
 
 ## 빠른 시작
 
-Claude Code가 가장 짧은 길입니다. GitHub에서 패밀리를 바로 설치하기 때문입니다. 다른 하네스라면
+Claude Code는 GitHub에서 패밀리를 바로 설치하므로 가장 짧은 길입니다. 다른 하네스라면
 [하네스별 참고](#하네스별-참고)에 있는 그 하네스의 명령을 따르세요.
 
 1. [설치 표](#하네스별로-스킬-하나-설치하기)에서 스킬과 그 패밀리를 찾습니다.
-2. [Claude Code 확인 줄](#claude-code)로 이름이 같은 내 스킬을 먼저 옆으로 옮깁니다.
-3. 아래 두 줄을 돌립니다. `decks` 자리에는 내 패밀리를 넣습니다.
+2. 확인 명령을 돌립니다. 첫 줄은 이름이 같은 내 스킬을 보여 주고, 둘째·셋째 줄은 개인 복사본이나 프로젝트 복사본을 옆으로
+   옮깁니다.
+3. 설치 명령을 돌리되, 내 패밀리 줄만 남깁니다.
 4. 스킬이 만드는 것을 부탁합니다. 발표자료, 문서, 그림, 화면, 영상, README 무엇이든 됩니다.
 
-아무 폴더에서나 실행하세요:
+설치하기 전에 프로젝트 폴더에서 실행하세요:
+
+```bash
+ls -d ~/.claude/skills/lit-pptx .claude/skills/lit-pptx 2>/dev/null
+d="$HOME/.claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv ~/.claude/skills/lit-pptx "$d"/
+d=".claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv .claude/skills/lit-pptx "$d"/
+```
+
+그다음 아무 폴더에서나 실행하되, 원하는 패밀리 줄만 남기세요:
 
 ```bash
 claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills
 claude plugin install decks@wjgoarxiv-skills
+claude plugin install documents@wjgoarxiv-skills
+claude plugin install figures@wjgoarxiv-skills
+claude plugin install design@wjgoarxiv-skills
+claude plugin install video-covers@wjgoarxiv-skills
 ```
 
 스킬이 `decks:lit-pptx`(내 스킬이라면 `<family>:<id>`)라는 이름으로 응답하면 준비가 끝난 겁니다.
@@ -73,17 +83,26 @@ claude plugin install decks@wjgoarxiv-skills
   </picture>
 </p>
 
-| 부탁할 것 | 스킬(패밀리) | 받는 것 | 넘기는 곳 |
-| --- | --- | --- | --- |
-| 발표자료 | `lit-pptx` (`decks`) | 고칠 수 있는 `.pptx` | 차트와 다이어그램을 받아 씀 |
-| 보고서, 메모, 원고 | `lit-docx` (`documents`) | `.docx`, 깔끔한 Markdown, PDF | 차트를 받아 씀 |
-| 측정 데이터 플롯 | `lit-scientific-visualization` (`figures`) | 논문용 플롯 | 차트 PNG를 `lit-docx`, `lit-pptx`로 |
-| 아이디어나 시스템 다이어그램 | `lit-diagram-drawer` (`figures`) | HTML/SVG, PNG, Office 호환 SVG | 다이어그램 PNG를 `lit-pptx`로 |
-| 실제 장비 도면 | `lit-schematic` (`figures`) | 밀리미터 단위 SVG, 600 dpi 렌더 | — |
-| 화면 | `frontend-ui-ux` (`design`) | 완성된 화면 | 완성된 화면을 `visual-qa`로 |
-| 완성된 화면 점검 | `visual-qa` (`design`) | 스크린샷, 증거 목록, QA 보고서 | — |
-| 짧은 영상이나 커버 루프 | `lit-typographic-motion` (`video-covers`) | 영상이나 소리 없는 커버 루프 | 커버 루프는 `readme-studio`와 짝 |
-| README | `readme-studio` (`video-covers`) | 커버까지 붙은 사실에 맞는 README | — |
+| 부탁할 것 | 스킬(패밀리) | 받는 것 |
+| --- | --- | --- |
+| 발표자료 | `lit-pptx` (`decks`) | 고칠 수 있는 `.pptx` |
+| 보고서, 메모, 원고 | `lit-docx` (`documents`) | `.docx`, 깔끔한 Markdown, PDF |
+| 측정 데이터 플롯 | `lit-scientific-visualization` (`figures`) | 논문용 플롯 |
+| 아이디어나 시스템 다이어그램 | `lit-diagram-drawer` (`figures`) | HTML/SVG, PNG, Office 호환 SVG |
+| 실제 장비 도면 | `lit-schematic` (`figures`) | 밀리미터 단위 SVG, 600 dpi 렌더 |
+| 화면 | `frontend-ui-ux` (`design`) | 완성된 화면 |
+| 완성된 화면 점검 | `visual-qa` (`design`) | 스크린샷, 증거 목록, QA 보고서 |
+| 짧은 영상이나 커버 루프 | `lit-typographic-motion` (`video-covers`) | 영상이나 소리 없는 커버 루프 |
+| README | `readme-studio` (`video-covers`) | 커버까지 붙은 사실에 맞는 README |
+
+<details>
+<summary>어떤 스킬이 무엇을 어디로 넘기나</summary>
+
+차트 PNG는 `lit-scientific-visualization`에서 `lit-docx`와 `lit-pptx`로, 다이어그램 PNG는 `lit-diagram-drawer`에서
+`lit-pptx`로, 완성된 화면은 `frontend-ui-ux`에서 `visual-qa`로 갑니다. `lit-typographic-motion`의 커버 루프는
+`readme-studio`와 짝을 이룹니다.
+
+</details>
 
 사실 이 페이지에 있는 그림들이 곧 견본입니다. 맨 위 커버가 바로 `video-covers`가 만드는 종류, 소리 없이 끊김 없이 도는
 README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `lit-diagram-drawer`로, 공정 플랜트와 매니폴드는
@@ -241,8 +260,7 @@ README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `l
 
 ## 하네스별로 스킬 하나 설치하기
 
-설치하는 길은 두 가지인데, 어느 쪽으로 갈지는 쓰는 에이전트가 정해 줍니다. Claude Code는 이 마켓플레이스를 추가하고
-패밀리 플러그인을 설치하면 되고, 나머지 하네스는 저장소를 한 번 클론한 뒤 폴더 하나만 옮기면 됩니다.
+설치하는 길은 두 가지이고, 어느 쪽으로 갈지는 쓰는 에이전트가 정해 줍니다. 그림에 두 길이 모두 나옵니다.
 
 <p align="center">
   <picture>
@@ -275,13 +293,9 @@ Claude Code에서 패밀리 플러그인을 통째로 설치하는 건 LitClaude
 폴더)을 읽기 때문입니다. 그래도 설치되는 건 그 패밀리 하나뿐입니다. 다른 하네스는 각 제품이 만든 자기 에디션 폴더 하나만
 설치하는데, 스킬이 읽는 파일이 이 폴더 안에 다 들어 있습니다.
 
-Grok Build는 폴더 경로를 스킬 하나짜리 플러그인으로 받아서 그 폴더만 플러그인 저장소로 복사하고, Muse Code는
-`muse skills install`로 설치하며, Codex CLI, OpenCode, Antigravity CLI, Hermes Agent는 각자 스킬 폴더에 복사합니다.
 OpenCode에서는 복사본이 같은 이름의 LitOpenCode 안내 폴더 자리에 들어갑니다. 다른 하네스에서는 복사본이 제품 스텁 옆에
-다른 이름으로 자리 잡고, 제품 설치 프로그램도 업그레이드할 때 이 폴더는 건드리지 않습니다.
-
-Grok Build에는 폴더 경로 그대로 넘겨야 합니다. 저장소의 `#` 하위 폴더 형식으로 넘기면 스킬마다 `.git`까지 포함해 저장소 전체를
-복사해 버리기 때문에 그 형식은 쓰지 않습니다.
+다른 이름으로 자리 잡고, 제품 설치 프로그램도 업그레이드할 때 이 폴더는 건드리지 않습니다. Grok Build에는 폴더 경로 그대로
+넘겨야 하는데, 저장소의 `#` 하위 폴더 형식으로 넘기면 스킬마다 `.git`까지 포함해 저장소 전체를 복사해 버리기 때문입니다.
 
 ### 설치 명령이 내 파일을 지키는 방식
 
@@ -299,17 +313,18 @@ Grok Build에는 폴더 경로 그대로 넘겨야 합니다. 저장소의 `#` �
 > Grok Build와 Muse Code는 설치 기록을 스스로 남기고 이미 있는 이름 위에는 설치를 거부하므로, 살펴보고, 부딪치는
 > 복사본을 옮기고, 설치하는 줄만 있습니다.
 
-- **폴더를 지우는 줄은 하나도 없습니다.** 그래서 남겨 둔 파일이 사라지지 않습니다.
-- **업데이트**는 같은 줄을 다시 돌리면 됩니다.
-- **제거**는 복사본을 옆으로 옮기면 됩니다.
+폴더를 지우는 줄은 하나도 없어서 남겨 둔 파일이 사라지지 않습니다. 업데이트와 제거도 이 명령을 다시 씁니다.
+[업데이트와 제거](#업데이트와-제거)를 보세요.
 
 ### 다른 스킬의 명령
 
-[하네스별 참고](#하네스별-참고)의 명령은 `lit-pptx`를 예로 적었습니다. 그 하네스의 LitFamily 스텁이 안내하는 명령을 그대로
-옮겨 온 거라서, 스텁과 이 페이지는 늘 같은 말을 합니다.
+이 페이지의 명령은 모두 `lit-pptx`를 예로 적었습니다. 그 하네스의 LitFamily 스텁이 안내하는 명령을 그대로 옮겨 온 거라서,
+스텁과 이 페이지는 늘 같은 말을 합니다. 다른 스킬이라면 `lit-pptx` 자리에 그 스킬의 id를(Claude Code라면 `decks` 자리에 그
+패밀리도) 넣으면 되고, 그 스킬의 스텁도 이름을 채운 같은 명령을 보여 줍니다.
 
-- **다른 스킬:** `lit-pptx` 자리에 그 스킬의 id를 넣으세요(Claude Code라면 `decks` 자리에 그 패밀리도). 그 스킬의 스텁은
-  이름을 채운 같은 명령을 보여 줍니다.
+<details>
+<summary>lit-scientific-visualization, Antigravity CLI, OpenCode 영상 스텁에 대한 덧붙임</summary>
+
 - **`lit-scientific-visualization`:** 원본 scientific-visualization 스킬을 감싸는 어댑터입니다. 패밀리 플러그인은 그 원본을
   `plugins/figures/vendor/scientific-visualization/`에 두고, `variants/`의 에디션은 원본 사본을 스킬 폴더 안에 같이 담고
   있어서 한 번 설치하면 둘 다 들어옵니다.
@@ -319,24 +334,30 @@ Grok Build에는 폴더 경로 그대로 넘겨야 합니다. 저장소의 `#` �
   `node ~/.config/opencode/skills/lit-typographic-motion/runtime.mjs install`. 나머지 에디션은 처음 쓸 때 엔진을 알아서
   설치합니다.
 
+</details>
+
 ## 하네스별 참고
 
 하네스마다 스킬을 읽는 폴더가 다르고, 이름이 같은 스킬을 정리하는 방식도 다릅니다. 그래서 하네스마다 명령이 따로
-있습니다. 아래 표로 먼저 훑어보고, 명령은 각 절에서 확인하세요.
+있습니다.
 
-| 하네스 | 들어가는 것 | 명령 | 그다음 |
-| --- | --- | --- | --- |
-| [Claude Code](#claude-code) | 패밀리 플러그인 하나 | 살펴보기, 옆으로 옮기기, 설치 | 스킬이 `<family>:<id>`로 응답 |
-| [Codex CLI](#codex-cli) | `variants/litcodex/<id>/` | 살펴보기, 옆으로 옮기기, 복사, 영수증 | Codex 세션 새로 시작 |
-| [OpenCode](#opencode) | `variants/litopencode/<id>/` | 살펴보기, 옆으로 옮기기, 복사, 영수증 | 세션 새로 시작 |
-| [Grok Build](#grok-build) | `variants/litgrok/<id>/`를 플러그인으로 | 확인 두 줄, 설치 | Grok 플러그인 저장소가 기록 |
-| [Muse Code](#muse-code) | `variants/litmuse/<id>/` | 살펴보기, 옆으로 옮기기, 설치 | Muse 잠금 파일이 기록 |
-| [Antigravity CLI](#antigravity-cli) | `variants/litgravity/<id>/` | 살펴보기, 옆으로 옮기기, 복사, 영수증 | 대화 새로 시작 또는 `/skills reload` |
-| [Hermes Agent](#hermes-agent) | `variants/lithermes/<id>/` | 이름 정하기, 살펴보기, 옆으로 옮기기, 복사, 영수증 | 복사본 안에 영수증 |
+| 하네스 | 들어가는 것 | 명령 |
+| --- | --- | --- |
+| [Claude Code](#claude-code) | 패밀리 플러그인 하나 | 살펴보기, 옆으로 옮기기, 설치 |
+| [Codex CLI](#codex-cli) | `variants/litcodex/<id>/` | 살펴보기, 옆으로 옮기기, 복사, 영수증 |
+| [OpenCode](#opencode) | `variants/litopencode/<id>/` | 살펴보기, 옆으로 옮기기, 복사, 영수증 |
+| [Grok Build](#grok-build) | `variants/litgrok/<id>/`를 플러그인으로 | 확인 두 줄, 설치 |
+| [Muse Code](#muse-code) | `variants/litmuse/<id>/` | 살펴보기, 옆으로 옮기기, 설치 |
+| [Antigravity CLI](#antigravity-cli) | `variants/litgravity/<id>/` | 살펴보기, 옆으로 옮기기, 복사, 영수증 |
+| [Hermes Agent](#hermes-agent) | `variants/lithermes/<id>/` | 이름 정하기, 살펴보기, 옆으로 옮기기, 복사, 영수증 |
 
 ### Claude Code
 
-Claude Code에서는 패밀리를 이 마켓플레이스의 플러그인으로 받습니다. 쓰는 패밀리만 골라 설치하면 됩니다.
+Claude Code에서는 패밀리를 이 마켓플레이스의 플러그인으로 받으므로, 쓰는 패밀리만 골라 설치하면 됩니다. 확인 명령과
+설치 명령은 [빠른 시작](#빠른-시작)에 있습니다.
+
+<details>
+<summary>단계마다 하는 일과 바뀌는 것</summary>
 
 | 단계 | 하는 일 | 이유 | 바뀌는 것 |
 | --- | --- | --- | --- |
@@ -345,24 +366,7 @@ Claude Code에서는 패밀리를 이 마켓플레이스의 플러그인으로 �
 | 마켓플레이스 추가 | `wjgoarxiv/wjgoarxiv-skills`를 등록 | 패밀리 플러그인이 여기서 옴 | 있음 |
 | 설치 | 적은 패밀리를 설치 | 쓰는 패밀리만 받음 | 있음 |
 
-설치하기 전에 프로젝트 폴더에서 실행하세요:
-
-```bash
-ls -d ~/.claude/skills/lit-pptx .claude/skills/lit-pptx 2>/dev/null
-d="$HOME/.claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv ~/.claude/skills/lit-pptx "$d"/
-d=".claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv .claude/skills/lit-pptx "$d"/
-```
-
-아무 폴더에서나 실행하되, 원하는 패밀리 줄만 남기세요:
-
-```bash
-claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills
-claude plugin install decks@wjgoarxiv-skills
-claude plugin install documents@wjgoarxiv-skills
-claude plugin install figures@wjgoarxiv-skills
-claude plugin install design@wjgoarxiv-skills
-claude plugin install video-covers@wjgoarxiv-skills
-```
+</details>
 
 - **세션 안에서:** `/plugin marketplace add wjgoarxiv/wjgoarxiv-skills`를 실행하고
   `/plugin install decks@wjgoarxiv-skills`처럼 설치합니다.
@@ -384,12 +388,17 @@ Codex는 자기 `skills` 폴더와 `~/.agents/skills`, 그리고 프로젝트의
 같은 이름의 스킬은 그 이름을 가진 폴더마다 한 번씩 목록에 올리고, 스킬 폴더 안에 중첩된 `SKILL.md`도 올리기 때문에,
 복사는 이미 차 있는 폴더에는 절대 들어가지 않습니다.
 
+<details>
+<summary>단계마다 하는 일과 바뀌는 것</summary>
+
 | 단계 | 하는 일 | 이유 | 바뀌는 것 |
 | --- | --- | --- | --- |
 | 살펴보기 | 네 곳에서 같은 이름의 폴더마다 `found:`를 출력 | Codex가 그 모두를 목록에 올림 | 없음 |
 | 옆으로 옮기기 | `${CODEX_HOME:-$HOME/.codex}/skills`의 복사본을 그 안의 `extension-backups/<date-time>/lit-pptx`로 옮김 | Codex는 이 폴더를 읽지 않음 | 복사본이 있을 때만 |
 | 복사 | `variants/litcodex/lit-pptx`를 스킬 폴더로 복사 | 차 있는 폴더 앞에서는 멈춤 | 있음 |
 | 영수증 | 복사본 안에 `.litfamily-extension.json`을 씀 | id, 출처, 에디션, 시각 기록 | 파일 하나 |
+
+</details>
 
 네 줄을 프로젝트 폴더에서 돌리세요. 줄마다 경로를 스스로 정하므로 한 줄만 붙여 넣어도 동작합니다:
 
@@ -417,12 +426,17 @@ OpenCode는 `~/.config/opencode/skills`, `~/.agents/skills`, `~/.claude/skills`�
 `.claude/` 스킬을 읽고, 이름 하나에 스킬 하나만 둡니다. 그래서 확장은 같은 이름의 LitOpenCode 안내 폴더 자리에
 들어갑니다.
 
+<details>
+<summary>단계마다 하는 일과 바뀌는 것</summary>
+
 | 단계 | 하는 일 | 이유 | 바뀌는 것 |
 | --- | --- | --- | --- |
 | 살펴보기 | OpenCode가 읽는 같은 이름의 폴더를 보여 줌 | `~/.config/opencode/skills` 밖에 있는 것은 직접 치워 두기 | 없음 |
 | 옆으로 옮기기 | 안내 폴더를 통째로 날짜별 백업으로 옮김 | `extension-backups/`에서 불려 오는 스킬은 없음 | 있을 때만 |
 | 복사 | `variants/litopencode/lit-pptx`를 복사 | 확장이 안내 폴더 자리에 들어감 | 있음 |
 | 영수증 | 복사본 안에 `.litfamily-extension.json`을 씀 | id, 출처, 에디션, 시각 기록 | 파일 하나 |
+
+</details>
 
 아무 폴더에서나 실행하세요:
 
@@ -443,12 +457,17 @@ printf '{"id":"%s","source":"%s","variant":"litopencode","installed_at":"%s"}\n'
 Grok Build는 에디션을 스킬 하나짜리 플러그인으로 자기 플러그인 저장소에 설치하고, 어디서 왔는지도 거기 기록합니다. 그래서
 이 명령은 영수증을 따로 쓰지 않습니다.
 
+<details>
+<summary>단계마다 하는 일과 바뀌는 것</summary>
+
 | 단계 | 하는 일 | 이유 | 바뀌는 것 |
 | --- | --- | --- | --- |
 | 클론 | 이 저장소를 한 번 클론 | 설치가 로컬 폴더를 읽음 | 새 폴더 |
 | 세기 | 설치된 `lit-pptx` 복사본 수를 셈 | 0보다 크면 설치를 건너뜀. 다시 설치하면 `already installed`로 멈춤 | 없음 |
 | 찾기 | Grok이 읽는 스킬 폴더의 개인 복사본을 보여 줌 | LitGrok 안내문보다 먼저 `/lit-pptx` 이름을 차지함 | 없음 |
 | 설치 | 에디션 폴더를 `--trust`로 설치 | Grok이 그 폴더만 복사 | 있음 |
+
+</details>
 
 프로젝트 루트에서 읽기만 하는 확인 두 줄을 돌린 다음 설치 줄을 돌리세요:
 
@@ -475,11 +494,16 @@ Muse는 Muse 사용자 스킬, Muse가 함께 읽는 `~/.claude/skills`와 `~/.c
 `.claude/skills`에서 `lit-pptx`를 불러올 수 있습니다. 이미 있는 폴더 위에는 설치를 거부하고, `--force`를 쓰면 새 파일을 옛
 파일에 섞어 버리므로, 명령은 차 있는 폴더를 먼저 옆으로 옮깁니다.
 
+<details>
+<summary>단계마다 하는 일과 바뀌는 것</summary>
+
 | 단계 | 하는 일 | 이유 | 바뀌는 것 |
 | --- | --- | --- | --- |
 | 살펴보기 | Muse가 `lit-pptx`로 불러올 수 있는 폴더를 모두 보여 줌 | 같은 이름의 복사본이 확장과 순위를 다툼 | 없음 |
 | 옆으로 옮기기 | Muse 쪽 복사본을 Muse 스킬 옆의 `extension-backups/`로 옮김 | Muse는 차 있는 폴더를 거부함 | 있을 때만 |
 | 설치 | `muse skills install … --scope user` 실행 | Muse 잠금 파일이 복사본을 기록 | 있음 |
+
+</details>
 
 프로젝트 폴더에서 실행하세요:
 
@@ -503,12 +527,17 @@ agy는 작업 공간의 `.agents/skills`와 `_agents/skills`, 그다음 `~/.gemi
 불러오고, 이름이 같은 스킬은 아무 말 없이 하나만 남깁니다. 스킬 폴더 안에 남긴 백업이 진짜 복사본을 이기기도 해서, 백업은
 agy가 절대 읽지 않는 `~/.gemini/extension-backups/`로 보냅니다.
 
+<details>
+<summary>단계마다 하는 일과 바뀌는 것</summary>
+
 | 단계 | 하는 일 | 이유 | 바뀌는 것 |
 | --- | --- | --- | --- |
 | 살펴보기 | 네 곳에서 이름이 `lit-pptx`인 `SKILL.md`를 모두 찾음 | agy는 말없이 하나만 남김 | 없음 |
 | 옆으로 옮기기 | 사용자 복사본을 날짜별 `~/.gemini/extension-backups/` 폴더로 옮김 | agy는 이 폴더를 읽지 않음 | 있을 때만 |
 | 복사 | `variants/litgravity/lit-pptx`를 agy 사용자 스킬로 복사 | 모든 작업 공간이 함께 봄 | 있음 |
 | 영수증 | 복사본 안에 `.litfamily-extension.json`을 씀 | id, 출처, 에디션, 시각 기록 | 파일 하나 |
+
+</details>
 
 agy를 쓰는 작업 공간에서 네 줄을 한 줄씩 붙여 넣으세요:
 
@@ -539,6 +568,9 @@ printf '{"id":"%s","source":"%s","variant":"litgravity","installed_at":"%s"}\n' 
 Hermes는 프로필의 `skills/` 폴더(그 안의 카테고리 폴더 포함), 신뢰한 프로젝트의 `.hermes/skills`와 `.agents/skills`,
 그리고 설정한 `external_dirs`에서 스킬을 읽습니다.
 
+<details>
+<summary>단계마다 하는 일과 바뀌는 것</summary>
+
 | 단계 | 하는 일 | 이유 | 바뀌는 것 |
 | --- | --- | --- | --- |
 | 이름 정하기 | `H`, `ID`, `SRC`를 정함 | 나머지 줄이 이 이름을 쓰므로 한꺼번에 붙여 넣기 | 없음 |
@@ -546,6 +578,8 @@ Hermes는 프로필의 `skills/` 폴더(그 안의 카테고리 폴더 포함), 
 | 옆으로 옮기기 | 폴더를 프로필의 `extension-backups/<date-time>/`로 옮김 | 폴더가 있을 때만 동작 | 그때만 |
 | 복사 | 비어 있는 `skills/lit-pptx/`에 에디션을 복사 | 폴더가 남아 있으면 멈춤 | 있음 |
 | 영수증 | 복사본 안에 `.litfamily-extension.json`을 씀 | id, 출처, 에디션, 시각 기록 | 파일 하나 |
+
+</details>
 
 프로젝트 최상위 폴더에서 bash나 zsh에 한꺼번에 붙여 넣으세요:
 
@@ -556,6 +590,8 @@ if [ -e "$H/skills/${ID:?}" ]; then mkdir -p "$H/extension-backups" && B=$(mktem
 if [ -e "$H/skills/${ID:?}" ]; then echo "stopped: $H/skills/$ID is still there"; else mkdir -p "$H/skills" && cp -R "$SRC" "$H/skills/$ID" && echo "copied: $H/skills/$ID"; fi
 printf '{"id":"%s","source":"%s","variant":"lithermes","installed_at":"%s"}\n' "${ID:?}" "$SRC" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$H/skills/$ID/.litfamily-extension.json"
 ```
+
+**설치 뒤:** 복사본 안의 `.litfamily-extension.json`이 어디서 왔는지 기록합니다.
 
 > [!WARNING]
 > `skills/` 아래에 같은 이름의 서로 다른 복사본이 둘 있으면 비겨서 Hermes는 둘 다 불러오지 않습니다.
@@ -575,23 +611,19 @@ LitFamily 제품들은 핵심 스킬은 그대로 두고, 옮겨 간 스킬마�
 
 ### 스킬을 이쪽으로 옮긴 이유
 
-여기 스킬들은 원래 LitFamily 안에서 자랐는데, 쓰다 보니 제품마다 제일 무거운 덩어리가 되어 버렸습니다. 자체 오피스
-런타임을 가진 발표자료 빌더, 문서 스튜디오, 세 종류의 그림 도구, 화면 디자인 키트, 영상 엔진까지 다 들어 있었으니까요.
-대부분은 설치할 때마다 이걸 전부 받을 필요가 없었기에, 핵심은 가볍게 두고 스킬만 한 글자도 고치지 않은 채 이쪽으로 따로
-뺐습니다.
-
-LitFamily의 핵심은 이 저장소 없이도 완결되어 있습니다. 각 LitFamily 제품에는 같은 이름의 작은 스텁만 남겼고, 스텁이 그
-스킬이 무슨 일을 하는지, 이 선반에서 어떻게 설치하는지 알려 줍니다.
-
-쓰고 있는 LitFamily 제품 옆에 원하는 확장을 설치하면 LitFamily를 온전히 다 누릴 수 있습니다. 발표자료, 문서, 그림, 화면,
-영상, README를 부탁하면 LitFamily가 이름으로 확장을 찾아 일을 넘깁니다. 지금 쓰는 에이전트에 필요한 것만 골라 가시고,
-나머지는 선반에 두시면 됩니다.
+자체 오피스 런타임을 가진 발표자료 빌더, 문서 스튜디오, 세 종류의 그림 도구, 화면 디자인 키트, 영상 엔진까지, 이 스킬들은
+LitFamily 제품마다 제일 무거운 덩어리였습니다. 대부분은 설치할 때마다 이걸 전부 받을 필요가 없어서, 핵심은 가볍고 그
+자체로 완결되게 두고 스킬은 한 글자도 고치지 않고 이쪽으로 옮겼습니다. 쓰고 있는 LitFamily 제품 옆에 하나를 설치하면 같은
+이름의 스텁이 이름으로 확장을 찾아 일을 넘기므로, LitFamily를 온전히 누릴 수 있습니다.
 
 저장소 주소는 https://github.com/wjgoarxiv/wjgoarxiv-skills 입니다.
 
 ### 패밀리 플러그인과 그 출처
 
 패밀리 플러그인에는 Claude Code용으로 쓴 LitClaude판이 고치지 않은 채 들어 있습니다.
+
+<details>
+<summary>패밀리 플러그인마다 옮겨 온 LitClaude 커밋</summary>
 
 | 플러그인 | 옮겨 온 LitClaude 커밋 |
 | --- | --- |
@@ -600,6 +632,8 @@ LitFamily의 핵심은 이 저장소 없이도 완결되어 있습니다. 각 Li
 | `figures` | `2381bfe` (파일은 1.0.49와 같음) |
 | `design` | `aaea364` (파일은 1.0.49와 같음) |
 | `video-covers` | `4d03ca8` (파일은 1.0.49와 같음) |
+
+</details>
 
 ### `variants/`의 에디션
 
@@ -618,7 +652,11 @@ LitFamily의 핵심은 이 저장소 없이도 완결되어 있습니다. 각 Li
 </p>
 
 에디션은 처음에 `variants/<product>/<id>/` 아래로 아무것도 안 바꾼 채 들어왔습니다. 그 제품이 마지막으로 배포한 커밋에서
-바이트 단위로 그대로 복사했고, 제품마다 영수증을 하나씩 `receipts/variants-<product>.sha256`에 남겼습니다.
+바이트 단위로 그대로 복사했고, 제품마다 영수증을 하나씩 `receipts/variants-<product>.sha256`에 남겼습니다. 그다음 제품마다
+커밋을 하나씩 더 해서 폴더가 혼자 돌아가게 만들었고, 무엇을 왜 바꿨는지는 `variants/<product>/CHANGES.md`에 적어 두었습니다.
+
+<details>
+<summary>에디션마다 복사해 온 제품 커밋</summary>
 
 | 폴더 | 하네스 | 복사한 곳 |
 | --- | --- | --- |
@@ -629,15 +667,14 @@ LitFamily의 핵심은 이 저장소 없이도 완결되어 있습니다. 각 Li
 | `variants/litmuse/` | Muse Code | LitMuse `e966b07` (0.1.11과 skills lock), `plugin/skills/<id>/` |
 | `variants/lithermes/` | Hermes Agent | LitHermes `a2466f2` (1.0.39와 skills lock), `packages/lithermes-installer/assets/lithermes-plugin/skills/<id>/` |
 
-그런데 제품 안에 있을 때 각 에디션은 폴더 하나만 설치해서는 따라오지 않는 것들에 기대고 있었습니다. 그래서 제품마다
-커밋을 하나씩 더 해서 폴더가 혼자 돌아가게 만들었고, 무엇을 왜 바꿨는지는 `variants/<product>/CHANGES.md`에 하나씩 적어
-두었습니다.
+</details>
 
 <details>
 <summary>그 커밋에서 바뀐 것과 남은 것</summary>
 
-- **에디션이 기대던 것:** 런타임 명령, 환경 변수, 훅과 완료 관문, doctor 항목, 에이전트 정의, 그리고 이웃 스킬이나 제품
-  공용 `lib/`, `vendor/` 폴더에 있는 파일들.
+- **에디션이 기대던 것:** 제품 안에 있을 때 각 에디션은 폴더 하나만 설치해서는 따라오지 않는 것들에 기댔습니다.
+  런타임 명령, 환경 변수, 훅과 완료 관문, doctor 항목, 에이전트 정의, 그리고 이웃 스킬이나 제품 공용 `lib/`, `vendor/`
+  폴더에 있는 파일들입니다.
 - **바뀐 것:** 읽는 파일은 폴더 안으로 복사하고, 제품 명령은 폴더 안의 스크립트로 바꾸고, 폴더 밖으로 나가는 경로는 전부
   없앴습니다.
 - **남은 것:** 절차, 참고 자료, 엔진, QA 게이트는 그대로 두었습니다. Codex 에디션만 LitCodex 플러그인 내부를 돌리던
@@ -653,17 +690,24 @@ LitFamily의 핵심은 이 저장소 없이도 완결되어 있습니다. 각 Li
 ## 업데이트와 제거
 
 업데이트는 같은 줄을 다시 돌리면 되고, 복사본을 없앨 때는 대개 옆으로 옮기므로 없앤 복사본은 백업 폴더에 남아 있습니다.
-Claude Code와 Grok Build는 각자의 명령으로 업데이트하며, 그 명령은 표 아래에 있습니다.
+Claude Code와 Grok Build는 각자의 명령으로 업데이트하고, Hermes Agent는 한 줄을 더 돌려 제거합니다. 세 가지 모두 표 아래에
+있습니다.
 
-| 하네스 | 업데이트 | 제거 | 다시 시작 |
-| --- | --- | --- | --- |
-| Claude Code | 마켓플레이스를 새로 받고 패밀리를 업데이트 | — | 필요: `/reload-plugins` |
-| Codex CLI | 클론을 pull 한 뒤 네 줄을 다시 | 옆으로 옮기는 줄만 | 필요: Codex 세션 새로 시작 |
-| OpenCode | 네 줄을 다시 | 둘째 줄. 그러면 `litopencode install`이 안내 폴더를 다시 놓아 줌 | 필요: 세션 새로 시작 |
-| Grok Build | pull, 센 복사본 수만큼 제거, 다시 설치 | `grok plugin uninstall lit-pptx`. 원본은 클론에 남음 | — |
-| Muse Code | 세 줄을 다시 | 둘째 줄 뒤 `muse skills uninstall lit-pptx` | — |
-| Antigravity CLI | 같은 줄을 다시 | 둘째 줄만 | 필요: 대화 새로 시작 또는 `/skills reload` |
-| Hermes Agent | 클론을 pull 한 뒤 같은 줄을 다시 붙여 넣기 | 첫 줄을 붙여 넣고 아래 제거 줄 | — |
+| 하네스 | 업데이트 | 제거 |
+| --- | --- | --- |
+| Claude Code | 마켓플레이스를 새로 받고 패밀리를 업데이트 | `claude plugin uninstall decks@wjgoarxiv-skills` |
+| Codex CLI | 클론을 pull 한 뒤 네 줄을 다시 | 옆으로 옮기는 줄만 |
+| OpenCode | 네 줄을 다시 | 둘째 줄. 그러면 `litopencode install`이 안내 폴더를 다시 놓아 줌 |
+| Grok Build | pull, 센 복사본 수만큼 제거, 다시 설치 | `grok plugin uninstall lit-pptx`. 원본은 클론에 남음 |
+| Muse Code | 세 줄을 다시 | 둘째 줄 뒤 `muse skills uninstall lit-pptx` |
+| Antigravity CLI | 같은 줄을 다시 | 둘째 줄만 |
+| Hermes Agent | 클론을 pull 한 뒤 같은 줄을 다시 붙여 넣기 | 첫 줄을 붙여 넣고 아래 제거 줄 |
+
+그다음에는 그 하네스의 **설치 뒤** 줄대로 다시 시작합니다(Claude Code는 `/reload-plugins`). Grok Build, Muse Code, Hermes
+Agent는 다시 시작할 필요가 없습니다.
+
+<details>
+<summary>Claude Code와 Grok Build의 업데이트 명령, Hermes Agent의 제거 명령</summary>
 
 **Claude Code.** 두 줄을 이 순서대로 돌립니다. 첫 줄이 마켓플레이스를 새로 받고, 둘째 줄이 받은 내용과 플러그인 버전을
 비교합니다. Claude Code는 버전이 바뀌었을 때만 새 복사본을 설치하고, 새 복사본은 `/reload-plugins` 뒤에 불려 옵니다.
@@ -688,6 +732,8 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
 ```bash
 [ -e "$H/skills/${ID:?}" ] && mkdir -p "$H/extension-backups" && B=$(mktemp -d "$H/extension-backups/$(date +%Y%m%d-%H%M%S)-XXXX") && mv "$H/skills/$ID" "$B/" && echo "moved aside: $B/$ID"
 ```
+
+</details>
 
 - **Antigravity CLI:** 업데이트하면 옛 복사본은 새 날짜별 백업으로 옮겨지고 영수증은 새로 쓰입니다. 필요 없어진 백업은
   `~/.gemini/extension-backups/`에서 직접 정리하면 됩니다.
@@ -764,6 +810,9 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
 
 이 페이지가 약속하는 내용은 `npm test`가 지킵니다. 무엇이든 바꾼 뒤에는 플러그인 검사와 함께 돌리세요.
 
+<details>
+<summary><code>npm test</code>가 확인하는 것과 검사 명령</summary>
+
 | `npm test`가 확인하는 것 | 대조하는 곳 |
 | --- | --- |
 | 패밀리 플러그인이 담은 스킬마다 설치 표 행이 하나씩 있는지 | 마켓플레이스 |
@@ -783,10 +832,16 @@ claude plugin validate plugins/design
 claude plugin validate plugins/video-covers
 ```
 
+</details>
+
 ## 라이선스
 
 저장소 전체에 붙는 라이선스는 따로 없습니다. 대신 패밀리 플러그인마다 원래 파일이 따르던 라이선스를
-`plugins/<family>/LICENSE`에 담고, `plugin.json`에 밝혀 두었습니다.
+`plugins/<family>/LICENSE`에 담고, `plugin.json`에 밝혀 두었습니다. 모든 플러그인이 MIT이고, `design`은 Apache-2.0을,
+`video-covers`는 OFL-1.1을 더합니다.
+
+<details>
+<summary>플러그인마다 밝힌 라이선스와 그 출처</summary>
 
 | 플러그인 | 밝힌 라이선스 | 출처 |
 | --- | --- | --- |
@@ -795,6 +850,8 @@ claude plugin validate plugins/video-covers
 | `figures` | MIT | LitClaude 자체 파일. `vendor/` 아래 사본은 각자의 출처와 라이선스 파일을 그대로 지닙니다 |
 | `design` | MIT AND Apache-2.0 | frontend-ui-ux의 `LICENSE`(MIT)와 `THIRD-PARTY-NOTICE.txt`가 디자인 데이터를, `references/_canonical-corpus/legal/`의 Apache-2.0 라이선스가 참고 코퍼스를 다룹니다 |
 | `video-covers` | MIT AND OFL-1.1 | LitClaude 자체 파일과 OFL 라이선스를 따르는 Pretendard 글꼴 |
+
+</details>
 
 Pretendard와 JetBrains Mono 글꼴은 수정하지 않은 채 각자의 OFL 라이선스 파일과 함께 들어 있습니다. `variants/`의
 에디션은 제품이 스킬 폴더 안에 넣어 배포하던 라이선스와 글꼴 라이선스 파일을 그대로 갖고 있습니다. `docs/assets/`의

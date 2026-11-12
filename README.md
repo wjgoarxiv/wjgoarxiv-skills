@@ -25,18 +25,15 @@ seven coding agents. They make decks, documents, figures, interfaces, films and 
 you need. Each one also works without any LitFamily product.
 
 > [!TIP]
-> On Claude Code, run `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills` and
-> `claude plugin install decks@wjgoarxiv-skills`, then ask your agent for a deck. Every other harness clones this
-> repository once and copies one folder.
+> On Claude Code, the lines in [Quick start](#quick-start) install one family; then ask your agent for a deck. Every
+> other harness clones this repository once and copies one folder.
 
 ## Pick your path
-
-Most readers come here for one job, so start from yours.
 
 | I want to… | Do this | Go to |
 | --- | --- | --- |
 | See what each skill makes | Read the skill table and family pictures | [What you can make](#what-you-can-make) |
-| Install on Claude Code | Add the marketplace, install one family | [Claude Code](#claude-code) |
+| Install on Claude Code | Add the marketplace, install one family | [Quick start](#quick-start) |
 | Install on another harness | Clone once, copy one folder | [Pick one skill for one harness](#pick-one-skill-for-one-harness) |
 | Update or remove a copy | Rerun the lines, or move the copy aside | [Update and remove](#update-and-remove) |
 | Know where the editions came from | Read the source commits and changes | [How it works](#how-it-works) |
@@ -44,19 +41,31 @@ Most readers come here for one job, so start from yours.
 
 ## Quick start
 
-Claude Code is the shortest path, because it installs a family straight from GitHub. On any other harness, follow its
-lines under [Per-harness notes](#per-harness-notes) instead.
+Claude Code installs a family straight from GitHub, which makes it the shortest path. Any other harness follows its own
+lines under [Per-harness notes](#per-harness-notes).
 
 1. Find your skill and its family in the [pick-one table](#pick-one-skill-for-one-harness).
-2. Move any same-name skill of your own aside with the [Claude Code check lines](#claude-code).
-3. Run the two lines below, putting your family where `decks` stands.
+2. Run the check lines. Line 1 lists a same-name skill of your own; lines 2 and 3 move a personal or project copy aside.
+3. Run the install lines, keeping the line for your family.
 4. Ask for what the skill makes: a deck, a document, a figure, an interface, a film or a README.
 
-Run from any folder:
+Run from your project folder before installing:
+
+```bash
+ls -d ~/.claude/skills/lit-pptx .claude/skills/lit-pptx 2>/dev/null
+d="$HOME/.claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv ~/.claude/skills/lit-pptx "$d"/
+d=".claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv .claude/skills/lit-pptx "$d"/
+```
+
+Then run from any folder, keeping only the families you want:
 
 ```bash
 claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills
 claude plugin install decks@wjgoarxiv-skills
+claude plugin install documents@wjgoarxiv-skills
+claude plugin install figures@wjgoarxiv-skills
+claude plugin install design@wjgoarxiv-skills
+claude plugin install video-covers@wjgoarxiv-skills
 ```
 
 You are set when the skill answers as `decks:lit-pptx` (or `<family>:<id>` for yours).
@@ -73,17 +82,26 @@ skill's own `SKILL.md` names the handoff; the dashed one is just a pairing that 
   </picture>
 </p>
 
-| Ask for | Skill (family) | You get | Hands off to |
-| --- | --- | --- | --- |
-| A slide deck | `lit-pptx` (`decks`) | An editable `.pptx` deck | Takes charts and diagrams in |
-| A report, memo or manuscript | `lit-docx` (`documents`) | A `.docx`, clean Markdown or a PDF | Takes charts in |
-| A plot of measured data | `lit-scientific-visualization` (`figures`) | A publication plot | Chart PNG to `lit-docx` and `lit-pptx` |
-| A diagram of an idea or system | `lit-diagram-drawer` (`figures`) | HTML/SVG, PNG and Office-safe SVG | Diagram PNG to `lit-pptx` |
-| A drawing of real equipment | `lit-schematic` (`figures`) | Millimetre-sized SVG and a 600 dpi render | — |
-| An interface | `frontend-ui-ux` (`design`) | A built interface | Built interface to `visual-qa` |
-| A check of a built page | `visual-qa` (`design`) | Screenshots, an evidence manifest, a QA report | — |
-| A short film or cover loop | `lit-typographic-motion` (`video-covers`) | A film or a silent cover loop | Cover loop pairs with `readme-studio` |
-| A README | `readme-studio` (`video-covers`) | A factual README with its cover | — |
+| Ask for | Skill (family) | You get |
+| --- | --- | --- |
+| A slide deck | `lit-pptx` (`decks`) | An editable `.pptx` deck |
+| A report, memo or manuscript | `lit-docx` (`documents`) | A `.docx`, clean Markdown or a PDF |
+| A plot of measured data | `lit-scientific-visualization` (`figures`) | A publication plot |
+| A diagram of an idea or system | `lit-diagram-drawer` (`figures`) | HTML/SVG, PNG and Office-safe SVG |
+| A drawing of real equipment | `lit-schematic` (`figures`) | Millimetre-sized SVG and a 600 dpi render |
+| An interface | `frontend-ui-ux` (`design`) | A built interface |
+| A check of a built page | `visual-qa` (`design`) | Screenshots, an evidence manifest, a QA report |
+| A short film or cover loop | `lit-typographic-motion` (`video-covers`) | A film or a silent cover loop |
+| A README | `readme-studio` (`video-covers`) | A factual README with its cover |
+
+<details>
+<summary>Which skill hands what to which</summary>
+
+Chart PNGs go from `lit-scientific-visualization` to `lit-docx` and `lit-pptx`, diagram PNGs from `lit-diagram-drawer`
+to `lit-pptx`, and a built interface from `frontend-ui-ux` to `visual-qa`. A `lit-typographic-motion` cover loop pairs
+with `readme-studio`.
+
+</details>
 
 The pictures on this page are samples too. The cover at the top is a silent, seamless README cover loop, exactly the
 kind of thing `video-covers` makes; the big picture, the skill map and the install paths come from
@@ -244,8 +262,7 @@ not come with this plugin:
 
 ## Pick one skill for one harness
 
-There are two ways in, and your agent decides which one you take. On Claude Code you add this marketplace and install
-the family plugin; on every other harness you clone the repository once and copy a single folder.
+Your agent decides which of the two ways in you take, and the drawing shows both.
 
 <p align="center">
   <picture>
@@ -278,14 +295,10 @@ Claude Code installs the whole family plugin because LitClaude's copies reach in
 `vendor/`, support folders); still, only that one family gets installed. Every other harness installs one folder: its
 product's own edition of the skill, which carries everything it reads inside the folder.
 
-Grok Build takes the folder path as a one-skill plugin and copies only that folder into its plugin store, Muse Code
-installs it through `muse skills install`, and Codex CLI, OpenCode, Antigravity CLI and Hermes Agent copy it into their
-skills folder. On OpenCode the copy takes the place of the LitOpenCode pointer folder of the same name; on the other
-harnesses it sits next to its product's stub under a different name, and each product's installer leaves it alone on
-upgrade.
-
-Grok Build needs the folder path itself: given a `#` subfolder of the repository instead, it copies the whole
-repository, `.git` included, for each skill.
+On OpenCode the copy takes the place of the LitOpenCode pointer folder of the same name. On the other harnesses it sits
+next to its product's stub under a different name, and each product's installer leaves it alone on upgrade. Grok Build
+needs the folder path itself: given a `#` subfolder of the repository instead, it copies the whole repository, `.git`
+included, for each skill.
 
 ### How the lines keep your files safe
 
@@ -303,17 +316,18 @@ lines begin by looking. Where the lines copy a folder themselves, they run these
 > Grok Build and Muse Code keep their own install records and refuse to install over a name they already hold, so
 > their lines look, move a competing copy aside and install.
 
-- **No line deletes a folder**, so nothing you kept is lost.
-- **Updating** means running the same lines again.
-- **Removing** a copy means moving it aside.
+No line deletes a folder, so nothing you kept is lost. Updating and removing reuse these same lines; see
+[Update and remove](#update-and-remove).
 
 ### Lines for other skills
 
-The lines under [Per-harness notes](#per-harness-notes) are shown for `lit-pptx`. They are the lines that harness's
-LitFamily stub gives, copied as they are, so the stub and this page always say the same thing.
+Every line on this page is shown for `lit-pptx`. They are the lines that harness's LitFamily stub gives, copied as they
+are, so the stub and this page always say the same thing. For another skill, put its id where `lit-pptx` stands (and, on
+Claude Code, its family where `decks` stands); the stub of that skill prints the same lines with its name filled in.
 
-- **Another skill:** put its id where `lit-pptx` stands (and, on Claude Code, its family where `decks` stands). The stub
-  of that skill prints the same lines with its name already filled in.
+<details>
+<summary>Extra notes for lit-scientific-visualization, Antigravity CLI and the OpenCode film stub</summary>
+
 - **`lit-scientific-visualization`:** an adapter for the scientific-visualization source. The family plugin keeps that
   source in `plugins/figures/vendor/scientific-visualization/`; every edition under `variants/` carries its own copy
   inside the skill folder, so one install brings both.
@@ -323,24 +337,30 @@ LitFamily stub gives, copied as they are, so the stub and this page always say t
   `node ~/.config/opencode/skills/lit-typographic-motion/runtime.mjs install`. The other editions install their engines
   on first use.
 
+</details>
+
 ## Per-harness notes
 
 Each harness reads skills from its own folders and settles same-name clashes its own way, so each one gets its own
-lines. This table sums them up; the sections below hold the lines.
+lines.
 
-| Harness | What goes in | Lines | Then |
-| --- | --- | --- | --- |
-| [Claude Code](#claude-code) | One family plugin | Check, move aside, install | Skills answer as `<family>:<id>` |
-| [Codex CLI](#codex-cli) | `variants/litcodex/<id>/` | Check, move aside, copy, receipt | Start a new Codex session |
-| [OpenCode](#opencode) | `variants/litopencode/<id>/` | Check, move aside, copy, receipt | Start a new session |
-| [Grok Build](#grok-build) | `variants/litgrok/<id>/` as a plugin | Two checks, install | Grok's plugin store records it |
-| [Muse Code](#muse-code) | `variants/litmuse/<id>/` | Check, move aside, install | Muse's lock records it |
-| [Antigravity CLI](#antigravity-cli) | `variants/litgravity/<id>/` | Check, move aside, copy, receipt | New conversation or `/skills reload` |
-| [Hermes Agent](#hermes-agent) | `variants/lithermes/<id>/` | Names, check, move aside, copy, receipt | Receipt in the copy |
+| Harness | What goes in | Lines |
+| --- | --- | --- |
+| [Claude Code](#claude-code) | One family plugin | Check, move aside, install |
+| [Codex CLI](#codex-cli) | `variants/litcodex/<id>/` | Check, move aside, copy, receipt |
+| [OpenCode](#opencode) | `variants/litopencode/<id>/` | Check, move aside, copy, receipt |
+| [Grok Build](#grok-build) | `variants/litgrok/<id>/` as a plugin | Two checks, install |
+| [Muse Code](#muse-code) | `variants/litmuse/<id>/` | Check, move aside, install |
+| [Antigravity CLI](#antigravity-cli) | `variants/litgravity/<id>/` | Check, move aside, copy, receipt |
+| [Hermes Agent](#hermes-agent) | `variants/lithermes/<id>/` | Names, check, move aside, copy, receipt |
 
 ### Claude Code
 
-Claude Code takes each family as a plugin from this marketplace, so you only install the families you actually use.
+Claude Code takes each family as a plugin from this marketplace, so you only install the families you actually use. The
+check and install lines are in [Quick start](#quick-start).
+
+<details>
+<summary>What each step does, and what it changes</summary>
 
 | Step | What it does | Why | Changes anything? |
 | --- | --- | --- | --- |
@@ -349,24 +369,7 @@ Claude Code takes each family as a plugin from this marketplace, so you only ins
 | Add marketplace | Registers `wjgoarxiv/wjgoarxiv-skills` | The family plugins come from it | Yes |
 | Install | Installs each family you list | You get only the families you use | Yes |
 
-Run from your project folder before installing:
-
-```bash
-ls -d ~/.claude/skills/lit-pptx .claude/skills/lit-pptx 2>/dev/null
-d="$HOME/.claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv ~/.claude/skills/lit-pptx "$d"/
-d=".claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv .claude/skills/lit-pptx "$d"/
-```
-
-Run from any folder, keeping only the families you want:
-
-```bash
-claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills
-claude plugin install decks@wjgoarxiv-skills
-claude plugin install documents@wjgoarxiv-skills
-claude plugin install figures@wjgoarxiv-skills
-claude plugin install design@wjgoarxiv-skills
-claude plugin install video-covers@wjgoarxiv-skills
-```
+</details>
 
 - **Inside a session:** `/plugin marketplace add wjgoarxiv/wjgoarxiv-skills`, then
   `/plugin install decks@wjgoarxiv-skills`.
@@ -388,12 +391,17 @@ Codex reads skills from its own `skills` folder, from `~/.agents/skills`, and fr
 `.codex/skills`. It lists a same-name skill once for every folder that holds it, and it also lists a `SKILL.md` nested
 inside another skill folder, which is why the copy never goes into an occupied folder.
 
+<details>
+<summary>What each step does, and what it changes</summary>
+
 | Step | What it does | Why | Changes anything? |
 | --- | --- | --- | --- |
 | Check | Prints `found:` for each same-name folder in those four places | Codex would list every one of them | No |
 | Move aside | Moves the copy in `${CODEX_HOME:-$HOME/.codex}/skills` to `extension-backups/<date-time>/lit-pptx` there | Codex does not read that folder | Only when a copy exists |
 | Copy | Copies `variants/litcodex/lit-pptx` into the skills folder | Stops on an occupied folder | Yes |
 | Receipt | Writes `.litfamily-extension.json` into the copy | Records id, source, edition and time | One file |
+
+</details>
 
 Run the four lines from your project folder. Each line sets its own paths, so one pasted on its own still works:
 
@@ -421,12 +429,17 @@ OpenCode reads `~/.config/opencode/skills`, `~/.agents/skills` and `~/.claude/sk
 `.agents/` and `.claude/` skills, and keeps one skill per name. The extension therefore takes the place of
 LitOpenCode's pointer folder of the same name.
 
+<details>
+<summary>What each step does, and what it changes</summary>
+
 | Step | What it does | Why | Changes anything? |
 | --- | --- | --- | --- |
 | Check | Lists the same-name folders OpenCode reads | Move any outside `~/.config/opencode/skills` out of the way yourself | No |
 | Move aside | Moves the pointer folder whole into a dated backup | No skill loads from `extension-backups/` | Only when it exists |
 | Copy | Copies `variants/litopencode/lit-pptx` in | The extension takes the pointer's place | Yes |
 | Receipt | Writes `.litfamily-extension.json` into the copy | Records id, source, edition and time | One file |
+
+</details>
 
 Run from any folder:
 
@@ -447,12 +460,17 @@ printf '{"id":"%s","source":"%s","variant":"litopencode","installed_at":"%s"}\n'
 Grok Build installs each edition as a one-skill plugin into its own plugin store and records there where it came from,
 so these lines write no receipt.
 
+<details>
+<summary>What each step does, and what it changes</summary>
+
 | Step | What it does | Why | Changes anything? |
 | --- | --- | --- | --- |
 | Clone | Clones this repository once | The install reads a local folder | New folder |
 | Count | Counts installed `lit-pptx` copies | Above 0, skip the install: a second one stops with `already installed` | No |
 | Find | Prints any personal copy in a skills folder Grok reads | It would take the bare `/lit-pptx` name ahead of LitGrok's note | No |
 | Install | Installs the edition folder with `--trust` | Grok copies only that folder | Yes |
+
+</details>
 
 Run the two read-only checks from the project root, then the install line:
 
@@ -479,11 +497,16 @@ Muse can load `lit-pptx` from your Muse user skills, from `~/.claude/skills` and
 too), and from a project's `.agents/skills` and `.claude/skills`. It refuses to install over a folder that is already
 there, and its `--force` merges new files into the old ones, so the lines move an occupied folder aside first.
 
+<details>
+<summary>What each step does, and what it changes</summary>
+
 | Step | What it does | Why | Changes anything? |
 | --- | --- | --- | --- |
 | Check | Prints each folder Muse could load as `lit-pptx` | Same-name copies rank against the extension | No |
 | Move aside | Moves your Muse copy into `extension-backups/` beside Muse's skills | Muse refuses an occupied folder | Only when it exists |
 | Install | Runs `muse skills install … --scope user` | Muse's own lock records the copy | Yes |
+
+</details>
 
 Run from your project folder:
 
@@ -507,12 +530,17 @@ agy loads skills from the workspace's `.agents/skills` and `_agents/skills`, the
 `~/.gemini/skills`, and keeps one same-name skill without a word. A backup left inside a skills folder can even win over
 the real copy, so backups go to `~/.gemini/extension-backups/`, which agy never loads.
 
+<details>
+<summary>What each step does, and what it changes</summary>
+
 | Step | What it does | Why | Changes anything? |
 | --- | --- | --- | --- |
 | Check | Finds every `SKILL.md` named `lit-pptx` in those four places | agy would silently keep only one | No |
 | Move aside | Moves the user copy into a dated `~/.gemini/extension-backups/` folder | agy never loads that folder | Only when it exists |
 | Copy | Copies `variants/litgravity/lit-pptx` into agy's user skills | Every workspace sees them | Yes |
 | Receipt | Writes `.litfamily-extension.json` into the copy | Records id, source, edition and time | One file |
+
+</details>
 
 Paste the four lines one at a time, in the workspace you use agy in:
 
@@ -543,6 +571,9 @@ printf '{"id":"%s","source":"%s","variant":"litgravity","installed_at":"%s"}\n' 
 Hermes reads skills from the profile's `skills/` folder (category folders inside it included), from a trusted project's
 `.hermes/skills` and `.agents/skills`, and from any `external_dirs` you set.
 
+<details>
+<summary>What each step does, and what it changes</summary>
+
 | Step | What it does | Why | Changes anything? |
 | --- | --- | --- | --- |
 | Names | Sets `H`, `ID` and `SRC` | The other lines use them, so paste all lines together | No |
@@ -550,6 +581,8 @@ Hermes reads skills from the profile's `skills/` folder (category folders inside
 | Move aside | Moves the folder into the profile's `extension-backups/<date-time>/` | Acts only when the folder exists | Only then |
 | Copy | Copies the edition into an empty `skills/lit-pptx/` | Stops if the folder is still there | Yes |
 | Receipt | Writes `.litfamily-extension.json` into the copy | Records id, source, edition and time | One file |
+
+</details>
 
 Paste the lines together from the project's top folder, in bash or zsh:
 
@@ -560,6 +593,8 @@ if [ -e "$H/skills/${ID:?}" ]; then mkdir -p "$H/extension-backups" && B=$(mktem
 if [ -e "$H/skills/${ID:?}" ]; then echo "stopped: $H/skills/$ID is still there"; else mkdir -p "$H/skills" && cp -R "$SRC" "$H/skills/$ID" && echo "copied: $H/skills/$ID"; fi
 printf '{"id":"%s","source":"%s","variant":"lithermes","installed_at":"%s"}\n' "${ID:?}" "$SRC" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$H/skills/$ID/.litfamily-extension.json"
 ```
+
+**After install:** the copy's `.litfamily-extension.json` records where it came from.
 
 > [!WARNING]
 > Two different copies of one name under `skills/` tie, and Hermes then loads neither.
@@ -579,22 +614,20 @@ edition under `variants/<product>/<id>/`, one self-contained folder per skill.
 
 ### Why the skills moved here
 
-The skills here grew up inside LitFamily, and over time they turned into the heaviest part of every product: a deck
-builder with its own office runtime, a document studio, three kinds of figure, an interface kit and a film engine. Most
-people did not need all of that on every install, so I kept the core light and moved these skills out here, unchanged.
-
-LitFamily's core is complete on its own and needs nothing from this repository. Each LitFamily product kept only a small
-stub with the same name, which tells you what the skill does and how to install it from this shelf.
-
-Install the extensions you want alongside your LitFamily product and you get the full LitFamily experience. Ask for a
-deck, a document, a figure, an interface, a film or a README, and LitFamily finds the extension by its name and hands
-the work to it. Pick the ones you need for the agent you already use, and leave the rest on the shelf.
+These skills grew into the heaviest part of every LitFamily product: a deck builder with its own office runtime, a
+document studio, three kinds of figure, an interface kit and a film engine. Most people did not need all of that on
+every install, so the core stayed light and complete on its own, and these skills moved here unchanged. Install one
+beside your LitFamily product for the full LitFamily experience: the same-name stub finds it by name and hands it the
+work.
 
 The repository is public at https://github.com/wjgoarxiv/wjgoarxiv-skills.
 
 ### Family plugins and their sources
 
 The family plugins hold LitClaude's copies, which were written for Claude Code and moved unchanged.
+
+<details>
+<summary>The LitClaude commit each family plugin came from</summary>
 
 | Plugin | Moved from LitClaude |
 | --- | --- |
@@ -603,6 +636,8 @@ The family plugins hold LitClaude's copies, which were written for Claude Code a
 | `figures` | `2381bfe` (files identical to 1.0.49) |
 | `design` | `aaea364` (files identical to 1.0.49) |
 | `video-covers` | `4d03ca8` (files identical to 1.0.49) |
+
+</details>
 
 ### Editions under `variants/`
 
@@ -621,7 +656,11 @@ draws the whole family, and every other branch draws one folder from its own edi
 </p>
 
 Each edition first came in unchanged under `variants/<product>/<id>/`, copied byte for byte from the product commit that
-last shipped it, with one receipt per product in `receipts/variants-<product>.sha256`.
+last shipped it, with one receipt per product in `receipts/variants-<product>.sha256`. One more commit per product then
+made its folders work on their own, and `variants/<product>/CHANGES.md` lists each change and the reason for it.
+
+<details>
+<summary>The product commit each edition was copied from</summary>
 
 | Folder | Harness | Copied from |
 | --- | --- | --- |
@@ -632,15 +671,14 @@ last shipped it, with one receipt per product in `receipts/variants-<product>.sh
 | `variants/litmuse/` | Muse Code | LitMuse `e966b07` (0.1.11 plus the skills lock), `plugin/skills/<id>/` |
 | `variants/lithermes/` | Hermes Agent | LitHermes `a2466f2` (1.0.39 plus the skills lock), `packages/lithermes-installer/assets/lithermes-plugin/skills/<id>/` |
 
-Inside its product, though, each edition leaned on things a one-folder install does not bring along. So each product
-got one more commit that makes its folders work on their own, and `variants/<product>/CHANGES.md` lists each change and
-the reason for it.
+</details>
 
 <details>
 <summary>What that commit changed, and what stayed</summary>
 
-- **What the editions leaned on:** runtime commands, environment variables, hooks and done gates, doctor lines, agent
-  definitions, and files in sibling skills or in the product's shared `lib/` and `vendor/` folders.
+- **What the editions leaned on:** inside its product, each edition leaned on things a one-folder install does not
+  bring along: runtime commands, environment variables, hooks and done gates, doctor lines, agent definitions, and
+  files in sibling skills or in the product's shared `lib/` and `vendor/` folders.
 - **What changed:** the commit copies the files a skill reads into its folder, swaps product commands for scripts inside
   the folder, and drops every path that leads outside the folder.
 - **What stayed:** the procedures, references, engines and QA gates. The Codex edition dropped the tests that drove
@@ -656,17 +694,24 @@ the reason for it.
 ## Update and remove
 
 Updating means running the same lines again, and removing a copy usually means moving it aside, so a removed copy
-waits in its backups folder. Grok Build and Claude Code update through their own commands, shown below the table.
+waits in its backups folder. Claude Code and Grok Build update through their own commands, and Hermes Agent removes
+with one more line; all three sit under the table.
 
-| Harness | Update | Remove | Restart needed |
-| --- | --- | --- | --- |
-| Claude Code | Refresh the marketplace, then update the family | — | Yes: `/reload-plugins` |
-| Codex CLI | Pull the clone, run the four lines again | Run only the move-aside line | Yes: new Codex session |
-| OpenCode | Run the four lines again | Run the second line; `litopencode install` then brings the pointer back | Yes: new session |
-| Grok Build | Pull, uninstall once per counted copy, install again | `grok plugin uninstall lit-pptx`; the clone keeps the source | — |
-| Muse Code | Run the three lines again | Run the second line, then `muse skills uninstall lit-pptx` | — |
-| Antigravity CLI | Run the same lines again | Run the second line alone | Yes: new conversation or `/skills reload` |
-| Hermes Agent | Pull the clone, paste the same lines again | Paste the first line, then the remove line below | — |
+| Harness | Update | Remove |
+| --- | --- | --- |
+| Claude Code | Refresh the marketplace, then update the family | `claude plugin uninstall decks@wjgoarxiv-skills` |
+| Codex CLI | Pull the clone, run the four lines again | Run only the move-aside line |
+| OpenCode | Run the four lines again | Run the second line; `litopencode install` then brings the pointer back |
+| Grok Build | Pull, uninstall once per counted copy, install again | `grok plugin uninstall lit-pptx`; the clone keeps the source |
+| Muse Code | Run the three lines again | Run the second line, then `muse skills uninstall lit-pptx` |
+| Antigravity CLI | Run the same lines again | Run the second line alone |
+| Hermes Agent | Pull the clone, paste the same lines again | Paste the first line, then the remove line below |
+
+Afterwards, restart as the harness's **After install** line says (Claude Code: `/reload-plugins`); Grok Build, Muse Code
+and Hermes Agent need no restart.
+
+<details>
+<summary>The update lines for Claude Code and Grok Build, and the Hermes Agent remove line</summary>
 
 **Claude Code.** Run the two lines in this order. The first refreshes the marketplace, and the second compares the
 plugin's version against what it fetched. Claude Code installs a new copy only when that version has changed, and
@@ -692,6 +737,8 @@ and deletes nothing:
 ```bash
 [ -e "$H/skills/${ID:?}" ] && mkdir -p "$H/extension-backups" && B=$(mktemp -d "$H/extension-backups/$(date +%Y%m%d-%H%M%S)-XXXX") && mv "$H/skills/$ID" "$B/" && echo "moved aside: $B/$ID"
 ```
+
+</details>
 
 - **Antigravity CLI:** an update moves the old copy to a new dated backup and rewrites the receipt. Clear old backups
   out of `~/.gemini/extension-backups/` when you no longer need them.
@@ -771,6 +818,9 @@ and its `status` runs from the plugin. The editions under `variants/` were alrea
 
 `npm test` guards what this page promises, so run it with the plugin validators after any change.
 
+<details>
+<summary>What <code>npm test</code> checks, and the validator lines</summary>
+
 | `npm test` checks | Against |
 | --- | --- |
 | One pick-one row for every skill a family plugin ships | The marketplace |
@@ -790,10 +840,16 @@ claude plugin validate plugins/design
 claude plugin validate plugins/video-covers
 ```
 
+</details>
+
 ## Licences
 
 This repository has no single licence of its own. Each family plugin carries the licence its files came under, in
-`plugins/<family>/LICENSE`, and declares it in its `plugin.json`:
+`plugins/<family>/LICENSE`, and declares it in its `plugin.json`. Every plugin is MIT; `design` adds Apache-2.0 and
+`video-covers` adds OFL-1.1.
+
+<details>
+<summary>Each plugin's licence and where it comes from</summary>
 
 | Plugin | Declared licence | Where it comes from |
 | --- | --- | --- |
@@ -802,6 +858,8 @@ This repository has no single licence of its own. Each family plugin carries the
 | `figures` | MIT | LitClaude's own files; the copies under `vendor/` keep their own provenance and licence files |
 | `design` | MIT AND Apache-2.0 | frontend-ui-ux's `LICENSE` (MIT) and `THIRD-PARTY-NOTICE.txt` cover its design data, and its `references/_canonical-corpus/legal/` holds the Apache-2.0 licence of the reference corpus |
 | `video-covers` | MIT AND OFL-1.1 | LitClaude's own files, plus the Pretendard fonts under their OFL licence |
+
+</details>
 
 The Pretendard and JetBrains Mono fonts travel unmodified, each with its OFL licence file. The editions under
 `variants/` keep the licence and font-licence files their products shipped inside each skill folder. The images in

@@ -1,12 +1,18 @@
 # Codex editions: what changed and why
 
-Each folder here is one skill rewritten for Codex CLI so it works on its own. A user installs it with one
-copy:
+Each folder here is one skill rewritten for Codex CLI so it works on its own. A user installs it with the four
+lines the LitCodex stub gives, run from the project folder: a read-only check for same-name skills Codex would also
+list, a move of an old copy whole into `${CODEX_HOME:-$HOME/.codex}/extension-backups/<date-time>/`, the copy into
+the now-empty folder, and a receipt, `.litfamily-extension.json`, inside the copy:
 
 ```bash
-mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"
-cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/<id>" "${CODEX_HOME:-$HOME/.codex}/skills/<id>"
+cx="${CODEX_HOME:-$HOME/.codex}"; p="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"; for d in "$cx/skills" "$HOME/.agents/skills" "$p/.agents/skills" "$p/.codex/skills"; do [ -e "$d/<id>" ] && echo "found: $d/<id>"; done; echo "check done"
+cx="${CODEX_HOME:-$HOME/.codex}"; if [ -e "$cx/skills/<id>" ]; then b="$cx/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$b" && [ ! -e "$b/<id>" ] && mv "$cx/skills/<id>" "$b/<id>" && echo "moved aside: $b/<id>"; fi
+cx="${CODEX_HOME:-$HOME/.codex}"; if [ -e "$cx/skills/<id>" ]; then echo "stopped: $cx/skills/<id> still exists"; else mkdir -p "$cx/skills" && cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/<id>" "$cx/skills/<id>"; fi
+cx="${CODEX_HOME:-$HOME/.codex}"; [ -f "$cx/skills/<id>/SKILL.md" ] && printf '{"id":"<id>","source":"%s","variant":"litcodex","installed_at":"%s"}\n' "<path to your wjgoarxiv-skills clone>/variants/litcodex/<id>" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$cx/skills/<id>/.litfamily-extension.json"
 ```
+
+Updating means running the four lines again; removing means running the move-aside line alone.
 
 Codex then lists it by its bare id (`lit-pptx`, not `litcodex:lit-pptx`), and nothing else has to be
 installed for it to work. The originals were written to run inside the LitCodex plugin. They relied on its

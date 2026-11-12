@@ -14,13 +14,21 @@ was cut to make a folder smaller.
 
 ## How a Muse user installs one
 
+The LitMuse stub gives three lines: a read-only look at every folder Muse could load as `<id>`, a move of an
+occupied Muse copy whole into `$CONFIG_DIR/extension-backups/<date-time>/` (Muse does not read it), and the
+install, which Muse refuses over an occupied folder:
+
 ```bash
-muse skills install "<path to your wjgoarxiv-skills clone>/variants/litmuse/<id>" --scope user
+command ls -d "${XDG_CONFIG_HOME:-$HOME/.config}/muse/skills/<id>" "$HOME/.claude/skills/<id>" "$HOME/.codex/skills/<id>" .agents/skills/<id> .claude/skills/<id> 2>/dev/null
+D="${XDG_CONFIG_HOME:-$HOME/.config}/muse/skills/<id>"; B="${XDG_CONFIG_HOME:-$HOME/.config}/muse/extension-backups/$(date +%Y%m%d-%H%M%S)"; [ -e "$D" ] && mkdir -p "$B" && mv "$D" "$B/" && echo "moved to $B/<id>"
+muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/<id> --scope user
 ```
 
 Muse copies the folder to `$XDG_CONFIG_HOME/muse/skills/<id>/` (else `~/.config/muse/skills/<id>/`). The next
-session lists it as `<id>`, scope `user`, and `read_skill <id>` loads it. `muse skills install ... --force` or
-`muse skills update <id>` takes a newer edition. `muse skills uninstall <id>` removes it. Every folder passes
+session lists it as `<id>`, scope `user`, and `read_skill <id>` loads it. Muse records the source, time and file
+hashes in `$CONFIG_DIR/skills/.muse/lock.json`. To take a newer edition, run the three lines again; `--force` and
+`muse skills update <id>` merge into the old folder and keep files a newer edition dropped. To remove it, run the
+move-aside line, then `muse skills uninstall <id>`. Every folder passes
 `muse skills validate` with no diagnostics on Muse Code 1.4.15.
 
 LitMuse keeps a same-name stub for each id. The stub is the plugin skill `plugin:litmuse:<id>` and the copy is the

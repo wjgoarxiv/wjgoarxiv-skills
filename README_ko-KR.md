@@ -176,42 +176,56 @@ LitClaude `4d03ca8`(파일은 1.0.49와 같음)에서 옮겼습니다.
   </picture>
 </p>
 
-왼쪽 열에서 확장을, 맨 윗줄에서 쓰는 하네스를 찾으세요. 칸에 적힌 명령은 그 하네스의 LitFamily 스텁이 안내하는 설치
-명령을 그대로 옮겨 온 거라서, 스텁과 이 표는 늘 같은 말을 합니다. Claude Code는 GitHub에서 바로 설치합니다. 다른
-하네스는 로컬 클론에서 복사하니까, 먼저 `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`를 한 번 돌리고
-`<path to your wjgoarxiv-skills clone>` 자리에 그 폴더 경로를 넣으면 됩니다. Grok Build 칸에 클론 명령이 같이 들어 있는
-건 LitGrok 안내문이 그렇게 적고 있어서입니다.
+왼쪽 열에서 확장을 찾으세요. Claude Code는 그 옆에 적힌 패밀리 플러그인을 GitHub에서 바로 설치합니다. 나머지 여섯
+하네스는 그 스킬을 자기 하네스에 맞게 고친 에디션, `variants/<product>/<id>/`를 로컬 클론에서 가져갑니다. 먼저
+`git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`를 한 번 돌리고 `<path to your wjgoarxiv-skills clone>` 자리에 그
+폴더 경로를 넣으면 됩니다.
+
+| 스킬 | 패밀리 | Claude Code가 설치하는 것 | 나머지 여섯이 복사하는 폴더 |
+| --- | --- | --- | --- |
+| `lit-pptx` | `decks` | `decks@wjgoarxiv-skills` | `variants/<product>/lit-pptx/` |
+| `lit-docx` | `documents` | `documents@wjgoarxiv-skills` | `variants/<product>/lit-docx/` |
+| `lit-diagram-drawer` | `figures` | `figures@wjgoarxiv-skills` | `variants/<product>/lit-diagram-drawer/` |
+| `lit-schematic` | `figures` | `figures@wjgoarxiv-skills` | `variants/<product>/lit-schematic/` |
+| `lit-scientific-visualization` | `figures` | `figures@wjgoarxiv-skills` | `variants/<product>/lit-scientific-visualization/` |
+| `frontend-ui-ux` | `design` | `design@wjgoarxiv-skills` | `variants/<product>/frontend-ui-ux/` |
+| `visual-qa` | `design` | `design@wjgoarxiv-skills` | `variants/<product>/visual-qa/` |
+| `lit-typographic-motion` | `video-covers` | `video-covers@wjgoarxiv-skills` | `variants/<product>/lit-typographic-motion/` |
+| `readme-studio` | `video-covers` | `video-covers@wjgoarxiv-skills` | `variants/<product>/readme-studio/` |
 
 Claude Code에서 패밀리 플러그인을 통째로 설치하는 건 LitClaude판 스킬이 옆에 있는 공용 파일(`lib/`, `vendor/`, 보조
 폴더)을 읽기 때문입니다. 그래도 설치되는 건 그 패밀리 하나뿐입니다. 다른 하네스는 폴더 하나만 설치합니다. 각 제품이 만든
-자기 에디션을 `variants/<product>/<id>/`에서 가져가는데, 이 폴더 안에 스킬이 읽는 파일이 다 들어 있습니다. Grok Build는
-폴더 경로를 스킬 하나짜리 플러그인으로 받아서 그 폴더만 플러그인 저장소로 복사합니다. 저장소의 `#` 하위 폴더 형식으로
-넘기면 스킬마다 `.git`까지 포함해 저장소 전체를 복사해 버립니다... 그래서 그 형식은 쓰지 않습니다. Muse Code는
-`muse skills install`로 설치하고, Codex CLI, OpenCode, Antigravity CLI, Hermes Agent는 각자 스킬 폴더에 복사하면
-끝입니다. OpenCode 명령은 같은 이름의 LitOpenCode 스텁 폴더를 갈아 끼웁니다. 다른 하네스에서는 복사본이 제품 스텁 옆에
-다른 이름으로 자리 잡고, 제품 설치 프로그램도 업그레이드할 때 이 폴더는 건드리지 않습니다.
+자기 에디션인데, 스킬이 읽는 파일이 이 폴더 안에 다 들어 있습니다. Grok Build는 폴더 경로를 스킬 하나짜리 플러그인으로
+받아서 그 폴더만 플러그인 저장소로 복사합니다. 저장소의 `#` 하위 폴더 형식으로 넘기면 스킬마다 `.git`까지 포함해 저장소
+전체를 복사해 버리기 때문에 그 형식은 쓰지 않습니다. Muse Code는 `muse skills install`로 설치하고, Codex CLI, OpenCode,
+Antigravity CLI, Hermes Agent는 각자 스킬 폴더에 복사합니다. OpenCode에서는 복사본이 같은 이름의 LitOpenCode 안내 폴더
+자리에 들어갑니다. 다른 하네스에서는 복사본이 제품 스텁 옆에 다른 이름으로 자리 잡고, 제품 설치 프로그램도 업그레이드할
+때 이 폴더는 건드리지 않습니다.
 
-| 스킬 | 패밀리 | Claude Code | Codex CLI | OpenCode | Grok Build | Muse Code | Antigravity CLI | Hermes Agent |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `lit-pptx` | `decks` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install decks@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-pptx" "${CODEX_HOME:-$HOME/.codex}/skills/lit-pptx"` | `rm -r ~/.config/opencode/skills/lit-pptx`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-pptx" ~/.config/opencode/skills/lit-pptx` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-pptx" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-pptx --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-pptx" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-pptx" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `lit-docx` | `documents` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install documents@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-docx" "${CODEX_HOME:-$HOME/.codex}/skills/lit-docx"` | `rm -r ~/.config/opencode/skills/lit-docx`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-docx" ~/.config/opencode/skills/lit-docx` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-docx" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-docx --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-docx" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-docx" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `lit-diagram-drawer` | `figures` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install figures@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-diagram-drawer" "${CODEX_HOME:-$HOME/.codex}/skills/lit-diagram-drawer"` | `rm -r ~/.config/opencode/skills/lit-diagram-drawer`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-diagram-drawer" ~/.config/opencode/skills/lit-diagram-drawer` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-diagram-drawer" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-diagram-drawer --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-diagram-drawer" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-diagram-drawer" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `lit-schematic` | `figures` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install figures@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-schematic" "${CODEX_HOME:-$HOME/.codex}/skills/lit-schematic"` | `rm -r ~/.config/opencode/skills/lit-schematic`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-schematic" ~/.config/opencode/skills/lit-schematic` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-schematic" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-schematic --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-schematic" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-schematic" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `lit-scientific-visualization` | `figures` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install figures@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-scientific-visualization" "${CODEX_HOME:-$HOME/.codex}/skills/lit-scientific-visualization"` | `rm -r ~/.config/opencode/skills/lit-scientific-visualization`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-scientific-visualization" ~/.config/opencode/skills/lit-scientific-visualization` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-scientific-visualization" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-scientific-visualization --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-scientific-visualization" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-scientific-visualization" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `frontend-ui-ux` | `design` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install design@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/frontend-ui-ux" "${CODEX_HOME:-$HOME/.codex}/skills/frontend-ui-ux"` | `rm -r ~/.config/opencode/skills/frontend-ui-ux`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/frontend-ui-ux" ~/.config/opencode/skills/frontend-ui-ux` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/frontend-ui-ux" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/frontend-ui-ux --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/frontend-ui-ux" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/frontend-ui-ux" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `visual-qa` | `design` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install design@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/visual-qa" "${CODEX_HOME:-$HOME/.codex}/skills/visual-qa"` | `rm -r ~/.config/opencode/skills/visual-qa`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/visual-qa" ~/.config/opencode/skills/visual-qa` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/visual-qa" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/visual-qa --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/visual-qa" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/visual-qa" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `lit-typographic-motion` | `video-covers` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install video-covers@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-typographic-motion" "${CODEX_HOME:-$HOME/.codex}/skills/lit-typographic-motion"` | `rm -r ~/.config/opencode/skills/lit-typographic-motion`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-typographic-motion" ~/.config/opencode/skills/lit-typographic-motion` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-typographic-motion" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-typographic-motion --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-typographic-motion" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-typographic-motion" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `readme-studio` | `video-covers` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install video-covers@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/readme-studio" "${CODEX_HOME:-$HOME/.codex}/skills/readme-studio"` | `rm -r ~/.config/opencode/skills/readme-studio`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/readme-studio" ~/.config/opencode/skills/readme-studio` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/readme-studio" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/readme-studio --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/readme-studio" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/readme-studio" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
+설치하다가 새 복사본이 옛 복사본에 섞이거나, 스킬 옆에 넣어 둔 내 파일이 사라지면 곤란합니다. 그래서 하네스마다 명령은
+먼저 살펴보는 줄로 시작합니다. 첫 줄은 읽기만 합니다. 그 하네스가 함께 불러올 같은 이름의 폴더를 모두 알려 주는데, 이름이
+같은 스킬이 둘이면 서로 부딪치고 하네스는 말없이 하나만 남기기 때문입니다. 명령이 폴더를 직접 복사하는 하네스에서는 다음
+줄이 기존 복사본을 통째로 그 하네스 홈 안의 날짜별 `extension-backups/` 폴더로 옮깁니다. 이 폴더는 하네스가 스킬을 읽는
+어느 폴더에도 속하지 않아서, 내 파일은 거기 그대로 남고 백업이 두 번째 스킬로 불려 오는 일도 없습니다. 복사는 그렇게 비운
+자리에 들어가고, 마지막 줄이 복사본 안에 작은 영수증 `.litfamily-extension.json`(id, 출처, 에디션, 설치 시각)을 남깁니다.
+Grok Build와 Muse Code는 설치 기록을 스스로 남기고 이미 있는 이름 위에는 설치를 거부하므로, 살펴보고, 부딪치는 복사본을
+옮기고, 설치하는 줄만 있습니다. 폴더를 지우는 줄은 하나도 없습니다. 업데이트는 같은 줄을 다시 돌리면 되고, 복사본을
+없앨 때는 옆으로 옮기면 됩니다.
+
+하네스별 명령은 [하네스별 참고](#하네스별-참고)에 `lit-pptx`를 예로 적어 두었습니다. 그 하네스의 LitFamily 스텁이 안내하는
+명령을 그대로 옮겨 온 거라서, 스텁과 이 페이지는 늘 같은 말을 합니다. 다른 스킬이라면 `lit-pptx` 자리에 그 스킬의 id를
+넣으세요(Claude Code라면 `decks` 자리에 그 패밀리도). 그 스킬의 스텁은 이름을 채운 같은 명령을 보여 줍니다.
 
 `lit-scientific-visualization`은 원본 scientific-visualization 스킬을 감싸는 어댑터입니다. 패밀리 플러그인은 그 원본을
 `plugins/figures/vendor/scientific-visualization/`에 두고, `variants/`의 에디션은 원본 사본을 스킬 폴더 안에 같이 담고
-있어서 명령 한 줄이면 둘 다 설치됩니다. Antigravity 스텁은 같은 복사를 작업 공간에만 하는 `.agents/skills/` 형식도 함께
+있어서 한 번 설치하면 둘 다 들어옵니다. Antigravity 스텁은 같은 복사를 작업 공간에만 하는 `.agents/skills/` 형식도 함께
 안내합니다. OpenCode 영상 스텁은 복사한 다음 런타임 설치를 한 단계 더 합니다:
 `node ~/.config/opencode/skills/lit-typographic-motion/runtime.mjs install`. 나머지 에디션은 처음 쓸 때 엔진을 알아서
 설치합니다.
 
-`npm test`가 이 표를 마켓플레이스와 대조합니다. 패밀리 플러그인이 담은 스킬마다 행이 하나씩 있는지, 칸마다 스텁이
-안내하는 명령이 그대로 들어 있는지, 명령이 가리키는 폴더가 실제로 있는지를 봅니다.
+`npm test`가 이 표를 마켓플레이스와 대조합니다. 패밀리 플러그인이 담은 스킬마다 행이 하나씩 있는지 보고, 아래
+하네스별 명령이 스텁의 명령을 담아 둔 `test/stub-install-lines.json`과 글자 하나까지 같은지, 그 명령이 스킬마다 가리키는
+폴더가 실제로 있는지도 봅니다.
 
 ## 하네스별 참고
 
@@ -231,6 +245,25 @@ claude plugin install video-covers@wjgoarxiv-skills
 세션 안에서는 `/plugin marketplace add wjgoarxiv/wjgoarxiv-skills`를 실행하고
 `/plugin install decks@wjgoarxiv-skills`처럼 설치하면 됩니다. 오프라인이면 마켓플레이스를 로컬 클론으로 지정해도 됩니다:
 `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`.
+
+이름이 같은 내 스킬이 있으면 걸림돌이 됩니다. `~/.claude/skills`나 프로젝트의 `.claude/skills`에 `lit-pptx` 폴더가 있으면
+`decks:lit-pptx` 옆에 함께 불려 와서 서로 부딪칩니다. 그러니 설치하기 전에 먼저 찾아보세요. 아래 첫 줄은 그런 폴더를
+보여 주기만 하고, 나머지 두 줄은 개인 복사본이나 프로젝트 복사본을 통째로 그 `.claude` 폴더 옆의 날짜별
+`extension-backups/` 폴더로 옮깁니다. Claude Code는 이 폴더를 읽지 않습니다.
+
+```bash
+ls -d ~/.claude/skills/lit-pptx .claude/skills/lit-pptx 2>/dev/null
+d="$HOME/.claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv ~/.claude/skills/lit-pptx "$d"/
+d=".claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv .claude/skills/lit-pptx "$d"/
+```
+
+업데이트는 두 줄을 이 순서대로 돌립니다. 첫 줄이 마켓플레이스를 새로 받고, 둘째 줄이 받은 내용과 플러그인 버전을
+비교합니다. Claude Code는 버전이 바뀌었을 때만 새 복사본을 설치하고, 새 복사본은 `/reload-plugins` 뒤에 불려 옵니다:
+
+```bash
+claude plugin marketplace update wjgoarxiv-skills
+claude plugin update decks@wjgoarxiv-skills
+```
 
 설치하고 나면 스킬은 `decks:lit-pptx`, `documents:lit-docx`, `figures:lit-diagram-drawer`, `figures:lit-schematic`,
 `design:frontend-ui-ux`, `design:visual-qa`, `video-covers:lit-typographic-motion`, `video-covers:readme-studio`라는
@@ -278,6 +311,143 @@ claude plugin install video-covers@wjgoarxiv-skills
 스키마 id와 제품 접두사가 붙은 id, 견본 커버 레시피의 브랜드 단어, 그리고 Codex 에디션 스크립트의 `LITCODEX_*` 설정값과
 오류 코드가 그렇습니다. frontend-ui-ux의 `references/_canonical-corpus/`처럼 해시로 고정한 외부 자료는 손대지 않았기
 때문에, 그 안에 다른 코딩 에이전트 이름이 나올 수도 있습니다.
+
+### Codex CLI
+
+Codex는 자기 `skills` 폴더와 `~/.agents/skills`, 그리고 프로젝트의 `.agents/skills`와 `.codex/skills`에서 스킬을 읽고,
+같은 이름의 스킬은 그 이름을 가진 폴더마다 한 번씩 목록에 올립니다. 스킬 폴더 안에 중첩된 `SKILL.md`도 목록에 올리기
+때문에, 복사는 이미 차 있는 폴더에는 절대 들어가지 않습니다. 네 줄을 프로젝트 폴더에서 돌리세요. 살펴보기, 옆으로 옮기기,
+복사, 영수증 순서입니다. 줄마다 경로를 스스로 정하므로 한 줄만 붙여 넣어도 동작합니다.
+
+```bash
+cx="${CODEX_HOME:-$HOME/.codex}"; p="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"; for d in "$cx/skills" "$HOME/.agents/skills" "$p/.agents/skills" "$p/.codex/skills"; do [ -e "$d/lit-pptx" ] && echo "found: $d/lit-pptx"; done; echo "check done"
+cx="${CODEX_HOME:-$HOME/.codex}"; if [ -e "$cx/skills/lit-pptx" ]; then b="$cx/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$b" && [ ! -e "$b/lit-pptx" ] && mv "$cx/skills/lit-pptx" "$b/lit-pptx" && echo "moved aside: $b/lit-pptx"; fi
+cx="${CODEX_HOME:-$HOME/.codex}"; if [ -e "$cx/skills/lit-pptx" ]; then echo "stopped: $cx/skills/lit-pptx still exists"; else mkdir -p "$cx/skills" && cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-pptx" "$cx/skills/lit-pptx"; fi
+cx="${CODEX_HOME:-$HOME/.codex}"; [ -f "$cx/skills/lit-pptx/SKILL.md" ] && printf '{"id":"lit-pptx","source":"%s","variant":"litcodex","installed_at":"%s"}\n' "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-pptx" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$cx/skills/lit-pptx/.litfamily-extension.json"
+```
+
+`${CODEX_HOME:-$HOME/.codex}/skills` 아래의 `found:` 줄은 옛 복사본이고, 둘째 줄이 그것을 통째로
+`${CODEX_HOME:-$HOME/.codex}/extension-backups/<date-time>/lit-pptx`로 옮깁니다. Codex는 이 폴더를 읽지 않습니다. 다른
+곳의 `found:` 줄은 Codex가 함께 올릴 같은 이름의 둘째 스킬이니, 그 폴더는 직접 옮겨 두세요. 복사 줄은 차 있는 폴더 앞에서
+멈춥니다. 다 끝나면 Codex 세션을 새로 시작하세요. 업데이트는 클론을 pull 한 뒤 네 줄을 다시 돌리면 되고, 복사본을 없애려면
+옆으로 옮기는 줄만 돌리면 됩니다.
+
+### OpenCode
+
+OpenCode는 `~/.config/opencode/skills`, `~/.agents/skills`, `~/.claude/skills`와 프로젝트의 `.opencode/`, `.agents/`,
+`.claude/` 스킬을 읽고, 이름 하나에 스킬 하나만 둡니다. 그래서 확장은 같은 이름의 LitOpenCode 안내 폴더 자리에
+들어갑니다. 첫 줄은 OpenCode가 읽는 같은 이름의 폴더를 보여 줍니다. `~/.config/opencode/skills` 밖에 있는 것은 직접
+치워 두세요. 둘째 줄은 안내 폴더를 통째로 날짜별 백업으로 옮기고, 셋째 줄이 확장을 복사하고, 넷째 줄이 영수증을 남깁니다.
+
+```bash
+ls -d ~/.config/opencode/skills/lit-pptx ~/.agents/skills/lit-pptx ~/.claude/skills/lit-pptx 2>/dev/null
+d=~/.config/opencode/extension-backups/$(date +%Y%m%d-%H%M%S); [ ! -e ~/.config/opencode/skills/lit-pptx ] || { mkdir -p "$d" && mv ~/.config/opencode/skills/lit-pptx "$d/"; }
+mkdir -p ~/.config/opencode/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-pptx" ~/.config/opencode/skills/lit-pptx
+printf '{"id":"%s","source":"%s","variant":"litopencode","installed_at":"%s"}\n' lit-pptx "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-pptx" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > ~/.config/opencode/skills/lit-pptx/.litfamily-extension.json
+```
+
+`XDG_CONFIG_HOME`을 쓰고 있다면 `~/.config/opencode/` 대신 `$XDG_CONFIG_HOME/opencode/`를 넣으세요. `extension-backups/`에서
+불려 오는 스킬은 없습니다. 업데이트는 네 줄을 다시 돌리고 세션을 새로 시작하면 됩니다. 복사본을 없애려면 둘째 줄을
+돌리세요. 그러면 `litopencode install`이 안내 폴더를 다시 놓아 줍니다.
+
+### Grok Build
+
+Grok Build는 에디션을 스킬 하나짜리 플러그인으로 자기 플러그인 저장소에 설치하고, 어디서 왔는지도 거기 기록합니다. 그래서
+이 명령은 영수증을 따로 쓰지 않습니다. 같은 폴더를 다시 설치하면 `already installed`로 멈추고, `grok plugin update`는 로컬
+폴더를 다시 복사하지 않습니다. 프로젝트 루트에서 읽기만 하는 확인 두 줄을 돌린 다음 설치 줄을 돌리세요:
+
+```bash
+git clone https://github.com/wjgoarxiv/wjgoarxiv-skills
+grok plugin list --json | grep -cF '"name": "lit-pptx"'
+grep -L '^description: "Moved: lit-pptx ' {.grok,.agents,.claude,.cursor,~/.grok,~/.agents,~/.claude,~/.cursor}/skills/lit-pptx/SKILL.md 2>/dev/null
+grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-pptx" --trust
+```
+
+첫 확인은 설치된 복사본 수를 셉니다. 0보다 크면 설치를 건너뛰세요. 둘째 확인은 Grok이 읽는 스킬 폴더에 있는 개인
+복사본을 보여 줍니다. 이 복사본은 LitGrok 안내문보다 먼저 `/lit-pptx` 이름을 차지합니다(안내문 자체는 건너뜁니다). 보여 준
+경로에서 `/SKILL.md`를 뺀 폴더를 먼저 통째로 옮기세요:
+
+```bash
+mkdir -p ~/.grok/extension-backups && mv "<that folder>" "$(mktemp -d ~/.grok/extension-backups/$(date +%Y%m%d-%H%M%S)-XXXXXX)/"
+```
+
+업데이트는 클론을 pull 하고, 센 복사본 수만큼 제거한 다음 다시 설치합니다. `grok plugin uninstall lit-pptx`만 돌리면
+플러그인이 제거되고, 원본은 클론에 남습니다.
+
+```bash
+git -C "<path to your wjgoarxiv-skills clone>" pull
+grok plugin uninstall lit-pptx
+grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-pptx" --trust
+```
+
+### Muse Code
+
+Muse는 이미 있는 폴더 위에는 설치를 거부하고, `--force`를 쓰면 새 파일을 옛 파일에 섞어 버립니다. 그래서 차 있는 폴더는
+먼저 옆으로 옮깁니다. Muse는 출처와 시각, 파일마다 해시를 자기 잠금 파일 `$CONFIG_DIR/skills/.muse/lock.json`에 남기므로
+다른 영수증은 필요 없습니다. 첫 줄은 읽기만 하며, Muse가 `lit-pptx`로 불러올 수 있는 폴더를 모두 보여 줍니다. Muse 사용자
+스킬, Muse가 함께 읽는 `~/.claude/skills`와 `~/.codex/skills`, 프로젝트의 `.agents/skills`와 `.claude/skills`입니다. 둘째
+줄은 Muse 쪽 복사본을 Muse 스킬 옆의 `extension-backups/`로 옮기고, 셋째 줄이 설치합니다.
+
+```bash
+command ls -d "${XDG_CONFIG_HOME:-$HOME/.config}/muse/skills/lit-pptx" "$HOME/.claude/skills/lit-pptx" "$HOME/.codex/skills/lit-pptx" .agents/skills/lit-pptx .claude/skills/lit-pptx 2>/dev/null
+D="${XDG_CONFIG_HOME:-$HOME/.config}/muse/skills/lit-pptx"; B="${XDG_CONFIG_HOME:-$HOME/.config}/muse/extension-backups/$(date +%Y%m%d-%H%M%S)"; [ -e "$D" ] && mkdir -p "$B" && mv "$D" "$B/" && echo "moved to $B/lit-pptx"
+muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-pptx --scope user
+```
+
+`~/.claude/skills`나 `~/.codex/skills`의 개인 복사본은 설치한 확장보다 순위가 낮아서 가려진(shadowed) 것으로 나옵니다.
+프로젝트의 `.agents/skills`나 `.claude/skills` 복사본은 그 프로젝트 안에서 확장보다 앞서니, 거기서 확장을 쓰려면 그
+복사본을 옮기거나 이름을 바꾸세요. 업데이트는 세 줄을 다시 돌리면 됩니다. `--force`와 `muse skills update lit-pptx`는 새
+에디션에서 빠진 파일을 그대로 남기므로 쓰지 마세요. 복사본을 없애려면 둘째 줄을 돌린 뒤 `muse skills uninstall lit-pptx`를
+돌리세요.
+
+### Antigravity CLI
+
+agy는 작업 공간의 `.agents/skills`와 `_agents/skills`, 그다음 `~/.gemini/config/skills`와 `~/.gemini/skills`에서 스킬을
+불러오고, 이름이 같은 스킬은 아무 말 없이 하나만 남깁니다. 스킬 폴더 안에 남긴 백업이 진짜 복사본을 이기기도 해서, 백업은
+agy가 절대 읽지 않는 `~/.gemini/extension-backups/`로 보냅니다. agy를 쓰는 작업 공간에서 네 줄을 한 줄씩 붙여 넣으세요.
+스킬은 모든 작업 공간이 함께 보는 agy 사용자 스킬에 들어갑니다:
+
+```bash
+find .agents/skills _agents/skills ~/.gemini/config/skills ~/.gemini/skills -maxdepth 2 -name SKILL.md -exec grep -l -E '^name: *"?lit-pptx"? *$' {} + 2>/dev/null
+if [ -e ~/.gemini/config/skills/lit-pptx ] || [ -L ~/.gemini/config/skills/lit-pptx ]; then b=~/.gemini/extension-backups/$(date +%Y%m%d-%H%M%S); mkdir -p "$b" && mv ~/.gemini/config/skills/lit-pptx "$b/" && echo "moved to $b/lit-pptx"; fi
+mkdir -p ~/.gemini/config/skills && [ ! -e ~/.gemini/config/skills/lit-pptx ] && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-pptx" ~/.gemini/config/skills/lit-pptx
+printf '{"id":"%s","source":"%s","variant":"litgravity","installed_at":"%s"}\n' lit-pptx "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-pptx" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > ~/.gemini/config/skills/lit-pptx/.litfamily-extension.json
+```
+
+한 작업 공간에만 두려면 첫 줄을 돌린 뒤, 작업 공간 루트에서 다음 세 줄을 돌리세요:
+
+```bash
+if [ -e .agents/skills/lit-pptx ] || [ -L .agents/skills/lit-pptx ]; then b=~/.gemini/extension-backups/$(date +%Y%m%d-%H%M%S)-project; mkdir -p "$b" && mv .agents/skills/lit-pptx "$b/" && echo "moved to $b/lit-pptx"; fi
+mkdir -p .agents/skills && [ ! -e .agents/skills/lit-pptx ] && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-pptx" .agents/skills/lit-pptx
+printf '{"id":"%s","source":"%s","variant":"litgravity","installed_at":"%s"}\n' lit-pptx "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-pptx" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > .agents/skills/lit-pptx/.litfamily-extension.json
+```
+
+대화를 새로 시작하거나 `/skills reload`를 입력하세요. 업데이트는 같은 줄을 다시 돌리면 됩니다. 옛 복사본은 새 날짜별
+백업으로 옮겨지고 영수증은 새로 쓰입니다. 복사본을 없애려면 둘째 줄만 돌리세요. 필요 없어진 백업은
+`~/.gemini/extension-backups/`에서 직접 정리하면 됩니다.
+
+### Hermes Agent
+
+Hermes는 프로필의 `skills/` 폴더(그 안의 카테고리 폴더 포함), 신뢰한 프로젝트의 `.hermes/skills`와 `.agents/skills`,
+그리고 설정한 `external_dirs`에서 스킬을 읽습니다. `skills/` 아래에 같은 이름의 서로 다른 복사본이 둘 있으면 비겨서 Hermes는
+둘 다 불러오지 않습니다. 첫 줄이 나머지 줄이 쓰는 이름 세 개를 정하므로, 프로젝트 최상위 폴더에서 bash나 zsh에 한꺼번에
+붙여 넣으세요. 살펴보는 줄은 읽기만 하고, 옆으로 옮기는 줄은 폴더가 있을 때만 그것을 프로필의
+`extension-backups/<date-time>/`로 옮기며, 복사는 비어 있는 `skills/lit-pptx/`에 들어가고, 마지막 줄이 영수증을 남깁니다.
+
+```bash
+H="${HERMES_HOME:-$HOME/.hermes}"; ID=lit-pptx; SRC="<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-pptx"
+[ -e "$H/skills/${ID:?}" ] && echo "taken: $H/skills/$ID" || echo "free: $H/skills/$ID"; grep -rlE --include=SKILL.md "^name: *[\"']?${ID}[\"']? *\$" "$H/skills" .hermes/skills .agents/skills 2>/dev/null; grep -A3 -E '^ *(external_dirs|create_dir):' "$H/config.yaml" 2>/dev/null
+if [ -e "$H/skills/${ID:?}" ]; then mkdir -p "$H/extension-backups" && B=$(mktemp -d "$H/extension-backups/$(date +%Y%m%d-%H%M%S)-XXXX") && mv "$H/skills/$ID" "$B/" && echo "moved aside: $B/$ID"; fi
+if [ -e "$H/skills/${ID:?}" ]; then echo "stopped: $H/skills/$ID is still there"; else mkdir -p "$H/skills" && cp -R "$SRC" "$H/skills/$ID" && echo "copied: $H/skills/$ID"; fi
+printf '{"id":"%s","source":"%s","variant":"lithermes","installed_at":"%s"}\n' "${ID:?}" "$SRC" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$H/skills/$ID/.litfamily-extension.json"
+```
+
+업데이트는 클론을 pull 한 뒤 같은 줄을 다시 붙여 넣으면 됩니다. 복사본을 없애려면 첫 줄을 붙여 넣고 이 줄을 이어서
+돌리세요. 폴더를 백업으로 옮길 뿐 아무것도 지우지 않습니다:
+
+```bash
+[ -e "$H/skills/${ID:?}" ] && mkdir -p "$H/extension-backups" && B=$(mktemp -d "$H/extension-backups/$(date +%Y%m%d-%H%M%S)-XXXX") && mv "$H/skills/$ID" "$B/" && echo "moved aside: $B/$ID"
+```
 
 ### 스킬 이름에 `lit-`이 남아 있는 이유
 
@@ -411,7 +581,12 @@ Pretendard와 JetBrains Mono 글꼴은 수정하지 않은 채 각자의 OFL 라
 - `variants/`의 하네스 에디션은 처음에 그 제품이 마지막으로 배포한 커밋에서 바이트 단위로 그대로 들어오고, 파일마다
   영수증 행을 남겨 영수증과 같은 커밋에 넣습니다. 혼자 돌아가도록 손보는 변경은 그 뒤 별도 커밋으로 하고, 그 제품의
   `CHANGES.md`에 적습니다.
-- 제품 스텁의 설치 명령이 바뀌면, 같은 커밋에서 설치 표도 바꿉니다.
+- 제품 스텁의 설치 명령이 바뀌면, 같은 커밋에서 설치 표와 하네스별 참고, 그리고 `npm test`가 둘을 대조하는
+  `test/stub-install-lines.json`도 바꿉니다.
+- 패밀리 플러그인의 내용을 바꿀 때마다 `plugins/<family>/.claude-plugin/plugin.json`의 `version`을 올립니다.
+  `claude plugin update`는 이 버전이 바뀌었을 때만 새 복사본을 설치하므로, 버전을 올리지 않은 변경은 이미 플러그인을 가진
+  사람에게 끝내 닿지 않습니다. 마켓플레이스 항목에 `version`이 생기면 그것도 같이 올립니다.
+
 - 패밀리는 그 제품의 한 릴리스에서, 제품 스텁과 함께 옮깁니다.
 - 패밀리 플러그인은 LitFamily 제품이 하나도 없어도 동작해야 합니다.
 

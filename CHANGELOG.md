@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- README, `README_ko-KR.md` and the six `variants/<product>/CHANGES.md`: the install lines now match the products'
+  safe-install stubs. Each harness first looks for same-name skills it would also load; Codex CLI, OpenCode,
+  Antigravity CLI and Hermes Agent move an existing copy whole into a dated `extension-backups/` folder outside every
+  skills folder, copy into the emptied place and write a `.litfamily-extension.json` receipt; Muse Code moves an
+  occupied folder aside before `muse skills install`; Grok Build counts installed copies, moves a competing personal
+  copy aside and updates by uninstall plus install; Claude Code checks for a personal or project `lit-*` folder and
+  gains the update pair. No line deletes a folder (the OpenCode `rm -r` is gone). The pick-one table now names the
+  family plugin and the edition folder per skill, and the full lines for each harness sit in the per-harness notes,
+  shown for `lit-pptx`. `test/stub-install-lines.json` holds the stub lines and `npm test` checks both READMEs
+  against it. AGENTS.md and the README rules add that every content change to a family bumps its plugin version.
+
 - `video-covers` and `figures`: the runtimes run from the extension itself. LitClaude 1.0.50 removed
   `litclaude-ai motion-runtime` and the motion and scientific-visualization lines of `litclaude doctor`, yet the
   moved lit-typographic-motion still told you to run that command, so on a fresh machine a render stopped at BLOCKED 14

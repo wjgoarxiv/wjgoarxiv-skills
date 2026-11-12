@@ -181,42 +181,58 @@ the family plugin. On every other harness you clone the repository once and copy
   </picture>
 </p>
 
-Find the extension in the left column and your harness along the top. Each cell holds the install lines that harness's
-LitFamily stub gives for that extension, copied as they are, so the stub and this table always say the same thing. Claude
-Code installs straight from GitHub. The other harnesses copy from a local clone: run
-`git clone https://github.com/wjgoarxiv/wjgoarxiv-skills` once, then replace `<path to your wjgoarxiv-skills clone>`
-with that folder. The Grok Build cells carry the clone line because LitGrok's notes give it.
+Find the extension in the left column. Claude Code installs the family plugin named next to it, straight from GitHub.
+The other six harnesses copy that skill's own edition for their harness, `variants/<product>/<id>/`, from a local clone:
+run `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills` once, then replace `<path to your wjgoarxiv-skills clone>`
+with that folder.
+
+| Skill | Family | Claude Code installs | The other six install |
+| --- | --- | --- | --- |
+| `lit-pptx` | `decks` | `decks@wjgoarxiv-skills` | `variants/<product>/lit-pptx/` |
+| `lit-docx` | `documents` | `documents@wjgoarxiv-skills` | `variants/<product>/lit-docx/` |
+| `lit-diagram-drawer` | `figures` | `figures@wjgoarxiv-skills` | `variants/<product>/lit-diagram-drawer/` |
+| `lit-schematic` | `figures` | `figures@wjgoarxiv-skills` | `variants/<product>/lit-schematic/` |
+| `lit-scientific-visualization` | `figures` | `figures@wjgoarxiv-skills` | `variants/<product>/lit-scientific-visualization/` |
+| `frontend-ui-ux` | `design` | `design@wjgoarxiv-skills` | `variants/<product>/frontend-ui-ux/` |
+| `visual-qa` | `design` | `design@wjgoarxiv-skills` | `variants/<product>/visual-qa/` |
+| `lit-typographic-motion` | `video-covers` | `video-covers@wjgoarxiv-skills` | `variants/<product>/lit-typographic-motion/` |
+| `readme-studio` | `video-covers` | `video-covers@wjgoarxiv-skills` | `variants/<product>/readme-studio/` |
 
 Claude Code installs the whole family plugin because LitClaude's copies reach into shared files next to them (`lib/`,
 `vendor/`, support folders). Still, only that one family gets installed. Every other harness installs one folder: its
-product's own edition of the skill from `variants/<product>/<id>/`, which carries everything it reads inside the folder.
-Grok Build takes the folder path as a one-skill plugin and copies only that folder into its plugin store. (Give it a `#`
-subfolder of the repository instead and it copies the whole repository, `.git` included, for each skill.) Muse Code
-installs it through `muse skills install`, and Codex CLI, OpenCode, Antigravity CLI and Hermes Agent simply copy it into
-their skills folder. The OpenCode line replaces the LitOpenCode stub folder of the same name. On the other harnesses the
-copy sits next to its product's stub under a different name, and each product's installer leaves it alone on upgrade.
+product's own edition of the skill, which carries everything it reads inside the folder. Grok Build takes the folder
+path as a one-skill plugin and copies only that folder into its plugin store. (Give it a `#` subfolder of the
+repository instead and it copies the whole repository, `.git` included, for each skill.) Muse Code installs it through
+`muse skills install`, and Codex CLI, OpenCode, Antigravity CLI and Hermes Agent copy it into their skills folder. On
+OpenCode the copy takes the place of the LitOpenCode pointer folder of the same name. On the other harnesses it sits
+next to its product's stub under a different name, and each product's installer leaves it alone on upgrade.
 
-| Skill | Family | Claude Code | Codex CLI | OpenCode | Grok Build | Muse Code | Antigravity CLI | Hermes Agent |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `lit-pptx` | `decks` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install decks@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-pptx" "${CODEX_HOME:-$HOME/.codex}/skills/lit-pptx"` | `rm -r ~/.config/opencode/skills/lit-pptx`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-pptx" ~/.config/opencode/skills/lit-pptx` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-pptx" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-pptx --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-pptx" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-pptx" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `lit-docx` | `documents` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install documents@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-docx" "${CODEX_HOME:-$HOME/.codex}/skills/lit-docx"` | `rm -r ~/.config/opencode/skills/lit-docx`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-docx" ~/.config/opencode/skills/lit-docx` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-docx" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-docx --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-docx" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-docx" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `lit-diagram-drawer` | `figures` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install figures@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-diagram-drawer" "${CODEX_HOME:-$HOME/.codex}/skills/lit-diagram-drawer"` | `rm -r ~/.config/opencode/skills/lit-diagram-drawer`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-diagram-drawer" ~/.config/opencode/skills/lit-diagram-drawer` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-diagram-drawer" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-diagram-drawer --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-diagram-drawer" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-diagram-drawer" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `lit-schematic` | `figures` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install figures@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-schematic" "${CODEX_HOME:-$HOME/.codex}/skills/lit-schematic"` | `rm -r ~/.config/opencode/skills/lit-schematic`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-schematic" ~/.config/opencode/skills/lit-schematic` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-schematic" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-schematic --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-schematic" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-schematic" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `lit-scientific-visualization` | `figures` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install figures@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-scientific-visualization" "${CODEX_HOME:-$HOME/.codex}/skills/lit-scientific-visualization"` | `rm -r ~/.config/opencode/skills/lit-scientific-visualization`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-scientific-visualization" ~/.config/opencode/skills/lit-scientific-visualization` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-scientific-visualization" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-scientific-visualization --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-scientific-visualization" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-scientific-visualization" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `frontend-ui-ux` | `design` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install design@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/frontend-ui-ux" "${CODEX_HOME:-$HOME/.codex}/skills/frontend-ui-ux"` | `rm -r ~/.config/opencode/skills/frontend-ui-ux`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/frontend-ui-ux" ~/.config/opencode/skills/frontend-ui-ux` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/frontend-ui-ux" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/frontend-ui-ux --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/frontend-ui-ux" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/frontend-ui-ux" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `visual-qa` | `design` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install design@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/visual-qa" "${CODEX_HOME:-$HOME/.codex}/skills/visual-qa"` | `rm -r ~/.config/opencode/skills/visual-qa`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/visual-qa" ~/.config/opencode/skills/visual-qa` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/visual-qa" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/visual-qa --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/visual-qa" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/visual-qa" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `lit-typographic-motion` | `video-covers` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install video-covers@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-typographic-motion" "${CODEX_HOME:-$HOME/.codex}/skills/lit-typographic-motion"` | `rm -r ~/.config/opencode/skills/lit-typographic-motion`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-typographic-motion" ~/.config/opencode/skills/lit-typographic-motion` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-typographic-motion" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-typographic-motion --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-typographic-motion" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-typographic-motion" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
-| `readme-studio` | `video-covers` | `claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills`<br>`claude plugin install video-covers@wjgoarxiv-skills` | `mkdir -p "${CODEX_HOME:-$HOME/.codex}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/readme-studio" "${CODEX_HOME:-$HOME/.codex}/skills/readme-studio"` | `rm -r ~/.config/opencode/skills/readme-studio`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/readme-studio" ~/.config/opencode/skills/readme-studio` | `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills`<br>`grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/readme-studio" --trust` | `muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/readme-studio --scope user` | `mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/readme-studio" ~/.gemini/config/skills/` | `mkdir -p "${HERMES_HOME:-$HOME/.hermes}/skills"`<br>`cp -R "<path to your wjgoarxiv-skills clone>/variants/lithermes/readme-studio" "${HERMES_HOME:-$HOME/.hermes}/skills/"` |
+An install should never mix a new copy into an old one, or lose files you kept next to a skill, so every harness's
+lines begin by looking. The first line only reads: it names each folder with the same name that the harness would also
+load, because two same-name skills compete and the harness quietly keeps one of them. Where the lines copy a folder
+themselves, the next line moves an existing copy whole into a dated `extension-backups/` folder in that harness's own
+home. That folder sits outside every folder the harness reads skills from, so your files survive there and the backup
+never loads as a second skill. The copy then lands in an empty place, and a last line writes a small receipt inside
+it, `.litfamily-extension.json` (id, source, edition and install time). Grok Build and Muse Code keep their own
+install records and refuse to install over a name they already hold, so their lines look, move a competing copy aside
+and install. No line deletes a folder. Updating means running the same lines again, and removing a copy means moving
+it aside.
+
+The lines for each harness are under [Per-harness notes](#per-harness-notes), shown for `lit-pptx`. They are the lines
+that harness's LitFamily stub gives, copied as they are, so the stub and this page always say the same thing. For
+another skill, put its id where `lit-pptx` stands (and, on Claude Code, its family where `decks` stands). The stub of
+that skill prints the same lines with its name already filled in.
 
 `lit-scientific-visualization` is an adapter for the scientific-visualization source. The family plugin keeps that
 source in `plugins/figures/vendor/scientific-visualization/`. Every edition under `variants/` carries its own copy
-inside the skill folder, so one line installs both. The Antigravity stubs also give a workspace-only form of the same
+inside the skill folder, so one install brings both. The Antigravity stubs also give a workspace-only form of the same
 copy into `.agents/skills/`, and the OpenCode film stub adds one runtime step after the copy:
 `node ~/.config/opencode/skills/lit-typographic-motion/runtime.mjs install`. The other editions install their engines on
 first use.
 
-`npm test` checks this table against the marketplace: one row for every skill a family plugin ships, the exact lines
-each stub gives, and that every folder a line names really exists here.
+`npm test` checks this table against the marketplace (one row for every skill a family plugin ships), checks the
+per-harness lines below word for word against `test/stub-install-lines.json`, which holds the lines each stub gives,
+and checks that every folder those lines name, for every skill, really exists here.
 
 ## Per-harness notes
 
@@ -236,6 +252,26 @@ claude plugin install video-covers@wjgoarxiv-skills
 Inside a session it is `/plugin marketplace add wjgoarxiv/wjgoarxiv-skills` and then
 `/plugin install decks@wjgoarxiv-skills`. Offline, you can point the marketplace line at a local clone instead:
 `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`.
+
+A skill of your own with the same name gets in the way. A `lit-pptx` folder in `~/.claude/skills` or in a project's
+`.claude/skills` loads beside `decks:lit-pptx` and competes with it. So before installing, look for one. The first line
+below only lists such a folder; the next two move a personal or a project copy whole into a dated
+`extension-backups/` folder beside its `.claude` folder, which Claude Code does not read:
+
+```bash
+ls -d ~/.claude/skills/lit-pptx .claude/skills/lit-pptx 2>/dev/null
+d="$HOME/.claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv ~/.claude/skills/lit-pptx "$d"/
+d=".claude/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$d" && mv .claude/skills/lit-pptx "$d"/
+```
+
+Updating takes two lines, in this order. The first refreshes the marketplace, and the second compares the plugin's
+version against what it fetched. Claude Code installs a new copy only when that version has changed, and the new copy
+loads after `/reload-plugins`:
+
+```bash
+claude plugin marketplace update wjgoarxiv-skills
+claude plugin update decks@wjgoarxiv-skills
+```
 
 After that the skills answer as `decks:lit-pptx`, `documents:lit-docx`, `figures:lit-diagram-drawer`,
 `figures:lit-schematic`, `design:frontend-ui-ux`, `design:visual-qa`, `video-covers:lit-typographic-motion` and
@@ -284,6 +320,147 @@ Some internal names stay on purpose, because measured expectations or saved file
 `litfamily.*` and the product-prefixed ones, the brand word in sample cover recipes, and (in the Codex edition) the
 `LITCODEX_*` knobs and error codes of its own scripts. Third-party corpora pinned by hash, such as frontend-ui-ux's
 `references/_canonical-corpus/`, are left as they came and may name other coding agents.
+
+### Codex CLI
+
+Codex reads skills from its own `skills` folder, from `~/.agents/skills`, and from a project's `.agents/skills` and
+`.codex/skills`, and it lists a same-name skill once for every folder that holds it. It also lists a `SKILL.md` nested
+inside another skill folder, which is why the copy never goes into an occupied folder. Run the four lines from your
+project folder: check, move aside, copy, receipt. Each line sets its own paths, so one pasted on its own still works.
+
+```bash
+cx="${CODEX_HOME:-$HOME/.codex}"; p="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"; for d in "$cx/skills" "$HOME/.agents/skills" "$p/.agents/skills" "$p/.codex/skills"; do [ -e "$d/lit-pptx" ] && echo "found: $d/lit-pptx"; done; echo "check done"
+cx="${CODEX_HOME:-$HOME/.codex}"; if [ -e "$cx/skills/lit-pptx" ]; then b="$cx/extension-backups/$(date +%Y%m%d-%H%M%S)"; mkdir -p "$b" && [ ! -e "$b/lit-pptx" ] && mv "$cx/skills/lit-pptx" "$b/lit-pptx" && echo "moved aside: $b/lit-pptx"; fi
+cx="${CODEX_HOME:-$HOME/.codex}"; if [ -e "$cx/skills/lit-pptx" ]; then echo "stopped: $cx/skills/lit-pptx still exists"; else mkdir -p "$cx/skills" && cp -R "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-pptx" "$cx/skills/lit-pptx"; fi
+cx="${CODEX_HOME:-$HOME/.codex}"; [ -f "$cx/skills/lit-pptx/SKILL.md" ] && printf '{"id":"lit-pptx","source":"%s","variant":"litcodex","installed_at":"%s"}\n' "<path to your wjgoarxiv-skills clone>/variants/litcodex/lit-pptx" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$cx/skills/lit-pptx/.litfamily-extension.json"
+```
+
+A `found:` line under `${CODEX_HOME:-$HOME/.codex}/skills` is the old copy, and the second line moves it whole to
+`${CODEX_HOME:-$HOME/.codex}/extension-backups/<date-time>/lit-pptx`, which Codex does not read. A `found:` line
+anywhere else is a second same-name skill that Codex would also list, so move that folder out yourself. The copy line
+stops on an occupied folder. Start a new Codex session afterwards. To update, pull the clone and run the four lines
+again; to remove the copy, run only the move-aside line.
+
+### OpenCode
+
+OpenCode reads `~/.config/opencode/skills`, `~/.agents/skills` and `~/.claude/skills`, plus a project's `.opencode/`,
+`.agents/` and `.claude/` skills, and keeps one skill per name. The extension therefore takes the place of
+LitOpenCode's pointer folder of the same name. The first line lists the same-name folders OpenCode reads; move any
+outside `~/.config/opencode/skills` out of the way yourself. The second moves the pointer folder whole into a dated
+backup, the third copies the extension in, and the fourth writes its receipt.
+
+```bash
+ls -d ~/.config/opencode/skills/lit-pptx ~/.agents/skills/lit-pptx ~/.claude/skills/lit-pptx 2>/dev/null
+d=~/.config/opencode/extension-backups/$(date +%Y%m%d-%H%M%S); [ ! -e ~/.config/opencode/skills/lit-pptx ] || { mkdir -p "$d" && mv ~/.config/opencode/skills/lit-pptx "$d/"; }
+mkdir -p ~/.config/opencode/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-pptx" ~/.config/opencode/skills/lit-pptx
+printf '{"id":"%s","source":"%s","variant":"litopencode","installed_at":"%s"}\n' lit-pptx "<path to your wjgoarxiv-skills clone>/variants/litopencode/lit-pptx" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > ~/.config/opencode/skills/lit-pptx/.litfamily-extension.json
+```
+
+With `XDG_CONFIG_HOME` set, use `$XDG_CONFIG_HOME/opencode/` in place of `~/.config/opencode/`. No skill loads from
+`extension-backups/`. To update, run the four lines again and start a new session. To remove the copy, run the second
+line; `litopencode install` then brings the pointer back.
+
+### Grok Build
+
+Grok Build installs each edition as a one-skill plugin into its own plugin store and records there where it came
+from, so these lines write no receipt. A second install of the same folder stops with `already installed`, and
+`grok plugin update` does not copy a local folder again. Run the two read-only checks from the project root, then the
+install line:
+
+```bash
+git clone https://github.com/wjgoarxiv/wjgoarxiv-skills
+grok plugin list --json | grep -cF '"name": "lit-pptx"'
+grep -L '^description: "Moved: lit-pptx ' {.grok,.agents,.claude,.cursor,~/.grok,~/.agents,~/.claude,~/.cursor}/skills/lit-pptx/SKILL.md 2>/dev/null
+grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-pptx" --trust
+```
+
+The first check counts installed copies; above 0, skip the install. The second prints any personal copy in a skills
+folder Grok reads, which would take the bare `/lit-pptx` name ahead of LitGrok's note (the note itself is skipped).
+Move that folder out whole first, dropping `/SKILL.md` from the printed path:
+
+```bash
+mkdir -p ~/.grok/extension-backups && mv "<that folder>" "$(mktemp -d ~/.grok/extension-backups/$(date +%Y%m%d-%H%M%S)-XXXXXX)/"
+```
+
+To update, pull the clone, uninstall once for each counted copy, then install again. `grok plugin uninstall lit-pptx`
+on its own removes the plugin, and the clone keeps the source.
+
+```bash
+git -C "<path to your wjgoarxiv-skills clone>" pull
+grok plugin uninstall lit-pptx
+grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-pptx" --trust
+```
+
+### Muse Code
+
+Muse refuses to install over a folder that is already there, and its `--force` merges new files into the old ones, so
+the lines move an occupied folder aside first. Muse records the source, the time and each file's hash in its own lock,
+`$CONFIG_DIR/skills/.muse/lock.json`, so it needs no other receipt. The first line only reads and prints each folder
+Muse could load as `lit-pptx`: your Muse user skills, `~/.claude/skills` and `~/.codex/skills` (Muse loads those too),
+and the project's `.agents/skills` and `.claude/skills`. The second moves your Muse copy aside into
+`extension-backups/` beside Muse's skills, and the third installs.
+
+```bash
+command ls -d "${XDG_CONFIG_HOME:-$HOME/.config}/muse/skills/lit-pptx" "$HOME/.claude/skills/lit-pptx" "$HOME/.codex/skills/lit-pptx" .agents/skills/lit-pptx .claude/skills/lit-pptx 2>/dev/null
+D="${XDG_CONFIG_HOME:-$HOME/.config}/muse/skills/lit-pptx"; B="${XDG_CONFIG_HOME:-$HOME/.config}/muse/extension-backups/$(date +%Y%m%d-%H%M%S)"; [ -e "$D" ] && mkdir -p "$B" && mv "$D" "$B/" && echo "moved to $B/lit-pptx"
+muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/lit-pptx --scope user
+```
+
+A personal copy in `~/.claude/skills` or `~/.codex/skills` ranks below the installed extension and shows as shadowed.
+A project copy in `.agents/skills` or `.claude/skills` ranks above it inside that project, so move or rename that one
+to use the extension there. To update, run the three lines again, and leave out `--force` and
+`muse skills update lit-pptx`, which both keep files a newer edition dropped. To remove the copy, run the second line,
+then `muse skills uninstall lit-pptx`.
+
+### Antigravity CLI
+
+agy loads skills from the workspace's `.agents/skills` and `_agents/skills`, then `~/.gemini/config/skills` and
+`~/.gemini/skills`, and keeps one same-name skill without a word. A backup left inside a skills folder can even win
+over the real copy, so backups go to `~/.gemini/extension-backups/`, which agy never loads. Paste the four lines one at
+a time in the workspace you use agy in. They put the skill in agy's user skills, which every workspace sees:
+
+```bash
+find .agents/skills _agents/skills ~/.gemini/config/skills ~/.gemini/skills -maxdepth 2 -name SKILL.md -exec grep -l -E '^name: *"?lit-pptx"? *$' {} + 2>/dev/null
+if [ -e ~/.gemini/config/skills/lit-pptx ] || [ -L ~/.gemini/config/skills/lit-pptx ]; then b=~/.gemini/extension-backups/$(date +%Y%m%d-%H%M%S); mkdir -p "$b" && mv ~/.gemini/config/skills/lit-pptx "$b/" && echo "moved to $b/lit-pptx"; fi
+mkdir -p ~/.gemini/config/skills && [ ! -e ~/.gemini/config/skills/lit-pptx ] && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-pptx" ~/.gemini/config/skills/lit-pptx
+printf '{"id":"%s","source":"%s","variant":"litgravity","installed_at":"%s"}\n' lit-pptx "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-pptx" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > ~/.gemini/config/skills/lit-pptx/.litfamily-extension.json
+```
+
+For one workspace only, run line one, then these three in the workspace root:
+
+```bash
+if [ -e .agents/skills/lit-pptx ] || [ -L .agents/skills/lit-pptx ]; then b=~/.gemini/extension-backups/$(date +%Y%m%d-%H%M%S)-project; mkdir -p "$b" && mv .agents/skills/lit-pptx "$b/" && echo "moved to $b/lit-pptx"; fi
+mkdir -p .agents/skills && [ ! -e .agents/skills/lit-pptx ] && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-pptx" .agents/skills/lit-pptx
+printf '{"id":"%s","source":"%s","variant":"litgravity","installed_at":"%s"}\n' lit-pptx "<path to your wjgoarxiv-skills clone>/variants/litgravity/lit-pptx" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > .agents/skills/lit-pptx/.litfamily-extension.json
+```
+
+Start a new conversation, or type `/skills reload`. To update, run the same lines again: the old copy moves to a new
+dated backup and the receipt is rewritten. To remove the copy, run the second line alone. Clear old backups out of
+`~/.gemini/extension-backups/` when you no longer need them.
+
+### Hermes Agent
+
+Hermes reads skills from the profile's `skills/` folder (category folders inside it included), from a trusted
+project's `.hermes/skills` and `.agents/skills`, and from any `external_dirs` you set. Two different copies of one name
+under `skills/` tie, and Hermes then loads neither. The first line sets the three names the others use, so paste the
+lines together, from the project's top folder, in bash or zsh. The check line only reads; the move-aside line acts
+only when the folder exists and moves it into `extension-backups/<date-time>/` of the profile; the copy lands in an
+empty `skills/lit-pptx/`; and the last line writes the receipt.
+
+```bash
+H="${HERMES_HOME:-$HOME/.hermes}"; ID=lit-pptx; SRC="<path to your wjgoarxiv-skills clone>/variants/lithermes/lit-pptx"
+[ -e "$H/skills/${ID:?}" ] && echo "taken: $H/skills/$ID" || echo "free: $H/skills/$ID"; grep -rlE --include=SKILL.md "^name: *[\"']?${ID}[\"']? *\$" "$H/skills" .hermes/skills .agents/skills 2>/dev/null; grep -A3 -E '^ *(external_dirs|create_dir):' "$H/config.yaml" 2>/dev/null
+if [ -e "$H/skills/${ID:?}" ]; then mkdir -p "$H/extension-backups" && B=$(mktemp -d "$H/extension-backups/$(date +%Y%m%d-%H%M%S)-XXXX") && mv "$H/skills/$ID" "$B/" && echo "moved aside: $B/$ID"; fi
+if [ -e "$H/skills/${ID:?}" ]; then echo "stopped: $H/skills/$ID is still there"; else mkdir -p "$H/skills" && cp -R "$SRC" "$H/skills/$ID" && echo "copied: $H/skills/$ID"; fi
+printf '{"id":"%s","source":"%s","variant":"lithermes","installed_at":"%s"}\n' "${ID:?}" "$SRC" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > "$H/skills/$ID/.litfamily-extension.json"
+```
+
+To update, pull the clone and paste the same lines again. To remove the copy, paste the first line, then this one. It
+moves the folder into the backups and deletes nothing:
+
+```bash
+[ -e "$H/skills/${ID:?}" ] && mkdir -p "$H/extension-backups" && B=$(mktemp -d "$H/extension-backups/$(date +%Y%m%d-%H%M%S)-XXXX") && mv "$H/skills/$ID" "$B/" && echo "moved aside: $B/$ID"
+```
 
 ### Why the skills keep their `lit-` names
 
@@ -423,7 +600,12 @@ The Pretendard and JetBrains Mono fonts travel unmodified, each with its OFL lic
 - A harness edition under `variants/` first goes in byte for byte from the product commit that last shipped it, with a
   receipt row per file, committed together with its receipt. Changes that make it run on its own come in later,
   separate commits and are listed in that product's `CHANGES.md`.
-- When a product stub's install line changes, the pick-one table changes in the same commit.
+- When a product stub's install lines change, the pick-one table and the per-harness notes change in the same commit,
+  and so does `test/stub-install-lines.json`, which `npm test` checks them against.
+- Every content change to a family plugin bumps `version` in its `plugins/<family>/.claude-plugin/plugin.json`.
+  `claude plugin update` installs a new copy only when that version changes, so an unbumped change never reaches
+  anyone who already has the plugin. If the family's marketplace entry ever carries a `version`, it changes with it.
+
 - A family moves in one release of its product, together with the product's stub.
 - Each family plugin works without any LitFamily product installed.
 

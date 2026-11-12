@@ -23,4 +23,12 @@ product release.
 
 - Each family plugin works with no LitFamily product installed.
 - No machine-specific paths in tracked files: write `<path to your wjgoarxiv-skills clone>` instead.
+- Every content change to a family plugin (any file under `plugins/<family>/`) bumps `version` in
+  `plugins/<family>/.claude-plugin/plugin.json` in the same commit. `claude plugin marketplace update` followed by
+  `claude plugin update <family>@wjgoarxiv-skills` installs a new copy only when that version changes; without the
+  bump, users who already have the plugin keep the old files and are told they are on the latest version. The
+  marketplace entries carry no `version` today; if one ever does, it changes together with `plugin.json`. Bumping is
+  part of a release, so it still needs the maintainer's yes.
+- When a product stub's install lines change, update `test/stub-install-lines.json`, the README pick-one table and
+  the per-harness notes (both languages) and the matching `variants/<product>/CHANGES.md` in the same commit.
 - No push, publish, tag or remote creation without the maintainer's explicit yes.

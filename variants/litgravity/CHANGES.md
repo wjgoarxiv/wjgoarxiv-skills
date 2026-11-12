@@ -7,18 +7,29 @@ with nothing outside it, and remove what only worked when the product plugin was
 
 ## Install
 
-The product's pointer stub gives these lines. Pick one scope and replace the placeholder with the path of
-your local clone:
+The product's pointer stub gives these lines. Replace the placeholder with the path of your local clone
+and paste them one at a time in the workspace. Line one only looks for same-name skills agy could load, line two
+moves an existing copy whole into a dated folder under `~/.gemini/extension-backups/` (agy never loads it), line
+three copies into the emptied place and line four writes the receipt `.litfamily-extension.json` inside the copy.
+For every workspace (user scope):
 
 ```sh
-# every workspace (user scope)
-mkdir -p ~/.gemini/config/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/<id>" ~/.gemini/config/skills/
-# this workspace only (run in the workspace root)
-mkdir -p .agents/skills && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/<id>" .agents/skills/
+find .agents/skills _agents/skills ~/.gemini/config/skills ~/.gemini/skills -maxdepth 2 -name SKILL.md -exec grep -l -E '^name: *"?<id>"? *$' {} + 2>/dev/null
+if [ -e ~/.gemini/config/skills/<id> ] || [ -L ~/.gemini/config/skills/<id> ]; then b=~/.gemini/extension-backups/$(date +%Y%m%d-%H%M%S); mkdir -p "$b" && mv ~/.gemini/config/skills/<id> "$b/" && echo "moved to $b/<id>"; fi
+mkdir -p ~/.gemini/config/skills && [ ! -e ~/.gemini/config/skills/<id> ] && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/<id>" ~/.gemini/config/skills/<id>
+printf '{"id":"%s","source":"%s","variant":"litgravity","installed_at":"%s"}\n' <id> "<path to your wjgoarxiv-skills clone>/variants/litgravity/<id>" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > ~/.gemini/config/skills/<id>/.litfamily-extension.json
+```
+
+For this workspace only, line one and then, in the workspace root:
+
+```sh
+if [ -e .agents/skills/<id> ] || [ -L .agents/skills/<id> ]; then b=~/.gemini/extension-backups/$(date +%Y%m%d-%H%M%S)-project; mkdir -p "$b" && mv .agents/skills/<id> "$b/" && echo "moved to $b/<id>"; fi
+mkdir -p .agents/skills && [ ! -e .agents/skills/<id> ] && cp -R "<path to your wjgoarxiv-skills clone>/variants/litgravity/<id>" .agents/skills/<id>
+printf '{"id":"%s","source":"%s","variant":"litgravity","installed_at":"%s"}\n' <id> "<path to your wjgoarxiv-skills clone>/variants/litgravity/<id>" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" > .agents/skills/<id>/.litfamily-extension.json
 ```
 
 Start a new conversation or type `/skills reload`. The skill then answers as `/<id>`, with no namespace. To
-update, delete the folder and copy it again. The product installer owns only
+update, run the same lines again; to remove, run the move-aside line alone. Nothing is deleted. The product installer owns only
 `~/.gemini/config/plugins/<product>/` (or `.agents/plugins/<product>/`). It never reads or writes these skill
 folders, so upgrading or uninstalling the product leaves the copied skill alone. The product's stub keeps its
 namespaced name (`<product>:<id>`), so the two names never collide.

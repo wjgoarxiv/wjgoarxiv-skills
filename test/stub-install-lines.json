@@ -1,0 +1,85 @@
+{
+  "_about": "The install lines each LitFamily product stub gives for one extension, as of the products' ext/a-safe-install commits. {id} is the skill id and {family} its family plugin. README.md and README_ko-KR.md show them for lit-pptx.",
+  "Claude Code": {
+    "check": [
+      "ls -d ~/.claude/skills/{id} .claude/skills/{id} 2>/dev/null",
+      "d=\"$HOME/.claude/extension-backups/$(date +%Y%m%d-%H%M%S)\"; mkdir -p \"$d\" && mv ~/.claude/skills/{id} \"$d\"/",
+      "d=\".claude/extension-backups/$(date +%Y%m%d-%H%M%S)\"; mkdir -p \"$d\" && mv .claude/skills/{id} \"$d\"/"
+    ],
+    "install": [
+      "claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills",
+      "claude plugin install {family}@wjgoarxiv-skills"
+    ],
+    "update": [
+      "claude plugin marketplace update wjgoarxiv-skills",
+      "claude plugin update {family}@wjgoarxiv-skills"
+    ]
+  },
+  "Codex CLI": {
+    "install": [
+      "cx=\"${CODEX_HOME:-$HOME/.codex}\"; p=\"$(git rev-parse --show-toplevel 2>/dev/null || pwd)\"; for d in \"$cx/skills\" \"$HOME/.agents/skills\" \"$p/.agents/skills\" \"$p/.codex/skills\"; do [ -e \"$d/{id}\" ] && echo \"found: $d/{id}\"; done; echo \"check done\"",
+      "cx=\"${CODEX_HOME:-$HOME/.codex}\"; if [ -e \"$cx/skills/{id}\" ]; then b=\"$cx/extension-backups/$(date +%Y%m%d-%H%M%S)\"; mkdir -p \"$b\" && [ ! -e \"$b/{id}\" ] && mv \"$cx/skills/{id}\" \"$b/{id}\" && echo \"moved aside: $b/{id}\"; fi",
+      "cx=\"${CODEX_HOME:-$HOME/.codex}\"; if [ -e \"$cx/skills/{id}\" ]; then echo \"stopped: $cx/skills/{id} still exists\"; else mkdir -p \"$cx/skills\" && cp -R \"<path to your wjgoarxiv-skills clone>/variants/litcodex/{id}\" \"$cx/skills/{id}\"; fi",
+      "cx=\"${CODEX_HOME:-$HOME/.codex}\"; [ -f \"$cx/skills/{id}/SKILL.md\" ] && printf '{\"id\":\"{id}\",\"source\":\"%s\",\"variant\":\"litcodex\",\"installed_at\":\"%s\"}\\n' \"<path to your wjgoarxiv-skills clone>/variants/litcodex/{id}\" \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\" > \"$cx/skills/{id}/.litfamily-extension.json\""
+    ]
+  },
+  "OpenCode": {
+    "install": [
+      "ls -d ~/.config/opencode/skills/{id} ~/.agents/skills/{id} ~/.claude/skills/{id} 2>/dev/null",
+      "d=~/.config/opencode/extension-backups/$(date +%Y%m%d-%H%M%S); [ ! -e ~/.config/opencode/skills/{id} ] || { mkdir -p \"$d\" && mv ~/.config/opencode/skills/{id} \"$d/\"; }",
+      "mkdir -p ~/.config/opencode/skills && cp -R \"<path to your wjgoarxiv-skills clone>/variants/litopencode/{id}\" ~/.config/opencode/skills/{id}",
+      "printf '{\"id\":\"%s\",\"source\":\"%s\",\"variant\":\"litopencode\",\"installed_at\":\"%s\"}\\n' {id} \"<path to your wjgoarxiv-skills clone>/variants/litopencode/{id}\" \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\" > ~/.config/opencode/skills/{id}/.litfamily-extension.json"
+    ]
+  },
+  "Grok Build": {
+    "install": [
+      "git clone https://github.com/wjgoarxiv/wjgoarxiv-skills",
+      "grok plugin list --json | grep -cF '\"name\": \"{id}\"'",
+      "grep -L '^description: \"Moved: {id} ' {.grok,.agents,.claude,.cursor,~/.grok,~/.agents,~/.claude,~/.cursor}/skills/{id}/SKILL.md 2>/dev/null",
+      "grok plugin install \"<path to your wjgoarxiv-skills clone>/variants/litgrok/{id}\" --trust"
+    ],
+    "move-aside": [
+      "mkdir -p ~/.grok/extension-backups && mv \"<that folder>\" \"$(mktemp -d ~/.grok/extension-backups/$(date +%Y%m%d-%H%M%S)-XXXXXX)/\""
+    ],
+    "update": [
+      "git -C \"<path to your wjgoarxiv-skills clone>\" pull",
+      "grok plugin uninstall {id}",
+      "grok plugin install \"<path to your wjgoarxiv-skills clone>/variants/litgrok/{id}\" --trust"
+    ]
+  },
+  "Muse Code": {
+    "install": [
+      "command ls -d \"${XDG_CONFIG_HOME:-$HOME/.config}/muse/skills/{id}\" \"$HOME/.claude/skills/{id}\" \"$HOME/.codex/skills/{id}\" .agents/skills/{id} .claude/skills/{id} 2>/dev/null",
+      "D=\"${XDG_CONFIG_HOME:-$HOME/.config}/muse/skills/{id}\"; B=\"${XDG_CONFIG_HOME:-$HOME/.config}/muse/extension-backups/$(date +%Y%m%d-%H%M%S)\"; [ -e \"$D\" ] && mkdir -p \"$B\" && mv \"$D\" \"$B/\" && echo \"moved to $B/{id}\"",
+      "muse skills install <path to your wjgoarxiv-skills clone>/variants/litmuse/{id} --scope user"
+    ],
+    "remove": [
+      "muse skills uninstall {id}"
+    ]
+  },
+  "Antigravity CLI": {
+    "install": [
+      "find .agents/skills _agents/skills ~/.gemini/config/skills ~/.gemini/skills -maxdepth 2 -name SKILL.md -exec grep -l -E '^name: *\"?{id}\"? *$' {} + 2>/dev/null",
+      "if [ -e ~/.gemini/config/skills/{id} ] || [ -L ~/.gemini/config/skills/{id} ]; then b=~/.gemini/extension-backups/$(date +%Y%m%d-%H%M%S); mkdir -p \"$b\" && mv ~/.gemini/config/skills/{id} \"$b/\" && echo \"moved to $b/{id}\"; fi",
+      "mkdir -p ~/.gemini/config/skills && [ ! -e ~/.gemini/config/skills/{id} ] && cp -R \"<path to your wjgoarxiv-skills clone>/variants/litgravity/{id}\" ~/.gemini/config/skills/{id}",
+      "printf '{\"id\":\"%s\",\"source\":\"%s\",\"variant\":\"litgravity\",\"installed_at\":\"%s\"}\\n' {id} \"<path to your wjgoarxiv-skills clone>/variants/litgravity/{id}\" \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\" > ~/.gemini/config/skills/{id}/.litfamily-extension.json"
+    ],
+    "install-workspace": [
+      "if [ -e .agents/skills/{id} ] || [ -L .agents/skills/{id} ]; then b=~/.gemini/extension-backups/$(date +%Y%m%d-%H%M%S)-project; mkdir -p \"$b\" && mv .agents/skills/{id} \"$b/\" && echo \"moved to $b/{id}\"; fi",
+      "mkdir -p .agents/skills && [ ! -e .agents/skills/{id} ] && cp -R \"<path to your wjgoarxiv-skills clone>/variants/litgravity/{id}\" .agents/skills/{id}",
+      "printf '{\"id\":\"%s\",\"source\":\"%s\",\"variant\":\"litgravity\",\"installed_at\":\"%s\"}\\n' {id} \"<path to your wjgoarxiv-skills clone>/variants/litgravity/{id}\" \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\" > .agents/skills/{id}/.litfamily-extension.json"
+    ]
+  },
+  "Hermes Agent": {
+    "install": [
+      "H=\"${HERMES_HOME:-$HOME/.hermes}\"; ID={id}; SRC=\"<path to your wjgoarxiv-skills clone>/variants/lithermes/{id}\"",
+      "[ -e \"$H/skills/${ID:?}\" ] && echo \"taken: $H/skills/$ID\" || echo \"free: $H/skills/$ID\"; grep -rlE --include=SKILL.md \"^name: *[\\\"']?${ID}[\\\"']? *\\$\" \"$H/skills\" .hermes/skills .agents/skills 2>/dev/null; grep -A3 -E '^ *(external_dirs|create_dir):' \"$H/config.yaml\" 2>/dev/null",
+      "if [ -e \"$H/skills/${ID:?}\" ]; then mkdir -p \"$H/extension-backups\" && B=$(mktemp -d \"$H/extension-backups/$(date +%Y%m%d-%H%M%S)-XXXX\") && mv \"$H/skills/$ID\" \"$B/\" && echo \"moved aside: $B/$ID\"; fi",
+      "if [ -e \"$H/skills/${ID:?}\" ]; then echo \"stopped: $H/skills/$ID is still there\"; else mkdir -p \"$H/skills\" && cp -R \"$SRC\" \"$H/skills/$ID\" && echo \"copied: $H/skills/$ID\"; fi",
+      "printf '{\"id\":\"%s\",\"source\":\"%s\",\"variant\":\"lithermes\",\"installed_at\":\"%s\"}\\n' \"${ID:?}\" \"$SRC\" \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\" > \"$H/skills/$ID/.litfamily-extension.json\""
+    ],
+    "remove": [
+      "[ -e \"$H/skills/${ID:?}\" ] && mkdir -p \"$H/extension-backups\" && B=$(mktemp -d \"$H/extension-backups/$(date +%Y%m%d-%H%M%S)-XXXX\") && mv \"$H/skills/$ID\" \"$B/\" && echo \"moved aside: $B/$ID\""
+    ]
+  }
+}

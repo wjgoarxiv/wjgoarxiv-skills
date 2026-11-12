@@ -23,62 +23,86 @@ const moved = market.plugins.flatMap((p) => {
     .map((id) => [p.name, id]);
 });
 
-// The install lines each product's same-name stub gives, word for word. Claude Code installs the family plugin;
-// every other harness installs that product's own edition of the one skill from variants/<product>/<id>.
-const expected = (family, id) => {
-  const codexHome = '"${CODEX_HOME:-$HOME/.codex}';
-  const hermesHome = '"${HERMES_HOME:-$HOME/.hermes}';
-  return {
-    'Claude Code': ['claude plugin marketplace add wjgoarxiv/wjgoarxiv-skills', `claude plugin install ${family}@wjgoarxiv-skills`],
-    'Codex CLI': [`mkdir -p ${codexHome}/skills"`, `cp -R "${CLONE}/variants/litcodex/${id}" ${codexHome}/skills/${id}"`],
-    OpenCode: [`rm -r ~/.config/opencode/skills/${id}`, `cp -R "${CLONE}/variants/litopencode/${id}" ~/.config/opencode/skills/${id}`],
-    'Grok Build': ['git clone https://github.com/wjgoarxiv/wjgoarxiv-skills', `grok plugin install "${CLONE}/variants/litgrok/${id}" --trust`],
-    'Muse Code': [`muse skills install ${CLONE}/variants/litmuse/${id} --scope user`],
-    'Antigravity CLI': [`mkdir -p ~/.gemini/config/skills && cp -R "${CLONE}/variants/litgravity/${id}" ~/.gemini/config/skills/`],
-    'Hermes Agent': [`mkdir -p ${hermesHome}/skills"`, `cp -R "${CLONE}/variants/lithermes/${id}" ${hermesHome}/skills/"`],
-  };
-};
+// The install lines each product's same-name stub gives, word for word, with {id} and {family} for the skill. Claude
+// Code installs the family plugin; every other harness installs that product's own edition from variants/<product>/<id>.
+const lines = json('test/stub-install-lines.json');
+const fill = (list, id, family) => list.map((l) => l.split('{id}').join(id).split('{family}').join(family));
+const READMES = ['README.md', 'README_ko-KR.md'];
+const COPYING = { 'Codex CLI': 'litcodex', OpenCode: 'litopencode', 'Antigravity CLI': 'litgravity', 'Hermes Agent': 'lithermes' };
 
-const readme = read('README.md').toString('utf8');
-
-const table = () => {
-  const start = readme.indexOf('## Pick one skill for one harness');
+const table = (readme) => {
+  const start = readme.search(/^## (Pick one skill for one harness|하네스별로 스킬 하나 설치하기)$/mu);
   assert.ok(start >= 0, 'README has the pick-one install table section');
-  const lines = readme.slice(start).split('\n');
-  const first = lines.findIndex((l) => l.startsWith('|'));
+  const all = readme.slice(start).split('\n');
+  const first = all.findIndex((l) => l.startsWith('|'));
   assert.ok(first > 0, 'the section holds a table');
   const rows = [];
-  for (const l of lines.slice(first)) {
+  for (const l of all.slice(first)) {
     if (!l.startsWith('|')) break;
-    rows.push(l.slice(1, -1).split('|').map((c) => c.trim()));
+    rows.push(l.slice(1, -1).split('|').map((c) => c.trim().replace(/`/gu, '')));
   }
   return { header: rows[0], body: rows.slice(2) };
 };
 
-const codeSpans = (cell) => [...cell.matchAll(/`([^`]+)`/gu)].map((m) => m[1]);
-
-test('the pick-one table has one row per marketplace skill and one column per harness', () => {
-  const { header, body } = table();
-  assert.deepEqual(header, ['Skill', 'Family', ...HARNESSES]);
-  const got = body.map((r) => [r[1].replace(/`/gu, ''), r[0].replace(/`/gu, '')]);
-  assert.deepEqual(got.map((r) => r.join(':')).sort(), moved.map((r) => r.join(':')).sort());
+test('the pick-one table has one row per marketplace skill, with its family plugin and edition folder', () => {
+  for (const f of READMES) {
+    const { header, body } = table(read(f).toString('utf8'));
+    assert.equal(header.length, 4, `${f} header`);
+    assert.deepEqual(body.map((r) => `${r[1]}:${r[0]}`).sort(), moved.map((r) => r.join(':')).sort(), f);
+    for (const [id, family, plugin, folder] of body) {
+      assert.equal(plugin, `${family}@wjgoarxiv-skills`, `${f} ${id}`);
+      assert.equal(folder, `variants/<product>/${id}/`, `${f} ${id}`);
+      for (const product of VARIANT_PRODUCTS) assert.ok(existsSync(join(root, 'variants', product, id, 'SKILL.md')), `${product}/${id}`);
+    }
+  }
 });
 
-test('every cell carries the install lines its product stub gives, and every path they name exists here', () => {
-  const { body } = table();
-  for (const row of body) {
-    const id = row[0].replace(/`/gu, '');
-    const family = row[1].replace(/`/gu, '');
-    const want = expected(family, id);
-    HARNESSES.forEach((h, i) => {
-      const cell = row[i + 2];
-      assert.deepEqual(codeSpans(cell), want[h], `${id} × ${h}`);
-    });
-    for (const line of Object.values(want).flat()) {
-      for (const m of line.matchAll(/<path to your wjgoarxiv-skills clone>\/([^"\s]+)/gu)) {
-        assert.ok(statSync(join(root, m[1])).isDirectory(), `${id}: ${m[1]} exists`);
+test('the per-harness notes carry every stub line block, word for word, for lit-pptx', () => {
+  assert.deepEqual(Object.keys(lines).filter((k) => !k.startsWith('_')), HARNESSES);
+  for (const f of READMES) {
+    const md = read(f).toString('utf8');
+    for (const h of HARNESSES) {
+      for (const [step, list] of Object.entries(lines[h])) {
+        // A block may go on after the stub's lines (the Claude Code block also installs the other families).
+        const block = '```bash\n' + fill(list, 'lit-pptx', 'decks').join('\n') + '\n';
+        // A single command may also stand inline in the prose.
+        const inline = list.length === 1 && md.includes('`' + fill(list, 'lit-pptx', 'decks')[0] + '`');
+        assert.ok(md.includes(block) || inline, `${f}: ${h} ${step}`);
       }
     }
+  }
+});
+
+test('every folder the lines name exists here for every moved skill', () => {
+  for (const [family, id] of moved) {
+    for (const h of HARNESSES) {
+      for (const line of fill(Object.values(lines[h]).flat(), id, family)) {
+        for (const m of line.matchAll(/<path to your wjgoarxiv-skills clone>\/([^"\s]+)/gu)) {
+          assert.ok(statSync(join(root, m[1])).isDirectory(), `${id} × ${h}: ${m[1]} exists`);
+        }
+      }
+    }
+  }
+});
+
+test('copying harnesses look first, move an old copy aside outside the skills folder, copy, then write a receipt', () => {
+  for (const [h, product] of Object.entries(COPYING)) {
+    const all = Object.values(lines[h]).flat().join('\n');
+    assert.match(all, /extension-backups\//u, `${h} backup folder`);
+    assert.doesNotMatch(all, /extension-backups[^\s"]*\/skills|skills\/[^\s"]*extension-backups/u, `${h} backup sits outside skills/`);
+    assert.match(all, new RegExp(`"variant":"${product}"`, 'u'), `${h} receipt names its edition`);
+    assert.match(all, /\.litfamily-extension\.json/u, `${h} receipt file`);
+    const first = lines[h].install[0];
+    assert.doesNotMatch(first, /\b(mv|cp|printf)\b/u, `${h}: the first line only reads`);
+  }
+});
+
+test('no install line on this page or in a CHANGES.md deletes a folder or copies into an existing one', () => {
+  const docs = [...READMES, ...VARIANT_PRODUCTS.map((p) => `variants/${p}/CHANGES.md`)];
+  for (const f of docs) {
+    const code = [...read(f).toString('utf8').matchAll(/```(?:bash|sh)\n([\s\S]*?)```/gu)].map((m) => m[1]).join('\n');
+    assert.doesNotMatch(code, /(^|[;&|]\s*)rm -r/mu, `${f}: no rm -r`);
+    assert.doesNotMatch(code, /cp -R "[^"]+" [^\s;&]*skills\/"?(\s|$)/mu, `${f}: no cp -R into a skills folder that may hold the id`);
   }
 });
 

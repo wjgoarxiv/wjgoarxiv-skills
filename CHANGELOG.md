@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+- README and `README_ko-KR.md`: the shelf is presented as LitFamily extensions (확장). The opening says LitFamily's core
+  is complete on its own and that installing these skills alongside a LitFamily product gives the full LitFamily
+  experience; the skills still work without one. The pick-one table intro names its rows extensions. The
+  `package.json` and marketplace descriptions say the same. Commands, tables, links and pictures are unchanged.
 - README: a cover loop, a big-picture diagram, a skill map with a slice per family and an install-paths flowchart (each
   in light and dark), and two schematics (the skill plant and the editions manifold), all in `docs/assets/`; a section per
   family, per-harness notes, a licence table and a note on the `lit-` names. The pick-one table is unchanged.

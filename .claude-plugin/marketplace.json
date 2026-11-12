@@ -1,6 +1,6 @@
 {
   "name": "wjgoarxiv-skills",
-  "metadata": { "description": "Content-production skills that moved out of the LitFamily products, one plugin per family." },
+  "metadata": { "description": "LitFamily extensions: content-production skills that install alongside the LitFamily products, one plugin per family." },
   "owner": { "name": "wjgoarxiv" },
   "plugins": [
     {

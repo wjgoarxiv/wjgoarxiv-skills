@@ -13,20 +13,25 @@
 </p>
 
 <p align="center">
-  <b>One shelf of skills for seven coding agents.</b><br>
+  <b>LitFamily extensions for seven coding agents.</b><br>
   Decks, documents, figures, interfaces, films and READMEs, installed one family or one folder at a time.<br>
   <sub>Silent cover film: <a href="docs/assets/cover/cover-dark.mp4">dark MP4</a> · <a href="docs/assets/cover/cover-light.mp4">light MP4</a></sub>
 </p>
 
 # wjgoarxiv-skills
 
-These nine skills grew up inside LitFamily, my set of add-ons that brings one way of working (plans, loops, goals,
-reviews) to seven coding agents. Over time they turned into the heaviest part of every product: a deck builder with its
-own office runtime, a document studio, three kinds of figure, an interface kit and a film engine. Most people did not
-need all of that on every install, and some wanted just one of them without the rest of LitFamily. So I kept LitFamily
-itself light and moved the skills out here, unchanged. Each LitFamily product kept only a small stub with the same name,
-which tells you what the skill does and how to install it from this shelf. You can use everything here without any
-LitFamily product. Pick the one skill you want, for the agent you already use, and leave the rest on the shelf.
+These nine skills are extensions for LitFamily, my set of add-ons that brings one way of working (plans, loops, goals,
+reviews) to seven coding agents. LitFamily's core is complete on its own and needs nothing
+from this repository. The skills here grew up inside LitFamily, and over time they turned into the heaviest part of
+every product: a deck builder with its own office runtime, a document studio, three kinds of figure, an interface kit
+and a film engine. Most people did not need all of that on every install. So I kept the core light and
+moved these skills out here, unchanged. Each LitFamily product kept only a small stub with the same name, which tells
+you what the skill does and how to install it from this shelf.
+
+Install the extensions you want alongside your LitFamily product and you get the full LitFamily experience. Ask for a
+deck, a document, a figure, an interface, a film or a README, and LitFamily finds the extension by its name and hands the
+work to it. Pick the ones you need for the agent you already use, and leave the rest on the shelf. If one skill is all
+you are after, it also works without any LitFamily product.
 
 The repository is public at https://github.com/wjgoarxiv/wjgoarxiv-skills.
 
@@ -176,8 +181,8 @@ the family plugin. On every other harness you clone the repository once and copy
   </picture>
 </p>
 
-Find your skill in the left column and your harness along the top. Each cell holds the install lines that harness's
-LitFamily stub gives for that skill, copied as they are, so the stub and this table always say the same thing. Claude
+Find the extension in the left column and your harness along the top. Each cell holds the install lines that harness's
+LitFamily stub gives for that extension, copied as they are, so the stub and this table always say the same thing. Claude
 Code installs straight from GitHub. The other harnesses copy from a local clone: run
 `git clone https://github.com/wjgoarxiv/wjgoarxiv-skills` once, then replace `<path to your wjgoarxiv-skills clone>`
 with that folder. The Grok Build cells carry the clone line because LitGrok's notes give it.

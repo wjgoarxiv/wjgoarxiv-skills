@@ -1,7 +1,7 @@
 # AGENTS.md — wjgoarxiv-skills
 
 This repository holds the content-production skills that moved out of the LitFamily products. It is a Claude Code
-marketplace: one plugin per family under `plugins/<family>/`. Read `README.md` for the layout and install lines.
+marketplace: one plugin per family under `plugins/<family>/`. Read `README.md` for the install lines and `docs/reference.md` for the layout.
 
 ## Moving a family in
 
@@ -13,7 +13,8 @@ marketplace: one plugin per family under `plugins/<family>/`. Read `README.md` f
 2. Write `receipts/<family>.sha256`, one line per file: `sha256  <source path at commit>  <destination path>`.
 3. Add `plugins/<family>/.claude-plugin/plugin.json`, the family's `LICENSE`, and one entry in
    `.claude-plugin/marketplace.json`.
-4. Add the family row to the README table and remove it from the "still to move" list.
+4. Add the family to the family sections of both READMEs (`What you can make`) and both `docs/reference*.md`
+   files (`What each family carries`), English and Korean.
 5. Run `npm test`, `claude plugin validate .` and `claude plugin validate plugins/<family>`.
 
 The product side of the move (the same-name stub, routes, pins and docs) lives in the product repo, in the same

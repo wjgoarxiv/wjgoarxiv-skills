@@ -18,7 +18,9 @@
   <sub>소리 없는 커버 영상: <a href="docs/assets/cover/cover-dark.mp4">어두운 테마 MP4</a> · <a href="docs/assets/cover/cover-light.mp4">밝은 테마 MP4</a></sub>
 </p>
 
-# wjgoarxiv-skills
+# LitFamily Extensions
+
+저장소와 Claude Code 마켓플레이스 이름은 `wjgoarxiv-skills`입니다. 아래 설치 명령에도 이 이름이 들어갑니다.
 
 LitFamily를 위한 콘텐츠 스킬 아홉 개입니다. LitFamily는 계획, 루프, 목표, 리뷰로 이어지는 같은 작업 방식을 일곱 코딩
 에이전트에 붙여 주는 애드온 묶음입니다. 발표자료, 문서, 그림, 화면, 영상, README를 만들고, 필요한 것만 골라 설치하며,

@@ -18,7 +18,10 @@
   <sub>Silent cover film: <a href="docs/assets/cover/cover-dark.mp4">dark MP4</a> · <a href="docs/assets/cover/cover-light.mp4">light MP4</a></sub>
 </p>
 
-# wjgoarxiv-skills
+# LitFamily Extensions
+
+The repository and its Claude Code marketplace are named `wjgoarxiv-skills`, and the install lines below use
+that name.
 
 Nine content skills for LitFamily, my set of add-ons that brings one way of working (plans, loops, goals, reviews) to
 seven coding agents. They make decks, documents, figures, interfaces, films and READMEs, and you install only the ones

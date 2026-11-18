@@ -2,7 +2,7 @@
 7dc58f1caa6d5fc9dc43797a703911e1ec26689a082bb6972f6ed71722a01d57  plugins/litclaude/lib/secret-shapes.mjs  plugins/design/lib/secret-shapes.mjs
 d941f327aabce5ffc212770852cfbc7e08dd03471e4e9bc9560eff54f06d489a  plugins/litclaude/lib/strict-json.mjs  plugins/design/lib/strict-json.mjs
 a03098dc7f73e791343be35cf34a3fb5e041ea1b527d75aed7e372d055caaa99  LICENSE  plugins/design/LICENSE
-69fbf97638165d8dac5297c6c2e7b18c5757605acdcaed3ce96f745dc3c72532  plugins/litclaude/skills/browser-drive/scripts/capability-probe.mjs  plugins/design/skills/browser-drive/scripts/capability-probe.mjs
+4bd5e3d7217ef0abf2461670a2d1f4fa5247a9c645cae13ca43a0dd384eb30f2  plugins/litclaude/skills/browser-drive/scripts/capability-probe.mjs  plugins/design/skills/browser-drive/scripts/capability-probe.mjs  edited-from:69fbf97638165d8dac5297c6c2e7b18c5757605acdcaed3ce96f745dc3c72532
 acec72155499a87dd564b10979c8b7db4bb1aec25029bff09aafa86f6133e649  plugins/litclaude/skills/frontend-ui-ux/ATTRIBUTION.md  plugins/design/skills/frontend-ui-ux/ATTRIBUTION.md
 a89011236a6ff14e12ec55fccbfab1bbd40ae34614cea5710c022121aa841bb8  plugins/litclaude/skills/frontend-ui-ux/data/design-intelligence.json  plugins/design/skills/frontend-ui-ux/data/design-intelligence.json
 562efbb7b652fd1e0a186be8ee92b6efca352520a9137f14ec4a3a19c509f665  plugins/litclaude/skills/frontend-ui-ux/examples/phase-3-readme-ab/README.md  plugins/design/skills/frontend-ui-ux/examples/phase-3-readme-ab/README.md
@@ -225,11 +225,11 @@ b9a6a2a52cde0f971fa914c906f735be0398c30b4e296cd30ed1d310802dc772  plugins/litcla
 62047a42a773e85287fd2006a4ebdbf6defdedf98f14560fc7693417136a0a78  plugins/litclaude/skills/frontend-ui-ux/scripts/errors.mjs  plugins/design/skills/frontend-ui-ux/scripts/errors.mjs
 463e28da2cf102b62fd372b4b507f1e716b8ce349db4361e0027a500619b3291  plugins/litclaude/skills/frontend-ui-ux/scripts/import-design-intelligence.mjs  plugins/design/skills/frontend-ui-ux/scripts/import-design-intelligence.mjs
 93f113ab63b4b57935fa2d9c0df4916719a435d35706b55a1bd6fc5ba7f1263f  plugins/litclaude/skills/frontend-ui-ux/scripts/interface-probe-lock.mjs  plugins/design/skills/frontend-ui-ux/scripts/interface-probe-lock.mjs
-a9fb81a8213bdb8f6c1355ba9dc95f2f2c93c49003223dc5f542edcfc878358a  plugins/litclaude/skills/frontend-ui-ux/scripts/interface-probe-page.mjs  plugins/design/skills/frontend-ui-ux/scripts/interface-probe-page.mjs
+a72a1048a68c756c622a4da8c35b1faade5b853a21bf436bfacb1f1408d7350c  plugins/litclaude/skills/frontend-ui-ux/scripts/interface-probe-page.mjs  plugins/design/skills/frontend-ui-ux/scripts/interface-probe-page.mjs  edited-from:a9fb81a8213bdb8f6c1355ba9dc95f2f2c93c49003223dc5f542edcfc878358a
 775fd2836038eb9396f0d03746e74086e95a7f4c5a6a8af1e23a4eebafd2ab1f  plugins/litclaude/skills/frontend-ui-ux/scripts/interface-probe-rules.mjs  plugins/design/skills/frontend-ui-ux/scripts/interface-probe-rules.mjs
 310abdc6a4dbb3224a0d1fb928ccf6e8a608e4abd6c3b6b632ceb3f3f96940a2  plugins/litclaude/skills/frontend-ui-ux/scripts/interface-probe-server.mjs  plugins/design/skills/frontend-ui-ux/scripts/interface-probe-server.mjs
 96d16a48a5447a55ed1651cb50a14c7664ae6d42ec1dc2f09950ec9b8ceba652  plugins/litclaude/skills/frontend-ui-ux/scripts/interface-probe-static.mjs  plugins/design/skills/frontend-ui-ux/scripts/interface-probe-static.mjs
-fd05355ab0c2c61521b557f3b559799a045b7276a647263ec365ba1b42c2d4b9  plugins/litclaude/skills/frontend-ui-ux/scripts/interface-probe.mjs  plugins/design/skills/frontend-ui-ux/scripts/interface-probe.mjs
+6176c784bdf41d6b8e0313889083dbedcc98444b55a1ade9fd2d04754d6a7d95  plugins/litclaude/skills/frontend-ui-ux/scripts/interface-probe.mjs  plugins/design/skills/frontend-ui-ux/scripts/interface-probe.mjs  edited-from:fd05355ab0c2c61521b557f3b559799a045b7276a647263ec365ba1b42c2d4b9
 fca65cdcf3ae4b6c4323c11d6aada6235fd6e5ff7f8dfd044680eeb2fc75ba5c  plugins/litclaude/skills/frontend-ui-ux/scripts/json-boundary.mjs  plugins/design/skills/frontend-ui-ux/scripts/json-boundary.mjs
 2a7cc03e37b3f88890ce9a19e55f2369014b45805a444830927c0e8af5047403  plugins/litclaude/skills/frontend-ui-ux/scripts/pixel-art.mjs  plugins/design/skills/frontend-ui-ux/scripts/pixel-art.mjs
 9ce306b377165f4d81117988b3f72f538e98cea75cca6661229e2d022aebfe41  plugins/litclaude/skills/frontend-ui-ux/scripts/query-design-intelligence.mjs  plugins/design/skills/frontend-ui-ux/scripts/query-design-intelligence.mjs

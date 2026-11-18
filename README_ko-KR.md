@@ -774,9 +774,10 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
 
 ### 옮긴 뒤 고친 파일
 
-옮겨 온 파일은 받은 그대로 둡니다. 예외는 하나입니다. 제품이 나중에 없앤 LitFamily 제품 명령을 실행하라고 사용자(또는
-모델)에게 말하는 줄인데, 그런 줄은 설치된 플러그인이 혼자 실행할 수 있는 명령으로 바꾸고 파일의 나머지는 건드리지
-않습니다.
+옮겨 온 파일은 받은 그대로 둡니다. 예외는 둘입니다. 첫째는 제품이 나중에 없앤 LitFamily 제품 명령을 실행하라고
+사용자(또는 모델)에게 말하는 줄입니다. 그런 줄은 설치된 플러그인이 혼자 실행할 수 있는 명령으로 바꾸고 파일의 나머지는
+건드리지 않습니다. 둘째는 옮긴 뒤 LitClaude가 같은 파일에서 고친 버그입니다. 그 수정은 바이트 그대로 가져와서 두 사본이
+같게 유지됩니다.
 
 <details>
 <summary>패밀리별로 고친 파일</summary>
@@ -801,6 +802,15 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
 
 `figures` (LitClaude 1.0.50에서 `litclaude doctor`의 scientific-visualization doctor가 빠짐):
 - `skills/lit-scientific-visualization/SKILL.md`: 4단계는 번들 doctor만 실행하고, 더는 `litclaude doctor`를 권하지 않습니다.
+
+`design` (LitClaude 1.0.54의 버그 수정. LitClaude 풀 리퀘스트 #8과 WSL 보고에서 왔습니다):
+- `skills/frontend-ui-ux/scripts/interface-probe.mjs`: 약 100 KB 페이지 스크립트를 stdin으로 드라이버에 넘깁니다
+  (`eval --stdin`). base64 인자 하나로 넘기면 Linux에서는 `E2BIG`, Windows에서는 `ENAMETOOLONG`으로 실패했습니다.
+- `skills/frontend-ui-ux/scripts/interface-probe-page.mjs`: 반투명 색을 `getImageData`가 준 값 그대로 읽습니다. 알파로 한 번
+  더 나누면 색이 부풀어서 틀린 대비 경고가 나왔습니다.
+- `skills/browser-drive/scripts/capability-probe.mjs`: 입력을 넘기는 드라이버 호출만 stdin 파이프를 받습니다. Windows에서는
+  `PATH`와 `PATHEXT`로 agent-browser를 찾고, npm `.cmd` 심을 따라가 실제 실행 파일을 쓰고, 출력을 임시 파일로 받아서
+  데몬을 띄우는 호출이 시간 초과까지 기다리지 않습니다.
 
 `decks`와 `documents`는 고칠 게 없습니다. 오피스 런타임은 `lib/office-runtime.mjs`가 처음 쓸 때 스스로 설치하고, 그
 `status`도 플러그인에서 돌아갑니다. `variants/`의 에디션들은 이미 혼자 돌아가도록 손봤고(각 `CHANGES.md` 참고), 제품이 없앤

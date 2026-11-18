@@ -780,9 +780,10 @@ This part is for maintaining the repository, and a first-time user can skip it. 
 
 ### Edited after the move
 
-A moved file stays as it came, with one exception: a line that tells you (or the model) to run a LitFamily product
-command the product has since removed. Such a line is changed to a command the installed plugin runs by itself, and
-nothing else in the file changes.
+A moved file stays as it came, with two exceptions. The first is a line that tells you (or the model) to run a
+LitFamily product command the product has since removed: such a line is changed to a command the installed plugin runs
+by itself, and nothing else in the file changes. The second is a bug fix LitClaude made to the same file after the
+move: the fix is carried over byte for byte, so both copies stay alike.
 
 <details>
 <summary>The edited files, family by family</summary>
@@ -810,6 +811,15 @@ throw away every cache already on disk.
 `figures` (LitClaude 1.0.50 removed the scientific-visualization doctor from `litclaude doctor`):
 - `skills/lit-scientific-visualization/SKILL.md`: step 4 runs only the bundled doctor and no longer offers
   `litclaude doctor`.
+
+`design` (bug fixes from LitClaude 1.0.54, LitClaude pull request #8 and a WSL report):
+- `skills/frontend-ui-ux/scripts/interface-probe.mjs`: the ~100 KB page script goes to the driver on stdin
+  (`eval --stdin`); as one base64 argument it failed with `E2BIG` on Linux and `ENAMETOOLONG` on Windows.
+- `skills/frontend-ui-ux/scripts/interface-probe-page.mjs`: translucent colours are read as `getImageData` returns them;
+  dividing by alpha again inflated them and raised false contrast findings.
+- `skills/browser-drive/scripts/capability-probe.mjs`: a driver call that passes input gets a stdin pipe; on Windows
+  agent-browser is found through `PATH` and `PATHEXT`, an npm `.cmd` shim is followed to the native executable, and
+  output goes through temporary files so a call that starts the daemon no longer waits for its timeout.
 
 `decks` and `documents` need no edit: the office runtime installs itself on first use from `lib/office-runtime.mjs`,
 and its `status` runs from the plugin. The editions under `variants/` were already made to run on their own (see each

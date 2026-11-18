@@ -170,6 +170,10 @@ hands a `lit` route over to the copy. LitMuse's installer, updates and uninstall
 - Checked from a folder installed alone: the bundled probe ran on a scaffolded page and produced seven viewport and
   mode screenshots and a findings file (its verdict judged the bare scaffold, as intended), `image-diff` ran, and the
   evidence and review validators rejected malformed input with their named errors.
+- In both copies of `interface-probe-page.mjs` (frontend-ui-ux `scripts/`, visual-qa `scripts/probe/`), `parseColor`
+  divided the canvas channels by alpha a second time. `getImageData` already returns them un-premultiplied, so every
+  translucent colour was inflated (`rgba(255,255,255,.18)` read as r = 1414) and a dark glass panel was measured as
+  white. It now uses r, g and b as returned.
 
 ## lit-typographic-motion
 

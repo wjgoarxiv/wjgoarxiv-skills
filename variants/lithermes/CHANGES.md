@@ -133,6 +133,12 @@ names its scripts through that token. Reference files are not substituted; they 
   install-verification section that copies the folder into an isolated `HERMES_HOME`
   instead of the installer transcript. The four references that told the reader to sync
   plugin payload hashes now say to rerun `verify-corpus.mjs`.
+- `scripts/hostexec.mjs` gained `spawnBrowserTool`, and `scripts/probe.mjs` uses it for every
+  agent-browser call: on Windows the daemon started by the first call inherits stdout and
+  stderr, so with pipes each call ran into its 60 s timeout; output now goes to owned
+  temporary files there. The hover check's script went from an `eval` argument to
+  `eval --stdin`, because cmd.exe (which runs the npm `.cmd` shim) refuses an argument
+  holding a double quote. The plugin's copy received the same change.
 
 ### visual-qa
 - Bundles `scripts/uiux_runtime_common.py`; `scripts/visual_qa.py` imports from its own

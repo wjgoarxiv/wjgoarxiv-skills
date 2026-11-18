@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { spawn, spawnSync } from "node:child_process";
-import { existsSync, lstatSync, mkdirSync, mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { closeSync, existsSync, lstatSync, mkdirSync, mkdtempSync, openSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -45,15 +45,36 @@ function localUrl(value) {
   try { const url = new URL(value); return url.protocol === "http:" && ["127.0.0.1", "localhost", "[::1]"].includes(url.hostname); } catch { return false; }
 }
 
+// The first call starts the driver's daemon, which inherits stdout and stderr. On Windows "close" then
+// waits for the daemon's copies of those pipes until the timeout kills a call that already finished, so
+// there the output goes to owned files, read back when the direct child exits.
 function run(command, parts, stdin = "", timeout = 20_000) {
   return new Promise((done) => {
-    const child = spawn(command, parts, { env: browserEnv, stdio: ["pipe", "pipe", "pipe"] });
+    const windows = process.platform === "win32";
+    const outDir = windows ? mkdtempSync(join(tmpdir(), "lo-uiux-out-")) : null;
+    const files = windows ? [join(outDir, "stdout"), join(outDir, "stderr")] : [];
+    const fds = files.map((file) => openSync(file, "w"));
+    let child;
+    try {
+      child = spawn(command, parts, { env: browserEnv, stdio: ["pipe", fds[0] ?? "pipe", fds[1] ?? "pipe"] });
+    } finally {
+      for (const fd of fds) closeSync(fd);
+    }
     let stdout = "", stderr = "";
     const timer = setTimeout(() => child.kill("SIGKILL"), timeout);
-    child.stdout.on("data", (data) => { stdout += data; });
-    child.stderr.on("data", (data) => { stderr += data; });
-    child.on("error", (error) => { clearTimeout(timer); done({ status: 2, stdout, stderr, error }); });
-    child.on("close", (status) => { clearTimeout(timer); done({ status, stdout, stderr }); });
+    const settle = (result) => {
+      clearTimeout(timer);
+      if (windows) {
+        try { [stdout, stderr] = files.map((file) => readFileSync(file, "utf8")); } catch { /* keep what was read */ }
+        // The daemon can still hold the files open; their content was already read.
+        try { rmSync(outDir, { recursive: true, force: true }); } catch { /* left for the OS temp cleaner */ }
+      }
+      done({ ...result, stdout, stderr });
+    };
+    child.stdout?.on("data", (data) => { stdout += data; });
+    child.stderr?.on("data", (data) => { stderr += data; });
+    child.on("error", (error) => settle({ status: 2, error }));
+    child.on(windows ? "exit" : "close", (status) => settle({ status }));
     child.stdin.end(stdin);
   });
 }

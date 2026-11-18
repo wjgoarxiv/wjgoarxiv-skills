@@ -79,6 +79,13 @@ stable identifiers, and worked examples that name LitGrok or LitFamily as their 
   stay byte-identical to upstream; `designpowers/EVIDENCE.md` stays as the original build receipt.
   Brand design-system pages (`claude.md`, `cursor.md`, `opencode.ai.md`, `ollama.md` and the like)
   describe those websites and are kept as written.
+- `scripts/interface-probe-page.mjs`: `parseColor` divided the canvas channels by alpha a second
+  time. `getImageData` already returns them un-premultiplied, so every translucent colour was
+  inflated (`rgba(255,255,255,.18)` read as r = 1414) and a dark glass panel was measured as white.
+  It now uses r, g and b as returned.
+- `scripts/interface-probe-driver.mjs`: on Windows the agent-browser daemon a call starts inherited that
+  call's stdout and stderr pipes, so the call waited for the daemon and ended in `ETIMEDOUT`. On Windows
+  the output now goes to owned temp files, read back once the direct child exits.
 
 ## visual-qa
 

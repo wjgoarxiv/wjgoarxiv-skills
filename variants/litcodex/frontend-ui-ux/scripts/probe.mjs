@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 import { spawn, spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { closeSync, existsSync, mkdirSync, mkdtempSync, openSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { dirname, extname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { probeBrowserDriver } from './capability-probe.mjs';
+import { probeBrowserDriver, shellFreeInvocation } from './capability-probe.mjs';
 import { inspectPage } from './page-probe.mjs';
 import { hoverCandidates, inspectHovered } from './hover-probe.mjs';
 import { measureLock } from './lock-probe.mjs';
@@ -134,7 +135,26 @@ export function matrixExitCode(findings, viewports, required = VIEWPORTS) {
 }
 
 function run(executable, args, options = {}) {
-  return spawnSync(executable, args, { encoding: 'utf8', input: options.input, timeout: LIMITS.viewportBudgetMs, env: { ...process.env, ...(options.socketDir ? { AGENT_BROWSER_SOCKET_DIR: options.socketDir } : {}) } });
+  const spawnOptions = { encoding: 'utf8', input: options.input, timeout: LIMITS.viewportBudgetMs, env: { ...process.env, ...(options.socketDir ? { AGENT_BROWSER_SOCKET_DIR: options.socketDir } : {}) } };
+  if (process.platform !== 'win32') return spawnSync(executable, args, spawnOptions);
+  // Node will not start a .cmd shim without a shell, which would re-parse every argument; the shim is
+  // unwrapped to the program it runs. The first call also starts the driver's daemon, which inherits
+  // stdout and stderr: with pipes spawnSync waits for it until the timeout, so output goes to owned files.
+  const invocation = shellFreeInvocation(executable, args);
+  if (invocation === null) return { status: null, stdout: '', stderr: '', error: new Error(`${executable} is a batch file that does not start a known program`) };
+  const outDir = mkdtempSync(join(tmpdir(), 'uiux-out-'));
+  try {
+    const files = [join(outDir, 'stdout'), join(outDir, 'stderr')];
+    const fds = files.map((file) => openSync(file, 'w'));
+    let result;
+    try { result = spawnSync(invocation.command, invocation.args, { ...spawnOptions, stdio: ['pipe', fds[0], fds[1]] }); }
+    finally { for (const fd of fds) closeSync(fd); }
+    const [stdout, stderr] = files.map((file) => readFileSync(file, 'utf8'));
+    return { ...result, stdout, stderr };
+  } finally {
+    // The daemon can still hold the files open; their content was already read.
+    try { rmSync(outDir, { recursive: true, force: true }); } catch { /* left for the OS temp cleaner */ }
+  }
 }
 
 function resultValue(stdout) {
@@ -198,7 +218,8 @@ export async function probe(page, evidenceRoot, options = {}) {
   const target = localUrl ?? server.url;
   const session = `uiux-${process.pid}-${Date.now()}`;
   let socketDir;
-  try { socketDir = mkdtempSync('/tmp/uiux-'); }
+  // A short POSIX path keeps the socket under the 104-byte limit; Windows has no /tmp.
+  try { socketDir = mkdtempSync(process.platform === 'win32' ? join(tmpdir(), 'uiux-') : '/tmp/uiux-'); }
   catch { server?.child.kill('SIGTERM'); return blocked('browser unavailable', [], [], [], [], target); }
   const command = (args, options) => {
     const result = run(capability.command, ['--session', session, ...args], { ...options, socketDir });

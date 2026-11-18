@@ -130,6 +130,10 @@ namespaced name (`<product>:<id>`), so the two names never collide.
   Those role ids stay as written in the receipts.
 - The breakage catalogue, reviewer charters and complete contract use agy tools and no product agents.
   `LICENSE` added.
+- In both copies of `interface-probe-page.mjs` (frontend-ui-ux `scripts/`, visual-qa `scripts/probe/`),
+  `parseColor` divided the canvas channels by alpha a second time. `getImageData` already returns them
+  un-premultiplied, so every translucent colour was inflated (`rgba(255,255,255,.18)` read as r = 1414) and a
+  dark glass panel was measured as white. It now uses r, g and b as returned.
 
 ### lit-typographic-motion
 - **The done gate is now a command.** The product's tool-use hook recorded each render and each opened image,

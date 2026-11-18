@@ -71,8 +71,9 @@ function startServer(root) {
   });
 }
 
-function browser(command, session, args) {
+function browser(command, session, args, input) {
   const result = runBrowserCommand(command, ["--session", session, ...args], {
+    ...(input === undefined ? {} : { input }),
     encoding: "utf8",
     timeout: COMMAND_TIMEOUT_MS,
     env: { ...process.env, AGENT_BROWSER_HIDE_SCROLLBARS: "true", AGENT_BROWSER_IDLE_TIMEOUT_MS: "120000" },
@@ -87,7 +88,9 @@ function browser(command, session, args) {
 
 function evaluate(command, session, fn, argument) {
   const script = `(() => { const run = ${fn.toString()}; return JSON.stringify(run(${JSON.stringify(argument)})); })()`;
-  const run = browser(command, session, ["eval", "--json", "-b", Buffer.from(script, "utf8").toString("base64")]);
+  // The ~100 KB page script as one base64 argument passes Linux's 128 KiB per-argument limit (E2BIG)
+  // and the Windows command line, so it goes to the driver on stdin.
+  const run = browser(command, session, ["eval", "--json", "--stdin"], script);
   if (!run.ok) return { error: run.error ?? (run.stderr.trim() || run.stdout.trim()).slice(-300) };
   try {
     const envelope = JSON.parse(run.stdout);

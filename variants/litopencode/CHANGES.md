@@ -87,6 +87,13 @@ Changes that apply to every folder:
   own licence and still pass that verifier.
 - Checked: the corpus verifier reports `ok: true`; `design-lock.mjs init --scaffold` writes the kit fonts; `probe.mjs`
   finds the browser driver and captures all seven viewports.
+- `scripts/browser-driver-probe.mjs` on Windows resolved with `where.exe`, which lists npm's extensionless shell shim
+  beside its `.cmd` (two lines, so the probe said "not on PATH") and garbles a non-ASCII profile path, and the `.cmd`
+  itself was refused anyway. It now walks PATH and PATHEXT itself and follows the npm shim to the native
+  `agent-browser-win32-*.exe`, the same change the product's own probe received.
+- `scripts/probe.mjs` on Windows settled each browser call on `close`, which waits for the daemon's inherited copies
+  of stdout and stderr until the timeout kills a call that already finished. There it now writes output to owned
+  temporary files and settles on `exit`.
 
 ## visual-qa
 

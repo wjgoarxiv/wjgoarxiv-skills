@@ -114,6 +114,10 @@ folder smaller.
   names are brand names, which are subjects of design study. It is left byte-for-byte as it was, because
   changing it would break the digest check.
 - Four tests that loaded the plugin catalog, hook driver or runtime command contract were deleted.
+- `scripts/probe.mjs` on Windows: Node will not start the npm `.cmd` shim without a shell, so `run` now unwraps
+  it with the probe's `shellFreeInvocation`. The first call starts the driver's daemon, which inherits stdout and
+  stderr; with pipes `spawnSync` waited for it until the viewport budget ran out, so Windows output goes to owned
+  temporary files. The socket folder is made under the OS temp folder there, because Windows has no `/tmp`.
 
 ## visual-qa
 

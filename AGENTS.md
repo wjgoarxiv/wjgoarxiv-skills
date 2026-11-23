@@ -33,3 +33,4 @@ product release.
 - When a product stub's install lines change, update `test/stub-install-lines.json`, the README pick-one table and
   the per-harness notes (both languages) and the matching `variants/<product>/CHANGES.md` in the same commit.
 - No push, publish, tag or remote creation without the maintainer's explicit yes.
+- Harness editions under `variants/` follow `variants/AGENTS.md`.

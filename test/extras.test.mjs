@@ -14,7 +14,8 @@ const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((d) => (
 const market = json('.claude-plugin/marketplace.json');
 const SUPPORT_FOLDERS = { figures: ['lit-humanizer'], design: ['browser-drive', 'lit-diagram-drawer', 'lit-typographic-motion'], 'video-covers': ['lit-pptx'] };
 // Files a plugin writes itself rather than copies: they carry no receipt row.
-const NATIVE_FILES = { 'video-covers': ['plugins/video-covers/hooks/hooks.json', 'plugins/video-covers/hooks/motion-hook.mjs'] };
+const NATIVE_FILES = { 'video-covers': ['plugins/video-covers/hooks/hooks.json', 'plugins/video-covers/hooks/motion-hook.mjs',
+  'plugins/video-covers/skills/lit-typographic-motion/engine/node/film-qa.mjs'] };
 
 test('every marketplace entry is a plugin folder with a manifest and at least one skill', () => {
   assert.equal(market.name, 'wjgoarxiv-skills');

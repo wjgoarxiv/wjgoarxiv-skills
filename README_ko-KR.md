@@ -781,7 +781,8 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
 옮겨 온 파일은 받은 그대로 둡니다. 예외는 둘입니다. 첫째는 제품이 나중에 없앤 LitFamily 제품 명령을 실행하라고
 사용자(또는 모델)에게 말하는 줄입니다. 그런 줄은 설치된 플러그인이 혼자 실행할 수 있는 명령으로 바꾸고 파일의 나머지는
 건드리지 않습니다. 둘째는 옮긴 뒤 LitClaude가 같은 파일에서 고친 버그입니다. 그 수정은 바이트 그대로 가져와서 두 사본이
-같게 유지됩니다.
+같게 유지됩니다. lit-typographic-motion과 readme-studio는 LitClaude 1.0.50에서 빠졌으므로 이제 이 저장소에서
+고칩니다. 그런 변경은 그 변경이 들어간 버전과 함께 여기에 적습니다.
 
 <details>
 <summary>패밀리별로 고친 파일</summary>
@@ -803,6 +804,13 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
 
 `engine/package.json`과 `engine/audio/requirements.lock`에는 옛 명령이 일부러 남아 있습니다. 이 두 파일의 바이트가 캐시
 폴더 이름(`node-<lockdigest>-...`, `audio-<digest>`)에 해시로 들어가서, 고치면 이미 받아 둔 캐시를 모두 버리게 됩니다.
+
+`video-covers` 0.1.2 (여기서 한 변경, LitClaude에는 이제 영상 스킬이 없음):
+- `skills/lit-typographic-motion/engine/node/pipeline.mjs`, `skills/lit-typographic-motion/engine/node/stage.mjs`:
+  두 렌더 경로 모두 인코딩된 영상에 `engine/node/film-qa.mjs`(여기서 새로 쓴 파일, 영수증 행 없음)를 돌리고, 그 결과를
+  WARN만 내는 규칙(FILM-CUTS, FILM-FREEZE, FILM-BLACK, SOUND-TRUEPEAK, SOUND-SHORTTERM, SOUND-DC)으로 게이트 보고서에
+  더합니다.
+- `skills/lit-typographic-motion/references/craft-loop.md`: 그 규칙들의 게이트 표 두 행.
 
 `figures` (LitClaude 1.0.50에서 `litclaude doctor`의 scientific-visualization doctor가 빠짐):
 - `skills/lit-scientific-visualization/SKILL.md`: 4단계는 번들 doctor만 실행하고, 더는 `litclaude doctor`를 권하지 않습니다.

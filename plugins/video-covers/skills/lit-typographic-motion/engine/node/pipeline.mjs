@@ -28,6 +28,7 @@ import { addToStills, writeBoard } from "./board.mjs";
 import { recordHouse } from "./house.mjs";
 import { treatmentSha } from "./done.mjs";
 import { auditMuxed } from "./sound.mjs";
+import { filmQa } from "./film-qa.mjs";
 import { soundTrackFor } from "./sound-cli.mjs";
 import { endCardFrame, endCardPlan, endCardRule, padWavSilence, renderEndCard } from "./end-card.mjs";
 
@@ -638,7 +639,11 @@ function typeSoundAudit({ out, treatment, plan, ffmpeg, env }) {
   const film = path.join(out, ".run", "stage", "film.mp4");
   const manifestFile = path.join(out, "manifest.json");
   const cardFrames = existsSync(manifestFile) ? JSON.parse(readFileSync(manifestFile, "utf8")).endCard?.frames ?? 0 : 0;
-  return auditMuxed({ ffmpeg, ffprobe: findFfprobe(env), film, videoDurationSec: (plan.frameCount + cardFrames) / plan.fps, mode: treatment.sound.mode });
+  const durationSec = (plan.frameCount + cardFrames) / plan.fps;
+  const audit = auditMuxed({ ffmpeg, ffprobe: findFfprobe(env), film, videoDurationSec: durationSec, mode: treatment.sound.mode });
+  // The encoded film's own checks (film-qa.mjs) report next to the sound rules and never fail the gate.
+  const qa = existsSync(film) ? filmQa({ ffmpeg, film, fps: plan.fps, durationSec, boundaries: treatment.beats.map((b) => b.t0).filter((t) => t > 0), cardStartSec: cardFrames ? plan.frameCount / plan.fps : null, hasAudio: treatment.sound.mode !== "none" }) : [];
+  return { rules: [...audit.rules, ...qa], exitCode: audit.exitCode };
 }
 
 function appendShotEvents(out, shotEvents) {

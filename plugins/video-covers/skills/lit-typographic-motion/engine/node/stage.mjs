@@ -19,6 +19,7 @@ import { findFfmpeg, findFfprobe, findImg2webp, previewRungs, startMaster, encod
 import { resolveViewed, asBlocked } from "./pipeline.mjs";
 import { encodePng, rgbaToRgb } from "./png.mjs";
 import { auditMuxed } from "./sound.mjs";
+import { filmQa } from "./film-qa.mjs";
 import { soundTrackFor } from "./sound-cli.mjs";
 import { StageBrowser, FramePool, analyzeChecked } from "./stage-capture.mjs";
 import { evaluateStageGate, formatStageReport } from "./stage-gate.mjs";
@@ -477,6 +478,7 @@ export async function renderStage({ out, round = 1, stillsOnly = false, env = pr
     tagStaged(stageOut, env);
     const probe = probeVideo(filmPath, env);
     const soundAudit = auditMuxed({ ffmpeg, ffprobe: findFfprobe(env), film: filmPath, videoDurationSec: (frameCount + cardFrames) / fps, mode: sound.mode });
+    const filmRules = existsSync(filmPath) ? filmQa({ ffmpeg, film: filmPath, fps, durationSec: (frameCount + cardFrames) / fps, boundaries: treatment.beats.map((b) => b.t0).filter((t) => t > 0), cardStartSec: cardFrames ? frameCount / fps : null, hasAudio: sound.mode !== "none" }) : [];
     // The film's content rules judge its own frames; the flash audit reads every frame, end card included.
     const filmLines = lines.filter((l) => !l.endCard);
     const cardRule = card ? endCardRule({ lines: lines.filter((l) => l.endCard), plan: card, fps }) : null;
@@ -490,7 +492,7 @@ export async function renderStage({ out, round = 1, stillsOnly = false, env = pr
       masterFlash: lines.map((l) => l.flash), previewFlash: preview.records ? { records: preview.records, fps: preview.rung.fps } : null, fps,
       probe, width, height, treatment, exports, reducedFrame: plan.reduced, frames: filmLines, usesWebGL: finalState.usesWebGL, renderer: finalState.webglRenderer, rung: ctx.rung,
       endCardSec: card ? card.sec : 0,
-      determinism, extraRules: [...soundAudit.rules, ...(qaResult?.rules ?? []), assetUsed(treatment, scan.files), cardRule].filter(Boolean),
+      determinism, extraRules: [...soundAudit.rules, ...filmRules, ...(qaResult?.rules ?? []), assetUsed(treatment, scan.files), cardRule].filter(Boolean),
     });
     const promoted = promote(out, gate.flashFail);
     const loc = (name) => path.join(promoted.dir, name);

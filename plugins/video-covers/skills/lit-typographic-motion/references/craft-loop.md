@@ -60,6 +60,8 @@ user signs them off; the report labels them.
 | MO-D-03 empty frames (provisional) | no empty near-black run longer than 2x the minimum hold (+1 s at the ends) | a scene that failed to paint |
 | MO-D-04 glyphs (provisional) | every character in its run's font | change the text or style |
 | MO-SH-01..11 | seed formula, event budget, glitch/surge/flicker caps, dither seed per shot, guides off, <= 2 terminal layers, software downgrade | engine-enforced; report any FAIL as an engine defect |
+| FILM-CUTS, FILM-FREEZE, FILM-BLACK (WARN only) | on the encoded film: every hard cut on a beat start; no still run >= 3 s before the end card; no black run >= 0.25 s | look at the named times in the next look round |
+| SOUND-TRUEPEAK, SOUND-SHORTTERM, SOUND-DC (WARN only) | on the muxed audio: true peak <= -1 dBTP; loudest 3 s window <= +8 LU over the film; DC offset <= 0.01, no NaN | lower the loud cue or the master; remove the offset |
 | MO-A-33, MO-FT-04, MO-A-58 | Hangul weights from the lit-pptx pair only; no tracking or width motion on Hangul; post overrides in range, invert only on cuts | |
 
 ## Report (MO-C-17)

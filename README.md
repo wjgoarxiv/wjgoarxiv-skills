@@ -787,7 +787,9 @@ This part is for maintaining the repository, and a first-time user can skip it. 
 A moved file stays as it came, with two exceptions. The first is a line that tells you (or the model) to run a
 LitFamily product command the product has since removed: such a line is changed to a command the installed plugin runs
 by itself, and nothing else in the file changes. The second is a bug fix LitClaude made to the same file after the
-move: the fix is carried over byte for byte, so both copies stay alike.
+move: the fix is carried over byte for byte, so both copies stay alike. lit-typographic-motion and readme-studio
+left LitClaude in 1.0.50, so this repository is now where they change; such a change is listed here with the version
+that carries it.
 
 <details>
 <summary>The edited files, family by family</summary>
@@ -811,6 +813,12 @@ every edited file. The cache paths stay the same, so a runtime an older product 
 Two files still name the old command on purpose: `engine/package.json` and `engine/audio/requirements.lock`. Their
 bytes are hashed into the cache folder names (`node-<lockdigest>-...` and `audio-<digest>`), so editing them would
 throw away every cache already on disk.
+
+`video-covers` 0.1.2 (changes made here; LitClaude no longer carries the film skill):
+- `skills/lit-typographic-motion/engine/node/pipeline.mjs` and `skills/lit-typographic-motion/engine/node/stage.mjs`:
+  both render paths also run `engine/node/film-qa.mjs` (written here, no receipt row) on the encoded film and add its
+  WARN-only rules (FILM-CUTS, FILM-FREEZE, FILM-BLACK, SOUND-TRUEPEAK, SOUND-SHORTTERM, SOUND-DC) to the gate report.
+- `skills/lit-typographic-motion/references/craft-loop.md`: two gate-table rows for those rules.
 
 `figures` (LitClaude 1.0.50 removed the scientific-visualization doctor from `litclaude doctor`):
 - `skills/lit-scientific-visualization/SKILL.md`: step 4 runs only the bundled doctor and no longer offers

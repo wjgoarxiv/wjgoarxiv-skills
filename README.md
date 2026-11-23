@@ -250,8 +250,11 @@ repository itself.
 The moved lit-typographic-motion text was written for LitClaude, so a few of its lines describe LitClaude parts that do
 not come with this plugin:
 - `SKILL.md`, `references/look.md` and `references/cover.md` say a Stop hook checks the done list and holds the turn.
-  That check was a LitClaude hook and does not run outside LitClaude. The skill's own `motion.mjs gate` and its done
-  list still apply, and nothing ends the turn for you.
+  That hook was LitClaude's until 1.0.49. From video-covers 0.1.1 the plugin runs it by itself
+  (`hooks/hooks.json`, which calls LitClaude's `lib/motion-render-gate.mjs`, copied unchanged). LitClaude armed it from
+  its prompt router; the plugin arms it when the model loads lit-typographic-motion or runs its `motion.mjs`, and every
+  new prompt clears it. It keeps its state in `.litclaude/motion/turn.json`, the file LitClaude used, and that folder
+  ignores itself in Git.
 - The pre-warm used to be `litclaude-ai motion-runtime install`, which LitClaude 1.0.50 removed. The plugin now runs
   it by itself: `node <plugin>/skills/lit-typographic-motion/scripts/motion-runtime.mjs install` (or `status`), and
   `scripts/motion-doctor.mjs` prints the probes that `litclaude doctor` used to print. Every BLOCKED 14 and 15 message
@@ -762,7 +765,8 @@ renaming here would break that link and stop the receipts that prove each copy i
 **My harness loads a different copy.** Two same-name skills compete and the harness quietly keeps one. Run your
 harness's check line and move the other folder aside.
 
-**The film skill mentions a Stop hook I do not have.** That hook belonged to LitClaude; see
+**The film skill mentions a Stop hook I do not have.** video-covers 0.1.1 and later carry it. Update the plugin
+(`claude plugin marketplace update`, then `claude plugin update video-covers@wjgoarxiv-skills`) and see
 [Running the film skill outside LitClaude](#video-covers).
 
 ## Reference

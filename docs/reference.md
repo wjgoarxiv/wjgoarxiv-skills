@@ -77,7 +77,10 @@ web-interface edits with that probe.
 
 `video-covers` carries what lit-typographic-motion and readme-studio reach outside their own folders:
 - **`lib/`:** the mark helper (`mark.mjs`, `mark-logo.png`, `output_mark.py`) that draws the cover mark and the end card,
-  plus `project-state-root.mjs` and the three `rules/` modules it imports.
+  plus `project-state-root.mjs` and the three `rules/` modules it imports, and `motion-render-gate.mjs`, the
+  done-check gate LitClaude's Stop hook ran.
+- **`hooks/`:** written for the plugin, so it has no receipt row: `hooks.json` and `motion-hook.mjs`, which run that
+  gate on prompt, tool and stop events.
 - **`skills/lit-pptx/fonts/pretendard/`:** Pretendard Regular and Bold with their OFL licence, which the film engine's
   `fonts/manifest.json` reads by path and checks by sha256. There is no `SKILL.md` there; lit-pptx itself lives in
   `decks`.

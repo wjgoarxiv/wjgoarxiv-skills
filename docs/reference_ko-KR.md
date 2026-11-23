@@ -77,7 +77,10 @@ LitClaude는 웹 화면 수정을 이 프로브로 확인하기 때문에, front
 
 `video-covers`는 lit-typographic-motion과 readme-studio가 자기 폴더 밖에서 읽는 파일을 담고 있습니다.
 - **`lib/`:** 커버 마크와 엔드 카드를 그리는 마크 도우미(`mark.mjs`, `mark-logo.png`, `output_mark.py`), 그리고
-  `project-state-root.mjs`와 그것이 불러오는 `rules/` 모듈 세 개.
+  `project-state-root.mjs`와 그것이 불러오는 `rules/` 모듈 세 개, LitClaude의 Stop 훅이 돌리던 완료 검사 게이트
+  `motion-render-gate.mjs`.
+- **`hooks/`:** 플러그인을 위해 새로 쓴 파일이라 영수증 줄이 없습니다. `hooks.json`과 `motion-hook.mjs`가 프롬프트,
+  도구, 종료 이벤트에서 그 게이트를 돌립니다.
 - **`skills/lit-pptx/fonts/pretendard/`:** OFL 라이선스가 딸린 Pretendard Regular와 Bold. 영상 엔진의 `fonts/manifest.json`이
   경로로 읽고 sha256으로 확인합니다. 여기에는 `SKILL.md`가 없고, lit-pptx 자체는 `decks`에 있습니다.
 

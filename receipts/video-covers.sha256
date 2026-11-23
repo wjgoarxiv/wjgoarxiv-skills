@@ -1,6 +1,7 @@
 a03098dc7f73e791343be35cf34a3fb5e041ea1b527d75aed7e372d055caaa99  LICENSE  plugins/video-covers/LICENSE
 6987a891e914ad37a96ccedbcf85bc7861edbfb58b824a75aedc5f6f4070a9ae  plugins/litclaude/lib/mark-logo.png  plugins/video-covers/lib/mark-logo.png
 8f3d1c3ff2c471d264e8d73fca97595c93cf4b43d7935c285d72ee1ddfa8c67c  plugins/litclaude/lib/mark.mjs  plugins/video-covers/lib/mark.mjs
+cef51f8fa8c92b8c82a37382d2b94db901d160610eb187eb9f80072bbb0fbf7f  plugins/litclaude/lib/motion-render-gate.mjs  plugins/video-covers/lib/motion-render-gate.mjs
 f6f9a06361f8cf515a19053f59156a1807ddd686632b2f3cccb1e9a0b046d9ae  plugins/litclaude/lib/output_mark.py  plugins/video-covers/lib/output_mark.py
 1807eb734938db630494c15052f1567a9b64230088a792105cc0886488984925  plugins/litclaude/lib/project-state-root.mjs  plugins/video-covers/lib/project-state-root.mjs
 de97cc08ca834c35ba89a3d384517ae3f24fd52502b8ccd7a3c8227981e3f6c9  plugins/litclaude/lib/rules/constants.mjs  plugins/video-covers/lib/rules/constants.mjs

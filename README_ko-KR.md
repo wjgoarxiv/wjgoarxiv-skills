@@ -247,8 +247,11 @@ README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `l
 옮겨 온 lit-typographic-motion 문서는 LitClaude를 기준으로 쓴 거라서, 몇 줄은 이 플러그인에 따라오지 않는 LitClaude 부품
 얘기를 합니다.
 - `SKILL.md`, `references/look.md`, `references/cover.md`에는 Stop 훅이 완료 목록을 확인하고 턴을 붙잡는다고 적혀
-  있습니다. 이건 LitClaude 훅이라 LitClaude 밖에서는 돌지 않습니다. 스킬 자체의 `motion.mjs gate`와 완료 목록은 그대로
-  적용되지만, 턴을 대신 끝내 주는 장치는 없습니다.
+  있습니다. 이 훅은 LitClaude 1.0.49까지 LitClaude에 있었고, video-covers 0.1.1부터는 플러그인이 직접 돌립니다
+  (`hooks/hooks.json`이 LitClaude의 `lib/motion-render-gate.mjs`를 그대로 복사한 파일을 부릅니다). LitClaude는 프롬프트
+  라우터로 이 훅을 켰고, 플러그인은 모델이 lit-typographic-motion을 불러오거나 그 `motion.mjs`를 실행할 때 켭니다.
+  새 프롬프트가 오면 꺼집니다. 상태는 LitClaude가 쓰던 `.litclaude/motion/turn.json`에 두고, 그 폴더는 스스로 Git에서
+  빠집니다.
 - 미리 받기 명령은 원래 `litclaude-ai motion-runtime install`이었는데, LitClaude 1.0.50에서 빠졌습니다. 이제는
   플러그인이 직접 실행합니다: `node <plugin>/skills/lit-typographic-motion/scripts/motion-runtime.mjs install` (또는
   `status`). `litclaude doctor`가 보여 주던 점검 항목은 `scripts/motion-doctor.mjs`가 보여 줍니다. BLOCKED 14와 15
@@ -756,7 +759,8 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
 **하네스가 엉뚱한 복사본을 불러와요.** 이름이 같은 스킬이 둘이면 부딪치고 하네스는 말없이 하나만 남깁니다. 그 하네스의
 살펴보기 줄을 돌리고 다른 폴더를 옆으로 옮기세요.
 
-**영상 스킬이 없는 Stop 훅 얘기를 해요.** 그 훅은 LitClaude에 있던 것입니다.
+**영상 스킬이 없는 Stop 훅 얘기를 해요.** video-covers 0.1.1부터 플러그인에 들어 있습니다. 플러그인을 업데이트하고
+(`claude plugin marketplace update` 다음 `claude plugin update video-covers@wjgoarxiv-skills`)
 [LitClaude 밖에서 영상 스킬 쓰기](#video-covers)를 보세요.
 
 ## 참고 자료

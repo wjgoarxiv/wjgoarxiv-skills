@@ -1,0 +1,14 @@
+{
+  "description": "lit-typographic-motion done-check: a film turn ends only when the film is done.",
+  "hooks": {
+    "UserPromptSubmit": [
+      { "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/motion-hook.mjs\" user-prompt-submit", "timeout": 10 }] }
+    ],
+    "PostToolUse": [
+      { "matcher": "^(Bash|Skill)$", "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/motion-hook.mjs\" post-tool-use", "timeout": 10 }] }
+    ],
+    "Stop": [
+      { "hooks": [{ "type": "command", "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/motion-hook.mjs\" stop", "timeout": 30 }] }
+    ]
+  }
+}

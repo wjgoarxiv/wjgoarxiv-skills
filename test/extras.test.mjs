@@ -13,6 +13,8 @@ const walk = (dir) => readdirSync(dir, { withFileTypes: true }).flatMap((d) => (
 
 const market = json('.claude-plugin/marketplace.json');
 const SUPPORT_FOLDERS = { figures: ['lit-humanizer'], design: ['browser-drive', 'lit-diagram-drawer', 'lit-typographic-motion'], 'video-covers': ['lit-pptx'] };
+// Files a plugin writes itself rather than copies: they carry no receipt row.
+const NATIVE_FILES = { 'video-covers': ['plugins/video-covers/hooks/hooks.json', 'plugins/video-covers/hooks/motion-hook.mjs'] };
 
 test('every marketplace entry is a plugin folder with a manifest and at least one skill', () => {
   assert.equal(market.name, 'wjgoarxiv-skills');
@@ -53,7 +55,9 @@ test('every receipt matches the copied bytes, and every copied file has a receip
       }
       covered.add(dest);
     }
-    const files = walk(join(root, dir)).map((f) => relative(root, f)).filter((f) => !f.includes('/.claude-plugin/'));
+    const native = NATIVE_FILES[p.name] ?? [];
+    for (const f of native) assert.ok(!covered.has(f), `${f} is native and has no receipt row`);
+    const files = walk(join(root, dir)).map((f) => relative(root, f)).filter((f) => !f.includes('/.claude-plugin/') && !native.includes(f));
     assert.deepEqual(files.filter((f) => !covered.has(f)), [], 'files without a receipt');
   }
 });

@@ -1,0 +1,38 @@
+{
+  "tag": "HHC",
+  "seed": 150,
+  "words": ["Hit", "Hold", "Cut"],
+  "sub": ["치고", "멈추고", "자른다"],
+  "acts": [
+    {
+      "label": "Hit",
+      "blocks": ["impact", "crop", "key", "panels", "crt", "score"]
+    },
+    {
+      "label": "Hold",
+      "blocks": ["count", "page", "dial", "field", "scan", "strobe"]
+    },
+    {
+      "label": "Index",
+      "blocks": ["index", "modules", "dither", "rest"]
+    },
+    {
+      "label": "Cut",
+      "blocks": ["slash", "pieces", "blade", "copies", "bands", "swap"]
+    },
+    {
+      "label": "Lock",
+      "blocks": ["lock", "print"]
+    }
+  ],
+  "page": ["Nothing moves.", "The cut before this was", "loud. So this one is silent."],
+  "card": ["Remove what is left.", "Then remove more."],
+  "palette": {
+    "ink": "#050506",
+    "paper": "#e9ecec",
+    "flood": "#1a1aff",
+    "accent": "#c6ff00",
+    "signal": "#ff2a12",
+    "phosphor": "#a8ff3c"
+  }
+}

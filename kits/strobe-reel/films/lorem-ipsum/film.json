@@ -1,0 +1,38 @@
+{
+  "tag": "LID",
+  "seed": 45,
+  "words": ["Lorem", "Ipsum", "Dolor"],
+  "sub": ["로렘", "입숨", "돌로르"],
+  "acts": [
+    {
+      "label": "Lorem",
+      "blocks": ["modules", "impact", "crop", "key", "dither", "panels", "score"]
+    },
+    {
+      "label": "Ipsum",
+      "blocks": ["strobe", "dial", "page", "field", "scan"]
+    },
+    {
+      "label": "Amet",
+      "blocks": ["crt", "index", "count"]
+    },
+    {
+      "label": "Dolor",
+      "blocks": ["slash", "pieces", "blade", "bands", "copies", "swap", "rest"]
+    },
+    {
+      "label": "Elit",
+      "blocks": ["lock", "print"]
+    }
+  ],
+  "page": ["Sit amet.", "Consectetur adipiscing", "elit, sed do eiusmod."],
+  "card": ["Ut enim ad", "minim veniam."],
+  "palette": {
+    "ink": "#060607",
+    "paper": "#ebe9e4",
+    "flood": "#ff3d0a",
+    "accent": "#bfe6ff",
+    "signal": "#1230ff",
+    "phosphor": "#ffb020"
+  }
+}

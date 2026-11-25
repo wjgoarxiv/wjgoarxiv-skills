@@ -73,6 +73,55 @@ function turnStill(out) {
   }
 }
 
+function registerOf(out) {
+  try {
+    return JSON.parse(readFileSync(path.join(out, "treatment.json"), "utf8")).register ?? "rich";
+  } catch {
+    return "rich";
+  }
+}
+
+export const CRITIC = Object.freeze({ maxNotes: 5, axes: ["subject", "motion", "light", "story"] });
+
+/**
+ * The blind critic's round (references/look.md, Critic): a fresh subagent that never saw the
+ * treatment looks at the stills and writes 1-5 numbered notes and a 1-10 score per axis; the builder
+ * answers every note (done, or refused with the reason). Required on every round of a cinematic film.
+ */
+function checkCritic(c, { required, inSet }) {
+  if (c === undefined) {
+    if (required) refuse("critic: a cinematic film records the blind critic's notes every round ({ by: \"blind\", notes, scores, responses }; look.md, Critic)");
+    return null;
+  }
+  if (!c || typeof c !== "object") refuse("critic must be an object");
+  if (c.by !== "blind") refuse("critic.by must be blind: the notes come from a fresh subagent that saw only the stills, never the builder");
+  if (!Array.isArray(c.notes) || c.notes.length < 1 || c.notes.length > CRITIC.maxNotes) refuse(`critic.notes: 1-${CRITIC.maxNotes} numbered notes, verbatim from the critic`);
+  const ns = new Set();
+  const notes = c.notes.map((n, i) => {
+    if (!Number.isInteger(n?.n) || ns.has(n.n)) refuse(`critic.notes[${i}].n must be a unique note number`);
+    ns.add(n.n);
+    if (!isObservation(n.note)) refuse(`critic.notes[${i}].note must be the critic's sentence about something visible`);
+    if (!inSet(n.frame)) refuse(`critic.notes[${i}].frame ${JSON.stringify(n.frame)} is not in the latest stills set`);
+    return { n: n.n, note: n.note.trim(), frame: n.frame };
+  });
+  const scores = {};
+  for (const axis of CRITIC.axes) {
+    const v = c.scores?.[axis];
+    if (!Number.isInteger(v) || v < 1 || v > 10) refuse(`critic.scores.${axis} must be the critic's score 1-10`);
+    scores[axis] = v;
+  }
+  const responses = Array.isArray(c.responses) ? c.responses : [];
+  const byN = new Map(responses.map((r) => [r?.n, r]));
+  const answered = notes.map((n) => {
+    const r = byN.get(n.n);
+    if (!r) refuse(`critic note ${n.n} has no response: answer every note (status done or refused, and how)`);
+    if (!["done", "refused"].includes(r.status)) refuse(`critic note ${n.n}: status must be done or refused`);
+    if (typeof r.how !== "string" || r.how.trim().length < 12 || PLACEHOLDER.test(r.how)) refuse(`critic note ${n.n}: how must say what was changed, or why it was refused`);
+    return { n: n.n, status: r.status, how: r.how.trim() };
+  });
+  return { by: "blind", notes, scores, responses: answered };
+}
+
 /** Validate an answers document against the current stills set; returns the round record. */
 export function checkAnswers(doc, { round, stills, out }) {
   if (!doc || typeof doc !== "object") refuse("the answers file must be a JSON object");
@@ -112,7 +161,8 @@ export function checkAnswers(doc, { round, stills, out }) {
   }
   answers.sort((a, b) => a.q - b.q);
   const defects = checkDefects(doc.defects, { cover, stills, inSet });
-  return { answers, viewed: [...new Set(doc.viewed)], weakestBeat: doc.weakestBeat ?? null, change: doc.change ?? null, aids: Array.isArray(doc.aids) ? doc.aids.map(String) : [], ...(cover || defects.length ? { defects } : {}) };
+  const critic = cover ? null : checkCritic(doc.critic, { required: registerOf(out) === "cinematic", inSet });
+  return { answers, viewed: [...new Set(doc.viewed)], weakestBeat: doc.weakestBeat ?? null, change: doc.change ?? null, aids: Array.isArray(doc.aids) ? doc.aids.map(String) : [], ...(cover || defects.length ? { defects } : {}), ...(critic ? { critic } : {}) };
 }
 
 /**

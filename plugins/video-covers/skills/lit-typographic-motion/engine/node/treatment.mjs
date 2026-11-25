@@ -13,7 +13,7 @@ import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { EXIT } from "../core/constants.mjs";
+import { EXIT, STAGE_BLUR } from "../core/constants.mjs";
 import { BlockedError } from "./chrome.mjs";
 import { readHouse } from "./house.mjs";
 import { LAYOUT_IDS, STYLE_IDS, styleBeds, styleColors, styleFamilies, pickStyle, readStyle } from "./styles.mjs";
@@ -40,7 +40,12 @@ const SCREEN_ROLES = new Set(["screenshot", "ui", "readme-image"]);
 /** An event hit counts as off the cut when it is at least this far from every cut. */
 export const EVENT_OFF_CUT_SEC = 0.1;
 /** How dense a film is. Rich is the default; minimal only when the request asks for calm or minimal. */
-export const REGISTERS = Object.freeze(["rich", "minimal"]);
+export const REGISTERS = Object.freeze(["rich", "minimal", "cinematic"]);
+// The cinematic register's shot sheet: every beat's lens, light and hero spring as numbers, in these ranges.
+export const SHOT_SHEET = Object.freeze({
+  lensMm: [14, 200], fstop: [1, 22], focus: [0.05, 1000], kelvin: [1800, 10000], azimuth: [-180, 180], elevation: [0, 90],
+  ratio: [0, 1], damping: [0.2, 1.2], freq: [0.5, 8], maxLinesPerShot: 2,
+});
 /** What a rich stage film's world plans at least: depth layers, labelled parts, a share of moving shots. */
 export const RICH_WORLD = Object.freeze({ layers: 3, labels: 6, labelWords: 4, cameraShare: 0.5 });
 const LOCKED_CAMERA = /^\s*(?:none|locked|static|still|hold|fixed|no move)\s*\.?\s*$/iu;
@@ -84,7 +89,8 @@ const MUTED_CHANNEL = /\bmuted\b|\bmute\b|\bsilent\b|\bno\s+sound\b|무음|소�
 const LENGTH_ASKED = /\d+(?:\.\d+)?\s*(?:초|분|s\b|sec\b|secs\b|seconds?\b|min\b|mins\b|minutes?\b)/iu;
 const LENGTH_VALUE = /(\d+(?:\.\d+)?)\s*(초|분|s\b|sec\b|secs\b|seconds?\b|min\b|mins\b|minutes?\b)/iu;
 const VERTICAL = /세로|숏폼|쇼츠|릴스|틱톡|인스타(?:그램)?\s?스토리|\bvertical\b|\bportrait\s+(?:format|mode|video|orientation)\b|9\s?:\s?16|\bshorts\b|\breels?\b|\btiktok\b|\binsta(?:gram)?\s+stor(?:y|ies)\b/iu;
-const MINIMAL_ASKED = /미니멀|잔잔|차분|조용|심플|절제|단순하게|고요|\bminimal(?:ist|ism)?\b|\bcalm\b|\bquiet\b|\bsimple\b|\bunderstated\b|\brestrained\b|\bsparse\b|\bserene\b/iu;
+const CINEMATIC_ASKED = /시네마틱|영화\s?같|영화처럼|캐릭터|마스코트|단편\s?애니|애니메이션\s?단편|\bcinematic\b|\bfilmic\b|\bcharacter\b|\bmascot\b|\banimated short\b|\bshort film\b/iu;
+const MINIMAL_ASKED =/미니멀|잔잔|차분|조용|심플|절제|단순하게|고요|\bminimal(?:ist|ism)?\b|\bcalm\b|\bquiet\b|\bsimple\b|\bunderstated\b|\brestrained\b|\bsparse\b|\bserene\b/iu;
 const PREVIEW_ASKED = /미리\s?보기|스토리보드|콘티|\bpreview\b|\bstoryboard\b/iu;
 const FPS30_ASKED = /30\s?(?:fps|프레임|frames?\s+(?:a|per)\s+second)|\b30\s?p\b/iu;
 // A link in the request names a real product, repository or site: the film uses its real assets.
@@ -119,6 +125,8 @@ export function cuedGenre(request) {
 export const asksVertical = (request) => VERTICAL.test(String(request ?? ""));
 /** The request asks for a calm, quiet or minimal film: the one case the minimal register is for. */
 export const asksMinimal = (request) => MINIMAL_ASKED.test(String(request ?? ""));
+/** The request asks for a cinematic or character film: the one case the cinematic register is for. */
+export const asksCinematic = (request) => CINEMATIC_ASKED.test(String(request ?? ""));
 export const asksPreview = (request) => PREVIEW_ASKED.test(String(request ?? ""));
 // High-quality, cinematic or photoreal 3D: the words that send a 3D film to the Blender rung when
 // Blender is installed (scaffold.mjs says so; references/depth.md).
@@ -201,6 +209,15 @@ function checkCopiedExample(t, examples) {
   }
 }
 
+/** Stage-path motion blur: `{samples 1-32, shutter 0-1}`, both optional; samples 1 turns it off. */
+function checkMotionBlur(t) {
+  if (!("motionBlur" in t)) return;
+  const mb = t.motionBlur;
+  if (!mb || typeof mb !== "object" || Array.isArray(mb)) fail("motionBlur", "must be an object { samples, shutter }");
+  if ("samples" in mb && !(Number.isInteger(mb.samples) && mb.samples >= 1 && mb.samples <= STAGE_BLUR.maxSamples)) fail("motionBlur.samples", `must be a whole number 1-${STAGE_BLUR.maxSamples}`);
+  if ("shutter" in mb && !(typeof mb.shutter === "number" && mb.shutter >= 0 && mb.shutter <= 1)) fail("motionBlur.shutter", "must be a number 0-1 (the share of a frame the shutter stays open)");
+}
+
 /**
  * Validate a treatment. Returns it with `seed` filled in. Throws TreatmentError(field) on the first
  * problem, in field order, so the model fixes one named thing at a time.
@@ -232,6 +249,7 @@ export function validateTreatment(t, { examples = shippedExamples(), house = nul
   checkLength(t);
   if ("fps" in t && t.fps !== 60 && t.fps !== 30) fail("fps", "60 (the default) or 30");
   if (t.fps === 30 && !asks30fps(t.request)) fail("fps", "60; 30 only when the request asks for 30 fps");
+  checkMotionBlur(t);
   if ("preview" in t && typeof t.preview !== "boolean") fail("preview", "true or false");
   if (t.preview === true && !asksPreview(t.request)) fail("preview", "true only when the request asks for a preview or storyboard first");
   checkBeats(t);
@@ -243,6 +261,7 @@ export function validateTreatment(t, { examples = shippedExamples(), house = nul
   checkDevices(t);
   checkDepth(t);
   checkWorld(t);
+  checkShots(t);
   checkTypePlan(t);
   checkPalette(t);
   checkSound(t);
@@ -270,9 +289,16 @@ function checkStyle(t, house) {
 
 // Maximal is the default: a film is rich unless the request asks for calm or minimal, and then it is
 // minimal. The register is the request's, like the format, never a choice the model makes alone.
+// Cinematic is the third: a character film or a film that asks to look like cinema, on the stage path
+// in 3D. It plans light, lens and motion as numbers instead of a labelled world.
 function checkRegister(t) {
   const register = t.register ?? "rich";
-  if (!REGISTERS.includes(register)) fail("register", "rich (the default) or minimal");
+  if (!REGISTERS.includes(register)) fail("register", "rich (the default), minimal or cinematic");
+  if (register === "cinematic") {
+    if (!asksCinematic(t.request)) fail("register", "cinematic only when the request asks for a cinematic or character film (시네마틱, 캐릭터, cinematic, character, mascot, short film); the default is rich");
+    if (t.path !== "stage" || t.depth !== "3d") fail("register", "a cinematic film is a 3D stage film: path stage, depth 3d");
+    return register;
+  }
   const calm = asksMinimal(t.request);
   if (register === "minimal" && !calm) fail("register", "minimal only when the request asks for a calm, quiet or minimal film; the default is rich (studio.md, Register)");
   if (register === "rich" && calm) fail("register", "the request asks for a calm or minimal film: register minimal");
@@ -403,6 +429,39 @@ function checkDepth(t) {
   if (t.render3d === "blender" && t.depth !== "3d") fail("render3d", "the Blender rung renders a 3D world: set depth to 3d with a depth3d subject");
 }
 
+// A cinematic film writes its photography down before any page exists: one shot-sheet row per beat,
+// every value a number in range (a lens in mm, an aperture, light in kelvin and degrees, the hero's
+// spring), and at most two copy lines in any shot, so the picture carries the film.
+function checkShots(t) {
+  if (t.register !== "cinematic") {
+    if ("shots" in t) fail("shots", "a shot sheet belongs to a cinematic film (register cinematic)");
+    return;
+  }
+  const S = SHOT_SHEET;
+  if (!Array.isArray(t.shots) || t.shots.length !== t.beats.length) fail("shots", `a cinematic film writes one shot-sheet row per beat (${t.beats.length}): { lensMm, fstop, focus?, key: { kelvin, azimuth, elevation }, fill: { kelvin, ratio }, heroSpring: { damping, freq } }`);
+  const num = (v, [lo, hi], field, what) => {
+    if (typeof v !== "number" || !Number.isFinite(v)) fail(field, `${what} as a number (${lo}-${hi}), not a word`);
+    if (v < lo || v > hi) fail(field, `${what} must be ${lo}-${hi}`);
+  };
+  t.shots.forEach((s, i) => {
+    const at = `shots[${i}]`;
+    if (!s || typeof s !== "object") fail(at, "must be an object");
+    num(s.lensMm, S.lensMm, `${at}.lensMm`, "the focal length in mm");
+    num(s.fstop, S.fstop, `${at}.fstop`, "the aperture f-number");
+    if ("focus" in s) num(s.focus, S.focus, `${at}.focus`, "the focus distance in scene units (10 cm each)");
+    num(s.key?.kelvin, S.kelvin, `${at}.key.kelvin`, "the key light's colour temperature in kelvin");
+    num(s.key?.azimuth, S.azimuth, `${at}.key.azimuth`, "the key light's azimuth in degrees");
+    num(s.key?.elevation, S.elevation, `${at}.key.elevation`, "the key light's elevation in degrees");
+    num(s.fill?.kelvin, S.kelvin, `${at}.fill.kelvin`, "the fill light's colour temperature in kelvin");
+    num(s.fill?.ratio, S.ratio, `${at}.fill.ratio`, "the fill-to-key ratio");
+    num(s.heroSpring?.damping, S.damping, `${at}.heroSpring.damping`, "the hero move's damping ratio");
+    num(s.heroSpring?.freq, S.freq, `${at}.heroSpring.freq`, "the hero move's spring frequency in Hz");
+  });
+  t.beats.forEach((b, i) => {
+    if (Array.isArray(b.lines) && b.lines.length > S.maxLinesPerShot) fail(`beats[${i}].lines`, `a cinematic shot shows at most ${S.maxLinesPerShot} copy lines; let the picture carry it`);
+  });
+}
+
 // A rich stage film plans its density before any page exists: the depth layers of its world, the
 // labelled parts the viewer reads in it and the shots where the camera moves (references/studio.md).
 function checkWorld(t) {
@@ -502,7 +561,7 @@ function checkTypePlan(t) {
 function checkPalette(t) {
   if (t.path === "stage") {
     if (!("palette" in t)) return;
-    const rich = t.register === "rich";
+    const rich = t.register !== "minimal";
     const allowed = new Set(styleColors(readStyle(t.style), { rich }));
     if (!Array.isArray(t.palette) || t.palette.length > (rich ? 14 : 9)) fail("palette", "a list of the style's colours with their roles");
     t.palette.forEach((p, i) => {
@@ -528,7 +587,7 @@ function checkSound(t) {
   if (s.mode === "none" && !SILENCE_ASKED.test(t.request) && !MUTED_CHANNEL.test(t.channel)) {
     fail("sound.mode", "none only when the user asked for silence or the channel plays muted by design; the default is a score");
   }
-  if (s.mode === "generated" && t.register === "rich") fail("sound.mode", "a rich film scores its own music (mode score); the style's preset beds are for minimal films (sound.md)");
+  if (s.mode === "generated" && t.register !== "minimal") fail("sound.mode", "a rich or cinematic film scores its own music (mode score); the style's preset beds are for minimal films (sound.md)");
   if ("genre" in s && !SCORE_GENRES.includes(s.genre)) fail("sound.genre", `must be one of ${SCORE_GENRES.join(", ")}`);
   if (s.mode === "generated") {
     try {

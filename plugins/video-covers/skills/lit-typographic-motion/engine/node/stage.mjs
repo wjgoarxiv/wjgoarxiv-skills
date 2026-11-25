@@ -13,6 +13,7 @@ import { FlashDetector, cellsFromRgba, detectSequence, gridFor } from "../core/f
 import { areaDownscale } from "./analysis.mjs";
 import { assetUsed } from "./assets.mjs";
 import { BLENDER } from "./blender.mjs";
+import { blurFor, shutterFrames, subframeOffsets } from "./blend.mjs";
 import { addToStills, writeBoard } from "./board.mjs";
 import { BlockedError } from "./chrome.mjs";
 import { findFfmpeg, findFfprobe, findImg2webp, previewRungs, startMaster, encodePreview, probeVideo, tagStaged } from "./encode.mjs";
@@ -153,6 +154,16 @@ async function stepChecked(browser, f, fps, opts) {
   return s;
 }
 
+/** One motion-blurred frame: a capture at each sub-frame time inside f's own shot, in time order. */
+async function captureBlurred(browser, f, fps, offsets, beats) {
+  const pngs = [];
+  for (const at of shutterFrames(f, offsets, fps, beats)) {
+    await stepChecked(browser, at, fps, { paint: true });
+    pngs.push(await browser.capture());
+  }
+  return pngs;
+}
+
 /**
  * Stills-only, or the frames a caller needs, stepping the clock from 0. Stills skip the paint between
  * wanted frames. The determinism replay passes `asMaster`: it paints and captures every frame exactly
@@ -160,13 +171,18 @@ async function stepChecked(browser, f, fps, opts) {
  * change together can raster one level apart depending on which earlier frames were painted and
  * captured (the replay would then flag the renderer, not the page).
  */
-async function captureFrames({ browser, pool, fps, frames, width, height, asMaster = false }) {
+async function captureFrames({ browser, pool, fps, frames, width, height, asMaster = false, offsets = [0], beats = [] }) {
   const wanted = [...frames].sort((a, b) => a - b);
   const last = wanted[wanted.length - 1];
   const out = new Map();
   const pending = [];
   const want = new Set(wanted);
   for (let f = 0; f <= last; f++) {
+    if (asMaster && offsets.length > 1) {
+      const pngs = await captureBlurred(browser, f, fps, offsets, beats);
+      if (want.has(f)) pending.push(analyzeChecked(pool, pngs, width, height).then((a) => out.set(f, a)));
+      continue;
+    }
     await stepChecked(browser, f, fps, { paint: asMaster || want.has(f) });
     if (!want.has(f)) {
       if (asMaster) await browser.capture();
@@ -393,11 +409,13 @@ export async function renderStage({ out, round = 1, stillsOnly = false, env = pr
     const encoder = startMaster({ ffmpeg, width, height, fps, out: filmPath, audio: sound.file });
 
     // The replays start with the master: each is its own Chrome stepping its own clock from 0.
+    const blur = blurFor(treatment);
+    const offsets = subframeOffsets(blur.samples, blur.shutter);
     const detFrames = determinismFrames({ beats, fps, frameCount });
     const detPromise = (async () => {
       const browser = await openChecked({ label: "d", ctx });
       try {
-        return await captureFrames({ browser, pool, fps, frames: new Set(detFrames), width, height, asMaster: true });
+        return await captureFrames({ browser, pool, fps, frames: new Set(detFrames), width, height, asMaster: true, offsets, beats: treatment.beats });
       } finally {
         await browser.close();
       }
@@ -438,8 +456,12 @@ export async function renderStage({ out, round = 1, stillsOnly = false, env = pr
     const tMaster = Date.now();
     for (let f = 0; f < frameCount; f++) {
       const ts = performance.now();
-      await stepChecked(master, f, fps, { paint: true });
-      const png = await master.capture();
+      let png;
+      if (offsets.length > 1) png = await captureBlurred(master, f, fps, offsets, treatment.beats);
+      else {
+        await stepChecked(master, f, fps, { paint: true });
+        png = await master.capture();
+      }
       frameMs.push(performance.now() - ts);
       inflight.push({ f, analysis: analyzeChecked(pool, png, width, height) });
       if (inflight.length >= maxInflight) await consume(inflight.shift());
@@ -505,6 +527,7 @@ export async function renderStage({ out, round = 1, stillsOnly = false, env = pr
       schemaVersion: 1, path: "stage", renderId: id, round, treatmentSha256: treatmentSha(out), format: treatment.format, width, height, fps, durationSec: +(spec.duration + (card?.sec ?? 0)).toFixed(6), treatmentDurationSec: treatment.durationSec,
       endCard: card ? { frames: card.frames, fade: card.fade, sec: +card.sec.toFixed(6) } : null,
       frameCount, seed: treatment.seed, renderer: finalState.webglRenderer ?? "no WebGL", rung: ctx.rung, chromeFlags: master.flags, usesWebGL: finalState.usesWebGL,
+      motionBlur: { samples: offsets.length, shutter: offsets.length > 1 ? blur.shutter : 0 },
       cuts, stills: { sha256: stills.sha256, poster: plan.poster, reduced: plan.reduced }, posterEncoding: poster,
       geometry: geometryFor(width, height),
       clips: scan.clips.map((c) => ({ id: c.id, frames: c.count, fps: c.fps, width: c.width, height: c.height, bytes: c.bytes })),

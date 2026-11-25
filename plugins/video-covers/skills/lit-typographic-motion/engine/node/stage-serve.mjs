@@ -16,6 +16,9 @@ export const STAGE_ORIGIN = "http://lit.stage";
 export const KIT_FILE = fileURLToPath(new URL("../stage/stage-kit.js", import.meta.url));
 export const INIT_FILE = fileURLToPath(new URL("../stage/init.js", import.meta.url));
 export const LOOP_KIT_FILE = fileURLToPath(new URL("../stage/loop-kit.js", import.meta.url));
+// The depth kit (depth of field, lens and light helpers, the character rig), written for this skill.
+export const DEPTH_KIT_FILE = fileURLToPath(new URL("../stage/depth-kit.js", import.meta.url));
+export const DEPTH_MATH_FILE = fileURLToPath(new URL("../stage/depth-math.js", import.meta.url));
 export const COVER_INIT_FILE = fileURLToPath(new URL("../stage/cover-init.js", import.meta.url));
 // The pinned three.js build and its few addons (engine/vendor/three, MIT), served at /lit/three/ for
 // the 3D route (references/depth.md). Pages import them through an import map; nothing is fetched.
@@ -385,6 +388,8 @@ export function stageRouter({ stageDir, faces, style = null, threeDir = THREE_DI
     if (pathname === "/favicon.ico") return { kind: "missing" };
     if (pathname === "/lit/stage-kit.js") return { kind: "file", file: KIT_FILE, type: CONTENT_TYPES[".js"] };
     if (pathname === "/lit/loop-kit.js") return { kind: "file", file: LOOP_KIT_FILE, type: CONTENT_TYPES[".js"] };
+    if (pathname === "/lit/depth-kit.js") return { kind: "file", file: DEPTH_KIT_FILE, type: CONTENT_TYPES[".js"] };
+    if (pathname === "/lit/depth-math.js") return { kind: "file", file: DEPTH_MATH_FILE, type: CONTENT_TYPES[".js"] };
     if (pathname === "/lit/fonts.css") return { kind: "body", body: css, type: CONTENT_TYPES[".css"] };
     if (clipsJs && pathname === "/lit/clips.js") return { kind: "body", body: clipsJs, type: CONTENT_TYPES[".js"] };
     if (pathname.startsWith("/lit/three/")) {

@@ -57,7 +57,25 @@ A rich film fills its frame the way the reference studios do:
 A minimal film keeps the restraint of a single hero on an open ground: the core palette only, decor
 under 25 %, no world plan, and the style's preset beds (`sound.mode: generated`).
 
-The flash audit (MO-C-03) is the same in both registers. Density is met with slower light changes,
+### Cinematic: a character film shot like cinema
+
+`register: cinematic` is for a request that asks for a cinematic or character film (시네마틱, 영화같은,
+캐릭터, 마스코트, 단편 애니, cinematic, filmic, character, mascot, short film). It is a 3D stage film
+(`path: stage`, `depth: 3d`). The frame is composed by lens and light, not filled with labels:
+
+- **A shot sheet** (`shots[]`, one row per beat) writes the photography down as numbers: `lensMm`,
+  `fstop`, optional `focus`, `key { kelvin, azimuth, elevation }`, `fill { kelvin, ratio }` and the hero
+  move's `heroSpring { damping, freq }` (`treatment.md`). The validator refuses a word where a number
+  belongs. The scaffold sets the camera, the lights and the depth of field from it every frame.
+- **A character** acts the story: build it once with `character()` from the depth kit, pose it with
+  `hop`, `squash`, `blink`, `lag` and `spring` (`depth.md`, The depth kit).
+- **At most two copy lines in a shot.** The picture carries the film; the words land the turn.
+- **No world plan.** `TEXT-LABELS` and `RICH-FILL` are N/A. Every other rule runs as on a rich film,
+  the flash audit included.
+- **A blind critic every round** (`look.md`, Critic): three rounds, every note answered.
+- Rich accents, an authored score, motion blur on the master (16 sub-frames by default).
+
+The flash audit (MO-C-03) is the same in every register. Density is met with slower light changes,
 lower-contrast detail behind a move, motion blur and cuts, never by locking the camera.
 
 ## House styles

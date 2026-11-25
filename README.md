@@ -820,6 +820,30 @@ throw away every cache already on disk.
   WARN-only rules (FILM-CUTS, FILM-FREEZE, FILM-BLACK, SOUND-TRUEPEAK, SOUND-SHORTTERM, SOUND-DC) to the gate report.
 - `skills/lit-typographic-motion/references/craft-loop.md`: two gate-table rows for those rules.
 
+`video-covers` 0.1.3 (changes made here):
+- `skills/lit-typographic-motion/engine/node/stage.mjs`,
+  `skills/lit-typographic-motion/engine/node/stage-capture.mjs` and
+  `skills/lit-typographic-motion/engine/node/frame-worker.mjs`: the stage path renders each master frame as the linear-light average of
+  sub-frame captures (motion blur; `engine/node/blend.mjs`, written here, no receipt row), and the determinism replay
+  takes the same sub-frames. The shutter never straddles a cut: sub-frames stay inside their own shot, so a hard cut
+  is not smeared into an extra half-and-half frame.
+- `skills/lit-typographic-motion/engine/node/styles.mjs`: `Style: paper`, the form the design question writes into the
+  request, now names the paper style, so a house style left by an earlier film no longer overrides the user's pick.
+- `skills/lit-typographic-motion/engine/core/constants.mjs`: `STAGE_BLUR` (16 samples, 0.45 shutter, at most 32).
+- `skills/lit-typographic-motion/engine/node/treatment.mjs`: the optional `motionBlur` field and its ranges, and
+  the `cinematic` register with its numeric shot sheet (`shots[]`, at most two copy lines a shot).
+- `skills/lit-typographic-motion/engine/node/stage-qa.mjs`: `TEXT-LABELS` and `RICH-FILL` are N/A on a cinematic
+  film; every other rule, the flash audit included, runs as before.
+- `skills/lit-typographic-motion/engine/node/scaffold.mjs` and `skills/lit-typographic-motion/engine/node/stage-serve.mjs`:
+  the 3D scaffold imports the depth kit (`engine/stage/depth-kit.js` and `engine/stage/depth-math.js`, written
+  here, no receipt row: depth of field, lens and kelvin helpers, a character rig, closed-form springs and hops),
+  served at `/lit/depth-kit.js`, and sets the camera and lights from the shot sheet.
+- `skills/lit-typographic-motion/engine/node/look.mjs` and `skills/lit-typographic-motion/engine/node/done.mjs`: a
+  look round may carry a blind critic's notes, each answered; a cinematic film needs three such rounds.
+- `skills/lit-typographic-motion/SKILL.md`, `skills/lit-typographic-motion/references/treatment.md`,
+  `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md` and
+  `skills/lit-typographic-motion/references/depth.md`: the register, the fields, the critic and the depth kit.
+
 `figures` (LitClaude 1.0.50 removed the scientific-visualization doctor from `litclaude doctor`):
 - `skills/lit-scientific-visualization/SKILL.md`: step 4 runs only the bundled doctor and no longer offers
   `litclaude doctor`.

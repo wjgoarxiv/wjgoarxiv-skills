@@ -78,6 +78,7 @@ export function evaluateDone({ out, viewedFiles = null }) {
   }
   const rounds = look.rounds;
   if (!existsSync(path.join(out, "look.json"))) reasons.push("look.json is missing: no look round was recorded");
+  else if (!rounds.length) reasons.push("look.json holds no look round");
   const openItems = [];
   let unviewed = false;
   if (rounds.length) {
@@ -99,6 +100,16 @@ export function evaluateDone({ out, viewedFiles = null }) {
         if (last.round >= 3) openItems.push(...last.revise.map((q) => `look question ${q}`));
         else reasons.push(`look questions ${last.revise.join(", ")} ask for another round`);
       }
+    }
+    // A cinematic film is reviewed by someone who did not build it, three times (look.md, Critic). With no
+    // image tool nobody can review it; that round ends as DONE_UNVIEWED instead.
+    if (treatment.register === "cinematic" && last.blocked !== "no-vision-tool") {
+      const critiqued = rounds.filter((r) => r.critic?.by === "blind");
+      // look appends a round recorded again, so count round numbers, not records
+      const critiquedRounds = new Set(critiqued.map((r) => r.round)).size;
+      if (critiquedRounds < 3) reasons.push(`a cinematic film needs three blind critic rounds; ${critiquedRounds} recorded`);
+      const lastCritic = critiqued[critiqued.length - 1];
+      for (const r of lastCritic?.critic?.responses ?? []) if (r.status === "refused") openItems.push(`critic note ${r.n} refused: ${r.how}`);
     }
   }
   let first = null;

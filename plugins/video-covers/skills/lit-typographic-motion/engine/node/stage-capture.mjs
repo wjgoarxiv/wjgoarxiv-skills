@@ -154,13 +154,16 @@ export class FramePool {
     }
   }
 
+  /** Analyse one capture, or average several sub-frame captures (an array) and analyse the result. */
   analyze(png, width, height) {
     const id = ++this.id;
     const worker = this.workers[this.next++ % this.workers.length];
-    const copy = png.buffer.slice(png.byteOffset, png.byteOffset + png.byteLength);
+    const own = (b) => b.buffer.slice(b.byteOffset, b.byteOffset + b.byteLength);
+    const many = Array.isArray(png);
+    const copies = many ? png.map(own) : [own(png)];
     return new Promise((resolve, reject) => {
       this.waiting.set(id, { resolve, reject });
-      worker.postMessage({ id, png: copy, width, height }, [copy]);
+      worker.postMessage(many ? { id, pngs: copies, width, height } : { id, png: copies[0], width, height }, copies);
     });
   }
 

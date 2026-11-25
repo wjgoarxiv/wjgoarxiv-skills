@@ -44,7 +44,8 @@ else and names the rule:
 - `product`: required when the request carries a link; see Named products below.
 - `depth`: `3d` exactly when the subject is a `depth3d` device; see `depth.md`.
 - `register`: `rich` (the default) unless the request asks for a calm, quiet, simple or minimal film;
-  then `minimal` (`studio.md`, Register).
+  then `minimal` (`studio.md`, Register). `cinematic` when the request asks for a cinematic or character
+  film (시네마틱, 영화같은, 캐릭터, 마스코트, cinematic, character, mascot, short film), on a 3D stage film.
 
 ## Fields
 
@@ -64,7 +65,9 @@ else and names the rule:
 | `product` | `{name, url, assets[]}` or `{name, url, unreachable}`. See Named products below. |
 | `depth` | Stage path, optional: `2d` (default) or `3d`. `3d` takes the three.js route (`depth.md`). |
 | `render3d` | Optional, with `depth: 3d`: `three` (default, the GPU rung) or `blender` (the offline Cycles rung; `depth.md`), the choice when the request asks for high-quality, cinematic or photoreal 3D and Blender is installed. |
-| `register` | `rich` (default) or `minimal`, by the rule above. |
+| `register` | `rich` (default), `minimal` or `cinematic`, by the rule above. |
+| `shots` | Cinematic register only, one row per beat: `{lensMm (14-200), fstop (1-22), focus? (scene units, 10 cm each), key: {kelvin (1800-10000), azimuth (-180-180), elevation (0-90)}, fill: {kelvin, ratio (0-1)}, heroSpring: {damping (0.2-1.2), freq (0.5-8 Hz)}}`. Numbers only. A cinematic shot lists at most 2 copy `lines`. See `studio.md`, Cinematic. |
+| `motionBlur` | Optional, stage path: `{samples (1-32, default 16), shutter (0-1, default 0.45)}`. Each master frame is the average of `samples` captures spread over the open shutter; `samples: 1` turns it off. Board and still renders take one sample. |
 | `world` | Stage path, rich register: `{layers[] (3+, back to front), labels[] (6+, at most 4 words each), camera[] ({beat, move}, at least half the shots)}`. See `studio.md`, Register. |
 | `subject` | `{name, source: user \| invented, specifics[]}`. An invented subject has a name and at least 2 concrete specifics: what it is or does, for whom, one distinctive detail. |
 | `visualDevices[]` | `{kind, role: subject \| support \| texture, beats[]}` (beat indices). Kinds: `illustration`, `diagram`, `chart`, `icon`, `shape`, `path`, `mask`, `depth3d`, `screen` (adds `asset`: a screenshot, UI or README image listed in `product.assets`), `particles`, `grid`, `gradient`, `photo-texture`. Stage path: at least one `subject` device on screen for half the film or more, and at least 2 distinct kinds that are not `grid`, `gradient`, `particles` or `photo-texture` (those are always `texture`). |
@@ -108,7 +111,7 @@ treatment whose free text matches this example's for half or more of its values 
   "visualDevices": [{ "kind": "<device kind>", "role": "<subject, support or texture>", "beats": ["<beat index>"] }],
   "typePlan": { "faces": ["<face>"], "hierarchy": "<type hierarchy>", "maxWordsOnScreen": "<n>" },
   "palette": [{ "color": "<a #hex of the style>", "role": "<colour role>" }],
-  "register": "<rich or minimal>",
+  "register": "<rich, minimal or cinematic>",
   "world": { "layers": ["<far layer>", "<middle layer>", "<near layer>"], "labels": ["<a label read on screen>"], "camera": [{ "beat": "<shot index>", "move": "<camera move>" }] },
   "sound": { "mode": "<mode>", "plan": "<sound plan>", "genre": "<score genre>", "events": [{ "t": "<s>", "on": "<what happens on screen>", "kind": "<event sound>" }] },
   "copy": { "source": "<user or invented>", "lines": ["<one copy line>"] },

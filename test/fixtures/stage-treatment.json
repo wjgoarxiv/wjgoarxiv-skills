@@ -1,0 +1,63 @@
+{
+  "request": "가능한 베스트버젼의 reels (너가 가장 자신있게 만드는) 를 보여줘 · Style: swiss-signal · Register: rich",
+  "genre": "explainer",
+  "path": "stage",
+  "pathReason": "The film shows a 3D Earth, the Moon and the ocean moving, which needs drawn objects rather than type alone; a vertical reel always takes the stage path.",
+  "style": "swiss-signal",
+  "idea": "A turning Earth shows why the ocean bulges on the side away from the Moon as well as under it, which is why most coasts see two high tides a day.",
+  "audience": "Curious people scrolling short videos who have never been told why there are two tides",
+  "channel": "Instagram Reels, watched vertically with sound",
+  "format": "9:16",
+  "formatReason": "Reels play full screen in portrait.",
+  "durationSec": 20,
+  "fps": 60,
+  "register": "rich",
+  "depth": "3d",
+  "render3d": "three",
+  "beats": [
+    { "t0": 0, "t1": 4, "purpose": "Question: pose the puzzle", "onScreen": "A large Earth rises from the bottom of the frame against a star field, its ocean catching a key light, the question above it", "motion": "Slow push-in as the Earth rises and turns", "sound": "The intro starts; a soft hit on the first cut", "layout": "title", "hero": "The Earth rises into frame", "transition": "wipe", "lines": [0] },
+    { "t0": 4, "t1": 8.5, "purpose": "Step one: the Moon pulls the near water", "onScreen": "The Moon slides in at the top, pull arrows run from it to the Earth, and the ocean shell swells toward it into a near bulge, with a distance readout", "motion": "Camera trucks up to put Moon and Earth in one frame; the ocean shell swells toward the Moon", "sound": "Hats come in; a rise into the turn", "layout": "split", "hero": "The ocean swells toward the Moon", "transition": "cut", "lines": [1] },
+    { "t0": 8.5, "t1": 13, "purpose": "Step two, the turn: a second bulge on the far side", "onScreen": "The camera orbits round the Earth and the far side of the ocean swells out as well, until the shell is a stretched egg with one bulge toward the Moon and one away from it", "motion": "Orbit a quarter turn around the Earth while the far bulge grows; the largest change of the film", "sound": "The drop lands with a hit on the cut", "layout": "hero", "hero": "The far side of the ocean swells out", "transition": "cut", "lines": [2] },
+    { "t0": 13, "t1": 17, "purpose": "Result: a coast spins through both bulges", "onScreen": "The Earth spins under the two bulges; a bright marker on a coast passes high, low, high, low, while a tide-height curve draws itself beside it", "motion": "Camera cranes down to look along the equator as the Earth turns; the curve draws in step", "sound": "The groove continues; taps as the marker hits each high tide", "layout": "split-alt", "hero": "The coast marker rides through both bulges", "transition": "wipe", "lines": [3] },
+    { "t0": 17, "t1": 20, "purpose": "Recap: two crests a lunar day", "onScreen": "Earth and Moon small in the frame with the stretched ocean between them, the orbit drawn as a ring, the final line in the caption band", "motion": "Camera pulls back to the whole system", "sound": "Cadence on the final chord", "layout": "stage", "hero": "The camera pulls back to the whole Earth and Moon system", "transition": "end", "lines": [4] }
+  ],
+  "story": { "expect": "The Moon pulls the sea toward it, so there should be one high tide, on the side facing the Moon.", "turn": "The ocean also swells out on the side facing away from the Moon, so there are two bulges.", "beat": 2, "payoff": "Every coast turns through both bulges each lunar day, which is why the tide comes in twice." },
+  "protagonist": { "name": "Earth's ocean", "kind": "object", "look": "A deep teal water shell around a dark rocky Earth, filling most of the frame, glinting in a single key light", "acts": [
+    { "beat": 0, "action": "Rises into frame, calm and round" },
+    { "beat": 1, "action": "Swells toward the Moon into one bulge" },
+    { "beat": 2, "action": "Swells out on the far side too, into a stretched egg" },
+    { "beat": 3, "action": "Holds its two bulges while the Earth spins under it" },
+    { "beat": 4, "action": "Sits stretched between Earth and Moon as the camera pulls away" } ] },
+  "subject": { "name": "Two tides a day", "source": "invented", "specifics": ["The Moon's pull is stronger on the near ocean than on the Earth's centre, and weaker on the far ocean, so the water stretches both ways", "A coast turns through both bulges in one lunar day of about 24 h 50 min", "So high tides come about 12 h 25 min apart"] },
+  "visualDevices": [
+    { "kind": "depth3d", "role": "subject", "beats": [0, 1, 2, 3, 4] },
+    { "kind": "diagram", "role": "support", "beats": [1, 2, 4] },
+    { "kind": "chart", "role": "support", "beats": [3] },
+    { "kind": "particles", "role": "texture", "beats": [0, 1, 2, 3, 4] }
+  ],
+  "typePlan": { "faces": ["Archivo", "Pretendard", "MesloLGS NF"], "hierarchy": "Archivo display for the question, Archivo headline for each step, MesloLGS NF labels on the bodies and readouts", "maxWordsOnScreen": 7 },
+  "palette": [
+    { "color": "#0C0E13", "role": "space" },
+    { "color": "#171B24", "role": "readout panels" },
+    { "color": "#E9EBE4", "role": "type and the Moon" },
+    { "color": "#A4A9AF", "role": "labels" },
+    { "color": "#0F7A82", "role": "the ocean" },
+    { "color": "#D9A441", "role": "the pull arrows and the coast marker" },
+    { "color": "#5BA8E0", "role": "state in progress: the tide curve" },
+    { "color": "#4B5058", "role": "orbit rings and rules" }
+  ],
+  "world": {
+    "layers": ["A deep star field", "The Earth, its ocean shell and the Moon", "Readout panels and labels pinned to the bodies"],
+    "labels": ["EARTH", "MOON", "384,400 KM", "NEAR BULGE", "FAR BULGE", "HIGH TIDE", "LOW TIDE", "24 H 50 MIN"],
+    "camera": [{ "beat": 0, "move": "push-in" }, { "beat": 1, "move": "truck up" }, { "beat": 2, "move": "orbit" }, { "beat": 3, "move": "crane down" }, { "beat": 4, "move": "pull back" }]
+  },
+  "sound": { "mode": "score", "plan": "A house groove that builds under the question and the Moon's pull, drops on the turn as the far bulge appears, and settles into an outro with a cadence on the recap.", "events": [
+    { "t": 4.8, "on": "the Moon slides into frame", "kind": "whoosh" },
+    { "t": 10.6, "on": "the far bulge reaches full size", "kind": "chime" },
+    { "t": 14.2, "on": "the coast marker reaches the first high tide", "kind": "tap" },
+    { "t": 16.2, "on": "the coast marker reaches the second high tide", "kind": "tap" } ] },
+  "copy": { "source": "invented", "lines": ["Why does the sea rise twice a day?", "Gravity tugs the closest water.", "The far side swells as well.", "Each coast spins through both.", "Two crests, every lunar day."] },
+  "inventions": ["Two tides a day: the choice of subject and all five copy lines", "The labels and readouts on screen, written from the real figures: 384,400 km to the Moon, a lunar day of about 24 h 50 min"],
+  "ambition": "Make the far bulge a genuine surprise: the camera orbits as it grows so the viewer sees the water stretch away from the Moon in 3D, lit like a real planet, with every label pinned to the body it names.",
+  "seed": 42
+}

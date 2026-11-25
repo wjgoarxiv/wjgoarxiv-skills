@@ -58,7 +58,7 @@ const NAMED = Object.freeze({
   "swiss-signal": ["swiss-signal", "swiss signal", "스위스 시그널"],
   tidal: ["tidal", "타이달"],
   terminalcore: ["terminalcore", "터미널코어"],
-  paper: ["paper style", "paper look", "페이퍼 스타일", "페이퍼"],
+  paper: ["paper style", "paper look", "style: paper", "페이퍼 스타일", "페이퍼"],
 });
 
 export class StyleError extends Error {}

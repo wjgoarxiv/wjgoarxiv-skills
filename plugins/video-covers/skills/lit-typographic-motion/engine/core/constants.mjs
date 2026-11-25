@@ -70,6 +70,13 @@ export const SAMPLING = Object.freeze({
   stillSamples: 1,
 });
 
+// ---- stage-path motion blur: sub-frame poses averaged in linear light (master and its replay only) ----
+export const STAGE_BLUR = Object.freeze({
+  samples: 16,
+  shutter: 0.45,
+  maxSamples: 32,
+});
+
 // ---- post chain override contract (MO-A-58): range and neutral value per field ----
 export const POST_FIELDS = Object.freeze({
   exposure: { min: 0, max: Infinity, neutral: 1, exclusiveMin: true },

@@ -77,8 +77,43 @@ screenshot goes on a plane or a face of the object as a texture (`TextureLoader`
 A rich film moves its camera in at least half its shots, and the flash audit stays exactly as it is.
 When a move fails MO-C-03, keep the move and change what it passes over: slow the light change (a
 highlight that sweeps over 0.5 s or more, not a frame), lower the contrast of the detail behind the
-move, add motion blur (the Blender rung renders it; on the GPU rung average 4-8 sub-frame poses), or cut
-instead of whipping. Removing the camera move is a downgrade.
+move, keep the motion blur on (every stage master averages 16 sub-frames by default; `motionBlur` in
+the treatment), or cut instead of whipping. Removing the camera move is a downgrade.
+
+A hard cut between shots of different brightness already costs about three flashes in the looping
+preview (30, 24 or 20 fps), so keep a character's big move (a hop, a fall, a turn that fills the frame)
+at least one second away from a hard cut, and keep a dark body moving over a bright pool small in the
+frame. The preview's audit is the stricter one: check both numbers on the `MO-C-03` line.
+
+## The depth kit (`/lit/depth-kit.js`)
+
+The 3D scaffold imports it. Everything in it is a pure function of its arguments and of `t`.
+
+- **Depth of field.** A `WORLD` function may return `{ focus, fstop }`: `focus` is the distance from the
+  camera to what should be sharp, in scene units, where one unit stands for 10 cm (a tabletop world, as
+  a real macro lens sees it), and `fstop` the aperture (1.4 shallow, 4 a portrait, 16 everything sharp).
+  A cinematic film's shot sheet sets `fstop` and the focus falls on `HERO` unless a distance is named.
+  Without an `fstop` the frame is drawn sharp. The circle of confusion follows the thin-lens formula
+  (`cocPx` in `depth-math.js`), capped at 24 px. Copy stays in the DOM and is never blurred.
+- **Lens and light.** `lensFov(mm, aspect)` gives the vertical field of view of a lens on the 36 x 24 mm
+  frame; `kelvin(k)` the colour of a light at k kelvin (3200 tungsten, 5600 daylight, 7500 shade).
+- **A character.** `const rig = character({ body: { w, h, d, radius, color }, eyes: { size, gap }, feet: 4 })`
+  builds a rounded body with eyes that blink, stubby feet and a contact shadow; put `rig.root` in `HERO`
+  once and call `rig.pose({ x, z, y, squash, blink, look: [x, y], lean, turn, feetLag })` in each
+  `WORLD` function.
+- **Motion in closed form.** `spring(t, { damping, freq })` (0.2 bouncy, 1 no overshoot),
+  `hop(t, t0, { height, air, damping })` returns `{ y, squash }` (a crouch, a parabola, a landing that
+  squashes and settles), `squash(a)` keeps volume, `blink(t, [times])`, `lag(fn, t, frames)` for
+  follow-through (feet 4 frames, ears 6). Never integrate across frames: the renderer jumps to any frame.
+
+```js
+const rig = character({ body: { color: PAL.accent ?? 0xd9734e } });
+HERO.add(rig.root);
+// in WORLD[i]:
+const h = hop(t, 2.0, { height: 1.2, damping: 0.45 });
+rig.pose({ y: h.y, squash: h.squash, blink: blink(t, [1.1, 3.6]), feetLag: lag((u) => hop(u, 2.0).y, t, 4) });
+return { fstop: 2.8 };
+```
 
 ## The Blender rung (`render3d: "blender"`)
 

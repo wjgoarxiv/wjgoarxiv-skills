@@ -812,6 +812,28 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
   더합니다.
 - `skills/lit-typographic-motion/references/craft-loop.md`: 그 규칙들의 게이트 표 두 행.
 
+`video-covers` 0.1.3 (여기서 한 변경):
+- `skills/lit-typographic-motion/engine/node/stage.mjs`, `skills/lit-typographic-motion/engine/node/stage-capture.mjs`,
+  `skills/lit-typographic-motion/engine/node/frame-worker.mjs`: 스테이지 경로가 마스터 프레임마다 서브프레임 캡처를 선형광에서
+  평균해 그립니다(모션 블러, `engine/node/blend.mjs`는 여기서 새로 쓴 파일, 영수증 행 없음). 결정성 재생도 같은 서브프레임을
+  씁니다. 셔터는 컷을 넘지 않습니다. 서브프레임이 자기 샷 안에 머무르므로 하드 컷이 반반 섞인 프레임으로 번지지 않습니다.
+- `skills/lit-typographic-motion/engine/node/styles.mjs`: 디자인 질문이 요청에 적는 `Style: paper`가 이제 paper 스타일을 가리킵니다.
+  그래서 앞 영상이 남긴 하우스 스타일이 사용자의 선택을 덮어쓰지 않습니다.
+- `skills/lit-typographic-motion/engine/core/constants.mjs`: `STAGE_BLUR`(샘플 16개, 셔터 0.45, 최대 32개).
+- `skills/lit-typographic-motion/engine/node/treatment.mjs`: 선택 필드 `motionBlur`와 그 범위, 그리고 숫자로 적는 샷 시트(`shots[]`,
+  샷마다 문구 최대 두 줄)를 갖춘 `cinematic` 레지스터.
+- `skills/lit-typographic-motion/engine/node/stage-qa.mjs`: 시네마틱 영상에서는 `TEXT-LABELS`와 `RICH-FILL`이 N/A입니다. 플래시 검사를
+  포함한 나머지 규칙은 전과 같이 돕니다.
+- `skills/lit-typographic-motion/engine/node/scaffold.mjs`, `skills/lit-typographic-motion/engine/node/stage-serve.mjs`: 3D 스캐폴드가
+  뎁스 키트(`engine/stage/depth-kit.js`, `engine/stage/depth-math.js`, 여기서 새로 쓴 파일, 영수증 행 없음)를 불러옵니다.
+  피사계 심도, 렌즈와 색온도 도우미, 캐릭터 리그, 닫힌 식의 스프링과 점프가 들어 있습니다. 키트는 `/lit/depth-kit.js`로 제공되고,
+  카메라와 조명은 샷 시트에서 정합니다.
+- `skills/lit-typographic-motion/engine/node/look.mjs`, `skills/lit-typographic-motion/engine/node/done.mjs`: 룩 라운드에 블라인드 비평가의
+  메모를 담을 수 있고, 메모마다 답이 있어야 합니다. 시네마틱 영상에는 그런 라운드가 세 번 필요합니다.
+- `skills/lit-typographic-motion/SKILL.md`, `skills/lit-typographic-motion/references/treatment.md`,
+  `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md`,
+  `skills/lit-typographic-motion/references/depth.md`: 레지스터, 필드, 비평가, 뎁스 키트 설명.
+
 `figures` (LitClaude 1.0.50에서 `litclaude doctor`의 scientific-visualization doctor가 빠짐):
 - `skills/lit-scientific-visualization/SKILL.md`: 4단계는 번들 doctor만 실행하고, 더는 `litclaude doctor`를 권하지 않습니다.
 

@@ -77,6 +77,30 @@ The values below are placeholders; `look` refuses them.
   `t` inside the film and `region` inside the frame in pixels. Fix those seconds and render the board
   again before the full render.
 
+## Critic
+
+The model that built a film is the worst judge of it. Every look round of a cinematic film (and of any
+film, when you can) carries a blind critic's notes:
+
+1. Start a fresh subagent. Give it only the board or sheet, the beat stills and the strips of this
+   round (their paths), never the treatment, the copy plan or what the film is meant to say.
+2. Ask it for 1-5 numbered notes, worst first, each one sentence about something visible in a named
+   still, and a score from 1 to 10 for subject, motion, light and story.
+3. Answer every note before recording the round: `done` with what you changed, or `refused` with why.
+
+```json
+"critic": {
+  "by": "blind",
+  "notes": [{ "n": 1, "note": "<the critic's sentence, verbatim>", "frame": "stills/beat-02.png" }],
+  "scores": { "subject": 6, "motion": 4, "light": 7, "story": 5 },
+  "responses": [{ "n": 1, "status": "<done or refused>", "how": "<what changed, or why not>" }]
+}
+```
+
+`look` refuses a cinematic round without `critic`, a critic that is not `blind`, and a note with no
+response. A cinematic film is done only after three critic rounds; a refused note in the last one is
+an open item the reply names.
+
 ## Rounds
 
 Rounds share one counter with the renders, 1 to 3.
@@ -99,7 +123,8 @@ Done needs all of:
   never before);
 - the last round's `viewed` covering the board, the poster, the contact sheet, every beat still and
   every transition strip, each of them opened with the Read tool in this session;
-- the last round free of revise answers, or round 3 with its open items said in the reply.
+- the last round free of revise answers, or round 3 with its open items said in the reply;
+- for a cinematic film, three rounds with the blind critic, every note answered.
 
 The Stop hook checks every item and holds the turn with a named reason. A missing, unreadable or
 outdated `treatment.json` or `look.json` is a named reason, never a pass.

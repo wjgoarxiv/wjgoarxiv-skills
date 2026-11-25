@@ -278,8 +278,9 @@ export function judgeText({ treatment, width, height, timeline, samples, canvasU
 
   // Labels: a rich film shows the labelled parts its world plans, and each shot carries several
   // readable runs, not one line alone on a field.
-  const planned = rich ? (treatment.world?.labels ?? []) : [];
-  if (!planned.length) rules.push(r("TEXT-LABELS", "N/A", rich ? "the treatment plans no world labels" : "minimal register: no label density asked"));
+  const labelled = treatment.register === "rich";
+  const planned = labelled ? (treatment.world?.labels ?? []) : [];
+  if (!planned.length) rules.push(r("TEXT-LABELS", "N/A", labelled ? "the treatment plans no world labels" : `${treatment.register} register: no label density asked`));
   else {
     const unseen = planned.filter((label) => !allRuns.some((run) => shown(run) && normalizeText(run.text).includes(normalizeText(label))));
     const mids = usable.filter((s) => s.mid);
@@ -356,6 +357,7 @@ export function judgeText({ treatment, width, height, timeline, samples, canvasU
 // the 12 regions may sit empty (busy share under 0.15). The end card may breathe, so one beat may miss.
 function richFill({ treatment, mids }) {
   if (treatment.register === "minimal") return r("RICH-FILL", "N/A", "minimal register: negative space is the point");
+  if (treatment.register === "cinematic") return r("RICH-FILL", "N/A", "cinematic register: the frame is composed by lens and light, not filled");
   const measured = mids.filter((s) => Array.isArray(s.regions));
   if (!measured.length) return r("RICH-FILL", "N/A", "region fill not measured");
   const thin = measured

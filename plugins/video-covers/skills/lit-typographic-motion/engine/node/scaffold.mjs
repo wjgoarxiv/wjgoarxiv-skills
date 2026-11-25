@@ -96,17 +96,41 @@ export function scaffoldHtml(treatment) {
 ${worlds}
   ];
 
+  // A WORLD function may return { focus, fstop } for a depth of field: focus is the distance from the
+  // camera to the subject in scene units (one unit is 10 cm), fstop the aperture (1.4 shallow, 16 deep).
+  const DOF = createDof(renderer, { width: ${width}, height: ${height} });
+  // The shot sheet of a cinematic film (treatment.json shots[]): each shot's lens, aperture, key and
+  // fill light are set here from its numbers before WORLD runs; WORLD may still move the camera, and the
+  // focus falls on HERO unless the sheet or WORLD names a distance.
+  const SHEET = ${JSON.stringify(treatment.shots ?? [])};
+  const fill = scene.children.find((o) => o.isHemisphereLight);
+  function shootSheet(row) {
+    if (!row) return;
+    cam.fov = lensFov(row.lensMm, ${width} / ${height});
+    cam.updateProjectionMatrix();
+    const az = (row.key.azimuth * Math.PI) / 180;
+    const el = (row.key.elevation * Math.PI) / 180;
+    key.position.set(8 * Math.cos(el) * Math.sin(az), 8 * Math.sin(el), 8 * Math.cos(el) * Math.cos(az));
+    key.color.copy(kelvin(row.key.kelvin));
+    fill.color.copy(kelvin(row.fill.kelvin));
+    fill.intensity = key.intensity * row.fill.ratio;
+  }
   function drawWorld(s, t) {
     cam.position.set(0, 1.6, 7);
     cam.lookAt(0, 0.6, 0);
+    const row = SHEET[s.index];
+    shootSheet(row);
     aim(s.beat.layout);
-    WORLD[s.index](s, HERO, cam, t);
-    renderer.render(scene, cam);
+    const lens = WORLD[s.index](s, HERO, cam, t) ?? {};
+    const fstop = lens.fstop ?? row?.fstop;
+    const focus = lens.focus ?? row?.focus ?? cam.position.distanceTo(HERO.getWorldPosition(new THREE.Vector3()));
+    DOF.render(scene, cam, { fstop, focus });
   }
 ` : "";
   const scriptOpen = solid ? `<script type="module">
   import * as THREE from "three";
   import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+  import { createDof, lensFov, kelvin, character, spring, hop, squash, blink, lag } from "/lit/depth-kit.js";
 ` : "<script>\n";
   return `<!doctype html>
 <html lang="${lang}">

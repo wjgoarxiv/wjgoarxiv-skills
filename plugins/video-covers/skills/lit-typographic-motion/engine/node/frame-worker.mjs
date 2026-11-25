@@ -4,16 +4,19 @@
 // frame while a pool of these decodes.
 import { parentPort } from "node:worker_threads";
 import { analyzeFrame, busyShare } from "./analysis.mjs";
+import { blendFrames } from "./blend.mjs";
 import { decodePng } from "./png.mjs";
 
-parentPort.on("message", ({ id, png, width, height }) => {
+const decodeChecked = (png, width, height) => {
+  const image = decodePng(Buffer.from(png));
+  if (image.width !== width || image.height !== height) throw new Error(`captured ${image.width}x${image.height}, expected ${width}x${height}`);
+  return image.channels === 4 ? image.pixels : toRgba(image.pixels, image.channels);
+};
+
+// `pngs` (the sub-frame captures of one motion-blurred frame) are averaged first, then analysed as one.
+parentPort.on("message", ({ id, png, pngs, width, height }) => {
   try {
-    const image = decodePng(Buffer.from(png));
-    if (image.width !== width || image.height !== height) {
-      parentPort.postMessage({ id, error: `captured ${image.width}x${image.height}, expected ${width}x${height}` });
-      return;
-    }
-    const rgba = image.channels === 4 ? image.pixels : toRgba(image.pixels, image.channels);
+    const rgba = pngs ? blendFrames(pngs.map((p) => decodeChecked(p, width, height))) : decodeChecked(png, width, height);
     // A stage frame is opaque: analyzeFrame's alpha-as-ink count is meaningless here and is dropped.
     const { cells, luminanceP995, luminanceP005, rgbaSha256 } = analyzeFrame(rgba, width, height);
     const busy = busyShare(rgba, width, height);

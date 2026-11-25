@@ -60,9 +60,13 @@ test('frames after the last beat, and a cut time with float error, still blur ar
   assert.ok(atCut.every((v) => v >= 18 - 1e-6), 'the cut frame belongs to the shot it opens');
 });
 
-test('a treatment without motionBlur gets the default; samples 1 turns it off', () => {
-  assert.deepEqual(blurFor({}), { samples: STAGE_BLUR.samples, shutter: STAGE_BLUR.shutter });
-  assert.deepEqual(blurFor({ motionBlur: { samples: 1 } }), { samples: 1, shutter: STAGE_BLUR.shutter });
+test('only a cinematic film blurs by default; motionBlur turns it on or off for any film', () => {
+  const on = { samples: STAGE_BLUR.samples, shutter: STAGE_BLUR.shutter };
+  for (const register of [undefined, 'rich', 'minimal']) assert.equal(blurFor({ register }).samples, 1, `${register} takes one capture a frame`);
+  assert.deepEqual(blurFor({ register: 'cinematic' }), on);
+  assert.deepEqual(blurFor({ register: 'rich', motionBlur: {} }), on);
+  assert.deepEqual(blurFor({ register: 'rich', motionBlur: { samples: 8 } }), { samples: 8, shutter: STAGE_BLUR.shutter });
+  assert.equal(blurFor({ register: 'cinematic', motionBlur: { samples: 1 } }).samples, 1);
 });
 
 test('blending averages in linear light: half white over black is not mid grey', () => {

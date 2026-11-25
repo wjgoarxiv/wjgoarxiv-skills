@@ -829,7 +829,8 @@ throw away every cache already on disk.
   is not smeared into an extra half-and-half frame.
 - `skills/lit-typographic-motion/engine/node/styles.mjs`: `Style: paper`, the form the design question writes into the
   request, now names the paper style, so a house style left by an earlier film no longer overrides the user's pick.
-- `skills/lit-typographic-motion/engine/core/constants.mjs`: `STAGE_BLUR` (16 samples, 0.45 shutter, at most 32).
+- `skills/lit-typographic-motion/engine/core/constants.mjs`: `STAGE_BLUR` (16 samples, 0.45 shutter, at most 32). It
+  is on by default in a cinematic film only; any other film asks for it with `motionBlur`.
 - `skills/lit-typographic-motion/engine/node/treatment.mjs`: the optional `motionBlur` field and its ranges, and
   the `cinematic` register with its numeric shot sheet (`shots[]`, at most two copy lines a shot).
 - `skills/lit-typographic-motion/engine/node/stage-qa.mjs`: `TEXT-LABELS` and `RICH-FILL` are N/A on a cinematic

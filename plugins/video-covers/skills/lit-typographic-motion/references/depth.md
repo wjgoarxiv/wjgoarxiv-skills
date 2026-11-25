@@ -77,8 +77,8 @@ screenshot goes on a plane or a face of the object as a texture (`TextureLoader`
 A rich film moves its camera in at least half its shots, and the flash audit stays exactly as it is.
 When a move fails MO-C-03, keep the move and change what it passes over: slow the light change (a
 highlight that sweeps over 0.5 s or more, not a frame), lower the contrast of the detail behind the
-move, keep the motion blur on (every stage master averages 16 sub-frames by default; `motionBlur` in
-the treatment), or cut instead of whipping. Removing the camera move is a downgrade.
+move, turn the motion blur on (`motionBlur: {}` in the treatment averages 16 sub-frames; a cinematic
+film has it on already), or cut instead of whipping. Removing the camera move is a downgrade.
 
 A hard cut between shots of different brightness already costs about three flashes in the looping
 preview (30, 24 or 20 fps), so keep a character's big move (a hop, a fall, a turn that fills the frame)

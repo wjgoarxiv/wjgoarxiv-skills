@@ -31,9 +31,13 @@ export function shutterFrames(f, offsets, fps, beats = []) {
   return offsets.map((o) => Math.min(hi, Math.max(lo, f + o)));
 }
 
-/** The blur a treatment asks for: its `motionBlur`, else the default; `{ samples: 1 }` turns it off. */
+/**
+ * The blur a treatment asks for: its `motionBlur` (an empty object takes the defaults, `{ samples: 1 }`
+ * turns it off). Without the field only a cinematic film blurs: each sub-frame is one more capture, so
+ * any other film takes a single capture a frame unless it asks.
+ */
 export function blurFor(treatment) {
-  const mb = treatment?.motionBlur ?? {};
+  const mb = treatment?.motionBlur ?? (treatment?.register === "cinematic" ? {} : { samples: 1 });
   return { samples: mb.samples ?? STAGE_BLUR.samples, shutter: mb.shutter ?? STAGE_BLUR.shutter };
 }
 

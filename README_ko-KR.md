@@ -819,7 +819,8 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
   씁니다. 셔터는 컷을 넘지 않습니다. 서브프레임이 자기 샷 안에 머무르므로 하드 컷이 반반 섞인 프레임으로 번지지 않습니다.
 - `skills/lit-typographic-motion/engine/node/styles.mjs`: 디자인 질문이 요청에 적는 `Style: paper`가 이제 paper 스타일을 가리킵니다.
   그래서 앞 영상이 남긴 하우스 스타일이 사용자의 선택을 덮어쓰지 않습니다.
-- `skills/lit-typographic-motion/engine/core/constants.mjs`: `STAGE_BLUR`(샘플 16개, 셔터 0.45, 최대 32개).
+- `skills/lit-typographic-motion/engine/core/constants.mjs`: `STAGE_BLUR`(샘플 16개, 셔터 0.45, 최대 32개). 시네마틱
+  영상에서만 기본으로 켜지고, 다른 영상은 `motionBlur`로 켭니다.
 - `skills/lit-typographic-motion/engine/node/treatment.mjs`: 선택 필드 `motionBlur`와 그 범위, 그리고 숫자로 적는 샷 시트(`shots[]`,
   샷마다 문구 최대 두 줄)를 갖춘 `cinematic` 레지스터.
 - `skills/lit-typographic-motion/engine/node/stage-qa.mjs`: 시네마틱 영상에서는 `TEXT-LABELS`와 `RICH-FILL`이 N/A입니다. 플래시 검사를

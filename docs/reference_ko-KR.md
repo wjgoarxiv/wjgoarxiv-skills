@@ -88,6 +88,8 @@ LitClaude는 웹 화면 수정을 이 프로브로 확인하기 때문에, front
   개, 예시 설정 파일이 모두 스킬 폴더 안에 있습니다.
 - **`skills/agentvfx/`:** agentvfx-plugin 커밋 `9377e19`에서 바이트 그대로 복사했고, 영수증 줄과 Apache-2.0 `LICENSE`, `NOTICE`가
   함께 있습니다. Claude Code 전용입니다. 엔진은 들어 있지 않고, 스킬이 npm 패키지 `agentvfx`를 불러 씁니다.
+- **`skills/video/`:** Claude Code만을 위해 여기서 새로 쓴 스킬이라 영수증 줄과 `variants/` 폴더가 없습니다. `SKILL.md` 하나로
+  영상 요청을 옆의 네 스킬 가운데 하나로 보냅니다.
 
 옮겨 온 lit-typographic-motion 문서 가운데 LitClaude에만 있는 부품을 말하는 줄은 README의
 [LitClaude 밖에서 영상 스킬 쓰기](../README_ko-KR.md#video-covers)에 정리했습니다.

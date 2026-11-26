@@ -94,6 +94,7 @@ claude plugin install video-covers@wjgoarxiv-skills
 | 실제 장비 도면 | `lit-schematic` (`figures`) | 밀리미터 단위 SVG, 600 dpi 렌더 |
 | 화면 | `frontend-ui-ux` (`design`) | 완성된 화면 |
 | 완성된 화면 점검 | `visual-qa` (`design`) | 스크린샷, 증거 목록, QA 보고서 |
+| 영상인데 어떤 스킬인지 모를 때 | `video` (`video-covers`, Claude Code 전용) | 아래 네 스킬 가운데 맞는 하나를 골라 실행 |
 | 짧은 영상이나 커버 루프 | `lit-typographic-motion` (`video-covers`) | 영상이나 소리 없는 커버 루프 |
 | 점멸하는 타이포 릴 | `lit-strobe-reel` (`video-covers`, Claude Code 전용) | 소리까지 붙은 16:9 점멸 릴 |
 | 음악에 반응하는 VFX 클립 | `agentvfx` (`video-covers`, Claude Code 전용) | 3~5초 셰이더 클립, 루프, 웹 실시간 효과 |
@@ -228,6 +229,8 @@ README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `l
 `lit-strobe-reel`은 단어 세 개와 설정 파일 하나로 글자, 심볼, Blender로 찍은 사물을 이어 붙인 16:9 타이포 릴을 소리까지 붙여
 만듭니다. `agentvfx`는 FX 스코어를 써서 agentvfx npm 엔진으로 렌더합니다. 음악에 반응하는 셰이더 클립, 페스티벌 루프, 웹
 페이지용 실시간 효과를 만들고, 렌더마다 점멸 검사를 거칩니다. 두 스킬 모두 Claude Code 전용이며, 다른 하네스용 에디션은 없습니다.
+`video`는 입구 역할을 합니다. 스킬 이름 없이 들어온 영상 요청을 읽고, 네 스킬 가운데 하나를 골라 불러 줍니다. 고르는 대상
+둘이 Claude Code 전용이라 이 스킬도 Claude Code 전용입니다.
 
 > **점멸 경고.** `lit-strobe-reel` 영상은 화면 전체를 초당 최대 30번 반전하며 WCAG 2.3.1 점멸 한계를 넘습니다. 공개할 때는
 > 영상 앞에 경고를 붙이세요. 점멸 검사를 거친 영상이 필요하면 `lit-typographic-motion`을 쓰세요.
@@ -844,6 +847,10 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
 - `skills/lit-typographic-motion/SKILL.md`, `skills/lit-typographic-motion/references/treatment.md`,
   `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md`,
   `skills/lit-typographic-motion/references/depth.md`: 레지스터, 필드, 비평가, 뎁스 키트 설명.
+
+`video-covers` 0.1.7:
+- `skills/video/`(새로 씀, 영수증 줄 없음, Claude Code 전용): 영상 요청의 입구입니다. 요청을 읽고 lit-typographic-motion,
+  lit-strobe-reel, agentvfx, readme-studio 가운데 하나를 골라 불러 줍니다.
 
 `video-covers` 0.1.6:
 - `skills/agentvfx/`(`SKILL.md`, `LICENSE`, `NOTICE`): agentvfx-plugin 커밋 `9377e19`(agentvfx 0.3.6)에서 바이트 그대로

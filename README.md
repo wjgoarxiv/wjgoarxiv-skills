@@ -94,6 +94,7 @@ skill's own `SKILL.md` names the handoff; the dashed one is just a pairing that 
 | A drawing of real equipment | `lit-schematic` (`figures`) | Millimetre-sized SVG and a 600 dpi render |
 | An interface | `frontend-ui-ux` (`design`) | A built interface |
 | A check of a built page | `visual-qa` (`design`) | Screenshots, an evidence manifest, a QA report |
+| Any video, when you are not sure which skill | `video` (`video-covers`, Claude Code only) | The right one of the four below, picked and loaded |
 | A short film or cover loop | `lit-typographic-motion` (`video-covers`) | A film or a silent cover loop |
 | A strobing type reel | `lit-strobe-reel` (`video-covers`, Claude Code only) | A flashing 16:9 reel with sound |
 | A music-reactive VFX clip | `agentvfx` (`video-covers`, Claude Code only) | A 3-5 s shader clip, a loop or a live web effect |
@@ -230,7 +231,8 @@ seamless README cover loop like the one at the top of this page. `readme-studio`
 repository itself. `lit-strobe-reel` turns three words and one settings file into a 16:9 typographic reel with sound, cut
 from type, marks and Blender-photographed objects. `agentvfx` writes an FX score and renders it with the agentvfx npm
 engine: music-reactive shader clips, festival loops and live effects for a web page, each with a flash audit. Both are
-Claude Code only: the other harnesses have no edition of them.
+Claude Code only: the other harnesses have no edition of them. `video` is the front door: it reads a video request that
+names no skill, picks one of the four and loads it. It is Claude Code only too, since two of the four are.
 
 > **Strobe warning.** `lit-strobe-reel` films invert the whole frame up to 30 times a second and are outside the WCAG
 > 2.3.1 flash limit. Put a warning in front of any you publish; for a film with a flash audit, use
@@ -856,6 +858,10 @@ throw away every cache already on disk.
 - `skills/lit-typographic-motion/SKILL.md`, `skills/lit-typographic-motion/references/treatment.md`,
   `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md` and
   `skills/lit-typographic-motion/references/depth.md`: the register, the fields, the critic and the depth kit.
+
+`video-covers` 0.1.7:
+- `skills/video/` (new, written here, no receipt rows; Claude Code only): the front door for video requests. It picks
+  lit-typographic-motion, lit-strobe-reel, agentvfx or readme-studio from the request and loads it.
 
 `video-covers` 0.1.6:
 - `skills/agentvfx/` (`SKILL.md`, `LICENSE`, `NOTICE`): copied unchanged from agentvfx-plugin commit `9377e19` (agentvfx

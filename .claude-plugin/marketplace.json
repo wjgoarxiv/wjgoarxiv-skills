@@ -26,7 +26,7 @@
     {
       "name": "video-covers",
       "source": "./plugins/video-covers",
-      "description": "lit-typographic-motion and readme-studio: finished short films and silent README cover loops, made from a treatment and checked by their own gate, and factual READMEs with inspected covers. For Claude Code also lit-strobe-reel (strobing type reels) and agentvfx (music-reactive VFX clips)."
+      "description": "lit-typographic-motion and readme-studio: finished short films and silent README cover loops, made from a treatment and checked by their own gate, and factual READMEs with inspected covers. For Claude Code also lit-strobe-reel (strobing type reels), agentvfx (music-reactive VFX clips) and video, the front door that picks among them."
     }
   ]
 }

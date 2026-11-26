@@ -20,7 +20,7 @@ const NATIVE_FILES = { 'video-covers': ['plugins/video-covers/hooks/hooks.json',
   'plugins/video-covers/skills/lit-typographic-motion/engine/stage/depth-kit.js',
   'plugins/video-covers/skills/lit-typographic-motion/engine/stage/depth-math.js'] };
 // Skill folders written here: nothing inside them carries a receipt row.
-const NATIVE_DIRS = ['plugins/video-covers/skills/lit-strobe-reel/'];
+const NATIVE_DIRS = ['plugins/video-covers/skills/lit-strobe-reel/', 'plugins/video-covers/skills/video/'];
 
 test('every marketplace entry is a plugin folder with a manifest and at least one skill', () => {
   assert.equal(market.name, 'wjgoarxiv-skills');
@@ -192,4 +192,13 @@ test('video-covers carries agentvfx unchanged from agentvfx-plugin, with its Apa
   for (const f of ['SKILL.md', 'LICENSE', 'NOTICE']) assert.match(rows, new RegExp(`  wjgoarxiv/agentvfx-plugin@9377e19/(skills/agentvfx/)?${f}  ${dir}/${f}\\n`), f);
   assert.match(read(`${dir}/LICENSE`).toString('utf8'), /Apache License\s+Version 2\.0/);
   assert.match(json('plugins/video-covers/.claude-plugin/plugin.json').license, /Apache-2\.0/);
+});
+
+test('video-covers has one front door, video, that routes to every other video-covers skill and to nothing else', () => {
+  const dir = 'plugins/video-covers/skills', body = read(`${dir}/video/SKILL.md`).toString('utf8');
+  assert.match(body, /^---\nname: video\ndescription: .+\n---\n/u);
+  const skills = readdirSync(join(root, dir)).filter((id) => id !== 'video' && existsSync(join(root, dir, id, 'SKILL.md')));
+  const named = [...new Set([...body.matchAll(/video-covers:([a-z-]+)/gu)].map((m) => m[1]))];
+  assert.deepEqual(named.sort(), skills.sort(), 'the router names each sibling skill once as video-covers:<id>');
+  assert.match(body, /Strobe warning/u, 'the router puts the strobe warning in front of lit-strobe-reel');
 });

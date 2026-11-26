@@ -18,7 +18,7 @@ plugins/<family>/skills/<id>/       the skill folder, copied unchanged
 plugins/<family>/lib/               the shared runtime files the skill reaches as ../../lib, copied unchanged
 plugins/<family>/bin/, vendor/      (figures) the doctor and the canonical source the adapter reaches as ../../bin and ../../vendor
 plugins/<family>/LICENSE            the licence the files came under
-receipts/<family>.sha256            sha256, source path, destination path for every copied file
+receipts/<family>.sha256            sha256, source path, destination path for every copied file (none for sheets)
 variants/<product>/<id>/            another product's own edition of a moved skill, made to run on its own
 variants/<product>/CHANGES.md       what changed in that edition after the unchanged copy, and why
 receipts/variants-<product>.sha256  sha256, source path at that product's commit, destination path of the unchanged copy
@@ -86,7 +86,7 @@ web-interface edits with that probe.
   `decks`.
 
 - **`skills/lit-strobe-reel/`:** written here for Claude Code alone, so it has no receipt rows and no folders under
-  `variants/`. Its engine, six packs and example settings files are all inside the skill folder.
+  `variants/`. Its engine, eight packs and example settings files are all inside the skill folder.
 - **`skills/agentvfx/`:** copied unchanged from agentvfx-plugin commit `9377e19`, with receipt rows, its Apache-2.0
   `LICENSE` and its `NOTICE`. Claude Code only. The engine is not bundled: the skill runs the `agentvfx` npm package.
 - **`skills/video/`:** written here for Claude Code alone, so it has no receipt rows and no folders under `variants/`.
@@ -94,6 +94,25 @@ web-interface edits with that probe.
 
 The parts of the moved lit-typographic-motion text that describe LitClaude-only pieces are listed in the README under
 [Running the film skill outside LitClaude](../README.md#video-covers).
+
+### `sheets`
+
+`sheets` was written here, not moved, so it has no `receipts/sheets.sha256` and no folders under `variants/`; it is
+Claude Code only. Everything it needs sits inside the plugin:
+- **`lib/sheets-runtime.mjs`, `lib/sheets-runtime-lock/requirements.lock` and `lib/sheets_bootstrap.py`:** its own
+  first-use installer for openpyxl, XlsxWriter, defusedxml, lxml and Pillow. The cache is
+  `${XDG_CACHE_HOME:-~/.cache}/litfamily/sheets-runtime` (or `$LIT_XLSX_RUNTIME`), keyed by the lock, the platform and
+  the Python minor version. It never shares a venv with the `decks`/`documents` office runtime, so a change to one lock
+  does not rebuild the other.
+- **`skills/lit-xlsx/scripts/`:** the build kit, the one template generator, and the recalc, audit and render scripts.
+  Recalc and render start LibreOffice with `-env:UserInstallation` pointing at a new folder under the temp directory and
+  delete it afterwards; the person's own LibreOffice profile is never opened.
+- **`skills/lit-xlsx/NOTICE`:** credits the Apache-2.0 skills whose techniques lit-xlsx rewrote in its own words.
+
+`test/sheets.test.mjs` checks the listings, builds every template, recalculates a workbook with a planted `#REF!`,
+renders one PNG per visible sheet and compares the shared LibreOffice profile before and after. The Python tests skip
+when the runtime, LibreOffice or Poppler is missing; `node plugins/sheets/lib/sheets-runtime.mjs ensure` installs the
+runtime.
 
 ## Rules for this repository
 

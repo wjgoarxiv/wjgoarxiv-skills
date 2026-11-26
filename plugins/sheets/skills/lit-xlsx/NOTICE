@@ -1,0 +1,19 @@
+lit-xlsx (sheets plugin, wjgoarxiv-skills)
+Copyright (c) 2026 LitClaude contributors. MIT licence: see ../../LICENSE.
+
+lit-xlsx was written for this repository. No file, function or passage was copied from another project. Its design
+borrows techniques from the sources below, rewritten in its own words and code:
+
+- anthropics/skills, skills/xlsx (Apache License 2.0, https://github.com/anthropics/skills):
+  recalculating in LibreOffice with a separate user profile, the list of formula error values, the _xlfn prefix rule
+  for newer functions, openpyxl pitfalls, and the input/formula/link colour convention.
+- anthropics/financial-services, financial-analysis audit-xls skill (Apache License 2.0,
+  https://github.com/anthropics/financial-services): an audit that reports findings by severity before changing
+  anything, hardcodes inside formulas, a case switch with INDEX, and a Checks sheet.
+- openai/skills, skills/.curated/spreadsheet at commit e6afb0d (Apache License 2.0, https://github.com/openai/skills):
+  rendering each sheet through LibreOffice and Poppler and looking at it before delivery.
+- proxlsx-skill by the same author: a named-role builder, lint rules against default sheet names, General number
+  formats and too many fills, and templates built from a single script.
+
+Runtime dependencies are installed on first use and are not bundled: openpyxl (MIT), XlsxWriter (BSD-2-Clause),
+defusedxml (PSF-2.0), lxml (BSD-3-Clause), Pillow (MIT-CMU). LibreOffice and Poppler are host tools that are only detected.

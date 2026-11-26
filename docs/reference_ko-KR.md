@@ -18,7 +18,7 @@ plugins/<family>/skills/<id>/       그대로 복사한 스킬 폴더
 plugins/<family>/lib/               스킬이 ../../lib로 읽는 공용 런타임 파일, 그대로 복사
 plugins/<family>/bin/, vendor/      (figures) 어댑터가 ../../bin, ../../vendor로 읽는 doctor와 원본 소스
 plugins/<family>/LICENSE            파일이 원래 따르던 라이선스
-receipts/<family>.sha256            복사한 파일마다 sha256, 원본 경로, 대상 경로
+receipts/<family>.sha256            복사한 파일마다 sha256, 원본 경로, 대상 경로(sheets는 없음)
 variants/<product>/<id>/            다른 제품이 만든 그 스킬의 에디션, 혼자 돌아가도록 손본 것
 variants/<product>/CHANGES.md       원본 복사 뒤에 그 에디션에서 바뀐 것과 이유
 receipts/variants-<product>.sha256  sha256, 그 제품 커밋에서의 원본 경로, 원본 복사본의 대상 경로
@@ -93,6 +93,24 @@ LitClaude는 웹 화면 수정을 이 프로브로 확인하기 때문에, front
 
 옮겨 온 lit-typographic-motion 문서 가운데 LitClaude에만 있는 부품을 말하는 줄은 README의
 [LitClaude 밖에서 영상 스킬 쓰기](../README_ko-KR.md#video-covers)에 정리했습니다.
+
+### `sheets`
+
+`sheets`는 옮겨 온 것이 아니라 여기서 새로 썼기 때문에 `receipts/sheets.sha256`도, `variants/` 아래 폴더도 없고 Claude Code
+전용입니다. 필요한 것은 모두 플러그인 안에 있습니다.
+- **`lib/sheets-runtime.mjs`, `lib/sheets-runtime-lock/requirements.lock`, `lib/sheets_bootstrap.py`:** openpyxl,
+  XlsxWriter, defusedxml, lxml, Pillow를 처음 쓸 때 설치하는 자체 설치기입니다. 캐시는
+  `${XDG_CACHE_HOME:-~/.cache}/litfamily/sheets-runtime`(또는 `$LIT_XLSX_RUNTIME`)이고, 잠금 파일, 플랫폼, Python 마이너
+  버전으로 키를 만듭니다. `decks`·`documents`의 오피스 런타임과 가상환경을 같이 쓰지 않으므로, 한쪽 잠금 파일을 바꿔도
+  다른 쪽은 다시 만들어지지 않습니다.
+- **`skills/lit-xlsx/scripts/`:** 빌드 키트, 하나뿐인 템플릿 생성기, 재계산·감사·렌더 스크립트입니다. 재계산과 렌더는
+  임시 폴더 아래 새 폴더를 `-env:UserInstallation`으로 넘겨 LibreOffice를 띄우고 끝나면 지웁니다. 사용자가 쓰는
+  LibreOffice 프로필은 열지 않습니다.
+- **`skills/lit-xlsx/NOTICE`:** lit-xlsx가 기법을 참고해 자기 말로 새로 쓴 Apache-2.0 스킬들을 밝힙니다.
+
+`test/sheets.test.mjs`는 목록을 확인하고, 모든 템플릿을 만들고, `#REF!`를 심어 둔 파일을 재계산하고, 보이는 시트마다 PNG
+한 장을 렌더하고, 공유 LibreOffice 프로필을 전후로 비교합니다. 런타임, LibreOffice, Poppler가 없으면 Python 테스트는
+건너뜁니다. 런타임은 `node plugins/sheets/lib/sheets-runtime.mjs ensure`로 설치합니다.
 
 ## 이 저장소의 규칙
 

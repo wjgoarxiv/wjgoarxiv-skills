@@ -25,7 +25,8 @@ that name.
 
 Nine content skills for LitFamily, my set of add-ons that brings one way of working (plans, loops, goals, reviews) to
 seven coding agents. They make decks, documents, figures, interfaces, films and READMEs, and you install only the ones
-you need. Each one also works without any LitFamily product.
+you need. Each one also works without any LitFamily product. Claude Code also gets a few skills written here for it
+alone, among them `lit-xlsx` for Excel workbooks.
 
 > [!TIP]
 > On Claude Code, the lines in [Quick start](#quick-start) install one family; then ask your agent for a deck. Every
@@ -50,7 +51,7 @@ lines under [Per-harness notes](#per-harness-notes).
 1. Find your skill and its family in the [pick-one table](#pick-one-skill-for-one-harness).
 2. Run the check lines. Line 1 lists a same-name skill of your own; lines 2 and 3 move a personal or project copy aside.
 3. Run the install lines, keeping the line for your family.
-4. Ask for what the skill makes: a deck, a document, a figure, an interface, a film or a README.
+4. Ask for what the skill makes: a deck, a document, a figure, an interface, a film, a README or a workbook.
 
 Run from your project folder before installing:
 
@@ -69,6 +70,7 @@ claude plugin install documents@wjgoarxiv-skills
 claude plugin install figures@wjgoarxiv-skills
 claude plugin install design@wjgoarxiv-skills
 claude plugin install video-covers@wjgoarxiv-skills
+claude plugin install sheets@wjgoarxiv-skills
 ```
 
 You are set when the skill answers as `decks:lit-pptx` (or `<family>:<id>` for yours).
@@ -89,6 +91,7 @@ skill's own `SKILL.md` names the handoff; the dashed one is just a pairing that 
 | --- | --- | --- |
 | A slide deck | `lit-pptx` (`decks`) | An editable `.pptx` deck |
 | A report, memo or manuscript | `lit-docx` (`documents`) | A `.docx`, clean Markdown or a PDF |
+| A spreadsheet, model or Excel dashboard | `lit-xlsx` (`sheets`, Claude Code only) | An `.xlsx` with live formulas, recalculated, audited and looked at sheet by sheet |
 | A plot of measured data | `lit-scientific-visualization` (`figures`) | A publication plot |
 | A diagram of an idea or system | `lit-diagram-drawer` (`figures`) | HTML/SVG, PNG and Office-safe SVG |
 | A drawing of real equipment | `lit-schematic` (`figures`) | Millimetre-sized SVG and a 600 dpi render |
@@ -137,6 +140,7 @@ repository in one grid: which plugin, which skills, and what comes out.
 | `figures` | The schematic QA gate and a look at the render |
 | `design` | A viewport matrix |
 | `video-covers` | A flash audit and a seam check |
+| `sheets` | Recalculation, a formula audit and a PNG of every sheet |
 
 ### `decks`
 
@@ -252,7 +256,8 @@ names no skill, picks one of the four and loads it. It is Claude Code only too, 
   the full render. Then come an original score, look rounds and a QA gate (flash audit, legibility, determinism, sound).
 - **Film kinds:** kinetic type, lyric or quote videos, title sequences and stage films.
 - **Strobe reel:** `lit-strobe-reel` copies an example settings file for one of five object packs (keys, transit, tape,
-  stones, pads) or for `glasses`, which cuts one long photoreal Blender shot as a reel. It checks the file, renders a
+  stones, pads) or for `glasses`, `bulb` and `train`, which cut one long photoreal Blender shot as a reel (in `bulb` and `train` a light
+  or a passing train in the scene makes the strobe). It checks the file, renders a
   sheet with one frame per beat for you to look at, then the film.
 - **README extras:** `readme-studio` adds an inspected cover, outlined title type and, if you want one, a motion cover.
 
@@ -277,6 +282,30 @@ not come with this plugin:
   LitClaude 1.0.49 or earlier needs nothing new. See [Edited after the move](#edited-after-the-move).
 - `recipes/painted-light/expected.json` names a test fixture from the LitClaude repository. That fixture did not come
   along, so the recipe's reference image is only a description.
+
+</details>
+
+### `sheets`
+
+`lit-xlsx` makes Excel workbooks that keep working after someone changes a number: financial models with cases,
+budgets against actuals, report tables and KPI dashboards, plus CSV imports and edits to a workbook you already have.
+Every total and ratio is a formula, inputs are blue, formulas black and cross-sheet links green. Before it hands a file
+over, LibreOffice computes every formula, an audit looks for `#REF!`, `#NAME?`, hardcoded numbers and failed checks, and
+each sheet is rendered to a PNG that the model looks at. The default look is calm (a charcoal title band and
+header rows, light grey section bands, a left gutter, plain body rows); ask for a dashboard and the same frame gets dark KPI
+boxes and charts. Korean labels use Malgun Gothic.
+It is written here for Claude Code only, so the other harnesses have no edition of it yet.
+
+<details>
+<summary>What the sheets plugin carries and needs</summary>
+
+- **Templates:** one generator script builds an operating model (cases, a five-year model, a sensitivity grid, checks),
+  a Korean budget against actuals with a scenario switch, a Korean report table and a Korean KPI dashboard.
+- **Recalculation:** LibreOffice runs with a new profile folder under the temp directory every time, so your own
+  LibreOffice settings are never touched, and only the computed values are written back into the file.
+- **Runtime:** openpyxl, XlsxWriter, defusedxml, lxml and Pillow install on first use into
+  `${XDG_CACHE_HOME:-~/.cache}/litfamily/sheets-runtime`, separate from the documents and decks cache. LibreOffice and
+  Poppler (`pdftoppm`) are needed for the recalculation and the render; without them the skill says the check did not run.
 
 </details>
 
@@ -397,13 +426,14 @@ check and install lines are in [Quick start](#quick-start).
   `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`.
 
 **After install:** the skills answer as `decks:lit-pptx`, `documents:lit-docx`, `figures:lit-diagram-drawer`,
-`figures:lit-schematic`, `design:frontend-ui-ux`, `design:visual-qa`, `video-covers:lit-typographic-motion` and
-`video-covers:readme-studio`. LitClaude's own `lit` routing for decks, documents, figures, interfaces, films and READMEs
-keeps working: when the moved skill is installed, the stub it loads points there.
+`figures:lit-schematic`, `design:frontend-ui-ux`, `design:visual-qa`, `video-covers:lit-typographic-motion`,
+`video-covers:readme-studio` and `sheets:lit-xlsx`. LitClaude's own `lit` routing for decks, documents, workbooks, figures, interfaces, films and READMEs
+keeps working: when the skill is installed, the stub it loads points there.
 
 > [!NOTE]
-> `lit-scientific-visualization` is user-invoked only, same as it was in LitClaude, so you type
-> `/figures:lit-scientific-visualization <request>`.
+> `lit-scientific-visualization` loads like the other skills now: Claude can pick it for a plot of measured data,
+> and LitClaude offers it for such a request even without `lit`. Typing
+> `/figures:lit-scientific-visualization <request>` still works.
 
 ### Codex CLI
 
@@ -656,6 +686,7 @@ The family plugins hold LitClaude's copies, which were written for Claude Code a
 | `figures` | `2381bfe` (files identical to 1.0.49) |
 | `design` | `aaea364` (files identical to 1.0.49) |
 | `video-covers` | `4d03ca8` (files identical to 1.0.49) |
+| `sheets` | Nothing: written here, so it has no receipts; LitClaude's next release adds a same-name `lit-xlsx` stub that points here |
 
 </details>
 
@@ -859,6 +890,15 @@ throw away every cache already on disk.
   `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md` and
   `skills/lit-typographic-motion/references/depth.md`: the register, the fields, the critic and the depth kit.
 
+`sheets` 0.1.0:
+- the whole plugin (new, written here, no receipt file; Claude Code only): `skills/lit-xlsx/` and its own Python
+  runtime under `lib/`. `skills/lit-xlsx/NOTICE` names the Apache-2.0 skills whose techniques it rewrote.
+
+`video-covers` 0.1.8:
+- `skills/lit-strobe-reel/packs/bulb/`, `skills/lit-strobe-reel/packs/train/`, `skills/lit-strobe-reel/films/buzz-flicker-out/`
+  and `skills/lit-strobe-reel/films/wait-pass-gone/`: two photoreal packs whose strobe comes from the scene (a flickering
+  bulb, a passing train's windows), with their example films; `skills/lit-strobe-reel/SKILL.md` lists them.
+
 `video-covers` 0.1.7:
 - `skills/video/` (new, written here, no receipt rows; Claude Code only): the front door for video requests. It picks
   lit-typographic-motion, lit-strobe-reel, agentvfx or readme-studio from the request and loads it.
@@ -911,6 +951,7 @@ and its `status` runs from the plugin. The editions under `variants/` were alrea
 | The per-harness lines, word for word | `test/stub-install-lines.json`, the lines each stub gives |
 | Every folder those lines name, for every skill | This repository |
 | Every receipt, including `edited-from:` rows | The copied bytes |
+| lit-xlsx templates, recalculation of a planted `#REF!`, one PNG per sheet, the throwaway LibreOffice profile | The sheets plugin (skipped without its runtime, LibreOffice or Poppler) |
 
 Run from the repository root:
 
@@ -922,6 +963,7 @@ claude plugin validate plugins/documents
 claude plugin validate plugins/figures
 claude plugin validate plugins/design
 claude plugin validate plugins/video-covers
+claude plugin validate plugins/sheets
 ```
 
 </details>
@@ -942,6 +984,7 @@ This repository has no single licence of its own. Each family plugin carries the
 | `figures` | MIT | LitClaude's own files; the copies under `vendor/` keep their own provenance and licence files |
 | `design` | MIT AND Apache-2.0 | frontend-ui-ux's `LICENSE` (MIT) and `THIRD-PARTY-NOTICE.txt` cover its design data, and its `references/_canonical-corpus/legal/` holds the Apache-2.0 licence of the reference corpus |
 | `video-covers` | MIT AND OFL-1.1 AND Apache-2.0 | LitClaude's own files, the Pretendard fonts under their OFL licence, and `skills/agentvfx/` under Apache-2.0 (its `LICENSE` and `NOTICE` sit beside it) |
+| `sheets` | MIT | Written here; `skills/lit-xlsx/NOTICE` credits the Apache-2.0 skills whose techniques it borrows, without copying their text or code |
 
 </details>
 

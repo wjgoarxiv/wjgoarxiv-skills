@@ -1,0 +1,9 @@
+{
+  "name": "sheets",
+  "description": "lit-xlsx: Excel workbooks with live formulas (models, budgets with scenarios, report tables, KPI dashboards), recalculated in LibreOffice with a throwaway profile, audited for formula errors and rendered to one PNG per sheet before delivery, with its own Python runtime.",
+  "version": "0.1.0",
+  "author": { "name": "wjgoarxiv" },
+  "license": "MIT",
+  "keywords": ["claude-code", "skills", "xlsx", "excel", "spreadsheet", "엑셀"],
+  "skills": "./skills"
+}

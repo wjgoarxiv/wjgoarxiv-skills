@@ -1,7 +1,6 @@
 ---
 name: lit-scientific-visualization
-description: "🔥 lit-scientific-visualization — Claude-native publication figure workflow backed by the complete immutable scientific-visualization payload."
-disable-model-invocation: true
+description: "Plot measured or computed data as a publication-quality figure (line, scatter, bar, heat map, isotherm, XRD, kinetics; error bars, log axes, colour-blind-safe palettes; 300-600 dpi PNG, PDF, SVG). Use when the user asks to plot, chart or graph data from a CSV, table or experiment (그래프 그려줘, 플롯, 산점도, 논문용 그림). Not for conceptual diagrams (lit-diagram-drawer), equipment drawings (lit-schematic) or charts inside a web page (frontend-ui-ux)."
 ---
 
 ## #contract.activation

@@ -21,6 +21,8 @@ const NATIVE_FILES = { 'video-covers': ['plugins/video-covers/hooks/hooks.json',
   'plugins/video-covers/skills/lit-typographic-motion/engine/stage/depth-math.js'] };
 // Skill folders written here: nothing inside them carries a receipt row.
 const NATIVE_DIRS = ['plugins/video-covers/skills/lit-strobe-reel/', 'plugins/video-covers/skills/video/'];
+// Plugins written here from the start: no file was copied, so they have no receipt file at all.
+const NATIVE_PLUGINS = ['sheets'];
 
 test('every marketplace entry is a plugin folder with a manifest and at least one skill', () => {
   assert.equal(market.name, 'wjgoarxiv-skills');
@@ -49,6 +51,10 @@ test('every receipt matches the copied bytes, and every copied file has a receip
   const readme = read('README.md').toString('utf8');
   for (const p of market.plugins) {
     const dir = p.source.replace(/^\.\//, '');
+    if (NATIVE_PLUGINS.includes(p.name)) {
+      assert.equal(existsSync(join(root, `receipts/${p.name}.sha256`)), false, `${p.name} is native and has no receipts`);
+      continue;
+    }
     const rows = read(`receipts/${p.name}.sha256`).toString('utf8').trim().split('\n').map((l) => l.split('  '));
     const covered = new Set();
     for (const [sha, , dest, edited, ...rest] of rows) {

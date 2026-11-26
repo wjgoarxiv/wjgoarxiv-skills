@@ -27,6 +27,11 @@
       "name": "video-covers",
       "source": "./plugins/video-covers",
       "description": "lit-typographic-motion and readme-studio: finished short films and silent README cover loops, made from a treatment and checked by their own gate, and factual READMEs with inspected covers. For Claude Code also lit-strobe-reel (strobing type reels), agentvfx (music-reactive VFX clips) and video, the front door that picks among them."
+    },
+    {
+      "name": "sheets",
+      "source": "./plugins/sheets",
+      "description": "lit-xlsx (Claude Code only): Excel workbooks with live formulas, from models and budgets to KPI dashboards, recalculated in LibreOffice, audited for formula errors and rendered to a PNG per sheet before delivery, with its own Python runtime."
     }
   ]
 }

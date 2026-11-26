@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+- `sheets` 0.1.0 (new plugin, Claude Code only): `lit-xlsx` builds Excel workbooks with live formulas (models with
+  cases and a sensitivity grid, budgets against actuals, report tables, KPI dashboards) from one template generator and
+  a small build kit, with a calm default look and a `dashboard` preset. `recalc.py` computes every formula in
+  LibreOffice under a throwaway profile in the temp folder and writes only the values back; `audit_xlsx.py` reports
+  error values, `#REF!`, missing `_xlfn.` prefixes, hardcodes and failed checks; `render_sheets.py` writes one PNG per
+  visible sheet for a look before delivery. Its Python runtime has its own lock and cache, apart from the office runtime.
+  Written clean-room; `NOTICE` credits the Apache-2.0 skills whose techniques it borrows. `test/sheets.test.mjs` covers
+  the listings, the templates, a planted `#REF!`, the render and the untouched shared LibreOffice profile.
+- `figures`: `lit-scientific-visualization` is model-invocable now (its `disable-model-invocation` line is gone), so
+  Claude can load it for a plot of measured data and LitClaude can offer it without `lit`; the typed
+  `/figures:lit-scientific-visualization` still works. The README note that called it user-invoked only is updated.
 - README, `README_ko-KR.md` and the six `variants/<product>/CHANGES.md`: the install lines now match the products'
   safe-install stubs. Each harness first looks for same-name skills it would also load; Codex CLI, OpenCode,
   Antigravity CLI and Hermes Agent move an existing copy whole into a dated `extension-backups/` folder outside every

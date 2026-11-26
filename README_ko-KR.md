@@ -24,7 +24,8 @@
 
 LitFamily를 위한 콘텐츠 스킬 아홉 개입니다. LitFamily는 계획, 루프, 목표, 리뷰로 이어지는 같은 작업 방식을 일곱 코딩
 에이전트에 붙여 주는 애드온 묶음입니다. 발표자료, 문서, 그림, 화면, 영상, README를 만들고, 필요한 것만 골라 설치하며,
-LitFamily 제품 없이도 하나씩 따로 쓸 수 있습니다.
+LitFamily 제품 없이도 하나씩 따로 쓸 수 있습니다. Claude Code에는 여기서 따로 쓴 스킬도 몇 개 더 있는데, 엑셀 통합 문서를
+만드는 `lit-xlsx`도 그중 하나입니다.
 
 > [!TIP]
 > Claude Code라면 [빠른 시작](#빠른-시작)의 명령으로 패밀리 하나를 설치한 뒤 에이전트에게 발표자료를 부탁해 보세요.
@@ -50,7 +51,7 @@ Claude Code는 GitHub에서 패밀리를 바로 설치하므로 가장 짧은 �
 2. 확인 명령을 돌립니다. 첫 줄은 이름이 같은 내 스킬을 보여 주고, 둘째·셋째 줄은 개인 복사본이나 프로젝트 복사본을 옆으로
    옮깁니다.
 3. 설치 명령을 돌리되, 내 패밀리 줄만 남깁니다.
-4. 스킬이 만드는 것을 부탁합니다. 발표자료, 문서, 그림, 화면, 영상, README 무엇이든 됩니다.
+4. 스킬이 만드는 것을 부탁합니다. 발표자료, 문서, 그림, 화면, 영상, README, 엑셀 파일 무엇이든 됩니다.
 
 설치하기 전에 프로젝트 폴더에서 실행하세요:
 
@@ -69,6 +70,7 @@ claude plugin install documents@wjgoarxiv-skills
 claude plugin install figures@wjgoarxiv-skills
 claude plugin install design@wjgoarxiv-skills
 claude plugin install video-covers@wjgoarxiv-skills
+claude plugin install sheets@wjgoarxiv-skills
 ```
 
 스킬이 `decks:lit-pptx`(내 스킬이라면 `<family>:<id>`)라는 이름으로 응답하면 준비가 끝난 겁니다.
@@ -89,6 +91,7 @@ claude plugin install video-covers@wjgoarxiv-skills
 | --- | --- | --- |
 | 발표자료 | `lit-pptx` (`decks`) | 고칠 수 있는 `.pptx` |
 | 보고서, 메모, 원고 | `lit-docx` (`documents`) | `.docx`, 깔끔한 Markdown, PDF |
+| 엑셀 표, 재무모델, 엑셀 대시보드 | `lit-xlsx` (`sheets`, Claude Code 전용) | 수식이 살아 있고, 재계산과 감사를 거치고, 시트마다 눈으로 확인한 `.xlsx` |
 | 측정 데이터 플롯 | `lit-scientific-visualization` (`figures`) | 논문용 플롯 |
 | 아이디어나 시스템 다이어그램 | `lit-diagram-drawer` (`figures`) | HTML/SVG, PNG, Office 호환 SVG |
 | 실제 장비 도면 | `lit-schematic` (`figures`) | 밀리미터 단위 SVG, 600 dpi 렌더 |
@@ -136,6 +139,7 @@ README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `l
 | `figures` | 도면 QA 게이트와 렌더 확인 |
 | `design` | 뷰포트 매트릭스 |
 | `video-covers` | 섬광 검사와 이음새 |
+| `sheets` | 재계산, 수식 감사, 시트마다 한 장씩 뽑은 PNG |
 
 ### `decks`
 
@@ -249,7 +253,8 @@ README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `l
   거칩니다. 그다음 직접 만든 음악과 룩 조정, 그리고 섬광, 가독성, 결정성, 소리를 보는 QA 게이트를 지납니다.
 - **영상 종류:** 키네틱 타이포그래피, 가사나 인용구 영상, 타이틀 시퀀스, 무대형 영상까지 만듭니다.
 - **점멸 릴:** `lit-strobe-reel`은 사물 팩 다섯 가지(keys, transit, tape, stones, pads)나, 실사 같은 긴 Blender 샷 하나를
-  릴로 자르는 `glasses` 팩 가운데 하나의 예시 설정 파일을 복사하고 설정을 검사합니다. 박자마다 한 장씩 모은 시트를 먼저 보여 준 다음 영상을 렌더합니다.
+  릴로 자르는 `glasses`, `bulb`, `train` 팩 가운데 하나의 예시 설정 파일을 복사하고 설정을 검사합니다. 박자마다 한 장씩 모은 시트를 먼저 보여 준 다음 영상을 렌더합니다. `bulb`와 `train`은
+  장면 속 전구나 지나가는 열차가 점멸을 만듭니다.
 - **README 덧붙임:** `readme-studio`는 검수한 커버, 윤곽선으로 바꾼 제목 글자, 원하면 움직이는 커버까지 붙여 줍니다.
 
 </details>
@@ -273,6 +278,29 @@ README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `l
   일이 없습니다. [옮긴 뒤 고친 파일](#옮긴-뒤-고친-파일)을 보세요.
 - `recipes/painted-light/expected.json`은 LitClaude 저장소의 테스트 픽스처를 가리키는데, 그 픽스처는 가져오지
   않았습니다. 그래서 레시피의 참고 이미지는 설명으로만 남아 있습니다.
+
+</details>
+
+### `sheets`
+
+`lit-xlsx`는 누가 숫자 하나를 바꿔도 계속 맞게 돌아가는 엑셀 파일을 만듭니다. 시나리오가 있는 재무모델, 예산 대비 실적,
+보고용 표, KPI 대시보드를 만들고, CSV를 가져오거나 이미 있는 파일을 고치는 일도 합니다. 합계와 비율은 모두 수식으로 두고,
+입력값은 파란색, 수식은 검은색, 다른 시트를 읽는 수식은 초록색으로 구분합니다. 넘기기 전에는 LibreOffice로 모든 수식을
+계산하고, `#REF!`, `#NAME?`, 수식 안에 박힌 숫자, 실패한 점검 항목을 감사로 찾고, 시트마다 PNG로 렌더해 모델이 직접
+봅니다. 기본 모양은 차분합니다(먹색 제목 띠와 머리글, 옅은 회색 구역 띠, 왼쪽 여백, 바탕색 없는 본문). 대시보드를
+부탁하면 같은 틀에 진한 KPI 상자와 차트가 붙습니다. 한글은 맑은 고딕으로 씁니다. 여기서 Claude Code 전용으로 쓴 스킬이라 다른 하네스용 에디션은 아직
+없습니다.
+
+<details>
+<summary>sheets 플러그인에 들어 있는 것과 필요한 것</summary>
+
+- **템플릿:** 생성 스크립트 하나가 운영 모델(시나리오, 5년 모델, 민감도 표, 점검), 시나리오 선택이 있는 한국어 예산 대비
+  실적, 한국어 보고용 표, 한국어 KPI 대시보드를 만듭니다.
+- **재계산:** LibreOffice는 매번 임시 폴더 아래 새 프로필 폴더로 실행되므로 내가 쓰는 LibreOffice 설정은 건드리지
+  않습니다. 계산된 값만 원래 파일에 다시 써 넣습니다.
+- **런타임:** openpyxl, XlsxWriter, defusedxml, lxml, Pillow는 처음 쓸 때
+  `${XDG_CACHE_HOME:-~/.cache}/litfamily/sheets-runtime`에 설치되며, documents·decks 캐시와는 따로 둡니다. 재계산과
+  렌더에는 LibreOffice와 Poppler(`pdftoppm`)가 필요하고, 없으면 스킬이 검사를 못 했다고 말합니다.
 
 </details>
 
@@ -392,13 +420,13 @@ Claude Code에서는 패밀리를 이 마켓플레이스의 플러그인으로 �
   `claude plugin marketplace add <path to your wjgoarxiv-skills clone>`.
 
 **설치 뒤:** 스킬은 `decks:lit-pptx`, `documents:lit-docx`, `figures:lit-diagram-drawer`, `figures:lit-schematic`,
-`design:frontend-ui-ux`, `design:visual-qa`, `video-covers:lit-typographic-motion`, `video-covers:readme-studio`라는
-이름으로 응답합니다. LitClaude의 `lit` 라우팅도 발표자료, 문서, 그림, 화면, 영상, README에 대해 그대로 동작합니다. 옮겨 간
+`design:frontend-ui-ux`, `design:visual-qa`, `video-covers:lit-typographic-motion`, `video-covers:readme-studio`,
+`sheets:lit-xlsx`라는 이름으로 응답합니다. LitClaude의 `lit` 라우팅도 발표자료, 문서, 통합 문서, 그림, 화면, 영상, README에 대해 그대로 동작합니다.
 스킬이 설치되어 있으면, 라우팅이 불러오는 스텁이 그쪽을 가리키기 때문입니다.
 
 > [!NOTE]
-> `lit-scientific-visualization`은 LitClaude에서와 마찬가지로 사용자가 직접 불러야 동작합니다:
-> `/figures:lit-scientific-visualization <request>`.
+> `lit-scientific-visualization`도 이제 다른 스킬처럼 불러옵니다. 측정 데이터 그래프를 요청하면 Claude가 고를 수 있고,
+> LitClaude는 `lit` 없이 요청해도 후보로 알려 줍니다. `/figures:lit-scientific-visualization <request>`로 직접 불러도 됩니다.
 
 ### Codex CLI
 
@@ -650,6 +678,7 @@ LitFamily 제품마다 제일 무거운 덩어리였습니다. 대부분은 설�
 | `figures` | `2381bfe` (파일은 1.0.49와 같음) |
 | `design` | `aaea364` (파일은 1.0.49와 같음) |
 | `video-covers` | `4d03ca8` (파일은 1.0.49와 같음) |
+| `sheets` | 없음: 여기서 새로 써서 영수증이 없음. LitClaude 다음 릴리스에 이쪽을 가리키는 같은 이름의 `lit-xlsx` 스텁이 들어감 |
 
 </details>
 
@@ -848,6 +877,15 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
   `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md`,
   `skills/lit-typographic-motion/references/depth.md`: 레지스터, 필드, 비평가, 뎁스 키트 설명.
 
+`sheets` 0.1.0:
+- 플러그인 전체(새로 씀, 영수증 파일 없음, Claude Code 전용): `skills/lit-xlsx/`와 `lib/` 아래의 자체 Python 런타임.
+  `skills/lit-xlsx/NOTICE`에 기법을 참고해 새로 쓴 Apache-2.0 스킬들을 밝혀 두었습니다.
+
+`video-covers` 0.1.8:
+- `skills/lit-strobe-reel/packs/bulb/`, `skills/lit-strobe-reel/packs/train/`, `skills/lit-strobe-reel/films/buzz-flicker-out/`,
+  `skills/lit-strobe-reel/films/wait-pass-gone/`: 장면 속 깜빡이는 전구와 지나가는 열차 창문이 점멸을 만드는 실사 팩 두 개와
+  그 예시 영상. `skills/lit-strobe-reel/SKILL.md`에 실었습니다.
+
 `video-covers` 0.1.7:
 - `skills/video/`(새로 씀, 영수증 줄 없음, Claude Code 전용): 영상 요청의 입구입니다. 요청을 읽고 lit-typographic-motion,
   lit-strobe-reel, agentvfx, readme-studio 가운데 하나를 골라 불러 줍니다.
@@ -899,6 +937,7 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
 | 하네스별 명령이 글자 하나까지 같은지 | 스텁의 명령을 담아 둔 `test/stub-install-lines.json` |
 | 그 명령이 스킬마다 가리키는 폴더가 실제로 있는지 | 이 저장소 |
 | 영수증이 맞는지(`edited-from:` 행 포함) | 복사한 파일의 바이트 |
+| lit-xlsx 템플릿, 심어 둔 `#REF!`의 재계산, 시트마다 PNG 한 장, 일회용 LibreOffice 프로필 | sheets 플러그인(런타임, LibreOffice, Poppler가 없으면 건너뜀) |
 
 저장소 루트에서 실행하세요:
 
@@ -910,6 +949,7 @@ claude plugin validate plugins/documents
 claude plugin validate plugins/figures
 claude plugin validate plugins/design
 claude plugin validate plugins/video-covers
+claude plugin validate plugins/sheets
 ```
 
 </details>
@@ -930,6 +970,7 @@ claude plugin validate plugins/video-covers
 | `figures` | MIT | LitClaude 자체 파일. `vendor/` 아래 사본은 각자의 출처와 라이선스 파일을 그대로 지닙니다 |
 | `design` | MIT AND Apache-2.0 | frontend-ui-ux의 `LICENSE`(MIT)와 `THIRD-PARTY-NOTICE.txt`가 디자인 데이터를, `references/_canonical-corpus/legal/`의 Apache-2.0 라이선스가 참고 코퍼스를 다룹니다 |
 | `video-covers` | MIT AND OFL-1.1 AND Apache-2.0 | LitClaude 자체 파일, OFL 라이선스를 따르는 Pretendard 글꼴, Apache-2.0을 따르는 `skills/agentvfx/`(옆에 `LICENSE`와 `NOTICE`가 있음) |
+| `sheets` | MIT | 여기서 새로 쓴 파일. `skills/lit-xlsx/NOTICE`가 기법을 빌려 온 Apache-2.0 스킬들을 밝히며, 그 글이나 코드는 옮기지 않았음 |
 
 </details>
 

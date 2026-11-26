@@ -96,6 +96,7 @@ claude plugin install video-covers@wjgoarxiv-skills
 | 완성된 화면 점검 | `visual-qa` (`design`) | 스크린샷, 증거 목록, QA 보고서 |
 | 짧은 영상이나 커버 루프 | `lit-typographic-motion` (`video-covers`) | 영상이나 소리 없는 커버 루프 |
 | 점멸하는 타이포 릴 | `lit-strobe-reel` (`video-covers`, Claude Code 전용) | 소리까지 붙은 16:9 점멸 릴 |
+| 음악에 반응하는 VFX 클립 | `agentvfx` (`video-covers`, Claude Code 전용) | 3~5초 셰이더 클립, 루프, 웹 실시간 효과 |
 | README | `readme-studio` (`video-covers`) | 커버까지 붙은 사실에 맞는 README |
 
 <details>
@@ -225,7 +226,8 @@ README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `l
 `lit-typographic-motion`은 한 줄짜리 요청 하나로 짧은 영상을 끝까지 연출하고, 커버 모드로는 이 페이지 맨 위에 있는 것 같은
 소리 없이 끊김 없이 도는 README 커버 루프를 만듭니다. `readme-studio`는 저장소를 직접 읽고 사실에 맞는 README를 씁니다.
 `lit-strobe-reel`은 단어 세 개와 설정 파일 하나로 글자, 심볼, Blender로 찍은 사물을 이어 붙인 16:9 타이포 릴을 소리까지 붙여
-만듭니다. Claude Code 전용이며, 다른 하네스용 에디션은 없습니다.
+만듭니다. `agentvfx`는 FX 스코어를 써서 agentvfx npm 엔진으로 렌더합니다. 음악에 반응하는 셰이더 클립, 페스티벌 루프, 웹
+페이지용 실시간 효과를 만들고, 렌더마다 점멸 검사를 거칩니다. 두 스킬 모두 Claude Code 전용이며, 다른 하네스용 에디션은 없습니다.
 
 > **점멸 경고.** `lit-strobe-reel` 영상은 화면 전체를 초당 최대 30번 반전하며 WCAG 2.3.1 점멸 한계를 넘습니다. 공개할 때는
 > 영상 앞에 경고를 붙이세요. 점멸 검사를 거친 영상이 필요하면 `lit-typographic-motion`을 쓰세요.
@@ -843,6 +845,10 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
   `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md`,
   `skills/lit-typographic-motion/references/depth.md`: 레지스터, 필드, 비평가, 뎁스 키트 설명.
 
+`video-covers` 0.1.6:
+- `skills/agentvfx/`(`SKILL.md`, `LICENSE`, `NOTICE`): agentvfx-plugin 커밋 `9377e19`(agentvfx 0.3.6)에서 바이트 그대로
+  복사했고 영수증 줄이 있습니다. Claude Code 전용이며, 스킬은 npm에서 agentvfx 엔진을 불러 씁니다.
+
 `video-covers` 0.1.5 (여기서 한 변경):
 - `skills/lit-strobe-reel/engine/check.mjs`, `skills/lit-strobe-reel/make.mjs`: `film.json`의 `footage`는 이미 렌더한 폴더(앞
   영상의 `out/plates`)에서 샷의 프레임을 복사해 와서 Blender로 다시 렌더하지 않습니다. 같은 이름의 블록이 없는 샷은 푸티지로
@@ -905,7 +911,7 @@ claude plugin validate plugins/video-covers
 
 저장소 전체에 붙는 라이선스는 따로 없습니다. 대신 패밀리 플러그인마다 원래 파일이 따르던 라이선스를
 `plugins/<family>/LICENSE`에 담고, `plugin.json`에 밝혀 두었습니다. 모든 플러그인이 MIT이고, `design`은 Apache-2.0을,
-`video-covers`는 OFL-1.1을 더합니다.
+`video-covers`는 OFL-1.1과 Apache-2.0을 더합니다.
 
 <details>
 <summary>플러그인마다 밝힌 라이선스와 그 출처</summary>
@@ -916,7 +922,7 @@ claude plugin validate plugins/video-covers
 | `documents` | MIT | LitClaude 자체 파일 |
 | `figures` | MIT | LitClaude 자체 파일. `vendor/` 아래 사본은 각자의 출처와 라이선스 파일을 그대로 지닙니다 |
 | `design` | MIT AND Apache-2.0 | frontend-ui-ux의 `LICENSE`(MIT)와 `THIRD-PARTY-NOTICE.txt`가 디자인 데이터를, `references/_canonical-corpus/legal/`의 Apache-2.0 라이선스가 참고 코퍼스를 다룹니다 |
-| `video-covers` | MIT AND OFL-1.1 | LitClaude 자체 파일과 OFL 라이선스를 따르는 Pretendard 글꼴 |
+| `video-covers` | MIT AND OFL-1.1 AND Apache-2.0 | LitClaude 자체 파일, OFL 라이선스를 따르는 Pretendard 글꼴, Apache-2.0을 따르는 `skills/agentvfx/`(옆에 `LICENSE`와 `NOTICE`가 있음) |
 
 </details>
 

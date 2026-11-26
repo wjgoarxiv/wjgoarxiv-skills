@@ -96,6 +96,7 @@ skill's own `SKILL.md` names the handoff; the dashed one is just a pairing that 
 | A check of a built page | `visual-qa` (`design`) | Screenshots, an evidence manifest, a QA report |
 | A short film or cover loop | `lit-typographic-motion` (`video-covers`) | A film or a silent cover loop |
 | A strobing type reel | `lit-strobe-reel` (`video-covers`, Claude Code only) | A flashing 16:9 reel with sound |
+| A music-reactive VFX clip | `agentvfx` (`video-covers`, Claude Code only) | A 3-5 s shader clip, a loop or a live web effect |
 | A README | `readme-studio` (`video-covers`) | A factual README with its cover |
 
 <details>
@@ -227,7 +228,9 @@ apparatus figures and isometric cutaways.
 `lit-typographic-motion` directs a finished short film from a one-line request, and its cover mode makes a silent,
 seamless README cover loop like the one at the top of this page. `readme-studio` writes factual READMEs from the
 repository itself. `lit-strobe-reel` turns three words and one settings file into a 16:9 typographic reel with sound, cut
-from type, marks and Blender-photographed objects. It is Claude Code only: the other harnesses have no edition of it.
+from type, marks and Blender-photographed objects. `agentvfx` writes an FX score and renders it with the agentvfx npm
+engine: music-reactive shader clips, festival loops and live effects for a web page, each with a flash audit. Both are
+Claude Code only: the other harnesses have no edition of them.
 
 > **Strobe warning.** `lit-strobe-reel` films invert the whole frame up to 30 times a second and are outside the WCAG
 > 2.3.1 flash limit. Put a warning in front of any you publish; for a film with a flash audit, use
@@ -854,6 +857,10 @@ throw away every cache already on disk.
   `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md` and
   `skills/lit-typographic-motion/references/depth.md`: the register, the fields, the critic and the depth kit.
 
+`video-covers` 0.1.6:
+- `skills/agentvfx/` (`SKILL.md`, `LICENSE`, `NOTICE`): copied unchanged from agentvfx-plugin commit `9377e19` (agentvfx
+  0.3.6), with receipt rows. Claude Code only; the skill runs the agentvfx engine from npm.
+
 `video-covers` 0.1.5 (changes made here):
 - `skills/lit-strobe-reel/engine/check.mjs` and `skills/lit-strobe-reel/make.mjs`: `footage` in `film.json` copies a
   shot's frames from a folder already rendered (an earlier film's `out/plates`) instead of rendering them in Blender
@@ -917,7 +924,7 @@ claude plugin validate plugins/video-covers
 
 This repository has no single licence of its own. Each family plugin carries the licence its files came under, in
 `plugins/<family>/LICENSE`, and declares it in its `plugin.json`. Every plugin is MIT; `design` adds Apache-2.0 and
-`video-covers` adds OFL-1.1.
+`video-covers` adds OFL-1.1 and Apache-2.0.
 
 <details>
 <summary>Each plugin's licence and where it comes from</summary>
@@ -928,7 +935,7 @@ This repository has no single licence of its own. Each family plugin carries the
 | `documents` | MIT | LitClaude's own files |
 | `figures` | MIT | LitClaude's own files; the copies under `vendor/` keep their own provenance and licence files |
 | `design` | MIT AND Apache-2.0 | frontend-ui-ux's `LICENSE` (MIT) and `THIRD-PARTY-NOTICE.txt` cover its design data, and its `references/_canonical-corpus/legal/` holds the Apache-2.0 licence of the reference corpus |
-| `video-covers` | MIT AND OFL-1.1 | LitClaude's own files, plus the Pretendard fonts under their OFL licence |
+| `video-covers` | MIT AND OFL-1.1 AND Apache-2.0 | LitClaude's own files, the Pretendard fonts under their OFL licence, and `skills/agentvfx/` under Apache-2.0 (its `LICENSE` and `NOTICE` sit beside it) |
 
 </details>
 

@@ -1,0 +1,9 @@
+agentvfx plugin
+Copyright 2026 Woojin Go (https://github.com/wjgoarxiv/agentvfx-plugin)
+
+Licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This repository is the Claude Code plugin wrapper for agentvfx. It holds only the skill
+instructions, the manifest and the icon. The engine is the npm package agentvfx
+(https://github.com/wjgoarxiv/agentvfx), which carries its own NOTICE, including the
+MIT notices for the portions it adapts.

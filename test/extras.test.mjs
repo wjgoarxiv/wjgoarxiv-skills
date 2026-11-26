@@ -186,3 +186,10 @@ test('the film runtime names its own script as the fix, from a plugin folder wit
     rmSync(cache, { recursive: true, force: true });
   }
 });
+
+test('video-covers carries agentvfx unchanged from agentvfx-plugin, with its Apache licence beside it', () => {
+  const dir = 'plugins/video-covers/skills/agentvfx', rows = read('receipts/video-covers.sha256').toString('utf8');
+  for (const f of ['SKILL.md', 'LICENSE', 'NOTICE']) assert.match(rows, new RegExp(`  wjgoarxiv/agentvfx-plugin@9377e19/(skills/agentvfx/)?${f}  ${dir}/${f}\\n`), f);
+  assert.match(read(`${dir}/LICENSE`).toString('utf8'), /Apache License\s+Version 2\.0/);
+  assert.match(json('plugins/video-covers/.claude-plugin/plugin.json').license, /Apache-2\.0/);
+});

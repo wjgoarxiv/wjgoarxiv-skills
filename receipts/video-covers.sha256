@@ -186,3 +186,6 @@ d5a334b22d8644d7db45b5d386223a9b733df6f67f586493d9a13f2a518748a9  plugins/litcla
 ea0d909e80b912e4a9c98123eb36a9a2ea6e2f7093a9b48b8de094ee0c0c37f3  plugins/litclaude/skills/readme-studio/templates/typography/package.json  plugins/video-covers/skills/readme-studio/templates/typography/package.json
 963f64dfe7067ac01783264cee22b23cdb67a1d38817514409d4486373292be2  plugins/litclaude/skills/readme-studio/templates/typography/safe-files.mjs  plugins/video-covers/skills/readme-studio/templates/typography/safe-files.mjs
 0aa37ce6b6d2080e89d65daf7596e92b31fe3ae64a8440a31dbc87b667ad1eb5  plugins/litclaude/skills/readme-studio/templates/typography/shape-text-to-svg.mjs  plugins/video-covers/skills/readme-studio/templates/typography/shape-text-to-svg.mjs
+3c7fc711ffa65cf00a80bb64742e3de19dc70afe3b2737fbcac3ae1aba256986  wjgoarxiv/agentvfx-plugin@9377e19/skills/agentvfx/SKILL.md  plugins/video-covers/skills/agentvfx/SKILL.md
+c95bae1d1ce0235ecccd3560b772ec1efb97f348a79f0fbe0a634f0c2ccefe2c  wjgoarxiv/agentvfx-plugin@9377e19/LICENSE  plugins/video-covers/skills/agentvfx/LICENSE
+c4f3c75c3e78015a263a53d17312443a7a795015561eb6d88b0326fc2ee109cf  wjgoarxiv/agentvfx-plugin@9377e19/NOTICE  plugins/video-covers/skills/agentvfx/NOTICE

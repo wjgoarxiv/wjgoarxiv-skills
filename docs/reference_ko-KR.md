@@ -84,8 +84,10 @@ LitClaude는 웹 화면 수정을 이 프로브로 확인하기 때문에, front
 - **`skills/lit-pptx/fonts/pretendard/`:** OFL 라이선스가 딸린 Pretendard Regular와 Bold. 영상 엔진의 `fonts/manifest.json`이
   경로로 읽고 sha256으로 확인합니다. 여기에는 `SKILL.md`가 없고, lit-pptx 자체는 `decks`에 있습니다.
 
-- **`skills/lit-strobe-reel/`:** Claude Code만을 위해 여기서 새로 쓴 스킬이라 영수증 줄과 `variants/` 폴더가 없습니다. 엔진, 팩 다섯
+- **`skills/lit-strobe-reel/`:** Claude Code만을 위해 여기서 새로 쓴 스킬이라 영수증 줄과 `variants/` 폴더가 없습니다. 엔진, 팩 여섯
   개, 예시 설정 파일이 모두 스킬 폴더 안에 있습니다.
+- **`skills/agentvfx/`:** agentvfx-plugin 커밋 `9377e19`에서 바이트 그대로 복사했고, 영수증 줄과 Apache-2.0 `LICENSE`, `NOTICE`가
+  함께 있습니다. Claude Code 전용입니다. 엔진은 들어 있지 않고, 스킬이 npm 패키지 `agentvfx`를 불러 씁니다.
 
 옮겨 온 lit-typographic-motion 문서 가운데 LitClaude에만 있는 부품을 말하는 줄은 README의
 [LitClaude 밖에서 영상 스킬 쓰기](../README_ko-KR.md#video-covers)에 정리했습니다.

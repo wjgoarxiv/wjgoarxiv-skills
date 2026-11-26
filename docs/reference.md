@@ -86,7 +86,9 @@ web-interface edits with that probe.
   `decks`.
 
 - **`skills/lit-strobe-reel/`:** written here for Claude Code alone, so it has no receipt rows and no folders under
-  `variants/`. Its engine, five packs and example settings files are all inside the skill folder.
+  `variants/`. Its engine, six packs and example settings files are all inside the skill folder.
+- **`skills/agentvfx/`:** copied unchanged from agentvfx-plugin commit `9377e19`, with receipt rows, its Apache-2.0
+  `LICENSE` and its `NOTICE`. Claude Code only. The engine is not bundled: the skill runs the `agentvfx` npm package.
 
 The parts of the moved lit-typographic-motion text that describe LitClaude-only pieces are listed in the README under
 [Running the film skill outside LitClaude](../README.md#video-covers).

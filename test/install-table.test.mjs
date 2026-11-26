@@ -17,7 +17,7 @@ const VARIANT_PRODUCTS = ['litcodex', 'litopencode', 'litgrok', 'litgravity', 'l
 // Every skill the marketplace ships, as [family, id]. A skills/ folder without SKILL.md is a support folder.
 const market = json('.claude-plugin/marketplace.json');
 // Skills written here for Claude Code alone: no editions under variants/, so no row in the pick-one table.
-const CLAUDE_CODE_ONLY = ['lit-strobe-reel'];
+const CLAUDE_CODE_ONLY = ['lit-strobe-reel', 'agentvfx'];
 const moved = market.plugins.flatMap((p) => {
   const dir = p.source.replace(/^\.\//, '');
   return readdirSync(join(root, dir, 'skills'))

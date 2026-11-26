@@ -95,6 +95,7 @@ claude plugin install video-covers@wjgoarxiv-skills
 | 화면 | `frontend-ui-ux` (`design`) | 완성된 화면 |
 | 완성된 화면 점검 | `visual-qa` (`design`) | 스크린샷, 증거 목록, QA 보고서 |
 | 짧은 영상이나 커버 루프 | `lit-typographic-motion` (`video-covers`) | 영상이나 소리 없는 커버 루프 |
+| 점멸하는 타이포 릴 | `lit-strobe-reel` (`video-covers`, Claude Code 전용) | 소리까지 붙은 16:9 점멸 릴 |
 | README | `readme-studio` (`video-covers`) | 커버까지 붙은 사실에 맞는 README |
 
 <details>
@@ -223,6 +224,11 @@ README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `l
 
 `lit-typographic-motion`은 한 줄짜리 요청 하나로 짧은 영상을 끝까지 연출하고, 커버 모드로는 이 페이지 맨 위에 있는 것 같은
 소리 없이 끊김 없이 도는 README 커버 루프를 만듭니다. `readme-studio`는 저장소를 직접 읽고 사실에 맞는 README를 씁니다.
+`lit-strobe-reel`은 단어 세 개와 설정 파일 하나로 글자, 심볼, Blender로 찍은 사물을 이어 붙인 16:9 타이포 릴을 소리까지 붙여
+만듭니다. Claude Code 전용이며, 다른 하네스용 에디션은 없습니다.
+
+> **점멸 경고.** `lit-strobe-reel` 영상은 화면 전체를 초당 최대 30번 반전하며 WCAG 2.3.1 점멸 한계를 넘습니다. 공개할 때는
+> 영상 앞에 경고를 붙이세요. 점멸 검사를 거친 영상이 필요하면 `lit-typographic-motion`을 쓰세요.
 
 <p align="center">
   <picture>
@@ -237,6 +243,8 @@ README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `l
 - **영상 단계:** `lit-typographic-motion`은 트리트먼트를 먼저 쓰고, 본 렌더 전에 눈으로 볼 수 있는 스토리보드 단계를
   거칩니다. 그다음 직접 만든 음악과 룩 조정, 그리고 섬광, 가독성, 결정성, 소리를 보는 QA 게이트를 지납니다.
 - **영상 종류:** 키네틱 타이포그래피, 가사나 인용구 영상, 타이틀 시퀀스, 무대형 영상까지 만듭니다.
+- **점멸 릴:** `lit-strobe-reel`은 사물 팩 다섯 가지(keys, transit, tape, stones, pads) 가운데 하나의 예시 설정 파일을 복사하고
+  설정을 검사합니다. 박자마다 한 장씩 모은 시트를 먼저 보여 준 다음 영상을 렌더합니다.
 - **README 덧붙임:** `readme-studio`는 검수한 커버, 윤곽선으로 바꾼 제목 글자, 원하면 움직이는 커버까지 붙여 줍니다.
 
 </details>
@@ -834,6 +842,11 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
 - `skills/lit-typographic-motion/SKILL.md`, `skills/lit-typographic-motion/references/treatment.md`,
   `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md`,
   `skills/lit-typographic-motion/references/depth.md`: 레지스터, 필드, 비평가, 뎁스 키트 설명.
+
+`video-covers` 0.1.4 (여기서 한 변경):
+- `skills/lit-strobe-reel/` (새로 쓴 스킬, 영수증 행 없음, Claude Code 전용): `film.json` 하나와 장면 블록 표, 검사 모드,
+  Blender 샷 팩(`keys`, `transit`, `tape`, `stones`, `pads`)으로 만드는 브루탈리스트 타이포 스트로브 릴. 예시 영상 여섯 편이
+  들어 있습니다. `kits/strobe-reel/`을 대신하며, 그 폴더는 지웠습니다.
 
 `figures` (LitClaude 1.0.50에서 `litclaude doctor`의 scientific-visualization doctor가 빠짐):
 - `skills/lit-scientific-visualization/SKILL.md`: 4단계는 번들 doctor만 실행하고, 더는 `litclaude doctor`를 권하지 않습니다.

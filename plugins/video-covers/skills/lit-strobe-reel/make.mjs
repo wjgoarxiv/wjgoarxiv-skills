@@ -1,0 +1,45 @@
+// node make.mjs new <folder> --pack <name> [--own]
+// node make.mjs <film folder> [--check | --sheet | --stills 10,200,...] [--draft] [--fresh]
+// film.json in, out/film.mp4 out. Rendered plates are reused until a setting they depend on changes.
+import { spawnSync } from "node:child_process"; import { createHash } from "node:crypto"; import { cpSync, existsSync, mkdirSync, readFileSync, readdirSync, realpathSync, rmSync, statSync, writeFileSync } from "node:fs"; import path from "node:path"; import { fileURLToPath } from "node:url"; import { levels, soundtrack, wav } from "./engine/audio.mjs"; import { Bad, loadFilm } from "./engine/check.mjs"; import { judge } from "./engine/copy.mjs";
+const kit=path.dirname(fileURLToPath(import.meta.url)), NEW=process.argv[2]==="new", dir=path.resolve(process.argv[NEW?3:2]||""), out=path.join(dir,"out"), plates=path.join(out,"plates");
+const stills=process.argv.indexOf("--stills"), fresh=process.argv.includes("--fresh"), draft=process.argv.includes("--draft");
+const CHROME=process.env.CHROME_PATH||"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome", BLENDER=process.env.BLENDER_PATH||"/Applications/Blender.app/Contents/MacOS/Blender";
+const bad=m=>{console.error(m);process.exit(2)};
+const real=d=>existsSync(d)?realpathSync(d):path.join(real(path.dirname(d)),path.basename(d)),inside=(realpathSync(kit)+path.sep===(real(dir)+path.sep).slice(0,realpathSync(kit).length+1));
+if(inside&&!process.argv.includes("--check"))bad("the film folder must be outside the skill: "+dir);
+if(NEW){const i=process.argv.indexOf("--pack"),name=i>0?process.argv[i+1]:"keys",films=path.join(kit,"films"),have=readdirSync(films).filter(f=>existsSync(path.join(films,f,"film.json"))).sort().map(f=>readFileSync(path.join(films,f,"film.json"),"utf8")),ex=have.find(t=>(JSON.parse(t).pack||"keys")===name);
+ if(!process.argv[3]||process.argv[3].startsWith("--"))bad("new needs a folder");if(!ex)bad(`no pack "${name}" (have ${[...new Set(have.map(t=>JSON.parse(t).pack||"keys"))].join(", ")})`);if(existsSync(dir))bad("already exists: "+dir);
+ mkdirSync(dir,{recursive:true});writeFileSync(path.join(dir,"film.json"),ex);if(process.argv.includes("--own"))cpSync(path.join(kit,"packs",name),path.join(dir,"pack"),{recursive:true});console.log("wrote "+path.join(dir,"film.json"));process.exit(0)}
+const film=await loadFilm(dir).catch(e=>{if(e instanceof Bad)bad(e.message);throw e}),{cfg,pack}=film;
+if(process.argv.includes("--check")){console.log(JSON.stringify({words:cfg.words,pack:film.name,beats:film.map.length,seconds:+(film.map.length*.4).toFixed(1),map:film.map.map(m=>({...m,act:cfg.acts[m.act].label}))}));process.exit(0)}
+const faces=spawnSync("fc-list",[":","family","file"],{encoding:"utf8"}).stdout||"",found=c=>c.includes("/")?existsSync(c):spawnSync("which",[c]).status===0;
+const font=process.env.PRETENDARD_BLACK||faces.split("\n").map(l=>l.replace(/:.*$/,"")).find(f=>/Pretendard-Black\.(otf|ttf)$/.test(f));
+for(const[n,ok,how]of[["Pretendard Black",font&&existsSync(font),"PRETENDARD_BLACK"],["Google Chrome",found(CHROME),"CHROME_PATH"],["Blender",found(BLENDER),"BLENDER_PATH"],["ffmpeg",found("ffmpeg")],["Helvetica Neue",!faces||faces.includes("Helvetica Neue")],["JetBrainsMono NF",!faces||faces.includes("JetBrainsMono NF")]])if(!ok)bad(`${n} is missing`+(how?`; set ${how} to its file`:""));
+mkdirSync(plates,{recursive:true});
+const run=(c,a,quiet)=>{const r=spawnSync(c,a,{encoding:"utf8",maxBuffer:1<<28});if(r.status!==0||/Traceback|^Error/m.test(r.stdout+r.stderr)){console.error((r.stdout+r.stderr).split("\n").slice(-25).join("\n"));process.exit(1)}if(!quiet)process.stdout.write(r.stdout)};
+const esc=s=>s.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const shot=(name,w,h,body)=>{const f=path.join(out,name+".html");writeFileSync(f,`<!doctype html><meta charset="utf-8">${body}`);const png=path.join(plates,name+".png"),t0=Date.now()-1000;spawnSync(CHROME,["--headless=new","--screenshot="+png,`--window-size=${w},${h}`,"--hide-scrollbars","--force-device-scale-factor=1","file://"+f],{timeout:30000});
+ // Chrome can exit non-zero after a good capture, so the fresh file decides
+ if(!existsSync(png)||statSync(png).mtimeMs<t0){console.error("Chrome did not draw "+name);process.exit(1)}};
+const fitjs=(id,w)=>`<script>{const e=document.getElementById('${id}');let z=parseFloat(getComputedStyle(e).fontSize);while(e.scrollWidth>${w}&&z>20){z-=2;e.style.fontSize=z+'px'}}</script>`;
+const P=cfg.palette;
+const samples=soundtrack(film),LV=levels(samples);writeFileSync(path.join(out,"audio.wav"),wav(samples));writeFileSync(path.join(out,"levels.json"),JSON.stringify(LV));
+writeFileSync(path.join(out,"reel.html"),readFileSync(path.join(kit,"engine/reel.html"),"utf8").replace("/*PACK*/",()=>film.js.replace(/<\/script/g,"<\\/script")+`\n//# sourceURL=packs/${film.name}/scenes.js`).replace("/*CFG*/",()=>"const "+Object.entries({CFG:cfg,LEN:film.len,PACK:pack,PLATES:film.plates,LEVELS:LV}).map(([k,v])=>k+"="+JSON.stringify(v).replace(/</g,"\\u003c")).join(",")+";"));
+const reel=(...a)=>run(process.execPath,[path.join(kit,"engine/render.mjs"),out,...a]);
+// a plate is rendered again when the helpers, its own function, or a setting or picture it reads changed
+const hw=readFileSync(path.join(kit,"engine/hw.py"),"utf8"),packPy=path.join(film.pdir,"shots.py"),[helpers,coreShots]=hw.split("# ---- shots"),render=hw.split("# ---- render")[1];
+const defs=src=>{const m={_:""};let n="_";for(const l of src.split("\n")){const d=l.match(/^def (\w+)\(/);if(d)n=d[1].startsWith("_")?"_":d[1];else if(/^\S/.test(l))n="_";m[n]=(m[n]||"")+l+"\n"}return m};
+const coreDef=defs(coreShots.split("# ---- render")[0]),packDef=defs(readFileSync(packPy,"utf8")),shotCfg={words:cfg.words,card:cfg.card,palette:cfg.palette,shot:pack.shot,copy:[...cfg.words,...pack.signs||[]].map(s=>s.toLowerCase())},pic=f=>createHash("sha256").update(readFileSync(path.join(plates,f))).digest("hex");
+const SRC={cols:[coreDef.cols],print:[coreDef.print_,packDef._,packDef.props],index:[coreDef.index,packDef._,packDef.parts]};
+const bake=(name,dep)=>{const key=createHash("sha256").update(JSON.stringify([helpers,render,SRC[name]||[packDef._,packDef[name]],film.plates[name],shotCfg,dep,...draft?["draft"]:[]])).digest("hex"),mark=path.join(plates,name+".key");if(!fresh&&existsSync(mark)&&readFileSync(mark,"utf8")===key)return;console.log("plates: "+name);writeFileSync(path.join(out,"shot.json"),JSON.stringify(shotCfg));run(BLENDER,["-b","--factory-startup","-P",path.join(kit,"engine/hw.py"),"--",name,path.join(plates,name),...draft?["50","8"]:["100","32"],"all",font,path.join(out,"shot.json"),String(film.plates[name]),packPy],true);writeFileSync(mark,key)};
+// every text of every frame is read before anything is rendered; one that is not the film's stops the build
+reel("--texts");{const ok=judge(cfg,pack),extra=JSON.parse(readFileSync(path.join(out,"texts.json"),"utf8")).filter(([s])=>!ok(s));if(extra.length)bad("text that is not in the film's copy:\n"+extra.slice(0,20).map(([s,f])=>`  "${s}" in ${film.map[Math.min(film.map.length-1,Math.floor(f/24))].block}`).join("\n"))}
+if(film.plates.cols)shot("mask",960,540,`<body style="margin:0;background:#000;width:960px;height:540px;overflow:hidden;display:flex;align-items:center;justify-content:center"><div id="m" style="font:700 372px/1 'Helvetica Neue';letter-spacing:-.037em;color:#fff;white-space:nowrap;max-width:890px">${esc(cfg.words[1])}</div>${fitjs("m",890)}`);
+if(pack.card&&film.plates[pack.card])shot("card",860,1280,`<body style="margin:0;background:#e6e9e9;width:860px;height:1280px;overflow:hidden;font-family:'Helvetica Neue';color:#060606;position:relative"><div style="position:absolute;right:44px;top:40px;font-weight:700;font-size:26px">${esc(cfg.words[2])}</div><div style="position:absolute;left:44px;right:44px;top:88px;height:5px;background:#060606"></div><div id="m" style="position:absolute;left:26px;top:430px;width:800px;white-space:nowrap;font:700 430px/1 'Helvetica Neue';letter-spacing:-.055em">${esc(cfg.words[2])}</div><svg style="position:absolute;left:44px;top:130px" width="300" height="270"><polygon points="0,270 300,270 0,0" fill="${P.flood}"/></svg><div style="position:absolute;left:44px;bottom:60px;font:700 30px/1.25 'Helvetica Neue'">${cfg.card.map(esc).join("<br>")}</div>${fitjs("m",800)}`);
+for(const n in film.plates)if(n!=="print")bake(n,n==="cols"?pic("mask.png"):pack.card&&n in pack.shots&&packDef[n]?.includes("card.png")?pic("card.png"):0);
+if(film.plates.print){reel("--poster");bake("print",pic("poster.png"))}
+const shoot=fr=>{rmSync(path.join(out,"stills"),{recursive:true,force:true});reel("--stills",fr)};
+if(stills>0)shoot(process.argv[stills+1]);
+else if(process.argv.includes("--sheet")){shoot(film.map.map(m=>m.beat*24+16).join(","));run("ffmpeg",["-y","-loglevel","error","-i",path.join(out,"stills/%03d.jpg"),"-vf",`scale=426:-1,tile=6x${Math.ceil(film.map.length/6)}:padding=4:margin=4`,"-frames:v","1","-update","1",path.join(out,"sheet.png")])}
+else reel("--film");

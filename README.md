@@ -95,6 +95,7 @@ skill's own `SKILL.md` names the handoff; the dashed one is just a pairing that 
 | An interface | `frontend-ui-ux` (`design`) | A built interface |
 | A check of a built page | `visual-qa` (`design`) | Screenshots, an evidence manifest, a QA report |
 | A short film or cover loop | `lit-typographic-motion` (`video-covers`) | A film or a silent cover loop |
+| A strobing type reel | `lit-strobe-reel` (`video-covers`, Claude Code only) | A flashing 16:9 reel with sound |
 | A README | `readme-studio` (`video-covers`) | A factual README with its cover |
 
 <details>
@@ -225,7 +226,12 @@ apparatus figures and isometric cutaways.
 
 `lit-typographic-motion` directs a finished short film from a one-line request, and its cover mode makes a silent,
 seamless README cover loop like the one at the top of this page. `readme-studio` writes factual READMEs from the
-repository itself.
+repository itself. `lit-strobe-reel` turns three words and one settings file into a 16:9 typographic reel with sound, cut
+from type, marks and Blender-photographed objects. It is Claude Code only: the other harnesses have no edition of it.
+
+> **Strobe warning.** `lit-strobe-reel` films invert the whole frame up to 30 times a second and are outside the WCAG
+> 2.3.1 flash limit. Put a warning in front of any you publish; for a film with a flash audit, use
+> `lit-typographic-motion`.
 
 <p align="center">
   <picture>
@@ -240,6 +246,8 @@ repository itself.
 - **Film steps:** `lit-typographic-motion` writes a treatment first, then runs a storyboard round you can see before
   the full render. Then come an original score, look rounds and a QA gate (flash audit, legibility, determinism, sound).
 - **Film kinds:** kinetic type, lyric or quote videos, title sequences and stage films.
+- **Strobe reel:** `lit-strobe-reel` copies an example settings file for one of five object packs (keys, transit, tape,
+  stones, pads), checks it, renders a sheet with one frame per beat for you to look at, then the film.
 - **README extras:** `readme-studio` adds an inspected cover, outlined title type and, if you want one, a motion cover.
 
 </details>
@@ -844,6 +852,11 @@ throw away every cache already on disk.
 - `skills/lit-typographic-motion/SKILL.md`, `skills/lit-typographic-motion/references/treatment.md`,
   `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md` and
   `skills/lit-typographic-motion/references/depth.md`: the register, the fields, the critic and the depth kit.
+
+`video-covers` 0.1.4 (changes made here):
+- `skills/lit-strobe-reel/` (new, written here, no receipt rows; Claude Code only): a brutalist typographic strobe
+  reel made from one `film.json`, a scene-block table, a check mode and packs of Blender shots (`keys`, `transit`,
+  `tape`, `stones`, `pads`), with six example films. It replaces `kits/strobe-reel/`, which is removed.
 
 `figures` (LitClaude 1.0.50 removed the scientific-visualization doctor from `litclaude doctor`):
 - `skills/lit-scientific-visualization/SKILL.md`: step 4 runs only the bundled doctor and no longer offers

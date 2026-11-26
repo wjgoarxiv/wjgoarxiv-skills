@@ -1,0 +1,14 @@
+{
+  "pack": "pads",
+  "seed": 16,
+  "words": ["Kick", "Snare", "Hat"],
+  "sub": ["쿵", "짝", "칫"],
+  "pattern": ["x.....x.x.....x.", "....x.......x..x", "x.x.x.x.x.x.x.xx"],
+  "acts": [
+    { "label": "Kick", "blocks": ["seq16", "impact", "pad", "panels"] },
+    { "label": "Snare", "blocks": ["cone", "strobe", "solo", "score"] },
+    { "label": "Hat", "blocks": ["cymbal", "swap", "dither", "index", "count"] },
+    { "label": "Loop", "blocks": ["scope", "modules", "bands", "print"] }
+  ],
+  "palette": { "ink": "#e6f1f7", "paper": "#080d1c", "flood": "#2f6bff", "accent": "#0a8fb8", "signal": "#ff3527", "phosphor": "#3be7ff" }
+}

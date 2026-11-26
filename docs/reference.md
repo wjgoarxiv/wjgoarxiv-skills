@@ -85,6 +85,9 @@ web-interface edits with that probe.
   `fonts/manifest.json` reads by path and checks by sha256. There is no `SKILL.md` there; lit-pptx itself lives in
   `decks`.
 
+- **`skills/lit-strobe-reel/`:** written here for Claude Code alone, so it has no receipt rows and no folders under
+  `variants/`. Its engine, five packs and example settings files are all inside the skill folder.
+
 The parts of the moved lit-typographic-motion text that describe LitClaude-only pieces are listed in the README under
 [Running the film skill outside LitClaude](../README.md#video-covers).
 

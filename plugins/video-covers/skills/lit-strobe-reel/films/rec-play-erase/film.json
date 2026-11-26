@@ -1,0 +1,14 @@
+{
+  "pack": "tape",
+  "seed": 381,
+  "words": ["Rec", "Play", "Erase"],
+  "sub": ["담고", "틀고", "지운다"],
+  "acts": [
+    { "label": "Rec", "blocks": ["wave", "crop", "deck", "bands", "copies"] },
+    { "label": "Play", "blocks": ["reel", "strobe", "page", "splice"] },
+    { "label": "Level", "blocks": ["crt", "needle", "dither", "index"] },
+    { "label": "Erase", "blocks": ["slash", "pieces", "wipe", "rest", "print"] }
+  ],
+  "page": ["One side is tape.", "The other side is", "what you said over it."],
+  "palette": { "ink": "#140d09", "paper": "#efe5d2", "flood": "#8a3d1a", "accent": "#f6d9a0", "signal": "#e3231a", "phosphor": "#ffb45c" }
+}

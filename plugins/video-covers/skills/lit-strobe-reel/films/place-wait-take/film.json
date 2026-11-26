@@ -1,0 +1,14 @@
+{
+  "pack": "stones",
+  "seed": 361,
+  "words": ["Place", "Wait", "Take"],
+  "sub": ["두고", "기다리고", "따낸다"],
+  "acts": [
+    { "label": "Place", "blocks": ["stone", "grid19", "panels", "score"] },
+    { "label": "Wait", "blocks": ["board", "rest", "page", "scan", "ladder"] },
+    { "label": "Count", "blocks": ["index", "modules"] },
+    { "label": "Take", "blocks": ["capture", "bowl", "copies", "impact", "lock", "print"] }
+  ],
+  "page": ["No move is also a move.", "This page is the one", "where nothing is played."],
+  "palette": { "ink": "#0a0a0a", "paper": "#ededed", "flood": "#4a4a4a", "accent": "#bcbcbc", "signal": "#e5201a", "phosphor": "#e0e0e0" }
+}

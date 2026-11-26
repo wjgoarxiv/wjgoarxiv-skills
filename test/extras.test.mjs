@@ -19,6 +19,8 @@ const NATIVE_FILES = { 'video-covers': ['plugins/video-covers/hooks/hooks.json',
   'plugins/video-covers/skills/lit-typographic-motion/engine/node/blend.mjs',
   'plugins/video-covers/skills/lit-typographic-motion/engine/stage/depth-kit.js',
   'plugins/video-covers/skills/lit-typographic-motion/engine/stage/depth-math.js'] };
+// Skill folders written here: nothing inside them carries a receipt row.
+const NATIVE_DIRS = ['plugins/video-covers/skills/lit-strobe-reel/'];
 
 test('every marketplace entry is a plugin folder with a manifest and at least one skill', () => {
   assert.equal(market.name, 'wjgoarxiv-skills');
@@ -61,7 +63,7 @@ test('every receipt matches the copied bytes, and every copied file has a receip
     }
     const native = NATIVE_FILES[p.name] ?? [];
     for (const f of native) assert.ok(!covered.has(f), `${f} is native and has no receipt row`);
-    const files = walk(join(root, dir)).map((f) => relative(root, f)).filter((f) => !f.includes('/.claude-plugin/') && !native.includes(f));
+    const files = walk(join(root, dir)).map((f) => relative(root, f)).filter((f) => !f.includes('/.claude-plugin/') && !native.includes(f) && !NATIVE_DIRS.some((d) => f.startsWith(d)));
     assert.deepEqual(files.filter((f) => !covered.has(f)), [], 'files without a receipt');
   }
 });

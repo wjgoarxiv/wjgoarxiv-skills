@@ -16,10 +16,12 @@ const VARIANT_PRODUCTS = ['litcodex', 'litopencode', 'litgrok', 'litgravity', 'l
 
 // Every skill the marketplace ships, as [family, id]. A skills/ folder without SKILL.md is a support folder.
 const market = json('.claude-plugin/marketplace.json');
+// Skills written here for Claude Code alone: no editions under variants/, so no row in the pick-one table.
+const CLAUDE_CODE_ONLY = ['lit-strobe-reel'];
 const moved = market.plugins.flatMap((p) => {
   const dir = p.source.replace(/^\.\//, '');
   return readdirSync(join(root, dir, 'skills'))
-    .filter((id) => existsSync(join(root, dir, 'skills', id, 'SKILL.md')))
+    .filter((id) => existsSync(join(root, dir, 'skills', id, 'SKILL.md')) && !CLAUDE_CODE_ONLY.includes(id))
     .map((id) => [p.name, id]);
 });
 
@@ -54,6 +56,18 @@ test('the pick-one table has one row per marketplace skill, with its family plug
       assert.equal(folder, `variants/<product>/${id}/`, `${f} ${id}`);
       for (const product of VARIANT_PRODUCTS) assert.ok(existsSync(join(root, 'variants', product, id, 'SKILL.md')), `${product}/${id}`);
     }
+  }
+});
+
+test('a Claude-Code-only skill ships in a plugin, is named in both READMEs and has no pick-one row', () => {
+  for (const id of CLAUDE_CODE_ONLY) {
+    assert.ok(market.plugins.some((p) => existsSync(join(root, p.source, 'skills', id, 'SKILL.md'))), id);
+    for (const f of READMES) {
+      const md = read(f).toString('utf8');
+      assert.ok(!table(md).body.some((r) => r[0] === id), `${f} pick-one`);
+      assert.ok(md.includes(`\`${id}\``), `${f} names ${id}`);
+    }
+    for (const product of VARIANT_PRODUCTS) assert.ok(!existsSync(join(root, 'variants', product, id)), `${product}/${id}`);
   }
 });
 

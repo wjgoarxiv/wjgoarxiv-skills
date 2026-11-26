@@ -1,0 +1,13 @@
+{
+  "pack": "transit",
+  "seed": 208,
+  "words": ["Board", "Ride", "Exit"],
+  "sub": ["타고", "달리고", "내린다"],
+  "acts": [
+    { "label": "Board", "blocks": ["flapwall", "count", "flap", "panels", "bands"] },
+    { "label": "Ride", "blocks": ["gate", "scan", "linemap", "crt", "tunnel", "rest"] },
+    { "label": "Yard", "blocks": ["index", "field"] },
+    { "label": "Exit", "blocks": ["doors", "swap", "lock", "print"] }
+  ],
+  "palette": { "ink": "#0b0b0d", "paper": "#f2ede0", "flood": "#ffc400", "accent": "#ffe27a", "signal": "#e3170a", "phosphor": "#ffab19" }
+}

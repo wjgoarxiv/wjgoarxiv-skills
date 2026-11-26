@@ -243,8 +243,8 @@ README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `l
 - **영상 단계:** `lit-typographic-motion`은 트리트먼트를 먼저 쓰고, 본 렌더 전에 눈으로 볼 수 있는 스토리보드 단계를
   거칩니다. 그다음 직접 만든 음악과 룩 조정, 그리고 섬광, 가독성, 결정성, 소리를 보는 QA 게이트를 지납니다.
 - **영상 종류:** 키네틱 타이포그래피, 가사나 인용구 영상, 타이틀 시퀀스, 무대형 영상까지 만듭니다.
-- **점멸 릴:** `lit-strobe-reel`은 사물 팩 다섯 가지(keys, transit, tape, stones, pads) 가운데 하나의 예시 설정 파일을 복사하고
-  설정을 검사합니다. 박자마다 한 장씩 모은 시트를 먼저 보여 준 다음 영상을 렌더합니다.
+- **점멸 릴:** `lit-strobe-reel`은 사물 팩 다섯 가지(keys, transit, tape, stones, pads)나, 실사 같은 긴 Blender 샷 하나를
+  릴로 자르는 `glasses` 팩 가운데 하나의 예시 설정 파일을 복사하고 설정을 검사합니다. 박자마다 한 장씩 모은 시트를 먼저 보여 준 다음 영상을 렌더합니다.
 - **README 덧붙임:** `readme-studio`는 검수한 커버, 윤곽선으로 바꾼 제목 글자, 원하면 움직이는 커버까지 붙여 줍니다.
 
 </details>
@@ -842,6 +842,13 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
 - `skills/lit-typographic-motion/SKILL.md`, `skills/lit-typographic-motion/references/treatment.md`,
   `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md`,
   `skills/lit-typographic-motion/references/depth.md`: 레지스터, 필드, 비평가, 뎁스 키트 설명.
+
+`video-covers` 0.1.5 (여기서 한 변경):
+- `skills/lit-strobe-reel/engine/check.mjs`, `skills/lit-strobe-reel/make.mjs`: `film.json`의 `footage`는 이미 렌더한 폴더(앞
+  영상의 `out/plates`)에서 샷의 프레임을 복사해 와서 Blender로 다시 렌더하지 않습니다. 같은 이름의 블록이 없는 샷은 푸티지로
+  보고, 그 팩의 모든 영상이 그 샷을 씁니다.
+- `skills/lit-strobe-reel/packs/glasses/`, `skills/lit-strobe-reel/films/two-glasses/`: 실사 같은 긴 샷 하나를 릴로 자르는
+  팩과 그 예시 영상. `skills/lit-strobe-reel/SKILL.md`에 방법을 적었습니다.
 
 `video-covers` 0.1.4 (여기서 한 변경):
 - `skills/lit-strobe-reel/` (새로 쓴 스킬, 영수증 행 없음, Claude Code 전용): `film.json` 하나와 장면 블록 표, 검사 모드,

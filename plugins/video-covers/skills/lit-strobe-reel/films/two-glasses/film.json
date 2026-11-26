@@ -1,0 +1,12 @@
+{
+  "pack": "glasses",
+  "seed": 32,
+  "words": ["Two", "Glasses", "Wait"],
+  "sub": ["두", "잔", "기다림"],
+  "acts": [
+    { "label": "Two", "blocks": ["two", "wait", "dither"] },
+    { "label": "Glasses", "blocks": ["clink", "copies", "glasses"] },
+    { "label": "Wait", "blocks": ["night", "light", "lock"] }
+  ],
+  "palette": { "ink": "#050608", "paper": "#ece8e2", "flood": "#2a3a52", "accent": "#e8a25a", "signal": "#d0562a", "phosphor": "#a8c4d8" }
+}

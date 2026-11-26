@@ -21,8 +21,13 @@ export async function loadFilm(dir){
  if(order.includes("page")&&!cfg.page?.length)bad('"page" needs its lines');
  const js=readFileSync(path.join(pdir,"scenes.js"),"utf8");for(const m of pack.marks)if(!js.includes(`MARK.${m}=`))broken("no mark "+m);for(const b of Object.keys(pack.blocks))if(!js.includes(`SCENE.${b}=`))broken("no scene for "+b);
  const py=readFileSync(path.join(pdir,"shots.py"),"utf8");for(const k of Object.keys(pack.shots))if(!py.includes(`def ${k}()`))broken("no shot "+k);
- const need=new Set([...Object.keys(pack.shots).filter(k=>order.includes(k)),...order.includes("dither")?pack.dither.map(d=>d[0]):[],...order.includes("field")?["cols"]:[],...order.filter(b=>b==="index"||b==="print")]);
+ // a shot with no block of its own name is footage that any block may cut into, so it is always needed
+ const need=new Set([...Object.keys(pack.shots).filter(k=>order.includes(k)||!Object.hasOwn(pack.blocks,k)),...order.includes("dither")?pack.dither.map(d=>d[0]):[],...order.includes("field")?["cols"]:[],...order.filter(b=>b==="index"||b==="print")]);
  const plates={};for(const[k,n]of Object.entries({...pack.shots,cols:24,index:8,print:36}))if(need.has(k))plates[k]=n;if(plates[pack.card]&&!cfg.card?.length)bad('"card" needs the lines of the card');
- const film={cfg,name,pdir,pack,cues,order,len,plates,js};const has=blockCues(film);for(const b of Object.keys(len))if(!has[b])broken("no sound for "+b);
+ // footage: frames of a shot already rendered elsewhere (an earlier film's out/plates), copied in instead of rendered again
+ const footage={};if(cfg.footage!==undefined){if(!cfg.footage||typeof cfg.footage!=="object"||Array.isArray(cfg.footage))bad('"footage" maps a shot to the folder that holds its frames');
+  for(const[k,v]of Object.entries(cfg.footage)){if(!Object.hasOwn(pack.shots,k))bad(`footage: pack ${name} has no shot "${k}"`);if(typeof v!=="string"||!v)bad(`footage.${k} must be a folder`);const d=path.resolve(dir,v);if(d===path.resolve(dir,"out","plates"))bad(`footage.${k} is this film's own plates`);
+   for(let i=0;i<pack.shots[k];i++){const f=`${k}-${String(i).padStart(2,"0")}.jpg`;if(!existsSync(path.join(d,f)))bad(`footage.${k}: no ${f} in ${v}`)}footage[k]=d}}
+ const film={cfg,name,pdir,pack,cues,order,len,plates,js,footage};const has=blockCues(film);for(const b of Object.keys(len))if(!has[b])broken("no sound for "+b);
  film.map=[];cfg.acts.forEach((a,i)=>a.blocks.forEach(b=>{for(let k=0;k<len[b];k++)film.map.push({beat:film.map.length,block:b,act:i,at:k})}));
  return film}

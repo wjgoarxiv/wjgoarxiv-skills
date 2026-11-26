@@ -247,7 +247,8 @@ from type, marks and Blender-photographed objects. It is Claude Code only: the o
   the full render. Then come an original score, look rounds and a QA gate (flash audit, legibility, determinism, sound).
 - **Film kinds:** kinetic type, lyric or quote videos, title sequences and stage films.
 - **Strobe reel:** `lit-strobe-reel` copies an example settings file for one of five object packs (keys, transit, tape,
-  stones, pads), checks it, renders a sheet with one frame per beat for you to look at, then the film.
+  stones, pads) or for `glasses`, which cuts one long photoreal Blender shot as a reel. It checks the file, renders a
+  sheet with one frame per beat for you to look at, then the film.
 - **README extras:** `readme-studio` adds an inspected cover, outlined title type and, if you want one, a motion cover.
 
 </details>
@@ -852,6 +853,13 @@ throw away every cache already on disk.
 - `skills/lit-typographic-motion/SKILL.md`, `skills/lit-typographic-motion/references/treatment.md`,
   `skills/lit-typographic-motion/references/studio.md`, `skills/lit-typographic-motion/references/look.md` and
   `skills/lit-typographic-motion/references/depth.md`: the register, the fields, the critic and the depth kit.
+
+`video-covers` 0.1.5 (changes made here):
+- `skills/lit-strobe-reel/engine/check.mjs` and `skills/lit-strobe-reel/make.mjs`: `footage` in `film.json` copies a
+  shot's frames from a folder already rendered (an earlier film's `out/plates`) instead of rendering them in Blender
+  again, and a shot that no block is named after is footage that every film of its pack needs.
+- `skills/lit-strobe-reel/packs/glasses/` and `skills/lit-strobe-reel/films/two-glasses/`: a pack that cuts one long
+  photoreal shot as a reel, and its example film; `skills/lit-strobe-reel/SKILL.md` describes the method.
 
 `video-covers` 0.1.4 (changes made here):
 - `skills/lit-strobe-reel/` (new, written here, no receipt rows; Claude Code only): a brutalist typographic strobe

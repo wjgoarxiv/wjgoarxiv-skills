@@ -2,7 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
-import { cpSync, existsSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 
@@ -144,7 +144,7 @@ test('building inside the skill folder is refused, and a missing font or tool is
 test('the block lengths written in SKILL.md are the ones in the code', async () => {
   const md = readFileSync(path.join(KIT, 'SKILL.md'), 'utf8'), { CORE } = await import(path.join(KIT, 'engine/blocks.mjs')), { loadFilm } = await import(path.join(KIT, 'engine/check.mjs')); const code = { ...CORE };
   for (const n of readdirSync(path.join(KIT, 'films'))) Object.assign(code, (await loadFilm(filmDir(n))).pack.blocks);
-  assert.deepEqual(Object.fromEntries([...md.matchAll(/`(\w+)` (\d)/g)].map((m) => [m[1], +m[2]])), code);
+  assert.deepEqual(Object.fromEntries([...md.matchAll(/`(\w+)` (\d+)/g)].map((m) => [m[1], +m[2]])), code);
 });
 test('a film can carry its own pack beside film.json, and a broken one is refused by name', () => {
   const tmp = mkdtempSync(path.join(tmpdir(), 'strobe-own-'));
@@ -155,5 +155,23 @@ test('a film can carry its own pack beside film.json, and a broken one is refuse
     edit('data.mjs', 'key:2,', 'key:3,');
     r = run(dir); assert.equal(r.status, 0, r.stderr); assert.equal(JSON.parse(r.stdout).pack, 'own'); assert.equal(JSON.parse(r.stdout).map.filter((m) => m.block === 'key').length, 3);
     rmSync(path.join(dir, 'pack/cues.mjs')); r = run(dir); assert.equal(r.status, 2); assert.match(r.stderr, /pack own: no cues\.mjs/);
+  } finally { rmSync(tmp, { recursive: true, force: true }); }
+});
+
+test('footage: a shot is copied in from frames already rendered, and a wrong folder is refused by name', async () => {
+  const { loadFilm } = await import(path.join(KIT, 'engine/check.mjs')), tmp = mkdtempSync(path.join(tmpdir(), 'strobe-foot-'));
+  try {
+    const src = path.join(tmp, 'take/out/plates'), dir = path.join(tmp, 'reel'); mkdirSync(src, { recursive: true }); mkdirSync(dir);
+    for (let i = 0; i < 959; i++) writeFileSync(path.join(src, `day-${String(i).padStart(2, '0')}.jpg`), '');
+    const put = (f) => writeFileSync(path.join(dir, 'film.json'), JSON.stringify({ ...cfgOf('two-glasses'), footage: f }));
+    const no = (f, re) => { put(f); const r = run(dir); assert.equal(r.status, 2, r.stdout); assert.match(r.stderr, re); };
+    no({ day: '../take/out/plates' }, /footage\.day: no day-959\.jpg/);
+    writeFileSync(path.join(src, 'day-959.jpg'), '');
+    no({ cup: '../take/out/plates' }, /no shot "cup"/);
+    no({ day: 'out/plates' }, /this film's own plates/);
+    no(['x'], /"footage" maps a shot/);
+    put({ day: '../take/out/plates' }); assert.equal(run(dir).status, 0);
+    const film = await loadFilm(dir); assert.equal(film.footage.day, src); assert.equal(film.plates.day, 960);
+    const take = await loadFilm(filmDir('two-glasses')); assert.equal(take.plates.day, 960, 'a shot with no block of its name is always needed');
   } finally { rmSync(tmp, { recursive: true, force: true }); }
 });

@@ -1,6 +1,6 @@
 ---
 name: lit-strobe-reel
-description: Makes a hard-strobing 16:9 typographic reel (1280x720, 60 fps, 150 bpm, with sound) from three words and one settings file, in a brutalist, Swiss or Bauhaus look, cutting between type, marks and Blender-photographed objects. Five object packs (keys, transit, tape, stones, pads), or a pack written for the film's own subject and sequence. Use when someone asks by name or look for a strobe reel, a typographic strobe, or a flashing brutalist or Swiss type reel. Its films flash the whole frame up to 30 times a second, so an accessible, ad or broadcast film, a film with a flash limit, a README cover loop, and any other short film belong to lit-typographic-motion.
+description: Makes a hard-strobing 16:9 typographic reel (1280x720, 60 fps, 150 bpm, with sound) from three words and one settings file, in a brutalist, Swiss or Bauhaus look, cutting between type, marks and Blender-photographed objects. Five object packs (keys, transit, tape, stones, pads), a pack that cuts one long photoreal Blender shot as a reel (glasses), or a pack written for the film's own subject and sequence. Use when someone asks by name or look for a strobe reel, a typographic strobe, or a flashing brutalist or Swiss type reel. Its films flash the whole frame up to 30 times a second, so an accessible, ad or broadcast film, a film with a flash limit, a README cover loop, and any other short film belong to lit-typographic-motion.
 ---
 
 # lit-strobe-reel
@@ -65,6 +65,7 @@ by name: stop and tell the user which.
 | `tape` | Tape deck, open reels, level meter; record, play, erase | Sound, memory, versions, editing | `deck` 2, `reel` 2, `needle` 2, `wave` 2, `splice` 2, `wipe` 2 |
 | `stones` | Go stone, board, bowl; solid, open, taken. Greys and the red signal only | Strategy, patience, choices | `stone` 2, `board` 2, `bowl` 2, `grid19` 2, `ladder` 2, `capture` 2 |
 | `pads` | Pad grid, speaker cone, hi-hat; disc, diamond, cross | Rhythm, music, loops | `pad` 2, `cone` 2, `cymbal` 2, `seq16` 4, `solo` 2, `scope` 2 |
+| `glasses` | One long shot: two glasses on a table from dawn to night; glass, ice, sun | A photoreal scene cut as a reel (see below) | `take` 80, `two` 8, `wait` 12, `clink` 4, `glasses` 12, `night` 4, `light` 4 |
 
 ## A pack of the film's own
 
@@ -82,11 +83,35 @@ List the sequence the user asked for, give each step its own block, and put core
 use no core block at all, hold a shot for ten seconds, and never strobe. Work with `--sheet --draft` until the sheet is
 right.
 
+## A photoreal scene cut as a reel
+
+When the user wants a real-looking scene and the strobe, type and motion of a reel in one film, render the scene once as
+one long shot and cut it. `glasses` is the example: `day` is a 960-frame Blender shot. Its blocks use it in these ways:
+
+- `take` plays the shot through as a quiet one-take.
+- `two` jump-cuts through it under a huge cropped syllable.
+- `wait` fills a contact sheet with its frames.
+- `clink` hits on one white frame and three freeze frames.
+- `glasses` slides a syllable over it in difference blend until dither eats the picture.
+- `night` and `light` let the strobe rest before one flash.
+
+The core `dither`, `copies` and `lock` blocks sit between these.
+
+1. Write the shot in `shots.py`, with its light coming only from things in the scene. A shot that no block is named after
+   is footage: every film of the pack renders it, and any scene may draw it with `plate('<shot>', f, max)`.
+2. Build the one-take first (`acts` holding only `take`, or the pack's own long block). This is the slow render: run it in
+   the background.
+3. Build the reel in a second folder with `"footage": { "<shot>": "../<one-take folder>/out/plates" }`. The frames are
+   copied in, and no Blender render runs for that shot. Each later change to the cut takes minutes.
+
+Hits land on story events, such as the ice settling or the light passing; a steady beat is used only where the cut itself
+is the rhythm. Keep the picture's own light and grain in the reel blocks, so the strobe reads as part of the same film.
+
 ## film.json
 
 | Key | What it sets |
 | --- | --- |
-| `pack` | One of the five; `keys` when left out; not read when the film has its own `pack/` folder |
+| `pack` | One of the six; `keys` when left out; not read when the film has its own `pack/` folder |
 | `seed` | The number every random choice comes from; it is never shown |
 | `words` | Three words. The first is also pixel type, so 1 to 8 letters or digits; short words read best |
 | `sub` | Three Hangul lines, one to four syllables each. Hangul is scaled, never condensed |
@@ -95,6 +120,7 @@ right.
 | `card` | Lines on the sheet the blade cuts (`keys`, when `blade` or `dither` is used) |
 | `pattern` | Three rows of sixteen steps, `x` or `.` (`pads` only): the sound and the picture both read it |
 | `lines` | Other texts a pack of the film's own draws, such as a closing line. Left out by default |
+| `footage` | Shots taken from frames already rendered: `{ "<shot>": "<folder>" }`, relative to the film folder, holding `<shot>-00.jpg` onwards |
 | `palette` | `ink`, `paper`, `flood`, `accent`, `signal` (one small mark per frame; red in `stones`, which turns other hues grey), `phosphor` (tube). `ink` must read on `paper` and on `accent`; `paper` may be the dark one |
 
 Blocks every pack has, with their beats (one beat is 0.4 s): `impact` 1, `crop` 1, `panels` 2, `crt` 1, `score` 1,

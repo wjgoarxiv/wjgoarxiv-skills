@@ -1,0 +1,46 @@
+{
+  "pack": "train",
+  "seed": 316,
+  "words": [
+    "Wait",
+    "Pass",
+    "Gone"
+  ],
+  "sub": [
+    "대기",
+    "통과",
+    "떠남"
+  ],
+  "acts": [
+    {
+      "label": "Wait",
+      "blocks": [
+        "empty",
+        "approach"
+      ]
+    },
+    {
+      "label": "Pass",
+      "blocks": [
+        "pass"
+      ]
+    },
+    {
+      "label": "Gone",
+      "blocks": [
+        "tail",
+        "copies",
+        "clunk",
+        "lock"
+      ]
+    }
+  ],
+  "palette": {
+    "ink": "#06080a",
+    "paper": "#ece8df",
+    "flood": "#1d2b33",
+    "accent": "#e8c870",
+    "signal": "#e0402a",
+    "phosphor": "#d6f0c8"
+  }
+}

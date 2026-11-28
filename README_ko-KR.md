@@ -253,8 +253,8 @@ README 커버 루프입니다. 전체 그림, 스킬 지도, 설치 경로는 `l
   거칩니다. 그다음 직접 만든 음악과 룩 조정, 그리고 섬광, 가독성, 결정성, 소리를 보는 QA 게이트를 지납니다.
 - **영상 종류:** 키네틱 타이포그래피, 가사나 인용구 영상, 타이틀 시퀀스, 무대형 영상까지 만듭니다.
 - **점멸 릴:** `lit-strobe-reel`은 사물 팩 다섯 가지(keys, transit, tape, stones, pads)나, 실사 같은 긴 Blender 샷 하나를
-  릴로 자르는 `glasses`, `bulb`, `train` 팩 가운데 하나의 예시 설정 파일을 복사하고 설정을 검사합니다. 박자마다 한 장씩 모은 시트를 먼저 보여 준 다음 영상을 렌더합니다. `bulb`와 `train`은
-  장면 속 전구나 지나가는 열차가 점멸을 만듭니다.
+  릴로 자르는 `glasses`, `train` 팩 가운데 하나의 예시 설정 파일을 복사하고 설정을 검사합니다. 박자마다 한 장씩 모은 시트를 먼저 보여 준 다음 영상을 렌더합니다. `train`은
+  지나가는 열차의 창문이 점멸을 만듭니다.
 - **README 덧붙임:** `readme-studio`는 검수한 커버, 윤곽선으로 바꾼 제목 글자, 원하면 움직이는 커버까지 붙여 줍니다.
 
 </details>
@@ -882,9 +882,10 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
   `skills/lit-xlsx/NOTICE`에 기법을 참고해 새로 쓴 Apache-2.0 스킬들을 밝혀 두었습니다.
 
 `video-covers` 0.1.8:
-- `skills/lit-strobe-reel/packs/bulb/`, `skills/lit-strobe-reel/packs/train/`, `skills/lit-strobe-reel/films/buzz-flicker-out/`,
-  `skills/lit-strobe-reel/films/wait-pass-gone/`: 장면 속 깜빡이는 전구와 지나가는 열차 창문이 점멸을 만드는 실사 팩 두 개와
-  그 예시 영상. `skills/lit-strobe-reel/SKILL.md`에 실었습니다.
+- `skills/lit-strobe-reel/SKILL.md`: "A scene that makes its own strobe" 절을 새로 넣었습니다. 점멸할 이유를 화면 안에서
+  찾고, 그 일정표 하나로 빛, 컷, 소리를 같이 움직이고, 렌더 전에 프레임 몇 장으로 먼저 확인하는 방법입니다.
+- `skills/lit-strobe-reel/packs/train/`, `skills/lit-strobe-reel/films/wait-pass-gone/`: 그 방법의 예시. 지나가는 열차의
+  창문이 점멸을 만듭니다.
 
 `video-covers` 0.1.7:
 - `skills/video/`(새로 씀, 영수증 줄 없음, Claude Code 전용): 영상 요청의 입구입니다. 요청을 읽고 lit-typographic-motion,

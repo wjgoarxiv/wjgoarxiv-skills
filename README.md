@@ -256,8 +256,8 @@ names no skill, picks one of the four and loads it. It is Claude Code only too, 
   the full render. Then come an original score, look rounds and a QA gate (flash audit, legibility, determinism, sound).
 - **Film kinds:** kinetic type, lyric or quote videos, title sequences and stage films.
 - **Strobe reel:** `lit-strobe-reel` copies an example settings file for one of five object packs (keys, transit, tape,
-  stones, pads) or for `glasses`, `bulb` and `train`, which cut one long photoreal Blender shot as a reel (in `bulb` and `train` a light
-  or a passing train in the scene makes the strobe). It checks the file, renders a
+  stones, pads) or for `glasses` and `train`, which cut one long photoreal Blender shot as a reel (in `train` a passing train's
+  windows make the strobe). It checks the file, renders a
   sheet with one frame per beat for you to look at, then the film.
 - **README extras:** `readme-studio` adds an inspected cover, outlined title type and, if you want one, a motion cover.
 
@@ -895,9 +895,11 @@ throw away every cache already on disk.
   runtime under `lib/`. `skills/lit-xlsx/NOTICE` names the Apache-2.0 skills whose techniques it rewrote.
 
 `video-covers` 0.1.8:
-- `skills/lit-strobe-reel/packs/bulb/`, `skills/lit-strobe-reel/packs/train/`, `skills/lit-strobe-reel/films/buzz-flicker-out/`
-  and `skills/lit-strobe-reel/films/wait-pass-gone/`: two photoreal packs whose strobe comes from the scene (a flickering
-  bulb, a passing train's windows), with their example films; `skills/lit-strobe-reel/SKILL.md` lists them.
+- `skills/lit-strobe-reel/SKILL.md`: a new section, "A scene that makes its own strobe": find a cause for the flashing
+  inside the picture, write its schedule once for the light, the cut and the sound, and check a few frames before the
+  render.
+- `skills/lit-strobe-reel/packs/train/` and `skills/lit-strobe-reel/films/wait-pass-gone/`: the worked example, a
+  train whose passing windows make the strobe.
 
 `video-covers` 0.1.7:
 - `skills/video/` (new, written here, no receipt rows; Claude Code only): the front door for video requests. It picks

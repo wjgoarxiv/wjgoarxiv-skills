@@ -1,6 +1,6 @@
 ---
 name: lit-strobe-reel
-description: Makes a hard-strobing 16:9 typographic reel (1280x720, 60 fps, 150 bpm, with sound) from three words and one settings file, in a brutalist, Swiss or Bauhaus look, cutting between type, marks and Blender-photographed objects. Five object packs (keys, transit, tape, stones, pads), a pack that cuts one long photoreal Blender shot as a reel (glasses), or a pack written for the film's own subject and sequence. Use when someone asks by name or look for a strobe reel, a typographic strobe, or a flashing brutalist or Swiss type reel. Its films flash the whole frame up to 30 times a second, so an accessible, ad or broadcast film, a film with a flash limit, a README cover loop, and any other short film belong to lit-typographic-motion.
+description: Makes a hard-strobing 16:9 typographic reel (1280x720, 60 fps, 150 bpm, with sound) from three words and one settings file, in a brutalist, Swiss or Bauhaus look, cutting between type, marks and Blender-photographed objects. Five object packs (keys, transit, tape, stones, pads), packs that cut one long photoreal Blender shot as a reel (glasses, train), or a pack written for the film's own subject and sequence. Use when someone asks by name or look for a strobe reel, a typographic strobe, or a flashing brutalist or Swiss type reel. Its films flash the whole frame up to 30 times a second, so an accessible, ad or broadcast film, a film with a flash limit, a README cover loop, and any other short film belong to lit-typographic-motion.
 ---
 
 # lit-strobe-reel
@@ -66,6 +66,7 @@ by name: stop and tell the user which.
 | `stones` | Go stone, board, bowl; solid, open, taken. Greys and the red signal only | Strategy, patience, choices | `stone` 2, `board` 2, `bowl` 2, `grid19` 2, `ladder` 2, `capture` 2 |
 | `pads` | Pad grid, speaker cone, hi-hat; disc, diamond, cross | Rhythm, music, loops | `pad` 2, `cone` 2, `cymbal` 2, `seq16` 4, `solo` 2, `scope` 2 |
 | `glasses` | One long shot: two glasses on a table from dawn to night; glass, ice, sun | A photoreal scene cut as a reel (see below) | `take` 80, `two` 8, `wait` 12, `clink` 4, `glasses` 12, `night` 4, `light` 4 |
+| `train` | One long shot: a late-night platform a train passes without stopping; headlights, window, can | A photoreal scene whose own motion makes the strobe (see below) | `empty` 6, `approach` 6, `pass` 12, `tail` 2, `clunk` 6 |
 
 ## A pack of the film's own
 
@@ -107,11 +108,43 @@ The core `dither`, `copies` and `lock` blocks sit between these.
 Hits land on story events, such as the ice settling or the light passing; a steady beat is used only where the cut itself
 is the rhythm. Keep the picture's own light and grain in the reel blocks, so the strobe reads as part of the same film.
 
+
+## A scene that makes its own strobe
+
+A reel reads as one film when the flashing has a cause inside the picture. Find that cause before writing any code:
+
+| The request is about | The strobe can come from |
+| --- | --- |
+| A room, a night, a machine | A light that flickers, buzzes or fails |
+| Travel, waiting, speed | Windows, poles or lamps going past (a train, a car at night, a lift shaft) |
+| The sea, a coast, a search | A turning beam (a lighthouse, a beacon) |
+| A party, a camera, a stage | Flashguns, a mirror ball, a photo booth |
+| Work, a factory, printing | A moving part that cuts the light (a fan, a shutter, a press) |
+
+1. Write the schedule once, in `data.mjs` under `shot`: the frames where the light dips, a window passes or a beam
+   crosses. `shots.py` drives the light or the motion from it, `scenes.js` cuts on it and `cues.mjs` sounds on it.
+   `cues.mjs` cannot read the pack, so it repeats the few lines that build the list.
+2. Shape it quiet, storm, quiet. Open on the scene with no cut, bring the cuts closer as the cause builds, strobe at
+   the peak, then end calm on one small event in the scene. The strobe stops when its cause stops.
+3. Light the scene only from things in it, and keep it dark enough that the cause wins: a late hour, some lamps off.
+   Set the world strength to 0 inside `pose`.
+4. Look at a handful of frames before rendering the shot. Write the pack's `shot` numbers to a JSON file as
+   `{"words": [...], "palette": {...}, "shot": {...}}`, then run
+   `<Blender> -b --factory-startup -P "$SKILL_ROOT/engine/hw.py" -- <shot> <out prefix> 50 16 <frame,frame,...> <font> <that json> <frames in the shot> <film>/pack/shots.py`.
+   Fix the light, the layout and the camera here; each try takes seconds.
+5. Render the whole film with `--draft`, look at frames of the film, then render it without `--draft`. `--sheet`
+   without `--draft` renders the plates again at full quality, so after a draft use `--sheet --draft`.
+
+`train` is the worked example. A train passes a late-night platform without stopping. Its windows sweep a bench, and
+each lit window is a cut. A bogie crossing the joint by the bench is a clack. The tail lamps go away down the
+platform, and the film ends on a can dropping in a vending machine. Its film is `wait-pass-gone`. Start a new subject
+with `new <folder> --pack train --own` and rewrite every file for that subject; never keep the platform.
+
 ## film.json
 
 | Key | What it sets |
 | --- | --- |
-| `pack` | One of the six; `keys` when left out; not read when the film has its own `pack/` folder |
+| `pack` | One of the seven; `keys` when left out; not read when the film has its own `pack/` folder |
 | `seed` | The number every random choice comes from; it is never shown |
 | `words` | Three words. The first is also pixel type, so 1 to 8 letters or digits; short words read best |
 | `sub` | Three Hangul lines, one to four syllables each. Hangul is scaled, never condensed |

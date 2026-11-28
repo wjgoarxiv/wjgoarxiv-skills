@@ -175,3 +175,10 @@ test('footage: a shot is copied in from frames already rendered, and a wrong fol
     const take = await loadFilm(filmDir('two-glasses')); assert.equal(take.plates.day, 960, 'a shot with no block of its name is always needed');
   } finally { rmSync(tmp, { recursive: true, force: true }); }
 });
+
+test('the train film cuts one long shot on the schedule its pack writes once', async () => {
+  const { loadFilm } = await import(path.join(KIT, 'engine/check.mjs'));
+  const f = await loadFilm(filmDir('wait-pass-gone')); assert.equal(f.plates.plat, 408, 'one long shot');
+  for (const k of ['wins', 'joints', 'bogies', 'cuts', 'can']) assert.ok(k in f.pack.shot, `shot.${k}`);
+  assert.equal(check('wait-pass-gone').beats, 38);
+});

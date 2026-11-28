@@ -907,6 +907,10 @@ grok plugin install "<path to your wjgoarxiv-skills clone>/variants/litgrok/lit-
   Blender 샷 팩(`keys`, `transit`, `tape`, `stones`, `pads`)으로 만드는 브루탈리스트 타이포 스트로브 릴. 예시 영상 여섯 편이
   들어 있습니다. `kits/strobe-reel/`을 대신하며, 그 폴더는 지웠습니다.
 
+`figures` 0.1.1:
+- `skills/lit-scientific-visualization/SKILL.md`: 프런트매터에서 `disable-model-invocation` 줄을 뺐습니다. 이제 측정 데이터
+  플롯 요청에 Claude가 이 스킬을 불러올 수 있습니다. `/figures:lit-scientific-visualization`을 직접 입력해도 됩니다.
+
 `figures` (LitClaude 1.0.50에서 `litclaude doctor`의 scientific-visualization doctor가 빠짐):
 - `skills/lit-scientific-visualization/SKILL.md`: 4단계는 번들 doctor만 실행하고, 더는 `litclaude doctor`를 권하지 않습니다.
 

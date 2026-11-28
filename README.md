@@ -921,6 +921,10 @@ throw away every cache already on disk.
   reel made from one `film.json`, a scene-block table, a check mode and packs of Blender shots (`keys`, `transit`,
   `tape`, `stones`, `pads`), with six example films. It replaces `kits/strobe-reel/`, which is removed.
 
+`figures` 0.1.1:
+- `skills/lit-scientific-visualization/SKILL.md`: the `disable-model-invocation` line is gone from the frontmatter, so
+  Claude can load the skill for a plot of measured data; the typed command still works.
+
 `figures` (LitClaude 1.0.50 removed the scientific-visualization doctor from `litclaude doctor`):
 - `skills/lit-scientific-visualization/SKILL.md`: step 4 runs only the bundled doctor and no longer offers
   `litclaude doctor`.
